@@ -1,5 +1,8 @@
 const express = require("express");
 const app = express()
+const userRouter = require("./routes/userRoutes")
+
+app.use("/users", userRouter);
 
 app.get("*", (req, res, next) => {
     res.send("Welcome to NHA CS490 project!");
