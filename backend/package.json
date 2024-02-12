@@ -2,10 +2,15 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "backend code for Newark Hater Allegiance CS490 Bill McCann",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Saketh Puramsetti, Ausberto Colon Jr, John Castro, Karam Assaf, Medina Dzhatdoyev",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.1.2"
+  }
 }
