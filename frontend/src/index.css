@@ -14,7 +14,7 @@
   
 }
 
-.nha-navbar .nav-brand {
+.nha-navbar .nav-a {
   font-family: "Kanit", sans-serif;
 }
 
@@ -25,7 +25,7 @@
 
 .nav-rl {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 1rem;
+  font-size: 1.3rem;
   padding-left: 1rem;
 }
 
@@ -59,7 +59,8 @@
   display: block;
 }
 
-/* Website Body Styling */
+/* 
+Website Body Styling */
 .content {
   background-color: #1A1C23;
   height: 100vh;
