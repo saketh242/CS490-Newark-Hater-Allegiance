@@ -211,17 +211,17 @@ select, button {
   height: 100%;
 }
 
-.codeOutput::-webkit-scrollbar, pre::-webkit-scrollbar-track {
+::-webkit-scrollbar {
   width: 10px; /* Width of the scrollbar */
   height: 10px; /* Height of the scrollbar */
 }
 
-.codeOutput::-webkit-scrollbar-thumb, pre::-webkit-scrollbar-track {
+::-webkit-scrollbar-thumb{
   background-color: #0ac6c0; /* Color of the scrollbar thumb */
   border-radius: 5px; /* Rounded corners */
 }
 
-.codeOutput::-webkit-scrollbar-track, pre::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background-color: #23262F; /* Color of the scrollbar track */
 }
 
