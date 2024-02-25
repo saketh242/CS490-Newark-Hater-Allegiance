@@ -112,12 +112,13 @@ select, button {
 .codeBlocks {
   display: flex;
   align-items: stretch;
+  justify-content: center;
 }
 
 .inputArea, .outputArea {
   resize: none;
   flex: 1;
-  width: 32rem;
+  width: 36rem;
   height: 28rem;
   padding: 1rem;
   resize: none;
@@ -157,15 +158,15 @@ select, button {
   margin-right: 8rem;
 }
 
-/* Adjust margin to move the desired language dropdown to the right */
+
 #rightDropdownContainer {
   margin-left: 8rem;
 }
 
 .dropdown {
   display: flex;
-  justify-content: center; /* Center the dropdowns horizontally */
-  align-items: center; /* Center the dropdowns vertically */
+  justify-content: center;
+  align-items: center;
   margin-bottom: 2rem; 
 }
 
@@ -197,22 +198,14 @@ select, button {
   background-color: transparent;
   border: none;
   cursor: pointer;
-}
-
-.uploadButton, .downloadButton {
-  position: absolute; /* Position absolute for alignment */
-  top: 0; /* Align to the top */
-  right: 0; /* Align to the right */
-}
-
-.copyButton {
-  position: absolute; /* Position absolute for alignment */
-  top: 0; /* Align to the top */
-  right: 3rem; /* Align to the right */
-}
-
-.uploadButton:focus, .downloadButton:focus, .copyButton:focus {
+  padding: 0.5rem;
   outline: none;
+}
+
+
+.codeHeading, .outputHeading {
+  display:flex;
+  justify-content: space-between;
 }
 
 
