@@ -137,7 +137,7 @@ select, button {
   padding: 1rem;
 }
 
-#icons {
+#icon:hover {
   color:#0ac6c0;
 }
 
@@ -145,6 +145,7 @@ select, button {
   display: flex;
   flex-direction: column;
   font-size: larger;
+  align-items: center;
 }
 
 .inputArea {
@@ -176,6 +177,7 @@ select, button {
 
 .dropdownContainer label {
   margin-bottom: 0.5rem; /* Adjust the margin between label and dropdown */
+  font-size: larger;
 }
 
 #originLanguage, #desiredLanguage {
