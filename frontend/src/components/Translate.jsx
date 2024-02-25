@@ -3,8 +3,9 @@ import { Dropdown } from 'react-bootstrap';
 import CodeOutput from './CodeOutput';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightLong, faArrowRightLong, faDownload, faCopy, faFileImport } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightLong } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import {faDownload, faCopy, faFileImport } from '@fortawesome/free-solid-svg-icons'
 
 const Translate = () => {
     // API icon, testing purposes
@@ -77,7 +78,7 @@ const Translate = () => {
           <h2 className="codeHeading">
             Enter code here:
             {/* Icon button for uploading a file */}
-            <button className="uploadButton">
+            <button className="uploadButton" title="Upload file">
               <FontAwesomeIcon size="2x" icon={faFileImport} />
             </button>
           </h2>
@@ -89,11 +90,22 @@ const Translate = () => {
         </div>
 
         <div className="dest">
-          <h2>Converted code:</h2>
-          {/* <FontAwesomeIcon icon={faDownload} />
-          <FontAwesomeIcon icon={faCopy} /> */}
+          <div className="outputHeading">
+            <h2>Converted code:</h2>
+            <div className="buttonsContainer">
+              {/* Icon button for copying the output */}
+              <button className="copyButton" title="Copy code">
+                <FontAwesomeIcon size="2x" icon={faCopy} />
+              </button>
+              {/* Icon button for downloading the output */}
+              <button className="downloadButton" title="Download code">
+                <FontAwesomeIcon size="2x" icon={faDownload} />
+              </button>
+            </div>
+          </div>
+
           <div className="outputArea">
-            <CodeOutput/>
+            <CodeOutput />
           </div>
         </div>
       </div>
