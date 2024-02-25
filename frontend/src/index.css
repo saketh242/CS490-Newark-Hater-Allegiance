@@ -86,7 +86,7 @@ Website Body Styling */
 }
 
 .apiStatus {
-  margin: 1rem 1rem;
+  margin: 0.5rem 1rem;
   display: flex;
   flex-direction: column;
 }
@@ -119,7 +119,7 @@ select, button {
   resize: none;
   flex: 1;
   width: 32rem;
-  height: 35rem;
+  height: 32rem;
   padding: 1rem;
   resize: none;
   background-color: #23262F;
@@ -154,4 +154,8 @@ select, button {
 
 .inputArea {
   color:#BDC3D0;
+}
+
+button:hover {
+  background-color:#0ac6c0;
 }

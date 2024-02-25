@@ -32,7 +32,7 @@ const Translate = () => {
 
         <div className="conversionArrow">
           <FontAwesomeIcon id="icons" icon={faArrowRightLong} size="5x"/>
-          <button onClick={translateCode}>Translate</button>
+          <button id="translationButton" onClick={translateCode}>Translate</button>
         </div>
 
         <select id="desiredLanguage">
