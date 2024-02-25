@@ -1,11 +1,9 @@
-import SyntaxHighlighter from 'react-syntax-highlighter';
+import React from 'react';
 
-const CodeOutput = ({codeString, language}) => {
-  return (
-    <SyntaxHighlighter language={language}>
-      {codeString}
-    </SyntaxHighlighter>
-  );
+const Codeblock = () => {
+    return (
+        <div>//needs work</div>
+    );
 };
 
-export default CodeOutput;
+export default Codeblock;

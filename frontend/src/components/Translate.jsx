@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import SyntaxHighlighter from 'react-syntax-highlighter';
 import CodeOutput from './CodeOutput';
 
 const Translate = () => {
@@ -15,6 +14,7 @@ const Translate = () => {
   return (
     <div className="translateBody">
       <h1 className="apiStatus">OpenAI API Status: </h1>
+
       <div className="dropdown">
         <select id="originLanguage">
           <option value="python">Python</option>
@@ -30,17 +30,19 @@ const Translate = () => {
           <option value="csharp">C#</option>
         </select>
       </div>
-      <button>Upload</button>
+
+      <div className="upload"><button>Upload</button></div>
+
       <div className="codeBlocks">
         <textarea className="inputArea"
           value={inputCode}
           onChange={(e) => setInputCode(e.target.value)}
           placeholder="Enter code to translate"
         />
-        <CodeOutput className="outputArea" language="javascript" codeString="sample"/>
+        <div className="outputArea"><CodeOutput/></div>
       </div>
     </div>
   )
 }
 
-export default Translate
+export default Translate;
