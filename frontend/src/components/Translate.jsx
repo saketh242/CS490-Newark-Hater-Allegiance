@@ -8,9 +8,8 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import {faDownload, faCopy, faFileImport } from '@fortawesome/free-solid-svg-icons'
 
 const Translate = () => {
-    // API icon, testing purposes
-    const [apiReady, setApiReady] = useState(true);
-
+  // API icon, testing purposes
+  const [apiReady, setApiReady] = useState(true);
 
   const [inputCode, setInputCode] = useState('');
   const [translatedCode, setTranslatedCode] = useState('');
@@ -58,7 +57,7 @@ const Translate = () => {
         <div className="conversionArrow">
           {/* Arrow icon button */}
           <button id="translationButton" onClick={translateCode}>
-            <FontAwesomeIcon id="icons" icon={faArrowRightLong} size="7x" />
+            <FontAwesomeIcon id="icon" icon={faArrowRightLong} size="7x" />
           </button>
           <p>Convert</p>
         </div>
@@ -79,7 +78,7 @@ const Translate = () => {
             Enter code here:
             {/* Icon button for uploading a file */}
             <button className="uploadButton" title="Upload file">
-              <FontAwesomeIcon size="2x" icon={faFileImport} />
+              <FontAwesomeIcon id="icon" size="2x" icon={faFileImport} />
             </button>
           </h2>
           <textarea className="inputArea"
@@ -95,15 +94,14 @@ const Translate = () => {
             <div className="buttonsContainer">
               {/* Icon button for copying the output */}
               <button className="copyButton" title="Copy code">
-                <FontAwesomeIcon size="2x" icon={faCopy} />
+                <FontAwesomeIcon id="icon" size="2x" icon={faCopy} />
               </button>
               {/* Icon button for downloading the output */}
               <button className="downloadButton" title="Download code">
-                <FontAwesomeIcon size="2x" icon={faDownload} />
+                <FontAwesomeIcon id="icon" size="2x" icon={faDownload} />
               </button>
             </div>
           </div>
-
           <div className="outputArea">
             <CodeOutput />
           </div>
