@@ -3,7 +3,7 @@ import { Dropdown } from 'react-bootstrap';
 import CodeOutput from './CodeOutput';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightLong, faArrowRightLong, faDownload, faCopy } from '@fortawesome/free-solid-svg-icons'
+import { faRightLong, faArrowRightLong, faDownload, faCopy, faFileImport } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Translate = () => {
@@ -73,14 +73,21 @@ const Translate = () => {
       </div>
 
       <div className="codeBlocks">
-        <div className="src">
-          <h2>Enter code here:</h2>
+      <div className="src">
+          <h2 className="codeHeading">
+            Enter code here:
+            {/* Icon button for uploading a file */}
+            <button className="uploadButton">
+              <FontAwesomeIcon size="2x" icon={faFileImport} />
+            </button>
+          </h2>
           <textarea className="inputArea"
             value={inputCode}
             onChange={(e) => setInputCode(e.target.value)}
             placeholder="Enter code to translate"
           />
         </div>
+
         <div className="dest">
           <h2>Converted code:</h2>
           {/* <FontAwesomeIcon icon={faDownload} />

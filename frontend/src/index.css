@@ -114,7 +114,6 @@ select, button {
 }
 
 .inputArea, .outputArea {
-  margin: 1rem 3rem;
   resize: none;
   flex: 1;
   width: 32rem;
@@ -152,7 +151,7 @@ select, button {
 }
 
 #translationButton {
-  background-color: #1A1C23;
+  background-color: transparent;
   border: none;
 }
 
@@ -190,3 +189,22 @@ select, button {
   border-radius: 8px;
   margin-top: 0.5rem; /* Adjust margin to move the dropdowns closer to the labels */
 }
+
+.src, .dest {
+  position: relative; /* Set position relative to contain absolute positioned button */
+  margin: 1rem 3rem 1rem 0; 
+}
+
+.uploadButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute; /* Position absolute for alignment */
+  top: 0; /* Align to the top */
+  right: 0; /* Align to the right */
+}
+
+.uploadButton:focus {
+  outline: none;
+}
+
