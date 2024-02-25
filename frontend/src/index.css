@@ -124,7 +124,7 @@ select, button {
   resize: none;
   background-color: #23262F;
   border-radius: 5px;
-  border-color:#0ac6c0;
+  border:1pt solid #0ac6c0;
 }
 
 .codeout{
@@ -201,11 +201,31 @@ select, button {
   outline: none;
 }
 
-
 .codeHeading, .outputHeading {
   display:flex;
   justify-content: space-between;
 }
+
+.codeOutput {
+  overflow: auto; /* Enable scrolling */
+  height: 100%;
+}
+
+.codeOutput::-webkit-scrollbar, pre::-webkit-scrollbar-track {
+  width: 10px; /* Width of the scrollbar */
+  height: 10px; /* Height of the scrollbar */
+}
+
+.codeOutput::-webkit-scrollbar-thumb, pre::-webkit-scrollbar-track {
+  background-color: #0ac6c0; /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded corners */
+}
+
+.codeOutput::-webkit-scrollbar-track, pre::-webkit-scrollbar-track {
+  background-color: #23262F; /* Color of the scrollbar track */
+}
+
+
 
 
 /* Footer Component Styling */
