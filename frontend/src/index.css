@@ -75,10 +75,9 @@ Website Body Styling */
 /* Translate component styling */
 
 .translateBody {
-  margin: 0;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  /* height: 100vh; */
   font-family: "Kanit", sans-serif;
   color: #BDC3D0;
   align-items: center; 
@@ -86,9 +85,9 @@ Website Body Styling */
 }
 
 .apiStatus {
-  margin: 0.5rem 1rem;
+  margin: 2rem;
   display: flex;
-  flex-direction: column;
+  align-items: center;
 }
 
 #originLanguage, #desiredLanguage {
@@ -119,7 +118,7 @@ select, button {
   resize: none;
   flex: 1;
   width: 32rem;
-  height: 32rem;
+  height: 28rem;
   padding: 1rem;
   resize: none;
   background-color: #23262F;
@@ -145,17 +144,49 @@ select, button {
 .conversionArrow {
   display: flex;
   flex-direction: column;
-}
-
-.dropdown {
-  display:flex;
-  flex-direction: row;
+  font-size: larger;
 }
 
 .inputArea {
   color:#BDC3D0;
 }
 
-button:hover {
-  background-color:#0ac6c0;
+#translationButton {
+  background-color: #1A1C23;
+  border: none;
+}
+
+/* Adjust margin to move the origin language dropdown to the left */
+#leftDropdownContainer {
+  margin-right: 8rem;
+}
+
+/* Adjust margin to move the desired language dropdown to the right */
+#rightDropdownContainer {
+  margin-left: 8rem;
+}
+
+.dropdown {
+  display: flex;
+  justify-content: center; /* Center the dropdowns horizontally */
+  align-items: center; /* Center the dropdowns vertically */
+  margin-bottom: 2rem; 
+}
+
+.dropdownContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dropdownContainer label {
+  margin-bottom: 0.5rem; /* Adjust the margin between label and dropdown */
+}
+
+#originLanguage, #desiredLanguage {
+  padding: 12px 20px;
+  font-size: 16px;
+  width: 200px;
+  border-radius: 8px;
+  margin-top: 0.5rem; /* Adjust margin to move the dropdowns closer to the labels */
 }
