@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Translate from './components/Translate';
 import Docs from './components/Docs';
 import NHANav from './components/NHANav';
+import Footer from './components/Footer';
 import "./index.css"
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/docs" element={<Docs />} />
         </Routes>
       </div>
+      <Footer/>
     </Router>
     </>
   );
