@@ -156,7 +156,7 @@ const Translate = () => {
               </button>
               {/* Icon button for clearing text input */}
               <button className="clearButton" title="Clear text">
-                <FontAwesomeIcon id="icon" size="2x" icon={faBroom} onClick={() => setInputCode('')} />
+                <FontAwesomeIcon id="icon" size="2x" icon={faBroom} onClick={() => {setInputCode(''); setTranslatedCode('')}} />
               </button>
             </div>
           </h2>
