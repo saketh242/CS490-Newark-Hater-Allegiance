@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dropdown } from 'react-bootstrap';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 import CodeOutput from './CodeOutput';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,6 +13,17 @@ const Translate = () => {
 
   const [inputCode, setInputCode] = useState('');
   const [translatedCode, setTranslatedCode] = useState('');
+
+  const [sourceLanguage, setSourceLanguage] = useState('python'); 
+  const [desiredLanguage, setDesiredLanguage] = useState('python'); // Default language
+
+  const handleSourceLanguageChange = (e) => {
+    setSourceLanguage(e.target.value);
+  };
+
+  const handleDesiredLanguageChange = (e) => {
+    setDesiredLanguage(e.target.value);
+  };
 
   // translation function
   const translateCode = () => {
@@ -33,6 +44,8 @@ const Translate = () => {
       { value: 'typescript', label: 'TypeScript' }
     ];
 
+
+
   return (
     <div className="translateBody">
         <h1 className="apiStatus">
@@ -47,7 +60,7 @@ const Translate = () => {
       <div className="dropdown">
         <div className="dropdownContainer" id="leftDropdownContainer">
           <label htmlFor="originLanguage">Source Language:</label>
-          <select id="originLanguage">
+          <select id="originLanguage" onChange={handleSourceLanguageChange}>
             {languages.map((language, index) => (
               <option key={index} value={language.value}>{language.label}</option>
             ))}
@@ -64,7 +77,7 @@ const Translate = () => {
 
         <div className="dropdownContainer" id="rightDropdownContainer">
           <label htmlFor="desiredLanguage">Desired Language:</label>
-          <select id="desiredLanguage">
+          <select id="desiredLanguage" onChange={handleDesiredLanguageChange}>
             {languages.map((language, index) => (
               <option key={index} value={language.value}>{language.label}</option>
             ))}
@@ -93,7 +106,7 @@ const Translate = () => {
             <h2>Converted code:</h2>
             <div className="buttonsContainer">
               {/* Icon button for copying the output */}
-              <button className="copyButton" title="Copy code">
+              <button className="copyButton" title="Copy code" onClick={() => navigator.clipboard.writeText(translatedCode)}>
                 <FontAwesomeIcon id="icon" size="2x" icon={faCopy} />
               </button>
               {/* Icon button for downloading the output */}
@@ -103,7 +116,7 @@ const Translate = () => {
             </div>
           </div>
           <div className="outputArea">
-            <CodeOutput code={translatedCode} language="python" /> {/* Change 'python' to the appropriate language */}
+            <CodeOutput code={translatedCode} language={desiredLanguage} />
           </div>
         </div>
       </div>
