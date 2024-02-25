@@ -201,10 +201,14 @@ select, button {
   outline: none;
 }
 
-
 .codeHeading, .outputHeading {
   display:flex;
   justify-content: space-between;
+}
+
+.codeOutput {
+  max-height: 400px; /* Set max height for the code box */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 

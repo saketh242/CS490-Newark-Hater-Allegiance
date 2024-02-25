@@ -103,7 +103,7 @@ const Translate = () => {
             </div>
           </div>
           <div className="outputArea">
-            <CodeOutput />
+            <CodeOutput code={translatedCode} language="python" /> {/* Change 'python' to the appropriate language */}
           </div>
         </div>
       </div>
