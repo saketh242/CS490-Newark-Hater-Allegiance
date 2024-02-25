@@ -78,14 +78,17 @@ Website Body Styling */
   margin: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
   height: 100vh;
   font-family: "Kanit", sans-serif;
   color: #BDC3D0;
+  align-items: center; 
+  justify-content: center; 
 }
 
 .apiStatus {
   margin: 1rem 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
 #originLanguage, #desiredLanguage {
@@ -93,6 +96,7 @@ Website Body Styling */
   font-size: 16px;
   width: 200px;
   border-radius: 8px;
+  margin: 2rem;
 }
 
 option {
@@ -107,13 +111,13 @@ select, button {
 
 .codeBlocks {
   display: flex;
-  align-items: stretch; /* Ensure both children stretch vertically */
+  align-items: stretch;
 }
 
 .inputArea, .outputArea {
   margin: 1rem 3rem;
   resize: none;
-  flex: 1; /* Distribute available space equally */
+  flex: 1;
   width: 32rem;
   height: 35rem;
   padding: 1rem;
@@ -132,4 +136,22 @@ select, button {
 
 .upload{
   padding: 1rem;
+}
+
+#icons {
+  color:#0ac6c0;
+}
+
+.conversionArrow {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown {
+  display:flex;
+  flex-direction: row;
+}
+
+.inputArea {
+  color:#BDC3D0;
 }
