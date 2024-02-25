@@ -85,7 +85,7 @@ const CodeOutput = ({ code, language }) => {
             ...dracula,
             'hljs': {
                 ...dracula['hljs'],
-                background: '#23262F', // Change background color to the desired color
+                background: '#23262F',
             },
         };
 
