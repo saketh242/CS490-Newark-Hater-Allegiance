@@ -3,7 +3,7 @@
 const Footer = () => {
   return (
     <footer className="footer-box">
-        <h3>Project Submission CS490, BillMcCann</h3>
+        <h3>© 2024 Newark Hater Allegiance. All rights reserved.</h3>
     </footer>
   )
 }

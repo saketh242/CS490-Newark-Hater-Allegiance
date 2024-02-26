@@ -254,3 +254,141 @@ select, button {
   }
 }
 
+
+/* Login Component Styling */
+.login-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+
+.login-heading {
+  font-family: "Kanit", sans-serif;
+  font-size: 8rem;
+  color: #9CA6B5;
+  margin: 2rem 0 1rem 0;
+}
+
+.login-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  padding-top: 0;
+}
+
+.email-input, .password-login {
+  background-color: #23262F;
+  padding: 0.5rem;
+  color:#9CA6B5;
+  font-size: 1.3rem;
+  width: 20rem;
+  border: 1pt solid #9CA6B5;
+  border-radius: 5px;
+  margin: 1rem 0;
+}
+
+.email-input:focus, .password-login:focus  {
+  border: 1pt solid #5469D4;
+}
+
+.email-input:hover, .password-login:hover {
+  border: 1pt solid #5469D4;
+}
+
+.login-btn {
+ padding: 0.4rem 1.7rem 0.4rem 1.7rem;
+ font-size: 1.4rem;
+ border-radius: 5px;
+ margin-top: 1rem;
+}
+
+.signup-msg {
+  display: flex;
+  margin-top: 1.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-msg p {
+  font-family: "Kanit", sans-serif;
+  font-size: 1.4rem;
+  padding-right: 1rem;
+  color: #9CA6B5;
+}
+
+.signup-msg a {
+  text-decoration: none;
+  font-family: "Kanit", sans-serif;
+  color: #5469D4;
+  font-size: 1.4rem;
+}
+
+.signup-msg a:hover {
+  color: #9CA6B5;
+}
+
+@media (width <= 900px) {
+  .login-heading{
+    font-size: 4rem;
+  }
+  .email-input, .password-login {
+    width: 12rem;
+    font-size: 0.8rem;
+  }
+  .login-btn {
+    font-size: 1rem;
+  }
+}
+
+/* Sign up page Styling */
+.signup-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.name-inputs {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.signup-email-input, .signup-password-input  {
+  background-color: #23262F;
+  padding: 0.5rem;
+  color:#9CA6B5;
+  font-size: 1.3rem;
+  border: 1pt solid #9CA6B5;
+  border-radius: 5px;
+  margin: 1rem 0;
+  width: 30rem;
+}
+
+.name-input-box {
+  background-color: #23262F;
+  padding: 0.5rem;
+  color:#9CA6B5;
+  font-size: 1.3rem;
+  border: 1pt solid #9CA6B5;
+  border-radius: 5px;
+  margin: 1rem 0 1rem 0;
+  width: 13rem;
+}
+
+
+ 
