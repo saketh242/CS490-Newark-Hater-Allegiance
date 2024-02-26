@@ -63,10 +63,7 @@
 Website Body Styling */
 .content {
   background-color: #1A1C23;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  margin: 0
+  
 }
 
 .test {
@@ -127,9 +124,8 @@ select, button {
   resize: none;
   background-color: #23262F;
   border-radius: 5px;
-  border: 2pt solid #0ac6c0;
+  border:1pt solid #0ac6c0;
 }
-
 
 .codeout{
   width: 32rem;
@@ -197,17 +193,39 @@ select, button {
   margin: 1rem 3rem 1rem 3rem; 
 }
 
-#translationButton, .uploadButton, .downloadButton, .copyButton {
+#translationButton, .uploadButton, .downloadButton, .copyButton, .clearButton {
   background-color: transparent;
   border: none;
   cursor: pointer;
   padding: 0.5rem;
   outline: none;
 }
+
 .codeHeading, .outputHeading {
   display:flex;
   justify-content: space-between;
 }
+
+.codeOutput {
+  overflow: auto; /* Enable scrolling */
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+  height: 10px; /* Height of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb{
+  background-color: #0ac6c0; /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded corners */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #23262F; /* Color of the scrollbar track */
+}
+
+
 
 
 /* Footer Component Styling */
@@ -219,10 +237,6 @@ select, button {
   padding: 1.5rem;
   margin: 0;
   background-color: #23262F;
-  flex: 0 0 auto; 
-  position: relative; 
-  bottom: 0; 
-  width: 100%
 }
 
 .footer-box h3 {
