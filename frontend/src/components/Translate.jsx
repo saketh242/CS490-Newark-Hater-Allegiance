@@ -1,12 +1,33 @@
-import React, { useState } from 'react'
-import CodeOutput from './CodeOutput';
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from '../firebase';
 
+import CodeOutput from './CodeOutput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import {faDownload, faCopy, faFileImport } from '@fortawesome/free-solid-svg-icons'
 
 const Translate = () => {
+
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is logged in
+          const uid = user.uid;
+          console.log("uid", uid)
+        } else {
+          // User is logged out
+          navigate("/login")
+          console.log("user is logged out")
+        }
+      });
+     
+  },[])
+  
   // API icon, testing purposes
   const [apiReady, setApiReady] = useState(true);
 
