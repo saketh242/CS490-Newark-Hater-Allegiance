@@ -336,6 +336,11 @@ select, button {
   color: #9CA6B5;
 }
 
+.login-form {
+  margin: 0;
+  padding: 0;
+}
+
 @media (width <= 900px) {
   .login-heading{
     font-size: 4rem;
@@ -392,6 +397,11 @@ select, button {
   border-radius: 5px;
   margin: 1rem 0 1rem 0;
   width: 13rem;
+}
+
+.signup-form {
+  margin: 0;
+  padding: 0;
 }
 
 

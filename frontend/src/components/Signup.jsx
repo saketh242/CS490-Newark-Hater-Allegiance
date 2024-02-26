@@ -1,7 +1,11 @@
-import {useState} from "react"
-import { Link } from "react-router-dom"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import {  createUserWithEmailAndPassword  } from 'firebase/auth';
+import { auth } from '../firebase';
 
 const Signup = () => {
+
+    const navigate = useNavigate();
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -9,14 +13,35 @@ const Signup = () => {
     const [password, setPassword] = useState("")
     const [password2, setPassword2] = useState("")
 
-    const handleSignup = () => {
-        console.log("You Signed up!")
+    const handleSignup = async (e) => {
+
+        e.preventDefault();
+
+        await createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+
+            const user = userCredential.user;
+            console.log(user)
+            navigate("/login")
+
+          })
+          .catch((err) => {
+            const errCode = err.code
+            const errMessage = err.message
+            console.log(errCode, errMessage)
+
+          })
+
     }
+
+
 
   return (
     <div className='signup-content'>
+      <form className="signup-form">
      <h2 className="login-heading">NHAGPT</h2>
-     <div class="signup-box">
+     
+     <div className="signup-box">
         <div className="name-inputs">
             <input
                 className="name-input-box"
@@ -62,6 +87,7 @@ const Signup = () => {
           </Link>
         </div>
      </div>
+     </form>
     </div>
   )
 }

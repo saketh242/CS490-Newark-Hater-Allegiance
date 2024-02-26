@@ -1,23 +1,37 @@
 import { useState } from 'react';
-import { Link } from "react-router-dom"
+import { Link, Navigate, useNavigate } from 'react-router-dom'
+import {  signInWithEmailAndPassword   } from 'firebase/auth';
+import { auth } from '../firebase';
 
 const Login = () => {
+
+  const navigate = useNavigate()
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    fetch("https://status.openai.com/api/v2/summary.json")
-      .then((res) => {
-        return res.json()
+  const handleLogin = (e) => {
+
+    e.preventDefault();
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user
+        console.log(user)
+        navigate("/translate")
+      }).catch((err) => {
+
+        const errCode = err.code
+        const errMessage = err.message
+        console.log(errCode, errMessage)
+
       })
-      .then ((data) => {
-        console.log(data)
-      }).catch((e) => {console.log(e)})
+
   }
   return (
     <div className='login-content'>
      <h2 className="login-heading">NHAGPT</h2>
+     <form className='login-form'>
      <div className="login-box">
      <input
           className='email-input'
@@ -41,6 +55,7 @@ const Login = () => {
           </Link>
         </div>
      </div>
+     </form>
     </div>
   )
 }
