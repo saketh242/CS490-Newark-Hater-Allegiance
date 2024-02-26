@@ -15,7 +15,7 @@ const Signup = () => {
 
   return (
     <div className='signup-content'>
-     <h2 class="login-heading">NHAGPT</h2>
+     <h2 className="login-heading">NHAGPT</h2>
      <div class="signup-box">
         <div className="name-inputs">
             <input
