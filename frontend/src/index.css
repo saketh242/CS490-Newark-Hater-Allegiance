@@ -193,7 +193,7 @@ select, button {
   margin: 1rem 3rem 1rem 3rem; 
 }
 
-#translationButton, .uploadButton, .downloadButton, .copyButton {
+#translationButton, .uploadButton, .downloadButton, .copyButton, .clearButton {
   background-color: transparent;
   border: none;
   cursor: pointer;

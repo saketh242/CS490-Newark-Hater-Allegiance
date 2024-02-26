@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import {CopyToClipboard} from 'react-copy-to-clipboard';
 import CodeOutput from './CodeOutput';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightLong } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import {faDownload, faCopy, faFileImport } from '@fortawesome/free-solid-svg-icons'
 
@@ -19,39 +18,100 @@ const Translate = () => {
 
   const handleSourceLanguageChange = (e) => {
     setSourceLanguage(e.target.value);
+    console.log("Changed source language to " + sourceLanguage);
   };
 
   const handleDesiredLanguageChange = (e) => {
     setDesiredLanguage(e.target.value);
+    console.log("Changed desired language to " + sourceLanguage);
   };
 
   // translation function
   const translateCode = () => {
-    //translation logic
+    //TODO: translation logic
     setTranslatedCode(inputCode);
   }
 
-    //array of available programming languages
-    const languages = [
-      { value: 'python', label: 'Python' },
-      { value: 'javascript', label: 'JavaScript' },
-      { value: 'java', label: 'Java' },
-      { value: 'csharp', label: 'C#' },
-      { value: 'cplusplus', label: 'C++' },
-      { value: 'php', label: 'PHP' },
-      { value: 'go', label: 'Go' },
-      { value: 'ruby', label: 'Ruby' },
-      { value: 'typescript', label: 'TypeScript' }
-    ];
+  //function to generate file for download
+  const downloadFile = () => {
+    let blob;
+    let fileType;
 
+    switch (desiredLanguage) {
+      case 'python':
+        blob = new Blob([translatedCode], { type: 'text/x-python-script' });
+        fileType = '.py';
+        break;
+      case 'javascript':
+        blob = new Blob([translatedCode], { type: 'text/javascript' });
+        fileType = '.js';
+        break;
+      case 'java':
+        blob = new Blob([translatedCode], { type: 'text/java' });
+        fileType = '.java';
+        break;
+      case 'c':
+        blob = new Blob([translatedCode], { type: 'text/x-csrc' });
+        fileType = '.c';
+        break;
+      case 'csharp':
+        blob = new Blob([translatedCode], { type: 'text/x-csharp' });
+        fileType = '.cs';
+        break;
+      case 'cplusplus':
+        blob = new Blob([translatedCode], { type: 'text/x-c++src' });
+        fileType = '.cpp';
+        break;
+      case 'php':
+        blob = new Blob([translatedCode], { type: 'text/x-php' });
+        fileType = '.php';
+        break;
+      case 'go':
+        blob = new Blob([translatedCode], { type: 'text/x-go' });
+        fileType = '.go';
+        break;
+      case 'ruby':
+        blob = new Blob([translatedCode], { type: 'text/x-ruby' });
+        fileType = '.rb';
+        break;
+      case 'typescript':
+        blob = new Blob([translatedCode], { type: 'text/typescript' });
+        fileType = '.ts';
+        break;
+      default:
+        blob = new Blob([translatedCode], { type: 'text/plain' }); // Default to plain text
+        fileType = '.txt';
+    }
 
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `translated_code${fileType}`);
+    document.body.appendChild(link);
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  //array of available programming languages
+  const languages = [
+    { value: 'python', label: 'Python' },
+    { value: 'javascript', label: 'JavaScript' },
+    { value: 'java', label: 'Java' },
+    { value: 'c', label: 'C' },
+    { value: 'csharp', label: 'C#' },
+    { value: 'cplusplus', label: 'C++' },
+    { value: 'php', label: 'PHP' },
+    { value: 'go', label: 'Go' },
+    { value: 'ruby', label: 'Ruby' },
+    { value: 'typescript', label: 'TypeScript' }
+  ];
 
   return (
     <div className="translateBody">
-        <h1 className="apiStatus">
-          OpenAI API Status: 
-          {apiReady ? (
-            <FontAwesomeIcon icon={faCheckCircle} size="2x" style={{ color: 'green', marginLeft: '1rem' }} />
+      <h1 className="apiStatus">
+        OpenAI API Status:
+        {apiReady ? (
+          <FontAwesomeIcon icon={faCheckCircle} size="2x" style={{ color: 'green', marginLeft: '1rem' }} />
           ) : (
             <FontAwesomeIcon icon={faTimesCircle} size="2x" style={{ color: 'red', marginLeft: '1rem' }} />
           )}
@@ -89,10 +149,16 @@ const Translate = () => {
       <div className="src">
           <h2 className="codeHeading">
             Enter code here:
-            {/* Icon button for uploading a file */}
-            <button className="uploadButton" title="Upload file">
-              <FontAwesomeIcon id="icon" size="2x" icon={faFileImport} />
-            </button>
+            <div className="buttonsContainer">
+              {/* Icon button for uploading a file */}
+              <button className="uploadButton" title="Upload file">
+                <FontAwesomeIcon id="icon" size="2x" icon={faFileImport} />
+              </button>
+              {/* Icon button for clearing text input */}
+              <button className="clearButton" title="Clear text">
+                <FontAwesomeIcon id="icon" size="2x" icon={faBroom} onClick={() => setInputCode('')} />
+              </button>
+            </div>
           </h2>
           <textarea className="inputArea"
             value={inputCode}
@@ -110,7 +176,7 @@ const Translate = () => {
                 <FontAwesomeIcon id="icon" size="2x" icon={faCopy} />
               </button>
               {/* Icon button for downloading the output */}
-              <button className="downloadButton" title="Download code">
+              <button className="downloadButton" title="Download code" onClick={downloadFile}>
                 <FontAwesomeIcon id="icon" size="2x" icon={faDownload} />
               </button>
             </div>
