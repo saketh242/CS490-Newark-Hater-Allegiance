@@ -1,4 +1,5 @@
 import {useState} from "react"
+import { Link } from "react-router-dom"
 
 const Signup = () => {
 
@@ -20,34 +21,34 @@ const Signup = () => {
             <input
                 className="name-input-box"
                 type="text"
-                value={text}
+                value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="First Name"
             />
             <input
                 className="name-input-box"
                 type="text"
-                value={text}
+                value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Last Name"
             />
         </div>
      <input
-          className='email-input'
+          className='signup-email-input'
           type="email" 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
         />
         <input 
-        className='password-login'
+        className='signup-password-input'
         type="password" 
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
         />
         <input 
-        className='password-login'
+        className='signup-password-input'
         type="password" 
         value={password2}
         onChange={(e) => setPassword2(e.target.value)}
@@ -55,7 +56,7 @@ const Signup = () => {
         />
         <button type="submit" className='login-btn' onClick={handleSignup}>Signup</button>
         <div className='signup-msg'>
-          <p>Already have an account</p>
+          <p>Already have an account?</p>
           <Link to="/login">
             Login
           </Link>
