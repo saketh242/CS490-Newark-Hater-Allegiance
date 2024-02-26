@@ -7,19 +7,23 @@ import Translate from './components/Translate';
 import Docs from './components/Docs';
 import NHANav from './components/NHANav';
 import Footer from './components/Footer';
+import Signup from './components/Signup';
 import "./index.css"
+
 
 const App = () => {
   return (
     <>
     <Router>
-      <NHANav/>
+      
       <div className="content">
+      <NHANav/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/translate" element={<Translate />} />
           <Route path="/docs" element={<Docs />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </div>
       <Footer/>
