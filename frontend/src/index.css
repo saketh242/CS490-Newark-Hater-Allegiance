@@ -63,10 +63,7 @@
 Website Body Styling */
 .content {
   background-color: #1A1C23;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  margin: 0
+  
 }
 
 .test {
@@ -238,10 +235,6 @@ select, button {
   padding: 1.5rem;
   margin: 0;
   background-color: #23262F;
-  flex: 0 0 auto; 
-  position: relative; 
-  bottom: 0; 
-  width: 100%
 }
 
 .footer-box h3 {
