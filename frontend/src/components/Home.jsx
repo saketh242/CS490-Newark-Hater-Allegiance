@@ -54,13 +54,11 @@ const Home = () => {
 
       <div className='box'>
         <p>Designed and Developed by</p>
-        <div className='authors'>
           <p>Saketh Puramsetti</p>
           <p>John Cena</p>
           <p>Medina Dzhatdoyev</p>
           <p>Karam Assaf</p>
           <p>Ausberto Colon Jr</p>
-        </div>
       </div>
 
 
