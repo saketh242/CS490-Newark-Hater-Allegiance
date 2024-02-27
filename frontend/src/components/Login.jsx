@@ -18,7 +18,7 @@ const Login = () => {
       .then((userCredential) => {
         const user = userCredential.user
         console.log(user)
-        navigate("/translate")
+        navigate("/")
       }).catch((err) => {
 
         const errCode = err.code
