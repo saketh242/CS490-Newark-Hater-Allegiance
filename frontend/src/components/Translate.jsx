@@ -7,12 +7,12 @@ import CodeOutput from './CodeOutput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import {faDownload, faCopy, faFileImport } from '@fortawesome/free-solid-svg-icons'
+import { faDownload, faCopy, faFileImport } from '@fortawesome/free-solid-svg-icons'
 
 const Translate = () => {
 
+  /* page display based on login status */
   const navigate = useNavigate();
-
   useEffect(()=>{
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -28,14 +28,16 @@ const Translate = () => {
      
   },[])
   
-  // API icon, testing purposes
-  const [apiReady, setApiReady] = useState(true);
+  const [apiReady, setApiReady] = useState(true); // API status -- manually set true/false right now for testing purposes
+  const [loading, setLoading] = useState(false); // Loading state - display loading msg while api retrieves code response
 
+  //input code and output code states
   const [inputCode, setInputCode] = useState('');
   const [translatedCode, setTranslatedCode] = useState('');
 
+  //source and destination language dropdown states
   const [sourceLanguage, setSourceLanguage] = useState('python'); 
-  const [desiredLanguage, setDesiredLanguage] = useState('python'); // Default language
+  const [desiredLanguage, setDesiredLanguage] = useState('python');
 
   const handleSourceLanguageChange = (e) => {
     setSourceLanguage(e.target.value);
@@ -47,11 +49,16 @@ const Translate = () => {
     console.log("Changed desired language to " + sourceLanguage);
   };
 
-  // translation function
   const translateCode = () => {
-    //TODO: translation logic
-    setTranslatedCode(inputCode); //dummy translation for now
-  }
+    setLoading(true); // Set loading state to true before API call
+  
+    // Simulating API call with setTimeout ... replace later
+    setTimeout(() => {
+      setTranslatedCode(inputCode); // Dummy translation for now
+      setLoading(false); // Set loading state to false after receiving response
+    }, 2000); // Simulating 2 seconds delay for API response
+  };
+  
 
   //function to generate file for download
   const downloadFile = () => {
@@ -113,7 +120,7 @@ const Translate = () => {
     URL.revokeObjectURL(url);
   };
 
-  //array of available programming languages
+  //array of programming languages the app will support
   const languages = [
     { value: 'python', label: 'Python' },
     { value: 'javascript', label: 'JavaScript' },
@@ -127,6 +134,7 @@ const Translate = () => {
     { value: 'typescript', label: 'TypeScript' }
   ];
 
+  //function to handle file upload
   const fileInputRef = useRef(null); // Ref for file input element
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -134,6 +142,7 @@ const Translate = () => {
       const reader = new FileReader();
       reader.onload = (event) => {
         setInputCode(event.target.result);
+        setTranslatedCode('');
       };
       reader.readAsText(file);
     }
@@ -222,6 +231,7 @@ const Translate = () => {
             </div>
           </div>
           <div className="outputArea">
+            {loading && <p>Loading...</p>} {/*loading text*/}
             <CodeOutput code={translatedCode} language={desiredLanguage} />
           </div>
         </div>
