@@ -13,10 +13,48 @@ const Signup = () => {
     const [password, setPassword] = useState("")
     const [password2, setPassword2] = useState("")
 
+     // a function to check if a valid email is entered
+     const isValidEmail = (email) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    const isValidPassword = (password) => {
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/
+      return passwordRegex.test(password);
+
+    }
+
+
+    const [error, setError] = useState(null)
+
     const handleSignup = async (e) => {
 
         e.preventDefault();
 
+        if (firstName==="" || lastName==="" || email==="" || password === "" || password2===""){
+          setError("All fields are required!")
+          return
+        }
+
+        if (!isValidEmail(email)){
+          setError("Please enter a valid email!")
+          return
+        }
+
+        if (password != password2){
+          setError("Passwords are different!")
+          return
+        }
+
+        if (!isValidPassword(password)){
+          setError("Password should be 8 characters long, one lowercase, one uppercase, one digit")
+          return
+        }
+
+
+
+       
         await createUserWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
 
@@ -26,9 +64,12 @@ const Signup = () => {
 
           })
           .catch((err) => {
-            const errCode = err.code
+           
             const errMessage = err.message
-            console.log(errCode, errMessage)
+            if (errMessage === "Firebase: Error (auth/email-already-in-use)."){
+              setError("Email address already registered!")
+            }
+            console.log(errMessage)
 
           })
 
@@ -86,8 +127,11 @@ const Signup = () => {
             Login
           </Link>
         </div>
+        
      </div>
+    
      </form>
+     {error && <p className="error-msg">{error}</p>}
     </div>
   )
 }
