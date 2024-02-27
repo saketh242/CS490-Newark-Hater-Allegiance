@@ -3,6 +3,7 @@ import React from 'react'
 const Home = () => {
   return (
     <div>
+
       <h1 className="title">NHA</h1>
       <h1 className="title title2">GPT</h1>
       <p className='subtitle'>Easy code translation in minutes!</p>
@@ -48,6 +49,8 @@ const Home = () => {
         </div>
       </div>
 
+
+  
     </div>
   )
 }

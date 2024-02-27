@@ -6,7 +6,6 @@
   font-family: sans-serif;
 }
 
-
 /* Navbar Styling */
 .nha-navbar{
   padding: 10px;
@@ -121,6 +120,10 @@
 /* Website Body Styling */
 .content {
   background-color: #1A1C23;
+  display: flex; 
+  flex-direction: column; 
+  min-height: 100vh; 
+  margin: 0; 
   
 }
 
@@ -134,7 +137,6 @@
 .translateBody {
   display: flex;
   flex-direction: column;
-  /* height: 100vh; */
   font-family: "Kanit", sans-serif;
   color: #BDC3D0;
   align-items: center; 
@@ -181,7 +183,7 @@ select, button {
   resize: none;
   background-color: #23262F;
   border-radius: 5px;
-  border-color:#0ac6c0;
+  border:1pt solid #0ac6c0;
 }
 
 .codeout{
@@ -250,7 +252,7 @@ select, button {
   margin: 1rem 3rem 1rem 3rem; 
 }
 
-#translationButton, .uploadButton, .downloadButton, .copyButton {
+#translationButton, .uploadButton, .downloadButton, .copyButton, .clearButton {
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -258,10 +260,28 @@ select, button {
   outline: none;
 }
 
-
 .codeHeading, .outputHeading {
   display:flex;
   justify-content: space-between;
+}
+
+.codeOutput {
+  overflow: auto; /* Enable scrolling */
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+  height: 10px; /* Height of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb{
+  background-color: #0ac6c0; /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded corners */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #23262F; /* Color of the scrollbar track */
 }
 
 
@@ -283,6 +303,10 @@ select, button {
   font-weight: 400;
   color: #9CA6B5;
   margin: 0;
+  flex: 0 0 auto;
+  position: relative;
+  bottom: 0; 
+  width: 100%; 
 }
 
 @media (width <= 900px) {
@@ -291,3 +315,151 @@ select, button {
   }
 }
 
+
+/* Login Component Styling */
+.login-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+
+.login-heading {
+  font-family: "Kanit", sans-serif;
+  font-size: 8rem;
+  color: #9CA6B5;
+  margin: 2rem 0 1rem 0;
+}
+
+.login-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  padding-top: 0;
+}
+
+.email-input, .password-login {
+  background-color: #23262F;
+  padding: 0.5rem;
+  color:#9CA6B5;
+  font-size: 1.3rem;
+  width: 20rem;
+  border: 1pt solid #9CA6B5;
+  border-radius: 5px;
+  margin: 1rem 0;
+}
+
+.email-input:focus, .password-login:focus  {
+  border: 1pt solid #5469D4;
+}
+
+.email-input:hover, .password-login:hover {
+  border: 1pt solid #5469D4;
+}
+
+.login-btn {
+ padding: 0.4rem 1.7rem 0.4rem 1.7rem;
+ font-size: 1.4rem;
+ border-radius: 5px;
+ margin-top: 1rem;
+}
+
+.signup-msg {
+  display: flex;
+  margin-top: 1.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-msg p {
+  font-family: "Kanit", sans-serif;
+  font-size: 1.4rem;
+  padding-right: 1rem;
+  color: #9CA6B5;
+}
+
+.signup-msg a {
+  text-decoration: none;
+  font-family: "Kanit", sans-serif;
+  color: #5469D4;
+  font-size: 1.4rem;
+}
+
+.signup-msg a:hover {
+  color: #9CA6B5;
+}
+
+.login-form {
+  margin: 0;
+  padding: 0;
+}
+
+@media (width <= 900px) {
+  .login-heading{
+    font-size: 4rem;
+  }
+  .email-input, .password-login {
+    width: 12rem;
+    font-size: 0.8rem;
+  }
+  .login-btn {
+    font-size: 1rem;
+  }
+}
+
+/* Sign up page Styling */
+.signup-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.name-inputs {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.signup-email-input, .signup-password-input  {
+  background-color: #23262F;
+  padding: 0.5rem;
+  color:#9CA6B5;
+  font-size: 1.3rem;
+  border: 1pt solid #9CA6B5;
+  border-radius: 5px;
+  margin: 1rem 0;
+  width: 30rem;
+}
+
+.name-input-box {
+  background-color: #23262F;
+  padding: 0.5rem;
+  color:#9CA6B5;
+  font-size: 1.3rem;
+  border: 1pt solid #9CA6B5;
+  border-radius: 5px;
+  margin: 1rem 0 1rem 0;
+  width: 13rem;
+}
+
+.signup-form {
+  margin: 0;
+  padding: 0;
+}
+
+
+ 
