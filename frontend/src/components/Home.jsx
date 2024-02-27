@@ -1,20 +1,24 @@
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDatabase, faBoltLightning, faUser, faCode} from '@fortawesome/free-solid-svg-icons'
 
 const Home = () => {
   return (
-    <div>
+    <div className='home'>
+      <div className='box'>
+        <h1 className="title">NHA</h1>
+        <h1 className="title title2">GPT</h1>
+        <p className='subtitle'>Easy code translation in minutes!</p>
+      </div>
 
-      <h1 className="title">NHA</h1>
-      <h1 className="title title2">GPT</h1>
-      <p className='subtitle'>Easy code translation in minutes!</p>
 
       <div className='box features'>
         <p>Key features</p>
         <div className="features-flexbox">
-          <p>Powered by GPT-3</p>
-          <p>Faster Code Translation</p>
-          <p>User Friendly Interface</p>
-          <p>Precision Perfected Code</p>
+          <div id='perks'><FontAwesomeIcon id='home-icon' size='10x' icon={faDatabase}/><h1>Powered by GPT-3</h1></div>
+          <div id='perks'><FontAwesomeIcon id='home-icon' size='10x' icon={faBoltLightning}/><h1>Faster Code Translation</h1></div>
+          <div id='perks'><FontAwesomeIcon id='home-icon' size='10x' icon={faUser}/><h1>User Friendly Interface</h1></div>
+          <div id='perks'><FontAwesomeIcon id='home-icon' size='10x' icon={faCode}/><h1>Precision Perfected Code</h1></div>
         </div>
       </div>
 
@@ -26,15 +30,17 @@ const Home = () => {
           <li>Click "Convert", and that's it!</li>
           <li>Download or copy the code to save it</li>
         </ul>
+        <img src="../images/sample.png" alt="Sample Image"/>
+        <br></br><div className='signup-button'><button >Signup today!</button></div>
       </div>
 
       <div className='box reviews'>
         <p>Some of our reviews :3</p>
         <div className="reviews-flexbox">
-          <p>Rating ?/5<br></br>Review Text<br></br>- User Name</p>
-          <p>Rating ?/5<br></br>Review Text<br></br>- User Name</p>
-          <p>Rating ?/5<br></br>Review Text<br></br>- User Name</p>
-          <p>Rating ?/5<br></br>Review Text<br></br>- User Name</p>
+          <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
+          <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
+          <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
+          <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
         </div>
       </div>
 
