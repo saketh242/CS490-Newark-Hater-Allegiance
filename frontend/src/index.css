@@ -90,6 +90,7 @@
 }
 
 .features-flexbox {
+  padding-top: 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -98,6 +99,20 @@
 
 .instructions {
   padding: 1rem 0 0 2rem;
+}
+
+.reviews {
+  text-align: left;
+  background-color: #2a1d6e;
+}
+
+.reviews-flexbox {
+  padding: 1rem 0 2rem 0;
+  border-color: #5469D4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
 }
 
 .authors {

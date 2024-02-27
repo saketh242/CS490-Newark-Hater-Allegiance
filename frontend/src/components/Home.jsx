@@ -27,7 +27,15 @@ const Home = () => {
         </ul>
       </div>
 
-      <div className='reviews-box'></div>
+      <div className='box reviews'>
+        <p>Some of our reviews :3</p>
+        <div className="reviews-flexbox">
+          <p>Rating ?/5<br></br>Review Text<br></br>- User Name</p>
+          <p>Rating ?/5<br></br>Review Text<br></br>- User Name</p>
+          <p>Rating ?/5<br></br>Review Text<br></br>- User Name</p>
+          <p>Rating ?/5<br></br>Review Text<br></br>- User Name</p>
+        </div>
+      </div>
 
       <div className='box'>
         <p>Designed and Developed by</p>
