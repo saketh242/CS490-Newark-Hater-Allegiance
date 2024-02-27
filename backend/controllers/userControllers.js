@@ -1,5 +1,6 @@
 const User = require("../models/User")
 
+
 const getAllUsers = async (req, res, next) => {
     try {
         const users = await User.find({});
@@ -14,10 +15,16 @@ const getAllUsers = async (req, res, next) => {
 const insertUser = async (req, res, next) => {
     try {
       const { firstName, lastName, email, uid } = req.body;
-  
+      const newUser = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        uid: uid
+      };
+      console.log(req.body);
       console.log('Received user information:', { firstName, lastName, email, uid });
   
-      
+      const inserted = await User.create(newUser);
       res.status(200).json({ message: 'User information received successfully' });
     } catch (error) {
       

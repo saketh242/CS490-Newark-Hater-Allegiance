@@ -15,9 +15,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Last Name is required"],
   },
-  password: {
+  uid: {
     type: String,
-    required: [true, "Password is required"],
+    required: [true, "User id is required"],
   },
   createdAt: {
     type: Date,

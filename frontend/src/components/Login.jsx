@@ -14,11 +14,10 @@ const Login = () => {
   const handleLogin = (e) => {
 
     e.preventDefault();
-    console.log("huh");
-    nhaService.postUser("huh", "heh", "test@what.com", 231930192)
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user
+        nhaService.postUser("Andy", "McWilson", email, user.uid)
         console.log(user)
         navigate("/")
       }).catch((err) => {

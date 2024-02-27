@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {  createUserWithEmailAndPassword  } from 'firebase/auth';
 import { auth } from '../firebase';
+import nhaService from '../services/nhaService';
 
 const Signup = () => {
 
@@ -19,7 +20,7 @@ const Signup = () => {
 
         await createUserWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
-
+            nhaService.postUser(firstName, lastName, email, userCredential.user.uid)
             const user = userCredential.user;
             console.log(user)
             navigate("/login")
