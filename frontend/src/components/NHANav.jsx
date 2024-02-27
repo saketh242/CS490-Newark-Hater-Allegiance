@@ -9,7 +9,7 @@ function NHANav() {
   const navigate = useNavigate()
 
   useEffect(()=>{
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
           setIsLoggedIn(true)
           // User is logged in
@@ -21,7 +21,7 @@ function NHANav() {
           setIsLoggedIn(false)
         }
       });
-     
+      return () => unsubscribe();
   },[])
 
   // function to handle logout 
@@ -48,12 +48,10 @@ function NHANav() {
           <Link className="nav-a nav-rl" to="/translate">
             Translate
           </Link>
-          {!isLoggedIn && <Link className="nav-a nav-rl" to="/login">
-            Login
-          </Link>}
-          {isLoggedIn && <Link onClick={handleLogout} className="nav-a nav-rl">
+          {!isLoggedIn? <Link className="nav-a nav-rl" to="/login">Login</Link>:<Link onClick={handleLogout} className="nav-a nav-rl">
             Logout
           </Link>}
+          
           
         </div>
       </nav>
