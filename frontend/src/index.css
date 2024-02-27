@@ -1,68 +1,516 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* CSS Reset */
+* {
+  margin:0;
+  padding: 0;
+  font-family: "Kanit", sans-serif;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
+/* Navbar Styling */
+.nha-navbar{
+  padding: 10px;
+  background-color: #3A4055;
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  justify-content: space-between;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.nha-navbar .nav-a {
+  font-family: "Kanit", sans-serif;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+.nav-brand {
+  font-weight: bold;
+  font-size: 2.5rem;
+}
+
+.nav-rl {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.3rem;
+  padding-left: 1rem;
+}
+
+.nha-navbar a {
+  text-decoration: none;
+  color: #9CA6B5;
+}
+
+.nha-navbar .nav-rl:hover {
+  color: #0ac6c0;
+}
+
+.links-flexbox{
+  display: flex;
+  align-items: center;
+}
+
+@media (width <= 900px) {
+  .nav-brand{
+    font-size: 1.4rem;
+  }
+
+  .nav-rl {
+    font-size: 0.9rem;
+  }
+}
+
+.bottom-nav-bar{
+  height: 10px;
+  background-color: #0ac6c0;
+  display: block;
+}
+
+/* Home Page Styling */
+.home {
+  color: #BDC3D0;
+  font-family: sans-serif;
+}
+
+.title {
+  text-align: center;
+  font-family: "Kanit", sans-serif;
+  font-size: 14rem;
+  line-height: 0.8
+}
+
+.title2 {
+  padding-left: 15rem;
+}
+
+.subtitle {
+  text-align: center;
+  font-family: "Kanit", sans-serif;
+  font-size: 3rem;
+}
+
+.box {
+  padding: 2rem 2rem 5rem 5rem;
+  font-size: 2rem;
+}
+
+.features {
+  text-align: left;
+  background-color: #31304d;
+  font-size: 3rem;
+}
+
+.features-flexbox {
+  padding-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: 1rem;
+}
+
+.instructions {
+  text-align: left;
+  padding: 1rem 0 0 2rem;
+}
+
+.signup {
+  text-align: center;
+}
+
+.signup-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.signup-button {
+  padding: 2rem 4rem;
+  font-size: 2rem;
+  background-color: #5469D4;
+  border: 0;
+  border-radius: 1rem;
+}
+
+.signup-button:hover {
+  background-color: #0ac6c0;
+  color: #1A1C23;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+#perks {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 3rem 0;
+}
+
+#home-icon {
+  color: #0ac6c0;
+  padding-bottom: 2rem;
+}
+
+.reviews {
+  text-align: left;
+  background-color: #31304d;
+}
+
+.reviews-flexbox {
+  padding: 1rem 0 2rem 0;
+  border-color: #5469D4;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: 1rem;
+}
+
+#review {
+  background-color: #1A1C23;
+  border: 2pt solid #5469D4;
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 30rem;
+  height: 30rem;
+  vertical-align: middle;
+  font-size: 2rem;
+}
+
+
+/* Website Body Styling */
+.content {
+  background-color: #1A1C23;
+  display: flex; 
+  flex-direction: column; 
+  min-height: 100vh; 
+  margin: 0; 
+  
+}
+
+.test {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Translate component styling */
+
+.translateBody {
+  display: flex;
+  flex-direction: column;
+  font-family: "Kanit", sans-serif;
+  color: #BDC3D0;
+  align-items: center; 
+  justify-content: center; 
+  padding-bottom: 3rem;
+}
+
+.apiStatus {
+  margin: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+#originLanguage, #desiredLanguage {
+  padding: 12px 20px;
+  font-size: 16px;
+  width: 200px;
+  border-radius: 8px;
+  margin: 2rem;
+}
+
+option {
+  text-align: center;
+}
+
+select, button {
+  font-family: "Kanit", sans-serif;
+  background-color: #5469D4;
+  color: #BDC3D0;
+}
+
+.codeBlocks {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.inputArea, .outputArea {
+  resize: none;
+  flex: 1;
+  width: 36rem;
+  height: 28rem;
+  padding: 1rem;
+  resize: none;
+  background-color: #23262F;
+  border-radius: 5px;
+  border:1pt solid #0ac6c0;
+}
+
+.codeout{
+  width: 32rem;
+  height: 35rem;
+  background-color: #23262F;
+  border-radius: 5px;
+}
+
+.upload{
+  padding: 1rem;
+}
+
+#icon:hover {
+  color:#0ac6c0;
+}
+
+.conversionArrow {
+  display: flex;
+  flex-direction: column;
+  font-size: larger;
+  align-items: center;
+}
+
+.inputArea {
+  color:#BDC3D0;
+}
+
+/* Adjust margin to move the origin language dropdown to the left */
+#leftDropdownContainer {
+  margin-right: 8rem;
+}
+
+/* Adjust margin to move the desired language dropdown to the right */
+#rightDropdownContainer {
+  margin-left: 8rem;
+}
+
+.dropdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem; 
+}
+
+.dropdownContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dropdownContainer label {
+  margin-bottom: 0.5rem; /* Adjust the margin between label and dropdown */
+  font-size: larger;
+}
+
+#originLanguage, #desiredLanguage {
+  padding: 12px 20px;
+  font-size: 16px;
+  width: 200px;
+  border-radius: 8px;
+  margin-top: 0.5rem; /* Adjust margin to move the dropdowns closer to the labels */
+}
+
+.src, .dest {
+  margin: 1rem 3rem 1rem 3rem; 
+}
+
+#translationButton, .uploadButton, .downloadButton, .copyButton, .clearButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  outline: none;
+}
+
+.codeHeading, .outputHeading {
+  display:flex;
+  justify-content: space-between;
+}
+
+.codeOutput {
+  overflow: auto; /* Enable scrolling */
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+  height: 10px; /* Height of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb{
+  background-color: #0ac6c0; /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded corners */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #23262F; /* Color of the scrollbar track */
+}
+
+
+/* Footer Component Styling */
+.footer-box{
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  margin: 0;
+  background-color: #23262F;
+}
+
+.footer-box h3 {
+  text-align: center;
+  font-family: "Kanit", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: #9CA6B5;
+  margin: 0;
+  flex: 0 0 auto;
+  position: relative;
+  bottom: 0; 
+  width: 100%; 
+}
+
+@media (width <= 900px) {
+  .footer-box h3 {
+    font-size: 1rem;
   }
 }
+
+
+/* Login Component Styling */
+.login-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+
+.login-heading {
+  font-family: "Kanit", sans-serif;
+  font-size: 8rem;
+  color: #9CA6B5;
+  margin: 2rem 0 1rem 0;
+}
+
+.login-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  padding-top: 0;
+}
+
+.email-input, .password-login {
+  background-color: #23262F;
+  padding: 0.5rem;
+  color:#9CA6B5;
+  font-size: 1.3rem;
+  width: 20rem;
+  border: 1pt solid #9CA6B5;
+  border-radius: 5px;
+  margin: 1rem 0;
+}
+
+.email-input:focus, .password-login:focus  {
+  border: 1pt solid #5469D4;
+}
+
+.email-input:hover, .password-login:hover {
+  border: 1pt solid #5469D4;
+}
+
+.login-btn {
+ padding: 0.4rem 1.7rem 0.4rem 1.7rem;
+ font-size: 1.4rem;
+ border-radius: 5px;
+ margin-top: 1rem;
+}
+
+.signup-msg {
+  display: flex;
+  margin-top: 1.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-msg p {
+  font-family: "Kanit", sans-serif;
+  font-size: 1.4rem;
+  padding-right: 1rem;
+  color: #9CA6B5;
+}
+
+.signup-msg a {
+  text-decoration: none;
+  font-family: "Kanit", sans-serif;
+  color: #5469D4;
+  font-size: 1.4rem;
+}
+
+.signup-msg a:hover {
+  color: #9CA6B5;
+}
+
+.login-form {
+  margin: 0;
+  padding: 0;
+}
+
+@media (width <= 900px) {
+  .login-heading{
+    font-size: 4rem;
+  }
+  .email-input, .password-login {
+    width: 12rem;
+    font-size: 0.8rem;
+  }
+  .login-btn {
+    font-size: 1rem;
+  }
+}
+
+/* Sign up page Styling */
+.signup-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.name-inputs {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.signup-email-input, .signup-password-input  {
+  background-color: #23262F;
+  padding: 0.5rem;
+  color:#9CA6B5;
+  font-size: 1.3rem;
+  border: 1pt solid #9CA6B5;
+  border-radius: 5px;
+  margin: 1rem 0;
+  width: 30rem;
+}
+
+.name-input-box {
+  background-color: #23262F;
+  padding: 0.5rem;
+  color:#9CA6B5;
+  font-size: 1.3rem;
+  border: 1pt solid #9CA6B5;
+  border-radius: 5px;
+  margin: 1rem 0 1rem 0;
+  width: 13rem;
+}
+
+.signup-form {
+  margin: 0;
+  padding: 0;
+}
+
+
+ 

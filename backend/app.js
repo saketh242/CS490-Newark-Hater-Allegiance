@@ -1,17 +1,18 @@
 require('dotenv').config({ path: "../.env"})
 const express = require("express");
+const cors = require("cors")
 const app = express()
 const mongoose = require("mongoose");
 const userRouter = require("./routes/userRoutes")
 const historyRouter = require("./routes/historyRoutes")
 const feedbackRouter = require("./routes/feedbackRoutes")
 
-app.use(express.json())
-
+app.use(express.json());
+app.use(cors()); // Corrected line
 mongoose.connect(process.env.DATABASE)
-    .then(()=>{
+    .then(() => {
         console.log("MongoDB connection successful :)")
-    }).catch((err)=>{
+    }).catch((err) => {
         console.log(err)
         console.log("MongoDB connection unsuccessful :(")
     })

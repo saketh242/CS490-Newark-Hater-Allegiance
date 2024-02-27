@@ -11,6 +11,22 @@ const getAllUsers = async (req, res, next) => {
     }
 };
 
+const insertUser = async (req, res, next) => {
+    try {
+      const { firstName, lastName, email, uid } = req.body;
+  
+      console.log('Received user information:', { firstName, lastName, email, uid });
+  
+      
+      res.status(200).json({ message: 'User information received successfully' });
+    } catch (error) {
+      
+      console.error('Error inserting user:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+  
+
 const getUserId = async (req, res, next) => {
     const {id} = req.params;
     const user = await User.findById(id);
@@ -19,3 +35,4 @@ const getUserId = async (req, res, next) => {
 
 module.exports.getAllUsers = getAllUsers
 module.exports.getUserId = getUserId
+module.exports.insertUser = insertUser
