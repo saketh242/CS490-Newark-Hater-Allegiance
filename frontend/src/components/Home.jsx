@@ -60,9 +60,7 @@ const Home = () => {
           <p>Karam Assaf</p>
           <p>Ausberto Colon Jr</p>
       </div>
-
-
-  
+      
     </div>
   )
 }
