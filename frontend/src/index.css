@@ -2,6 +2,8 @@
 * {
   margin:0;
   padding: 0;
+  color: white;
+  font-family: sans-serif;
 }
 
 /* Navbar Styling */
@@ -10,7 +12,6 @@
   background-color: #3A4055;
   display: flex;
   justify-content: space-between;
-  
 }
 
 .nha-navbar .nav-a {
@@ -58,8 +59,65 @@
   display: block;
 }
 
-/* 
-Website Body Styling */
+/* Home Page Styling */
+.title {
+  color: white;
+  text-align: center;
+  font-family: "Kanit", sans-serif;
+  font-size: 7rem;
+  line-height: 1
+}
+
+.title2 {
+  padding-left: 8rem;
+}
+
+.subtitle {
+  text-align: center;
+  font-family: "Kanit", sans-serif;
+  font-size: 1.5rem;
+}
+
+.box {
+  padding: 1rem 2rem;
+  font-size: 2rem;
+}
+
+.features {
+  text-align: left;
+  background-color: #2a1d6e;
+}
+
+.features-flexbox {
+  padding-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+
+.instructions {
+  padding: 1rem 0 0 2rem;
+}
+
+.reviews {
+  text-align: left;
+  background-color: #2a1d6e;
+}
+
+.reviews-flexbox {
+  padding: 1rem 0 2rem 0;
+  border-color: #5469D4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+
+.authors {
+  padding: 0 2rem 2rem 2rem;
+}
+/* Website Body Styling */
 .content {
   background-color: #1A1C23;
   display: flex; 
@@ -70,7 +128,6 @@ Website Body Styling */
 }
 
 .test {
-  color: white;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
 }

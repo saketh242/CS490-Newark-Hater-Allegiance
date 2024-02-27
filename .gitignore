@@ -9,3 +9,6 @@ backend/node_modules/
 
 # Ignore .env files
 .env
+
+# gay
+frontend/src/firebase.js
