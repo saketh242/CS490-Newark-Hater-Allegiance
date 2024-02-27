@@ -1,8 +1,14 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDatabase, faBoltLightning, faUser, faCode} from '@fortawesome/free-solid-svg-icons'
+import { faRobot, faBoltLightning, faUser, faCode} from '@fortawesome/free-solid-svg-icons'
+import sample from '../images/sample.png'
 
 const Home = () => {
+  const navigate = useNavigate()
+  const handleSignup = () => {
+      navigate('/signup')
+  }
   return (
     <div className='home'>
       <div className='box'>
@@ -15,7 +21,7 @@ const Home = () => {
       <div className='box features'>
         <p>Key features</p>
         <div className="features-flexbox">
-          <div id='perks'><FontAwesomeIcon id='home-icon' size='10x' icon={faDatabase}/><h1>Powered by GPT-3</h1></div>
+          <div id='perks'><FontAwesomeIcon id='home-icon' size='10x' icon={faRobot}/><h1>Powered by GPT-3</h1></div>
           <div id='perks'><FontAwesomeIcon id='home-icon' size='10x' icon={faBoltLightning}/><h1>Faster Code Translation</h1></div>
           <div id='perks'><FontAwesomeIcon id='home-icon' size='10x' icon={faUser}/><h1>User Friendly Interface</h1></div>
           <div id='perks'><FontAwesomeIcon id='home-icon' size='10x' icon={faCode}/><h1>Precision Perfected Code</h1></div>
@@ -30,8 +36,10 @@ const Home = () => {
           <li>Click "Convert", and that's it!</li>
           <li>Download or copy the code to save it</li>
         </ul>
-        <img src="../images/sample.png" alt="Sample Image"/>
-        <br></br><div className='signup-button'><button >Signup today!</button></div>
+        <div className='signup'>
+          <img className='signup-image' src={sample} alt="Sample Image"/>
+          <br></br><button className='signup-button' onClick={handleSignup}>Signup today!</button>
+        </div>
       </div>
 
       <div className='box reviews'>
