@@ -20,7 +20,7 @@ const Signup = () => {
 
         await createUserWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
-            nhaService.postUser(firstName, lastName, email, userCredential.user.uid)
+            nhaService.postUser(firstName, lastName, email, userCredential.user.uid) //Registers user to mongodb
             const user = userCredential.user;
             console.log(user)
             navigate("/login")

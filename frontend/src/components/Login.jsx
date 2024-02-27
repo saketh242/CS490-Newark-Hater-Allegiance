@@ -17,7 +17,6 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user
-        nhaService.postUser("Andy", "McWilson", email, user.uid)
         console.log(user)
         navigate("/")
       }).catch((err) => {
