@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from '../firebase';
@@ -50,7 +50,7 @@ const Translate = () => {
   // translation function
   const translateCode = () => {
     //TODO: translation logic
-    setTranslatedCode(inputCode);
+    setTranslatedCode(inputCode); //dummy translation for now
   }
 
   //function to generate file for download
@@ -127,6 +127,18 @@ const Translate = () => {
     { value: 'typescript', label: 'TypeScript' }
   ];
 
+  const fileInputRef = useRef(null); // Ref for file input element
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setInputCode(event.target.result);
+      };
+      reader.readAsText(file);
+    }
+  };
+
   return (
     <div className="translateBody">
       <h1 className="apiStatus">
@@ -172,9 +184,16 @@ const Translate = () => {
             Enter code here:
             <div className="buttonsContainer">
               {/* Icon button for uploading a file */}
-              <button className="uploadButton" title="Upload file">
+              <button className="uploadButton" title="Upload file" onClick={() => fileInputRef.current.click()}>
                 <FontAwesomeIcon id="icon" size="2x" icon={faFileImport} />
               </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".txt,.py,.js,.java,.c,.cs,.cpp,.php,.go,.rb,.ts" // Specify accepted file types
+                style={{ display: 'none' }}
+                onChange={handleFileUpload}
+              />
               {/* Icon button for clearing text input */}
               <button className="clearButton" title="Clear text">
                 <FontAwesomeIcon id="icon" size="2x" icon={faBroom} onClick={() => {setInputCode(''); setTranslatedCode('')}} />
