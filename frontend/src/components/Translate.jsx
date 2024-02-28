@@ -50,6 +50,7 @@ const Translate = () => {
   };
 
   const translateCode = () => {
+    setTranslatedCode('');
     setLoading(true); // Set loading state to true before API call
   
     // Simulating API call with setTimeout ... replace later
