@@ -33,7 +33,7 @@ const Translate = () => {
     }
   }, [navigate, user, isLoading])
 
-  
+  const [error, setError] = useState('');
   
   const [apiReady, setApiReady] = useState(true); // API status -- manually set true/false right now for testing purposes
   const [loading, setLoading] = useState(false); // Loading state - display loading msg while api retrieves code response
@@ -57,6 +57,12 @@ const Translate = () => {
   };
 
   const translateCode = () => {
+    if (!inputCode.trim()) {
+      setError('Input code cannot be empty');
+      return;
+    }
+
+    setError(''); // Reset error message
     setTranslatedCode('');
     setLoading(true); // Set loading state to true before API call
   
@@ -227,7 +233,9 @@ const Translate = () => {
           <textarea className="inputArea"
             value={inputCode}
             onChange={(e) => setInputCode(e.target.value)}
-            placeholder="Enter code to translate"
+            placeholder={error || "Enter code to translate"} // Use error message as placeholder when error exists
+            style={{ borderColor: error ? 'red' : '#0ac6c0',
+                      transition: 'border-color 0.3s ease', }} // Change border color when error exists
           />
         </div>
 
