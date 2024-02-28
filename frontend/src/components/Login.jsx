@@ -2,38 +2,30 @@ import { useState, useEffect } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import {  signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
+import useAuth from '../useAuth';
+
+import { isValidEmail, isValidPassword } from '../utils/fieldValidations';
+
 import nhaService from '../services/nhaService';
 
-const Login = () => {
+const Login = ({setAuthToken}) => {
 
   const navigate = useNavigate()
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const { user, isLoading } = useAuth();
 
-  // a function to check if a valid email is entered
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
-
-  /* page display based on login status */
+  // Checking if an user is logged in
   useEffect(()=>{
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-          // User is logged in
-          const uid = user.uid;
-          console.log("uid", uid)
-          console.log(nhaService.getUser(uid))
-          navigate("/")
-        } else {
-          // User is logged out
-          console.log("User is currently logged out")
-        }
-      });
+    if (!isLoading && user){
+      // User is already logged in
+      console.log("You are already logged in");
+      navigate("/")
+    } 
+
      
-  },[])
+  },[navigate, user, isLoading])
 
   const handleLogin = (e) => {
 
@@ -48,6 +40,7 @@ const Login = () => {
       setError("Please enter a valid email!");
       return
     }
+
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user
@@ -55,15 +48,12 @@ const Login = () => {
         navigate("/")
       }).catch((err) => {
 
-        if (err.message === "Firebase: Error (auth/invalid-credential).") {
-          setError("Email not found, please check email");
-        } else {
+        if (err.code === "auth/invalid-credential") {
+          setError("Invalid Credentials");
+        } else{
           setError("Login failed. Please check your email and password.");
         }
-
-        console.log(err.message)
-
-      })
+        })
 
   }
   return (

@@ -2,32 +2,18 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from '../firebase';
+import useAuth from '../useAuth';
+
 
 function NHANav() {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const navigate = useNavigate()
+  const {user, isLoading} = useAuth()
 
-  useEffect(()=>{
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-        if (user) {
-          setIsLoggedIn(true)
-          // User is logged in
-          const uid = user.uid;
-          console.log("uid", uid)
-        } else {
-          // User is logged out
-          console.log("user is logged out")
-          setIsLoggedIn(false)
-        }
-      });
-      return () => unsubscribe();
-  },[])
 
   // function to handle logout 
   const handleLogout = () => {
     signOut(auth).then(() => {
-      setIsLoggedIn(false)
           navigate("/");
           console.log("Signed out successfully")
       }).catch((error) => {
@@ -37,22 +23,21 @@ function NHANav() {
  
   return (
     <>
+    
       <nav className="nha-navbar">
         <Link className="nav-brand nav-a" to="/">
           NHAGPT
         </Link>
         <div className="links-flexbox">
+        
           <Link className="nav-a nav-rl" to="/docs">
             Docs
           </Link>
           <Link className="nav-a nav-rl" to="/translate">
             Translate
           </Link>
-          {!isLoggedIn? <Link className="nav-a nav-rl" to="/login">Login</Link>:<Link onClick={handleLogout} className="nav-a nav-rl">
-            Logout
-          </Link>}
-          
-          
+          {user ? <Link onClick={handleLogout} className="nav-a nav-rl">Logout</Link> : <Link className="nav-a nav-rl" to="/login">Login</Link>}
+      
         </div>
       </nav>
       <p className="bottom-nav-bar"></p>

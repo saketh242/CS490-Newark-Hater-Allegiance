@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from './firebase';
 
+
 import Home from './components/Home';
 import Login from './components/Login';
 import Translate from './components/Translate';
@@ -12,11 +13,26 @@ import NHANav from './components/NHANav';
 import Footer from './components/Footer';
 import Signup from './components/Signup';
 import "./index.css"
+import axios from 'axios'
 
 
 const App = () => {
 
+  const [token, setToken] = useState("")
+  const fetchData = async (token) => {
+    const res = await axios.get("http://localhost:3000/test", {
+      headers: {
+        Authorization: 'Bearer '+token
+      }
+    })
+    console.log(res.data);
+  }
+
   useEffect(()=>{
+    if (token){
+      fetchData(token)
+    }
+    
     onAuthStateChanged(auth, (user) => {
         if (user) {
           // User is logged in
@@ -28,7 +44,7 @@ const App = () => {
         }
       });
      
-  },[])
+  },[token])
 
   return (
     <>
@@ -38,7 +54,7 @@ const App = () => {
       <NHANav/>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login/>} />
+          <Route path="/login" element={<Login setToken={setToken}/>} />
           <Route path="/translate" element={<Translate/>}/>
           <Route path="/docs" element={<Docs />} />
           <Route path="/signup" element={<Signup />} />

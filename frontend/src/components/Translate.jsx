@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from '../firebase';
+import useAuth from '../useAuth';
 
 import CodeOutput from './CodeOutput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,20 +14,17 @@ const Translate = () => {
 
   /* page display based on login status */
   const navigate = useNavigate();
-  useEffect(()=>{
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-          // User is logged in
-          const uid = user.uid;
-          console.log("uid", uid)
-        } else {
-          // User is logged out
-          navigate("/login")
-          console.log("user is logged out")
-        }
-      });
-     
-  },[])
+  const {user, isLoading} = useAuth();
+
+  useEffect(() => {
+    if ((!isLoading && !user)){
+      // User is not logged in
+      console.log("user is not logged in")
+      navigate("/login");
+    }
+  }, [navigate, user, isLoading])
+
+  
   
   const [apiReady, setApiReady] = useState(true); // API status -- manually set true/false right now for testing purposes
   const [loading, setLoading] = useState(false); // Loading state - display loading msg while api retrieves code response

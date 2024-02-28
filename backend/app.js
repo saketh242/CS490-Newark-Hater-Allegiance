@@ -6,9 +6,11 @@ const mongoose = require("mongoose");
 const userRouter = require("./routes/userRoutes")
 const historyRouter = require("./routes/historyRoutes")
 const feedbackRouter = require("./routes/feedbackRoutes")
+const decodeToken = require("./middleware/index")
 
 app.use(express.json());
 app.use(cors()); // Corrected line
+app.use(decodeToken)
 mongoose.connect(process.env.DATABASE)
     .then(() => {
         console.log("MongoDB connection successful :)")
@@ -20,6 +22,11 @@ mongoose.connect(process.env.DATABASE)
 app.use("/users", userRouter);
 app.use("/history", historyRouter);
 app.use("/feedback", feedbackRouter);
+
+app.get("/test", (req, res) => {
+    // console.log(req)
+    res.json({message:"This is test for auth"})
+})
 
 app.get("*", (req, res, next) => {
     res.send("Welcome to NHA CS490 project!");
