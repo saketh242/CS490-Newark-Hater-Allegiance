@@ -17,16 +17,6 @@ const Signup = ({setAuthToken}) => {
     const [password2, setPassword2] = useState("")
     const [error, setError] = useState(null)
 
-    useEffect(() => {
-      if (!isLoading && user){
-        // user is already logged in, navigating to home page
-        console.log("user is already logged in")
-        navigate("/");
-      }
-    }, [navigate, user, isLoading]) // chat gpt said it is a good practice to inlcude naviagte also here, it is not required tho
-
-    
-
     const handleSignup = async (e) => {
 
         e.preventDefault();
