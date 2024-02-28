@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {  createUserWithEmailAndPassword  } from 'firebase/auth';
 import { auth } from '../firebase';
+import nhaService from '../services/nhaService';
 
 const Signup = () => {
 
@@ -51,14 +52,11 @@ const Signup = () => {
           setError("Password should be 8 characters long, one lowercase, one uppercase, one digit")
           return
         }
-
-
-
        
         await createUserWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
-
             const user = userCredential.user;
+            nhaService.postUser(firstName, lastName, email, user.uid) //Registers user to mongodb
             console.log(user)
             navigate("/login")
 

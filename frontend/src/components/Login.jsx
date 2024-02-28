@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import {  signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
+import nhaService from '../services/nhaService';
 
 const Login = () => {
 
@@ -24,6 +25,7 @@ const Login = () => {
           // User is logged in
           const uid = user.uid;
           console.log("uid", uid)
+          console.log(nhaService.getUser(uid))
           navigate("/")
         } else {
           // User is logged out
@@ -46,7 +48,6 @@ const Login = () => {
       setError("Please enter a valid email!");
       return
     }
-
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user
