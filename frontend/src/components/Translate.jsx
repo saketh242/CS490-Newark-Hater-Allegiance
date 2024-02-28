@@ -5,12 +5,21 @@ import { auth } from '../firebase';
 import useAuth from '../useAuth';
 
 import CodeOutput from './CodeOutput';
+import History from './History';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { faDownload, faCopy, faFileImport } from '@fortawesome/free-solid-svg-icons'
+import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
+
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Translate = () => {
+
+  const [showSidebar, setShowSidebar] = useState(false);
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
 
   /* page display based on login status */
   const navigate = useNavigate();
@@ -149,6 +158,9 @@ const Translate = () => {
 
   return (
     <div className="translateBody">
+
+      <History showSidebar={showSidebar} toggleSidebar={toggleSidebar}/>
+
       <h1 className="apiStatus">
         OpenAI API Status:
         {apiReady ? (
@@ -191,6 +203,10 @@ const Translate = () => {
           <h2 className="codeHeading">
             Enter code here:
             <div className="buttonsContainer">
+              {/* Icon button for toggling sidebar */}
+              <button className="historyButton" title="History" onClick={toggleSidebar}>
+                <FontAwesomeIcon id="icon" size="2x" icon={faHistory} />
+              </button>
               {/* Icon button for uploading a file */}
               <button className="uploadButton" title="Upload file" onClick={() => fileInputRef.current.click()}>
                 <FontAwesomeIcon id="icon" size="2x" icon={faFileImport} />
