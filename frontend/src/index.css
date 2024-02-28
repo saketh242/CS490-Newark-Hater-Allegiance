@@ -13,6 +13,7 @@
   justify-content: space-between;
 }
 
+
 .nha-navbar .nav-a {
   font-family: "Kanit", sans-serif;
 }
@@ -373,7 +374,7 @@ select, button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  padding-top: 4rem;
 }
 
 
@@ -405,18 +406,21 @@ select, button {
 }
 
 .email-input:focus, .password-login:focus  {
-  border: 1pt solid #5469D4;
-}
+  outline: none; 
 
-.email-input:hover, .password-login:hover {
-  border: 1pt solid #5469D4;
 }
 
 .login-btn {
  padding: 0.4rem 1.7rem 0.4rem 1.7rem;
  font-size: 1.4rem;
  border-radius: 5px;
- margin-top: 1rem;
+ margin-top: 2rem;
+}
+
+.login-btn:hover {
+  background-color: #0ac6c0;
+  color: #1A1C23;
+  cursor: pointer;
 }
 
 .signup-msg {
@@ -447,6 +451,12 @@ select, button {
 .login-form {
   margin: 0;
   padding: 0;
+}
+
+.error-msg {
+  color: red;
+  font-size: 1.3rem;
+  padding: 1rem;
 }
 
 @media (width <= 900px) {
@@ -511,6 +521,30 @@ select, button {
   margin: 0;
   padding: 0;
 }
+
+
+@media (width <= 930px) {
+  .login-heading{
+    font-size: 4rem;
+    text-align: center;
+  }
+
+  .name-inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .name-input-box,.signup-email-input, .signup-password-input  {
+    width: 18rem;
+    font-size: 1rem;
+  }
+
+
+  
+}
+
 
 
  

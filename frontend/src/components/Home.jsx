@@ -28,7 +28,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className='box'>
+      <div className='box' id="getting-started-div">
         <p>Getting Started</p>
         <ul className='instructions'>
           <li>Copy code into the text area or upload a file</li>
