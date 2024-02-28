@@ -2,7 +2,8 @@ const User = require("../models/User")
 
 const insertUser = async (req, res, next) => {
   try {
-      const { firstName, lastName, email, uid } = req.body;
+      const {uid} = req;
+      const { firstName, lastName, email } = req.body;
 
       const existingUser = await User.findOne({ uid: uid });
 

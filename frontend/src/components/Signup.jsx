@@ -1,33 +1,31 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {  createUserWithEmailAndPassword  } from 'firebase/auth';
+import { isValidEmail, isValidPassword } from "../utils/fieldValidations";
 import { auth } from '../firebase';
+import useAuth from "../useAuth";
 import nhaService from '../services/nhaService';
 
-const Signup = () => {
+const Signup = ({setAuthToken}) => {
 
     const navigate = useNavigate();
-
+    const { user, isLoading } = useAuth();
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [password2, setPassword2] = useState("")
-
-     // a function to check if a valid email is entered
-     const isValidEmail = (email) => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(email);
-    }
-
-    const isValidPassword = (password) => {
-      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/
-      return passwordRegex.test(password);
-
-    }
-
-
     const [error, setError] = useState(null)
+
+    useEffect(() => {
+      if (!isLoading && user){
+        // user is already logged in, navigating to home page
+        console.log("user is already logged in")
+        navigate("/");
+      }
+    }, [navigate, user, isLoading]) // chat gpt said it is a good practice to inlcude naviagte also here, it is not required tho
+
+    
 
     const handleSignup = async (e) => {
 
@@ -52,19 +50,22 @@ const Signup = () => {
           setError("Password should be 8 characters long, one lowercase, one uppercase, one digit")
           return
         }
+
        
         await createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
+          .then(async (userCredential) => {
             const user = userCredential.user;
-            nhaService.postUser(firstName, lastName, email, user.uid) //Registers user to mongodb
+            // nhaService.postUser(firstName, lastName, email, user.uid) //Registers user to mongodb
+            // uid is passed directly from the request
+            const idToken = await user.getIdToken();
+            nhaService.postUser(firstName, lastName, email, idToken) 
+
             console.log(user)
             navigate("/login")
 
           })
           .catch((err) => {
-           
-            const errMessage = err.message
-            if (errMessage === "Firebase: Error (auth/email-already-in-use)."){
+            if (err.message === "Firebase: Error (auth/email-already-in-use)."){
               setError("Email address already registered!")
             }
             console.log(errMessage)

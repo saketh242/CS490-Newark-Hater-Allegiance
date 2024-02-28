@@ -2,12 +2,15 @@ import axios from "axios";
 
 class NHAService {
 
-    async postUser(firstName, lastName, email, uid) {
+    async postUser(firstName, lastName, email, token) {
         try {
-            const payload = { firstName, lastName, email, uid };
+            const payload = { firstName, lastName, email};
+            const headers = {
+                Authorization: `Bearer ${token}`
+            };
             console.log("ARE WE IN HERE?");
             console.log(payload);
-            const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}users/postUser`, payload);
+            const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}users/postUser`, payload, {headers});
             return response.data;
         } catch (error) {
             console.error('Error: ', error);
