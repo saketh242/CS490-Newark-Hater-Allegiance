@@ -77,13 +77,14 @@
 }
 
 .subtitle {
+  padding-top: 1rem;
   text-align: center;
   font-family: "Kanit", sans-serif;
   font-size: 3rem;
 }
 
 .box {
-  padding: 2rem 2rem 5rem 5rem;
+  padding: 2rem 5rem 2rem 5rem;
   font-size: 2rem;
 }
 
@@ -149,7 +150,7 @@
 }
 
 .reviews-flexbox {
-  padding: 1rem 0 2rem 0;
+  padding-top: 1rem;
   border-color: #5469D4;
   display: flex;
   align-items: center;
@@ -162,10 +163,95 @@
   border: 2pt solid #5469D4;
   border-radius: 1rem;
   padding: 1rem;
-  width: 30rem;
-  height: 30rem;
+  width: 20rem;
+  height: 20rem;
   vertical-align: middle;
-  font-size: 2rem;
+  font-size: 1.5rem;
+}
+
+@media (width <= 1600px) {
+  .features {
+    font-size: 2.5rem;
+  }
+  .features-flexbox {
+    font-size: 0.75rem;
+  }
+
+  #review {
+    width: 15rem;
+    height: 15rem;
+    font-size: 1rem;
+  }
+}
+
+@media (width <= 1200px) {
+  .title {
+    font-size: 10rem;
+  }
+  
+  .title2 {
+    padding-left: 11rem;
+  }
+  
+  .subtitle {
+    font-size: 2rem;
+  }
+
+  .box {
+    font-size: 1.5rem;
+  }
+
+  .features {
+    font-size: 2rem;
+  }
+
+  .features-flexbox {
+    font-size: 0.5rem;
+  }
+
+  .signup-button {
+    padding: 1.5rem 3rem;
+    font-size: 1.5rem;
+  }
+
+  #review {
+    width: 10rem;
+    height: 10rem;
+    font-size: 0.75rem;
+  }
+
+  @media (width <= 900px) {
+    .title {
+      font-size: 7rem;
+    }
+    
+    .title2 {
+      padding-left: 8rem;
+    }
+    
+    .subtitle {
+      font-size: 1.5rem;
+    }
+
+    .box {
+      font-size: 1rem;
+    }
+
+    .features-flexbox {
+      font-size: 0.4rem;
+    }
+
+    .signup-button {
+      padding: 1rem 2rem;
+      font-size: 1rem;
+    }
+
+    #review {
+      width: 7rem;
+      height: 7rem;
+      font-size: 0.6rem;
+    }
+  }
 }
 
 
