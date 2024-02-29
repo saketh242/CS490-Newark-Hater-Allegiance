@@ -117,7 +117,7 @@
   width: 50%;
 }
 
-.signup-button {
+.signup-button, .login-btn {
   padding: 2rem 4rem;
   font-size: 2rem;
   background-color: #5469D4;
@@ -125,7 +125,7 @@
   border-radius: 1rem;
 }
 
-.signup-button:hover {
+.signup-button:hover, .login-btn:hover {
   background-color: #0ac6c0;
   color: #1A1C23;
   cursor: pointer;
@@ -304,7 +304,7 @@ select, button {
   margin: 1rem 3rem 1rem 3rem; 
 }
 
-#translationButton, .uploadButton, .downloadButton, .copyButton, .clearButton {
+#translationButton, .buttonsContainer button {
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -336,6 +336,60 @@ select, button {
   background-color: #23262F; /* Color of the scrollbar track */
 }
 
+@media (width <= 1330px){
+  .inputArea, .outputArea {
+    width: 400px;
+  }
+}
+
+@media (width <= 900px){
+  .codeBlocks {
+      flex-direction: column;
+    }
+  
+    /* Adjust margin to move the origin language dropdown to the left */
+    #leftDropdownContainer {
+      margin-right: 3rem;
+    }
+  
+    /* Adjust margin to move the desired language dropdown to the right */
+    #rightDropdownContainer {
+      margin-left: 3rem;
+    }
+
+    .inputArea, .outputArea {
+      height: 400px;
+    }
+  }
+
+
+  
+@media (width <= 600px){
+  .codeBlocks {
+      flex-direction: column;
+    }
+
+    .dropdown{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-content: center;
+    }
+
+    #leftDropdownContainer, #rightDropdownContainer {
+      padding: 0;
+      margin: 0;
+    }
+
+    #rightDropdownContainer {
+      margin-top: 2rem;
+    }
+
+    .inputArea, .outputArea {
+      width: 300px;
+      height: 200px;
+    }
+  }
 
 /* Footer Component Styling */
 .footer-box{
