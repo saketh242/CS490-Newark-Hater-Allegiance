@@ -21,18 +21,7 @@ const Translate = () => {
     setShowSidebar(!showSidebar);
   };
 
-  /* page display based on login status */
   const navigate = useNavigate();
-  const {user, isLoading} = useAuth();
-
-  useEffect(() => {
-    if ((!isLoading && !user)){
-      // User is not logged in
-      console.log("user is not logged in")
-      navigate("/login");
-    }
-  }, [navigate, user, isLoading])
-
   const [error, setError] = useState('');
   
   const [apiReady, setApiReady] = useState(true); // API status -- manually set true/false right now for testing purposes

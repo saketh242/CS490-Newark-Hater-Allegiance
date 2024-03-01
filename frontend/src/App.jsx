@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from './firebase';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import Home from './components/Home';
 import Login from './components/Login';
@@ -13,55 +14,42 @@ import NHANav from './components/NHANav';
 import Footer from './components/Footer';
 import Signup from './components/Signup';
 import "./index.css"
+import useAuth from './useAuth';
 import axios from 'axios'
 
 
 const App = () => {
 
-  
-  const fetchData = async (token) => {
-    const res = await axios.get("http://localhost:3000/test", {
-      headers: {
-        Authorization: 'Bearer '+token
-      }
-    })
-    console.log(res.data);
-  }
+  const { user, isLoading } = useAuth();
 
-  useEffect(()=>{
-    if (token){
-      fetchData(token)
-    }
-    
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-          // User is logged in
-          const uid = user.uid;
-          console.log("uid", uid)
-        } else {
-          // User is logged out
-          console.log("user is logged out")
-        }
-      });
-     
-  },[token])
-
-  return (
+  return !isLoading && (
     <>
-    <Router>
-      
-      <div className="content">
-      <NHANav/>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login setToken={setToken}/>} />
-          <Route path="/translate" element={<Translate/>}/>
-          <Route path="/docs" element={<Docs />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
-      </div>
-      <Footer/>
-    </Router>
+      <Router>
+
+        <div className="content">
+          <NHANav />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={user? <Home/>:<Login />} />
+            <Route path="/translate" element={<Translate />} />
+            <Route path="/docs" element={<Docs />} />
+            <Route path="/signup" element={<Signup />} />
+          </Routes>
+        </div>
+        <Footer />
+        <ToastContainer
+          position="bottom-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          transition:Bounce />
+      </Router>
     </>
   );
 };
