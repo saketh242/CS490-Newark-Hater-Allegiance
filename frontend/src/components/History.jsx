@@ -3,8 +3,8 @@ import { Offcanvas } from 'react-bootstrap';
 
 const History = ({ showSidebar, toggleSidebar }) => {
   return (
-    <div className="history">
-       <Offcanvas show={showSidebar} onHide={toggleSidebar} placement="end">
+    <div>
+       <Offcanvas show={showSidebar} onHide={toggleSidebar} placement="start">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Translate History</Offcanvas.Title>
         </Offcanvas.Header>

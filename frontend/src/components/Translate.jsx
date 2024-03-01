@@ -12,6 +12,9 @@ import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
 
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Translate = () => {
@@ -153,8 +156,20 @@ const Translate = () => {
 
   return (
     <div className="translateBody">
+      <ToastContainer
+        position="bottom-right" // Change position if needed
+        autoClose={1000} // Adjust the duration of the notification
+        hideProgressBar={true} // Show or hide the progress bar
+        newestOnTop={false} // Place newest toast on top
+        closeOnClick // Close the toast when clicked
+        rtl={false} // Right to left layout
+        pauseOnFocusLoss
+        draggable // Allow dragging to dismiss
+        pauseOnHover // Pause the autoClose timer when hovered
+        toastStyle={{ backgroundColor: '#5469D4', color: '#BDC3D0' }}
+      />
 
-      <History showSidebar={showSidebar} toggleSidebar={toggleSidebar}/>
+      <History id="history" showSidebar={showSidebar} toggleSidebar={toggleSidebar}/>
 
       <h1 className="apiStatus">
         OpenAI API Status:
@@ -233,7 +248,11 @@ const Translate = () => {
             <h2>Converted code:</h2>
             <div className="buttonsContainer">
               {/* Icon button for copying the output */}
-              <button className="copyButton" title="Copy code" onClick={() => navigator.clipboard.writeText(translatedCode)}>
+              <button className="copyButton" title="Copy code" onClick={() => 
+                {
+                  navigator.clipboard.writeText(translatedCode)
+                  toast(`Copied to clipboard!`);
+                  }}>
                 <FontAwesomeIcon id="icon" size="2x" icon={faCopy} />
               </button>
               {/* Icon button for downloading the output */}
