@@ -15,4 +15,4 @@ backend/.env
 frontend/src/firebase.js
 
 # Ignore serviceAccount.json in backend
-backend/config/serviceAccount.json
+backend/config/serviceAccount.js
