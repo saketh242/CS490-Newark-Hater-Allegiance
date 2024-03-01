@@ -18,7 +18,7 @@ import axios from 'axios'
 
 const App = () => {
 
-  const [token, setToken] = useState("")
+  
   const fetchData = async (token) => {
     const res = await axios.get("http://localhost:3000/test", {
       headers: {
