@@ -169,7 +169,7 @@ const Translate = () => {
         toastStyle={{ backgroundColor: '#5469D4', color: '#BDC3D0' }}
       />
 
-      <History showSidebar={showSidebar} toggleSidebar={toggleSidebar}/>
+      <History id="history" showSidebar={showSidebar} toggleSidebar={toggleSidebar}/>
 
       <h1 className="apiStatus">
         OpenAI API Status:
