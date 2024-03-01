@@ -3,10 +3,11 @@ import { Link, useNavigate } from "react-router-dom"
 import {  createUserWithEmailAndPassword  } from 'firebase/auth';
 import { isValidEmail, isValidPassword } from "../utils/fieldValidations";
 import { auth } from '../firebase';
+import { ToastContainer, toast } from 'react-toastify';
 import useAuth from "../useAuth";
 import nhaService from '../services/nhaService';
 
-const Signup = ({setAuthToken}) => {
+const Signup = () => {
 
     const navigate = useNavigate();
     const { user, isLoading } = useAuth();
@@ -16,16 +17,6 @@ const Signup = ({setAuthToken}) => {
     const [password, setPassword] = useState("")
     const [password2, setPassword2] = useState("")
     const [error, setError] = useState(null)
-
-    useEffect(() => {
-      if (!isLoading && user){
-        // user is already logged in, navigating to home page
-        console.log("user is already logged in")
-        navigate("/");
-      }
-    }, [navigate, user, isLoading]) // chat gpt said it is a good practice to inlcude naviagte also here, it is not required tho
-
-    
 
     const handleSignup = async (e) => {
 
@@ -55,20 +46,18 @@ const Signup = ({setAuthToken}) => {
         await createUserWithEmailAndPassword(auth, email, password)
           .then(async (userCredential) => {
             const user = userCredential.user;
-            // nhaService.postUser(firstName, lastName, email, user.uid) //Registers user to mongodb
-            // uid is passed directly from the request
             const idToken = await user.getIdToken();
-            nhaService.postUser(firstName, lastName, email, idToken) 
 
-            console.log(user)
-            navigate("/login")
+            const msg = () => toast(`Welcome ${firstName} ${lastName}`);
+            msg()
+            navigate("/")
 
           })
           .catch((err) => {
             if (err.message === "Firebase: Error (auth/email-already-in-use)."){
               setError("Email address already registered!")
             }
-            console.log(errMessage)
+            console.log(err.message)
 
           })
 
@@ -89,6 +78,8 @@ const Signup = ({setAuthToken}) => {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="First Name"
+                style={{ borderColor: error ? 'red' : '#0ac6c0',
+                      transition: 'border-color 0.3s ease', }}
             />
             <input
                 className="name-input-box"
@@ -96,6 +87,8 @@ const Signup = ({setAuthToken}) => {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Last Name"
+                style={{ borderColor: error ? 'red' : '#0ac6c0',
+                      transition: 'border-color 0.3s ease', }}
             />
         </div>
      <input
@@ -104,6 +97,8 @@ const Signup = ({setAuthToken}) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
+          style={{ borderColor: error ? 'red' : '#0ac6c0',
+                      transition: 'border-color 0.3s ease', }}
         />
         <input 
         className='signup-password-input'
@@ -111,6 +106,8 @@ const Signup = ({setAuthToken}) => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
+        style={{ borderColor: error ? 'red' : '#0ac6c0',
+                      transition: 'border-color 0.3s ease', }}
         />
         <input 
         className='signup-password-input'
@@ -118,6 +115,8 @@ const Signup = ({setAuthToken}) => {
         value={password2}
         onChange={(e) => setPassword2(e.target.value)}
         placeholder="Retype Password"
+        style={{ borderColor: error ? 'red' : '#0ac6c0',
+                      transition: 'border-color 0.3s ease', }}
         />
         <button type="submit" className='login-btn' onClick={handleSignup}>Signup</button>
         <div className='signup-msg'>

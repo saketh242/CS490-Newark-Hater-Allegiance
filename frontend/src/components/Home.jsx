@@ -43,7 +43,7 @@ const Home = () => {
       </div>
 
       <div className='box reviews'>
-        <p>Some of our reviews :3</p>
+        <p>Some of our reviews</p>
         <div className="reviews-flexbox">
           <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
           <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>

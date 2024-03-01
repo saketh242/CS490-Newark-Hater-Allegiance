@@ -3,29 +3,21 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 import {  signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
 import useAuth from '../useAuth';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 import { isValidEmail, isValidPassword } from '../utils/fieldValidations';
 
 import nhaService from '../services/nhaService';
 
-const Login = ({setAuthToken}) => {
+const Login = () => {
+  
 
   const navigate = useNavigate()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const { user, isLoading } = useAuth();
-
-  // Checking if an user is logged in
-  useEffect(()=>{
-    if (!isLoading && user){
-      // User is already logged in
-      console.log("You are already logged in");
-      navigate("/")
-    } 
-
-     
-  },[navigate, user, isLoading])
 
   const handleLogin = (e) => {
 
@@ -42,18 +34,26 @@ const Login = ({setAuthToken}) => {
     }
 
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user
-        console.log(userCredential)
-        navigate("/")
-      }).catch((err) => {
+    .then(async (userCredential) => {
+        const user = userCredential.user;
+        const userDetails = await nhaService.getUser(user);
 
+        // userDetails should contain the first name and last name
+        const { firstName, lastName } = userDetails;
+
+        console.log(`Welcome ${firstName} ${lastName}`);
+        const msg = () => toast(`Welcome ${firstName} ${lastName}`);
+        msg();
+        
+        navigate("/");
+    }).catch((err) => {
         if (err.code === "auth/invalid-credential") {
-          setError("Invalid Credentials");
-        } else{
-          setError("Login failed. Please check your email and password.");
+            setError("Invalid Credentials");
+        } else {
+            setError("Login failed. Please check your email and password.");
         }
-        })
+    });
+
 
   }
   return (
@@ -70,6 +70,8 @@ const Login = ({setAuthToken}) => {
           placeholder="Email"
           autoComplete='off'
           required
+          style={{ borderColor: error ? 'red' : '#0ac6c0',
+                      transition: 'border-color 0.3s ease', }}
         />
         <input 
         className='password-login'
@@ -79,6 +81,8 @@ const Login = ({setAuthToken}) => {
         placeholder="Password"
         autoComplete='off'
         required
+        style={{ borderColor: error ? 'red' : '#0ac6c0',
+                      transition: 'border-color 0.3s ease', }}
         />
         <button type="submit" className='login-btn' onClick={handleLogin}>Login</button>
         <div className='signup-msg'>

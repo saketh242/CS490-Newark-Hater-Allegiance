@@ -5,27 +5,28 @@ import { auth } from '../firebase';
 import useAuth from '../useAuth';
 
 import CodeOutput from './CodeOutput';
+import History from './History';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { faDownload, faCopy, faFileImport } from '@fortawesome/free-solid-svg-icons'
 import nhaService from '../services/nhaService';
+import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
+
+//import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const Translate = () => {
 
-  /* page display based on login status */
+
+  const {user} = useAuth();
+  const [showSidebar, setShowSidebar] = useState(false);
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
+
   const navigate = useNavigate();
-  const {user, isLoading} = useAuth();
-
-  useEffect(() => {
-    if ((!isLoading && !user)){
-      // User is not logged in
-      console.log("user is not logged in")
-      navigate("/login");
-    }
-  }, [navigate, user, isLoading])
-
-  
+  const [error, setError] = useState('');
   
   const [apiReady, setApiReady] = useState(true); // API status -- manually set true/false right now for testing purposes
   const [loading, setLoading] = useState(false); // Loading state - display loading msg while api retrieves code response
@@ -50,6 +51,13 @@ const Translate = () => {
   };
 
   const translateCode = () => {
+    if (!inputCode.trim()) {
+      setError('Input code cannot be empty');
+      return;
+    }
+
+    setError(''); // Reset error message
+    setTranslatedCode('');
     setLoading(true); // Set loading state to true before API call
   
     // Simulating API call with setTimeout ... replace later
@@ -171,6 +179,9 @@ useEffect(() => {
 
   return (
     <div className="translateBody">
+
+      <History showSidebar={showSidebar} toggleSidebar={toggleSidebar}/>
+
       <h1 className="apiStatus">
         OpenAI API Status:
         {apiReady ? (
@@ -213,6 +224,10 @@ useEffect(() => {
           <h2 className="codeHeading">
             Enter code here:
             <div className="buttonsContainer">
+              {/* Icon button for toggling sidebar */}
+              <button className="historyButton" title="History" onClick={toggleSidebar}>
+                <FontAwesomeIcon id="icon" size="2x" icon={faHistory} />
+              </button>
               {/* Icon button for uploading a file */}
               <button className="uploadButton" title="Upload file" onClick={() => fileInputRef.current.click()}>
                 <FontAwesomeIcon id="icon" size="2x" icon={faFileImport} />
@@ -233,7 +248,9 @@ useEffect(() => {
           <textarea className="inputArea"
             value={inputCode}
             onChange={(e) => setInputCode(e.target.value)}
-            placeholder="Enter code to translate"
+            placeholder={error || "Enter code to translate"} // Use error message as placeholder when error exists
+            style={{ borderColor: error ? 'red' : '#0ac6c0',
+                      transition: 'border-color 0.3s ease', }} // Change border color when error exists
           />
         </div>
 
