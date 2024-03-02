@@ -1,6 +1,6 @@
 // App.js
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from './firebase';
 import { ToastContainer } from 'react-toastify';
@@ -13,9 +13,11 @@ import Docs from './components/Docs';
 import NHANav from './components/NHANav';
 import Footer from './components/Footer';
 import Signup from './components/Signup';
+import PageNotFound from "./components/PageNotFound"
 import "./index.css"
 import useAuth from './useAuth';
 import axios from 'axios'
+
 
 
 const App = () => {
@@ -30,10 +32,11 @@ const App = () => {
           <NHANav />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={user? <Home/>:<Login />} />
-            <Route path="/translate" element={<Translate />} />
+            <Route path="/login" element={user ? <Navigate to="/"/> : <Login />} />
+            <Route path="/translate" element={user ? <Translate /> : <Navigate to="/login"/>} />
             <Route path="/docs" element={<Docs />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </div>
         <Footer />
