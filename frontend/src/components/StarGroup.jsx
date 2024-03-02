@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
-const ButtonGroup = () => {
+const StarGroup = ({setRating}) => {
     const [clickedId, setClickedId] = useState(-1);
-    const handleClick = (id) => { setClickedId(id); };
+    const handleClick = (id) => { setClickedId(id); setRating(id);};
     
     const [hoverId, setHoverId] = useState(-1);
     const setHover = (id) => { setHoverId(id); };
@@ -24,10 +24,10 @@ const ButtonGroup = () => {
                     : "star"
             }
             name={buttonLabel}>
-            <FontAwesomeIcon icon={faStar} size="2x"/>
+            <FontAwesomeIcon icon={faStar} size="3x"/>
           </button>
         ))}
       </>
     );
 };
-export default ButtonGroup;
+export default StarGroup;
