@@ -31,7 +31,7 @@ const insertUser = async (req, res, next) => {
 
   const getUserId = async (req, res, next) => {
     try {
-        const { uid } = req.params;
+        const {uid} = req;
         const user = await User.findOne({ uid: uid });
 
         if (!user) {
