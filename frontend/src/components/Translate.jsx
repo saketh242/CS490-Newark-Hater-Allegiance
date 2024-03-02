@@ -10,6 +10,7 @@ import History from './History';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import nhaService from '../services/nhaService';
 import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -17,8 +18,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 const Translate = () => {
 
+
+  const {user} = useAuth();
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -29,7 +33,8 @@ const Translate = () => {
   
   const [apiReady, setApiReady] = useState(true); // API status -- manually set true/false right now for testing purposes
   const [loading, setLoading] = useState(false); // Loading state - display loading msg while api retrieves code response
-
+  const [userTriggeredChange, setUserTriggeredChange] = useState(false); //Dummy right now, but will be implemented when we do getHistory from the sidebar, so we aren't posting when we are getting the history
+  const [postId, setPostId] = useState("") //not really used right now, but will be useful when we want to post a feedback
   //input code and output code states
   const [inputCode, setInputCode] = useState('');
   const [translatedCode, setTranslatedCode] = useState('');
@@ -62,9 +67,30 @@ const Translate = () => {
     setTimeout(() => {
       setTranslatedCode(inputCode); // Dummy translation for now
       setLoading(false); // Set loading state to false after receiving response
+      setUserTriggeredChange(true)
     }, 2000); // Simulating 2 seconds delay for API response
   };
   
+
+  const handlePostHistory = async () => {
+    try {
+        if (translatedCode !== '' && userTriggeredChange) {
+            const post = await nhaService.postHistory(user, inputCode, translatedCode, sourceLanguage, desiredLanguage);
+
+            setPostId(post);
+
+            setUserTriggeredChange(false);
+        }
+    } catch (error) {
+        console.error('Error posting history:', error);
+    }
+};
+
+useEffect(() => {
+    handlePostHistory();
+}, [userTriggeredChange]);
+
+ 
 
   //function to generate file for download
   const downloadFile = () => {

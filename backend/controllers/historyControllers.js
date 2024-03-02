@@ -2,9 +2,11 @@ const History = require("../models/History")
 
 const getAllHistory = async (req, res, next) => {
     try {
-        const {id} = req.params
-        const histories = await History.find({user: id});
-        console.log("All users:", histories);
+        const { user_id } = req.query;
+        const histories = await History.find({ user: user_id })
+                                        .select('-_id Desired_language Source_language original_code converted_code createdAt')
+                                        .sort({ createdAt: -1 });
+        console.log("All history:", histories);
         res.send(histories);
     } catch (error) {
         console.error("Error fetching all users:", error);
@@ -12,16 +14,35 @@ const getAllHistory = async (req, res, next) => {
     }
 };
 
+const getPost = async (req, res, next) => {
+    try {
+        const { postId } = req.params;
+        const post = await History.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
+
+        res.json(post._id);
+    } catch (error) {
+        console.error("Error fetching post:", error);
+        res.status(500).send("Internal Server Error");
+    }
+};
+
+
 const postHistory = async(req, res, next) => {
     try {
+        const { user_id, inputCode, translateCode, sourceLanguage, desiredLanguage } = req.body;
         const post = {
-            original_code: "printf(\"beep\", beep);",
-            language: "Java",
-            converted_code: "System.out.println(\"beep\")",
-            user: "65d9438c578bf61525aa4f62"
+            original_code: inputCode,
+            Source_language: sourceLanguage,
+            Desired_language: desiredLanguage,
+            converted_code: translateCode,
+            user: user_id
         }
         const inserted = await History.create(post);
-        res.status(200).send("Inserted History");
+        res.status(200).send(inserted._id);
     } catch(error) {
         console.error("Error fetching all users:", error);
         res.status(500).send("Internal Server Error");

@@ -34,19 +34,26 @@ const Login = () => {
     }
 
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user
-        const msg = () => toast(`Welcome ${user.uid}`);
-        msg()
-        navigate("/")
-      }).catch((err) => {
+    .then(async (userCredential) => {
+        const user = userCredential.user;
+        const userDetails = await nhaService.getUser(user);
 
+        // userDetails should contain the first name and last name
+        const { firstName, lastName } = userDetails;
+
+        console.log(`Welcome ${firstName} ${lastName}`);
+        const msg = () => toast(`Welcome ${firstName} ${lastName}`);
+        msg();
+        
+        navigate("/");
+    }).catch((err) => {
         if (err.code === "auth/invalid-credential") {
-          setError("Invalid Credentials");
-        } else{
-          setError("Login failed. Please check your email and password.");
+            setError("Invalid Credentials");
+        } else {
+            setError("Login failed. Please check your email and password.");
         }
-        })
+    });
+
 
   }
   return (

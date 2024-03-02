@@ -6,6 +6,6 @@ const {getUserId, insertUser} = require("../controllers/userControllers")
 
 router.post("/postUser", insertUser)
 
-router.get("/:uid", getUserId)
+router.get("/", getUserId)
 
 module.exports = router
