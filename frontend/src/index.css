@@ -282,6 +282,10 @@
   padding-bottom: 3rem;
 }
 
+#history {
+  display:flex;
+}
+
 .apiStatus {
   margin: 2rem;
   display: flex;
