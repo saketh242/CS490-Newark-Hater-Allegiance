@@ -714,4 +714,27 @@ select, button {
   margin: 3rem;
   box-shadow: 0 20px 25px -5px #000, 0 8px 10px -6px #000;
 }
+
+@media (width <= 1300px) {
+  .not-found-div h1 {
+    font-size: 4rem;
+  }
+
+  .meme {
+    width: 33rem;
+    height: 17rem;
+  }
+}
+
+@media (width <= 1300px) {
+  .not-found-div h1 {
+    font-size: 3rem;
+  }
+
+  .meme {
+    width: 26rem;
+    height: 15rem;
+  }
+}
+
  
