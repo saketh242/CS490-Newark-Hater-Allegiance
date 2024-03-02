@@ -711,11 +711,13 @@ select, button {
 
 .meme {
   border-radius: 10px;
+  width: 43rem;
+  height: 25rem;
   margin: 3rem;
   box-shadow: 0 20px 25px -5px #000, 0 8px 10px -6px #000;
 }
 
-@media (width <= 1300px) {
+@media (width <= 1300px ) {
   .not-found-div h1 {
     font-size: 4rem;
   }
@@ -726,7 +728,7 @@ select, button {
   }
 }
 
-@media (width <= 1300px) {
+@media (width <= 900px) {
   .not-found-div h1 {
     font-size: 3rem;
   }
