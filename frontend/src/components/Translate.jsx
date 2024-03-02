@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from '../firebase';
 import useAuth from '../useAuth';
+import Feedback from './Feedback';
 
 import CodeOutput from './CodeOutput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -186,7 +187,7 @@ const Translate = () => {
       </div>
 
       <div className="codeBlocks">
-      <div className="src">
+        <div className="src">
           <h2 className="codeHeading">
             Enter code here:
             <div className="buttonsContainer">
@@ -233,6 +234,10 @@ const Translate = () => {
             <CodeOutput code={translatedCode} language={desiredLanguage} />
           </div>
         </div>
+      </div>
+      <div className="feedback">
+        <Feedback />
+
       </div>
     </div>
   )

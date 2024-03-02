@@ -545,6 +545,14 @@ select, button {
   
 }
 
+.starClicked {
+  color:#0ac6c0;
+}
 
+.star {
+  color:#9CA6B5;
+}
 
- 
+.starHover {
+  color:#3A4055
+}
