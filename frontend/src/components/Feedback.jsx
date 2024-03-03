@@ -3,7 +3,8 @@ import React, { useState, useRef } from 'react';
 import StarGroup from "./StarGroup";
 import nhaService from '../services/nhaService';
 import useAuth from '../useAuth';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import Alert from 'react-bootstrap/Alert';
 
 const Feedback = ({ postId }) => {
     const [translation, setTranslation] = useState(-1);
@@ -13,12 +14,12 @@ const Feedback = ({ postId }) => {
     const textAreaRef = useRef(null);
 
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [error, setError] = useState("");
 
     const submitted = async () => {
-        if (!postId || translation === -1 || userExperience === -1 || textBox === '') {
-            console.log(!postId);
-            console.error("Error: postId, translation, or userExperience not provided.");
-            toast("Please fill out all fields.")
+        if (!postId || translation === -1 || userExperience === -1 || textBox.trim() === '') {
+            setError("Please fill out all fields.");
+            // toast("Please fill out all fields.");
             return;
         } else {
             setIsSubmitted(true);
@@ -43,19 +44,6 @@ const Feedback = ({ postId }) => {
 
     return (
         <div className="feedback">
-            {/* <ToastContainer
-                position="bottom-left"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-                transition:Bounce /> */}
-
             <h1 id="rateHeader">Rate this translation! We'd love to hear your feedback!</h1>
 
             <StarGroup setRating={setTranslation} isSubmitted={isSubmitted} />
@@ -70,11 +58,19 @@ const Feedback = ({ postId }) => {
             <br />
             <textarea
                 className="feedbackArea"
-                placeholder="Enter any additional feedback here"
+                placeholder={error || "Enter additional feedback here"}
                 value={textBox}
-                onChange={(e) => setTextBox(e.target.value)}
+                onChange={(e) => {
+                    setTextBox(e.target.value);
+                    setError("");
+                }}
+                style={{
+                    borderColor: error ? 'red' : '#0ac6c0',
+                    transition: 'border-color 0.3s ease'
+                }}
                 ref={textAreaRef}
             />
+            {error && <Alert variant="danger">{error}</Alert>}
             <br />
             <button className={isSubmitted ? "greyedOutButton" : "feedbackButton"} onClick={submitted} disabled={isSubmitted}>
                 Submit Feedback
