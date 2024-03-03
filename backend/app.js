@@ -10,7 +10,6 @@ const decodeToken = require("./middleware/index")
 
 app.use(express.json());
 app.use(cors()); // Corrected line
-app.use(decodeToken)
 mongoose.connect(process.env.DATABASE)
     .then(() => {
         console.log("MongoDB connection successful :)")
@@ -19,8 +18,8 @@ mongoose.connect(process.env.DATABASE)
         console.log("MongoDB connection unsuccessful :(")
     })
 
-app.use("/users", userRouter);
-app.use("/history", historyRouter);
+app.use("/users", decodeToken, userRouter);
+app.use("/history", decodeToken, historyRouter);
 app.use("/feedback", feedbackRouter);
 
 app.get("/test", (req, res) => {
