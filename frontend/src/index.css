@@ -329,7 +329,7 @@ select, button {
   justify-content: center;
 }
 
-.inputArea, .outputArea {
+.inputArea, .outputArea, .feedbackArea {
   resize: none;
   flex: 1;
   width: 36rem;
@@ -702,6 +702,22 @@ select, button {
   
 }
 
+.starClicked, .star, .starHover {
+  border: none;
+  background: none;
+  padding: 0.5rem
+}
+
+.starClicked {
+  color:#0ac6c0;
+}
+
+.star {
+  color:#9CA6B5;
+}
+
+.starHover {
+  color:#076966;
 /* PageNotFound Component Styling */
 
 .not-found-div h1 {
@@ -752,4 +768,21 @@ select, button {
   }
 }
 
- 
+.feedback {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.feedbackButton {
+  padding: 0.5rem 1rem;
+  height: 3rem;
+  width: 9rem;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+}
+
+.feedbackArea {
+  height: 12rem;
+  width: 48rem;
+  color:#BDC3D0;
+}
