@@ -775,7 +775,7 @@ select, button {
   margin-top: 3rem;
 }
 
-.feedbackButton {
+.feedbackButton, .greyedOutButton {
   padding: 0.5rem 1rem;
   height: 3rem;
   width: 9rem;
@@ -787,4 +787,10 @@ select, button {
   height: 12rem;
   width: 48rem;
   color:#BDC3D0;
+}
+
+.greyedOutButton {
+  background-color: #9CA6B5;
+  border-color: #000;
+  color: #000;
 }

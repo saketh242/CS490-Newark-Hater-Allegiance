@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 
-const StarGroup = ({ setRating }) => {
+const StarGroup = ({ setRating, isSubmitted }) => {
   const [clickedId, setClickedId] = useState(-1);
+  
+  useEffect(() => {
+    if (isSubmitted) {
+      setClickedId(-1)
+    }
+  }, [isSubmitted])
 
   const handleClick = (id) => {
     const rating = id + 1;
