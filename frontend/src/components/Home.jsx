@@ -54,7 +54,7 @@ const Home = () => {
         </div>
       </div>
 
-      <HomeReviews />
+      {/* <HomeReviews /> */}
 
       <div className='box'>
         <p>Designed and Developed by</p>
