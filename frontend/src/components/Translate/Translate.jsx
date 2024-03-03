@@ -238,14 +238,20 @@ useEffect(() => {
               <input
                 ref={fileInputRef}
                 type="file"
+                data-testid="file-input"
                 accept=".txt,.py,.js,.java,.c,.cs,.cpp,.php,.go,.rb,.ts" // Specify accepted file types
                 style={{ display: 'none' }}
                 onChange={handleFileUpload}
               />
               {/* Icon button for clearing text input */}
-              <button className="clearButton" title="Clear text">
-                <FontAwesomeIcon id="icon" size="2x" icon={faBroom} onClick={() => {setInputCode(''); setTranslatedCode('')}} />
+              <button className="clearButton" title="Clear text" 
+              onClick={() => {
+                setInputCode('');
+                setTranslatedCode('');
+              }}>
+                <FontAwesomeIcon id="icon" size="2x" icon={faBroom} />
               </button>
+
             </div>
           </h2>
           <textarea className="inputArea"
