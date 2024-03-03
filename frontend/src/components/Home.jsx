@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRobot, faBoltLightning, faUser, faCode} from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
 
+import HomeReviews from './HomeReviews';
+
 const Home = () => {
   const navigate = useNavigate()
   const handleSignup = () => {
@@ -51,6 +53,8 @@ const Home = () => {
           <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
         </div>
       </div>
+
+      <HomeReviews />
 
       <div className='box'>
         <p>Designed and Developed by</p>

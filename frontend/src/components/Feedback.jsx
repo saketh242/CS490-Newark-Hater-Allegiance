@@ -41,7 +41,7 @@ const Feedback = ({ postId }) => {
 
     return (
         <div className="feedback">
-            <ToastContainer
+            {/* <ToastContainer
                 position="bottom-left"
                 autoClose={5000}
                 hideProgressBar={false}
@@ -52,7 +52,10 @@ const Feedback = ({ postId }) => {
                 draggable
                 pauseOnHover
                 theme="dark"
-                transition:Bounce />
+                transition:Bounce /> */}
+
+            <h1 id="rateHeader">Rate this translation! We'd love to hear your feedback!</h1>
+
             <StarGroup setRating={setTranslation} isSubmitted={isSubmitted} />
             <br />
             <p>Translation Quality</p>

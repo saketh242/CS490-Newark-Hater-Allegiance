@@ -333,7 +333,7 @@ select, button {
   resize: none;
   flex: 1;
   width: 36rem;
-  height: 28rem;
+  height: 24rem;
   padding: 1rem;
   resize: none;
   background-color: #23262F;
@@ -702,6 +702,8 @@ select, button {
   
 }
 
+/* Feedback component styling */ 
+
 .starClicked, .star, .starHover {
   border: none;
   background: none;
@@ -720,6 +722,48 @@ select, button {
   color:#076966;
 
 }
+
+.feedback {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+#rateHeader {
+  margin: 1.5rem;
+}
+
+.feedbackButton, .greyedOutButton {
+  padding: 0.5rem 1rem;
+  height: 5.5rem;
+  width: 12rem;
+  margin-top: 1rem;
+  border-radius: 1rem;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  outline: none;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.feedbackButton:hover {
+  background-color: #0ac6c0;
+  color: #1A1C23;
+}
+
+.feedbackArea {
+  height: 12rem;
+  width: 48rem;
+  color:#BDC3D0;
+  font-size: 110%;
+}
+
+.greyedOutButton {
+  background-color: #9CA6B5;
+  border-color: #000;
+  color: #000;
+}
+
 /* PageNotFound Component Styling */
 
 .not-found-div h1 {
@@ -768,29 +812,4 @@ select, button {
     width: 26rem;
     height: 15rem;
   }
-}
-
-.feedback {
-  text-align: center;
-  margin-top: 3rem;
-}
-
-.feedbackButton, .greyedOutButton {
-  padding: 0.5rem 1rem;
-  height: 3rem;
-  width: 9rem;
-  margin-top: 1rem;
-  border-radius: 0.5rem;
-}
-
-.feedbackArea {
-  height: 12rem;
-  width: 48rem;
-  color:#BDC3D0;
-}
-
-.greyedOutButton {
-  background-color: #9CA6B5;
-  border-color: #000;
-  color: #000;
 }

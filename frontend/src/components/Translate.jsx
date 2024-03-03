@@ -22,12 +22,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Translate = () => {
 
-
   const {user} = useAuth();
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
+
+  const [translationDone, setTranslationDone] = useState(false); // State variable to track translation status to display feedback
 
   const navigate = useNavigate();
   const [error, setError] = useState('');
@@ -36,6 +37,7 @@ const Translate = () => {
   const [loading, setLoading] = useState(false); // Loading state - display loading msg while api retrieves code response
   const [userTriggeredChange, setUserTriggeredChange] = useState(false); //Dummy right now, but will be implemented when we do getHistory from the sidebar, so we aren't posting when we are getting the history
   const [postId, setPostId] = useState("") //not really used right now, but will be useful when we want to post a feedback
+  
   //input code and output code states
   const [inputCode, setInputCode] = useState('');
   const [translatedCode, setTranslatedCode] = useState('');
@@ -46,12 +48,10 @@ const Translate = () => {
 
   const handleSourceLanguageChange = (e) => {
     setSourceLanguage(e.target.value);
-    console.log("Changed source language to " + sourceLanguage);
   };
 
   const handleDesiredLanguageChange = (e) => {
     setDesiredLanguage(e.target.value);
-    console.log("Changed desired language to " + sourceLanguage);
   };
 
   const translateCode = () => {
@@ -68,7 +68,9 @@ const Translate = () => {
     setTimeout(() => {
       setTranslatedCode(inputCode); // Dummy translation for now
       setLoading(false); // Set loading state to false after receiving response
-      setUserTriggeredChange(true)
+      setTranslationDone(true);
+      toast(`Thanks for translating! Rate this translation below!`);
+      // setUserTriggeredChange(true)
     }, 2000); // Simulating 2 seconds delay for API response
   };
   
@@ -90,8 +92,6 @@ const Translate = () => {
 useEffect(() => {
     handlePostHistory();
 }, [userTriggeredChange]);
-
- 
 
   //function to generate file for download
   const downloadFile = () => {
@@ -183,19 +183,6 @@ useEffect(() => {
 
   return (
     <div className="translateBody">
-      <ToastContainer
-        position="bottom-right" // Change position if needed
-        autoClose={1000} // Adjust the duration of the notification
-        hideProgressBar={true} // Show or hide the progress bar
-        newestOnTop={false} // Place newest toast on top
-        closeOnClick // Close the toast when clicked
-        rtl={false} // Right to left layout
-        pauseOnFocusLoss
-        draggable // Allow dragging to dismiss
-        pauseOnHover // Pause the autoClose timer when hovered
-        toastStyle={{ backgroundColor: '#5469D4', color: '#BDC3D0' }}
-      />
-
       <History id="history" showSidebar={showSidebar} toggleSidebar={toggleSidebar}/>
 
       <h1 className="apiStatus">
@@ -294,9 +281,9 @@ useEffect(() => {
           </div>
         </div>
       </div>
-      <div className="feedback">
-        <Feedback postId={postId} />
 
+      <div className="feedback">
+        {translationDone && <Feedback postId={postId} />}
       </div>
     </div>
   )
