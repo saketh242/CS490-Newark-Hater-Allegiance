@@ -33,7 +33,7 @@ function NHANav() {
           <Link className="nav-a nav-rl" to="/docs">
             Docs
           </Link>
-          <Link className="nav-a nav-rl" to={user ? "/translate": "/login"}>
+          <Link className="nav-a nav-rl" to="/translate">
             Translate
           </Link>
           {user ? <Link onClick={handleLogout} className="nav-a nav-rl">Logout</Link> : <Link className="nav-a nav-rl" to="/login">Login</Link>}

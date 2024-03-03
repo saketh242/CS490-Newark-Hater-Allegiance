@@ -23,7 +23,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Translate = () => {
 
 
-  const {user} = useAuth();
+  const {user, isLoading} = useAuth();
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);

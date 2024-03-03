@@ -68,34 +68,35 @@
 .title {
   text-align: center;
   font-family: "Kanit", sans-serif;
-  font-size: 14rem;
+  font-size: 12rem;
   line-height: 0.8
 }
 
 .title2 {
-  padding-left: 15rem;
+  padding-left: 12rem;
 }
 
 .subtitle {
   padding-top: 1rem;
   text-align: center;
   font-family: "Kanit", sans-serif;
-  font-size: 3rem;
+  font-size: 2.3rem;
 }
 
 .box {
   padding: 2rem 5rem 2rem 5rem;
   font-size: 2rem;
+  
 }
 
 .features {
   text-align: left;
   background-color: #31304d;
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 
 .features-flexbox {
-  padding-top: 2rem;
+  padding-top: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -139,6 +140,10 @@
   padding: 3rem 0;
 }
 
+#perks h1 {
+  font-size: 1.7rem;
+}
+
 #home-icon {
   color: #0ac6c0;
   padding-bottom: 2rem;
@@ -147,6 +152,14 @@
 .reviews {
   text-align: left;
   background-color: #31304d;
+}
+
+#reviewHeader {
+  text-align:center;
+}
+
+.sectionHeader {
+  font-size: 2.5rem;
 }
 
 .reviews-flexbox {
@@ -705,6 +718,54 @@ select, button {
 
 .starHover {
   color:#076966;
+/* PageNotFound Component Styling */
+
+.not-found-div h1 {
+  text-align: center;
+  font-size: 5rem;
+  font-family: "Kanit", sans-serif;
+  padding-top: 2rem;
+  color: #9CA6B5;
+
+}
+
+.not-found-div {
+  padding:  4rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+
+}
+
+.meme {
+  border-radius: 10px;
+  width: 43rem;
+  height: 25rem;
+  margin: 3rem;
+  box-shadow: 0 20px 25px -5px #000, 0 8px 10px -6px #000;
+}
+
+@media (width <= 1300px ) {
+  .not-found-div h1 {
+    font-size: 4rem;
+  }
+
+  .meme {
+    width: 33rem;
+    height: 17rem;
+  }
+}
+
+@media (width <= 900px) {
+  .not-found-div h1 {
+    font-size: 3rem;
+  }
+
+  .meme {
+    width: 26rem;
+    height: 15rem;
+  }
 }
 
 .feedback {
