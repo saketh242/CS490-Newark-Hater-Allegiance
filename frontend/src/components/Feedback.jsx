@@ -3,13 +3,13 @@ import React, { useState, useRef } from 'react';
 import StarGroup from "./StarGroup";
 import nhaService from '../services/nhaService';
 import useAuth from '../useAuth';
-import {  toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Feedback = ({ postId }) => {
     const [translation, setTranslation] = useState(-1);
-    const [userExperience, setUserExperience] = useState(-1); 
-    const [textBox, setTextBox] = useState(""); 
-    const {user} = useAuth();
+    const [userExperience, setUserExperience] = useState(-1);
+    const [textBox, setTextBox] = useState("");
+    const { user } = useAuth();
     const textAreaRef = useRef(null);
 
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -17,11 +17,11 @@ const Feedback = ({ postId }) => {
     const submitted = async () => {
         if (!postId || translation === -1 || userExperience === -1) {
             console.error("Error: postId, translation, or userExperience not provided.");
-            return; 
+            return;
         } else {
             setIsSubmitted(true);
             await nhaService.postFeedback(user, postId, translation, userExperience, textBox);
-            
+
             const msg = () => toast("Feedback Submitted!");
             msg();
 
@@ -32,7 +32,7 @@ const Feedback = ({ postId }) => {
             if (textAreaRef.current) {
                 textAreaRef.current.value = "";
             }
-            
+
             setTimeout(() => {
                 setIsSubmitted(false);
             }, 2000);
@@ -41,12 +41,24 @@ const Feedback = ({ postId }) => {
 
     return (
         <div className="feedback">
-            <StarGroup setRating={setTranslation} isSubmitted={isSubmitted}/>
+            <ToastContainer
+                position="bottom-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+                transition:Bounce />
+            <StarGroup setRating={setTranslation} isSubmitted={isSubmitted} />
             <br />
             <p>Translation Quality</p>
             <br />
 
-            <StarGroup setRating={setUserExperience} isSubmitted={isSubmitted}/>
+            <StarGroup setRating={setUserExperience} isSubmitted={isSubmitted} />
             <br />
             <p>User Experience</p>
 
@@ -62,7 +74,7 @@ const Feedback = ({ postId }) => {
             <button className={isSubmitted ? "greyedOutButton" : "feedbackButton"} onClick={submitted} disabled={isSubmitted}>
                 Submit Feedback
             </button>
-            </div>
+        </div>
     );
 };
 
