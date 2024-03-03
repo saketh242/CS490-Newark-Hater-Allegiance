@@ -70,7 +70,7 @@ const Translate = () => {
       setLoading(false); // Set loading state to false after receiving response
       setTranslationDone(true);
       toast(`Thanks for translating! Rate this translation below!`);
-      // setUserTriggeredChange(true)
+      setUserTriggeredChange(true);
     }, 2000); // Simulating 2 seconds delay for API response
   };
   
