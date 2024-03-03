@@ -21,10 +21,10 @@ const Home = () => {
       <div className='box features'>
         <p>Key features</p>
         <div className="features-flexbox">
-          <div id='perks'><FontAwesomeIcon id='home-icon' size='10x' icon={faRobot}/><h1>Powered by GPT-3</h1></div>
-          <div id='perks'><FontAwesomeIcon id='home-icon' size='10x' icon={faBoltLightning}/><h1>Faster Code Translation</h1></div>
-          <div id='perks'><FontAwesomeIcon id='home-icon' size='10x' icon={faUser}/><h1>User Friendly Interface</h1></div>
-          <div id='perks'><FontAwesomeIcon id='home-icon' size='10x' icon={faCode}/><h1>Precision Perfected Code</h1></div>
+          <div id='perks'><FontAwesomeIcon id='home-icon' size='9x' icon={faRobot}/><h1>Powered by GPT-3</h1></div>
+          <div id='perks'><FontAwesomeIcon id='home-icon' size='9x' icon={faBoltLightning}/><h1>Faster Code Translation</h1></div>
+          <div id='perks'><FontAwesomeIcon id='home-icon' size='9x' icon={faUser}/><h1>User Friendly Interface</h1></div>
+          <div id='perks'><FontAwesomeIcon id='home-icon' size='9x' icon={faCode}/><h1>Precision Perfected Code</h1></div>
         </div>
       </div>
 
