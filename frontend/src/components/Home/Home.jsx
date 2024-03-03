@@ -2,9 +2,9 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRobot, faBoltLightning, faUser, faCode} from '@fortawesome/free-solid-svg-icons'
-import sample from '../images/sample.png'
+import sample from '../../images/sample.png'
 
-import HomeReviews from './HomeReviews';
+import HomeReviews from '../HomeReviews/HomeReviews';
 
 const Home = () => {
   const navigate = useNavigate()

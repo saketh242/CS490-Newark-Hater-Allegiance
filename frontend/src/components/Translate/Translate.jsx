@@ -1,17 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from '../firebase';
-import useAuth from '../useAuth';
-import Feedback from './Feedback';
+import { auth } from '../../firebase';
+import useAuth from '../../useAuth';
+import Feedback from '../Feedback/Feedback';
 
-import CodeOutput from './CodeOutput';
-import History from './History';
+import CodeOutput from '../CodeOutput/CodeOutput';
+import History from '../History/History';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import nhaService from '../services/nhaService';
+import nhaService from '../../services/nhaService';
 import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
 
 import { toast, ToastContainer } from 'react-toastify';

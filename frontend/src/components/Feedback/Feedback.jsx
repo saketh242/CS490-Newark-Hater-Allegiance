@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { useState, useRef } from 'react';
-import StarGroup from "./StarGroup";
-import nhaService from '../services/nhaService';
-import useAuth from '../useAuth';
-import { toast } from 'react-toastify';
 import Alert from 'react-bootstrap/Alert';
+import StarGroup from "../StarGroup/StarGroup";
+import nhaService from '../../services/nhaService';
+import useAuth from '../../useAuth';
+import { toast } from 'react-toastify';
 
 const Feedback = ({ postId }) => {
     const [translation, setTranslation] = useState(-1);

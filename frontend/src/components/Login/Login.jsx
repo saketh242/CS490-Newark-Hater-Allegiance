@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import {  signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase';
-import useAuth from '../useAuth';
+import { auth } from '../../firebase';
+import useAuth from '../../useAuth';
 import {  toast } from 'react-toastify';
 
 
-import { isValidEmail, isValidPassword } from '../utils/fieldValidations';
+import { isValidEmail, isValidPassword } from '../../utils/fieldValidations';
 
-import nhaService from '../services/nhaService';
+import nhaService from '../../services/nhaService';
 
 const Login = () => {
   

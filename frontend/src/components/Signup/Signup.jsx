@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {  createUserWithEmailAndPassword  } from 'firebase/auth';
-import { isValidEmail, isValidPassword } from "../utils/fieldValidations";
-import { auth } from '../firebase';
+import { isValidEmail, isValidPassword } from "../../utils/fieldValidations";
+import { auth } from '../../firebase';
 import { ToastContainer, toast } from 'react-toastify';
-import useAuth from "../useAuth";
-import nhaService from '../services/nhaService';
+import useAuth from "../../useAuth";
+import nhaService from '../../services/nhaService';
 
 const Signup = () => {
 

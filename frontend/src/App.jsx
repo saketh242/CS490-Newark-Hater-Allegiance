@@ -4,14 +4,14 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
-import Home from './components/Home';
-import Login from './components/Login';
-import Translate from './components/Translate';
-import Docs from './components/Docs';
-import NHANav from './components/NHANav';
-import Footer from './components/Footer';
-import Signup from './components/Signup';
-import PageNotFound from "./components/PageNotFound"
+import Home from './components/Home/Home';
+import Login from './components/Login/Login';
+import Translate from './components/Translate/Translate';
+import Docs from './components/Docs/Docs';
+import NHANav from './components/NHANav/NHANav';
+import Footer from './components/Footer/Footer';
+import Signup from './components/Signup/Signup';
+import PageNotFound from "./components/PageNotFound/PageNotFound"
 import "./index.css"
 import useAuth from './useAuth';
 import axios from 'axios'
