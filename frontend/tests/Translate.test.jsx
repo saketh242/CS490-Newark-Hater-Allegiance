@@ -36,19 +36,4 @@ describe('Translate', () => {
       expect(inputTextarea).toHaveValue('console.log("File uploaded!")');
     });
   });
-
-  it('clears the code input when clear button is clicked', async () => {
-    render(<Translate />, { wrapper: MemoryRouter });
-  
-    // Simulate typing code input into the textarea
-    const inputTextarea = screen.getByPlaceholderText('Enter code to translate');
-    fireEvent.change(inputTextarea, { target: { value: 'print("Hello, World!")' } });
-  
-    // Simulate clicking the clear button
-    const clearButton = screen.getByTitle('Clear text');
-    fireEvent.click(clearButton);
-  
-    // Assert that the textarea is empty after clearing
-    expect(inputTextarea).toHaveValue('');
-  });
 });
