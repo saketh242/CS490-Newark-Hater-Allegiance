@@ -38,7 +38,7 @@ const App = () => {
           </Routes>
         </div>
         <Footer />
-        <ToastContainer
+        {/* <ToastContainer
           position="bottom-left"
           autoClose={5000}
           hideProgressBar={false}
@@ -49,7 +49,19 @@ const App = () => {
           draggable
           pauseOnHover
           theme="dark"
-          transition:Bounce />
+          transition:Bounce /> */}
+        <ToastContainer
+          position="bottom-right"
+          autoClose={2000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          toastStyle={{ backgroundColor: '#5469D4', color: '#BDC3D0' }}
+        />
       </Router>
     </>
   );
