@@ -6,6 +6,6 @@ describe('History', () => {
   it('renders the History component', () => {
     render(<History />, {wrapper: MemoryRouter})
     
-    screen.debug(); // prints out the jsx in the App component unto the command line
+    // screen.debug(); // prints out the jsx in the App component unto the command line
   })
 })

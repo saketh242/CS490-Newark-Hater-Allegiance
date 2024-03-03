@@ -6,6 +6,6 @@ describe('StarGroup', () => {
   it('renders the StarGroup component', () => {
     render(<StarGroup />, {wrapper: MemoryRouter})
     
-    screen.debug(); // prints out the jsx in the App component unto the command line
+    // screen.debug(); // prints out the jsx in the App component unto the command line
   })
 })

@@ -6,6 +6,6 @@ describe('PageNotFound', () => {
   it('renders the PageNotFound component', () => {
     render(<PageNotFound />, {wrapper: MemoryRouter})
     
-    screen.debug(); // prints out the jsx in the App component unto the command line
+    // screen.debug(); // prints out the jsx in the App component unto the command line
   })
 })
