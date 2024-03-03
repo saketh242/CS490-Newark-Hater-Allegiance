@@ -183,18 +183,6 @@ useEffect(() => {
 
   return (
     <div className="translateBody">
-      <ToastContainer
-        position="bottom-right" // Change position if needed
-        autoClose={1000} // Adjust the duration of the notification
-        hideProgressBar={true} // Show or hide the progress bar
-        newestOnTop={false} // Place newest toast on top
-        closeOnClick // Close the toast when clicked
-        rtl={false} // Right to left layout
-        pauseOnFocusLoss
-        draggable // Allow dragging to dismiss
-        pauseOnHover // Pause the autoClose timer when hovered
-        toastStyle={{ backgroundColor: '#5469D4', color: '#BDC3D0' }}
-      />
 
       <History id="history" showSidebar={showSidebar} toggleSidebar={toggleSidebar}/>
 
