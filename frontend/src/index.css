@@ -154,6 +154,14 @@
   background-color: #31304d;
 }
 
+#reviewHeader {
+  text-align:center;
+}
+
+.sectionHeader {
+  font-size: 2.5rem;
+}
+
 .reviews-flexbox {
   padding-top: 1rem;
   border-color: #5469D4;

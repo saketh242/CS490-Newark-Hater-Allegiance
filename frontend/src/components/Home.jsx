@@ -19,7 +19,7 @@ const Home = () => {
 
 
       <div className='box features'>
-        <p>Key features</p>
+        <p className="sectionHeader">Key features</p>
         <div className="features-flexbox">
           <div id='perks'><FontAwesomeIcon id='home-icon' size='9x' icon={faRobot}/><h1>Powered by GPT-3</h1></div>
           <div id='perks'><FontAwesomeIcon id='home-icon' size='9x' icon={faBoltLightning}/><h1>Faster Code Translation</h1></div>
@@ -29,7 +29,7 @@ const Home = () => {
       </div>
 
       <div className='box' id="getting-started-div">
-        <p>Getting Started</p>
+        <p id="instructionHeader" className="sectionHeader">Getting Started</p>
         <ul className='instructions'>
           <li>Copy code into the text area or upload a file</li>
           <li>Enter the source and destination languages</li>
@@ -43,7 +43,7 @@ const Home = () => {
       </div>
 
       <div className='box reviews'>
-        <p>Some of our reviews</p>
+        <p id="reviewHeader" className="sectionHeader">Some of our reviews</p>
         <div className="reviews-flexbox">
           <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
           <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
