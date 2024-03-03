@@ -34,14 +34,14 @@ class NHAService {
         }
     }
 
-    async postFeedback(user, postId, rating, ratingText) {
+    async postFeedback(user, postId, Trating, Urating, ratingText) {
         try {
             const user_id = await this.getUser(user);
             const idToken = await user.getIdToken();
             const headers = {
                 Authorization: `Bearer ${idToken}`
             };
-            const payload = { user_id: user_id._id, postId, rating, ratingText};
+            const payload = { user_id: user_id._id, postId, Trating, Urating, ratingText};
             const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}feedback/`, payload, { headers });
             return response.data;
         } catch (error) {

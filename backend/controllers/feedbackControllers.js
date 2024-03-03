@@ -18,9 +18,8 @@ const getFeedbackUser = async (uid) => {
 
 const postFeedback = async (req, res, next) => {
     try {
-        const { user_id, postId, rating, ratingText } = req.body;
+        const { user_id, postId, Trating, Urating, ratingText } = req.body;
 
-        
         const user = await getFeedbackUser(user_id);
 
         if (!user) {
@@ -29,7 +28,8 @@ const postFeedback = async (req, res, next) => {
 
         const post = {
             textMessage: ratingText,
-            rating: rating,
+            TranslationRating: Trating,
+            UXRating: Urating,
             user: user_id, 
             history: postId,
         };
@@ -44,8 +44,8 @@ const postFeedback = async (req, res, next) => {
 
 const getFeedback = async (req, res, next) => {
     try {
-        const feedbacks = await FeedBack.find({ rating: 5 }).select('-_id rating textMessage user');
-
+        const feedbacks = await FeedBack.find({ TranslationRating: 5, UXRating: 5 }).select('-_id rating textMessage user');
+        console.log(feedbacks)
         // Fetch user details for each feedback
         const feedbacksWithUserDetails = await Promise.all(
             feedbacks.map(async (feedback) => {

@@ -23,7 +23,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Translate = () => {
 
 
-  const {user, isLoading} = useAuth();
+  const {user} = useAuth();
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -295,7 +295,7 @@ useEffect(() => {
         </div>
       </div>
       <div className="feedback">
-        <Feedback />
+        <Feedback postId={postId} />
 
       </div>
     </div>
