@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from '../firebase';
-import useAuth from '../useAuth';
+import { auth } from '../../firebase';
+import useAuth from '../../useAuth';
 
 
 function NHANav() {

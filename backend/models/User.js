@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
   uid: {
     type: String,
     required: [true, "User id is required"],
+    unique: true,
   },
   createdAt: {
     type: Date,

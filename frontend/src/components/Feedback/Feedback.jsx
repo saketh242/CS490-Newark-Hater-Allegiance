@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { useState, useRef } from 'react';
-import StarGroup from "./StarGroup";
-import nhaService from '../services/nhaService';
-import useAuth from '../useAuth';
+import StarGroup from "../StarGroup/StarGroup";
+import nhaService from '../../services/nhaService';
+import useAuth from '../../useAuth';
 import { toast, ToastContainer } from 'react-toastify';
 
 const Feedback = ({ postId }) => {
