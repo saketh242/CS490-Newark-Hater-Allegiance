@@ -15,8 +15,10 @@ const Feedback = ({ postId }) => {
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const submitted = async () => {
-        if (!postId || translation === -1 || userExperience === -1) {
+        if (!postId || translation === -1 || userExperience === -1 || textBox === '') {
+            console.log(!postId);
             console.error("Error: postId, translation, or userExperience not provided.");
+            toast("Please fill out all fields.")
             return;
         } else {
             setIsSubmitted(true);
