@@ -16,7 +16,7 @@ const Home = () => {
       <div className='box'>
         <h1 className="title">NHA</h1>
         <h1 className="title title2">GPT</h1>
-        <p className='subtitle'>Easy code translation in minutes!</p>
+        <p className='subtitle'>Easy code translation in seconds!</p>
       </div>
 
 
