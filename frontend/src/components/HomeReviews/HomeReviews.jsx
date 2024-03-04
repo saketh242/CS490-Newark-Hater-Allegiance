@@ -1,5 +1,5 @@
 import React from 'react';
-import Slider from 'react-slick';
+// import Slider from 'react-slick';
 // import 'slick-carousel/slick/slick.css';
 // import 'slick-carousel/slick/slick-theme.css';
 
@@ -15,13 +15,12 @@ const HomeReviews = () => {
   return (
     <div className='boxReviews'>
       <p>Some of our reviews</p>
-      <div style={{ width: '80%', margin: 'auto' }}> {/* Example wrapper styling */}
-        <Slider {...settings}>
+      <div style={{ width: '80%', margin: 'auto' }}>
+        {/* <Slider {...settings}>
           <div>
             <p>Rating ?/5<br />Review Text<br />- User Name</p>
           </div>
-          {/* Add other carousel items */}
-        </Slider>
+        </Slider> */}
       </div>
     </div>
   );

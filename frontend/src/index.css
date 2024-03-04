@@ -354,6 +354,10 @@ select, button {
   border:1pt solid #0ac6c0;
 }
 
+.inputArea {
+  font-size: 105%;
+}
+
 .codeout{
   width: 32rem;
   height: 35rem;
@@ -475,6 +479,8 @@ select, button {
 
     .inputArea, .outputArea {
       height: 400px;
+      justify-content: center;
+      align-items: center;
     }
   }
 
@@ -775,6 +781,18 @@ select, button {
   background-color: #9CA6B5;
   border-color: #000;
   color: #000;
+}
+
+@media (width <=900px) {
+  .feedbackArea {
+    width: 400px;
+  }
+}
+
+@media (width <=600px) {
+  .feedbackArea {
+    width: 300px;
+  }
 }
 
 /* PageNotFound Component Styling */
