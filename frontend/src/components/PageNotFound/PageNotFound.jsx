@@ -1,4 +1,4 @@
-import spongebobGif from '../../memeGifs/spongebob.gif';
+import spongebobGif from '../../../memeGifs/spongebob.gif';
 
 const PageNotFound = () => {
   return (
