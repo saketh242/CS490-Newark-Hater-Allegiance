@@ -8,8 +8,8 @@ class NHAService {
             const headers = {
                 Authorization: `Bearer ${token}`
             };
-            console.log("ARE WE IN HERE?");
-            console.log(payload);
+            // console.log("ARE WE IN HERE?");
+            // console.log(payload);
             const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}users/postUser`, payload, {headers});
             return response.data;
         } catch (error) {
@@ -57,7 +57,7 @@ class NHAService {
                 Authorization: `Bearer ${idToken}`
             };
             const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}feedback/getFeedback`, { headers});
-            console.log(response.data);
+            // console.log(response.data);
             return response.data;
         } catch (error) {
             console.error('Error fetching feedback:', error);
@@ -74,7 +74,7 @@ class NHAService {
             };
             const params = { user_id: user_id._id };
             const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}history/getAllHistory`, { headers, params });
-            console.log(response.data);
+            // console.log(response.data);
             return response.data;
         } catch (error) {
             console.error('Error fetching histories:', error);
@@ -90,7 +90,7 @@ class NHAService {
                 Authorization: `Bearer ${idToken}`
             };
             const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}users/`, {headers});
-            console.log("User: ",response.data);
+            // console.log("User: ",response.data);
             return response.data;
         } catch (error) {
             console.error('Error fetching user:', error);

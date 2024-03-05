@@ -6,6 +6,6 @@ describe('Docs', () => {
   it('renders the Docs component', () => {
     render(<Docs />, {wrapper: MemoryRouter})
     
-    screen.debug(); // prints out the jsx in the App component unto the command line
+    // screen.debug(); // prints out the jsx in the App component unto the command line
   })
 })

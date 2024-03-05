@@ -23,10 +23,10 @@ const Home = () => {
       <div className='box features'>
         <p className="sectionHeader">Key features</p>
         <div className="features-flexbox">
-          <div id='perks'><FontAwesomeIcon id='home-icon' size='9x' icon={faRobot}/><h1>Powered by GPT-3</h1></div>
-          <div id='perks'><FontAwesomeIcon id='home-icon' size='9x' icon={faBoltLightning}/><h1>Faster Code Translation</h1></div>
-          <div id='perks'><FontAwesomeIcon id='home-icon' size='9x' icon={faUser}/><h1>User Friendly Interface</h1></div>
-          <div id='perks'><FontAwesomeIcon id='home-icon' size='9x' icon={faCode}/><h1>Precision Perfected Code</h1></div>
+          <div id='perks'><FontAwesomeIcon id='home-icon' size='9x' icon={faRobot}/><h1 className='icon-txt'>Powered by GPT-3</h1></div>
+          <div id='perks'><FontAwesomeIcon id='home-icon' size='9x' icon={faBoltLightning}/><h1 className='icon-txt'>Faster Code Translation</h1></div>
+          <div id='perks'><FontAwesomeIcon id='home-icon' size='9x' icon={faUser}/><h1 className='icon-txt'>User Friendly Interface</h1></div>
+          <div id='perks'><FontAwesomeIcon id='home-icon' size='9x' icon={faCode}/><h1 className='icon-txt'>Precision Perfected Code</h1></div>
         </div>
       </div>
 
@@ -44,17 +44,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className='box reviews'>
-        <p id="reviewHeader" className="sectionHeader">Some of our reviews</p>
-        <div className="reviews-flexbox">
-          <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
-          <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
-          <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
-          <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
-        </div>
-      </div>
-
-      {/* <HomeReviews /> */}
+      <HomeReviews />
 
       <div className='box'>
         <p>Designed and Developed by</p>

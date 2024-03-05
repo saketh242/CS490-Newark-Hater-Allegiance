@@ -1,28 +1,16 @@
 import React from 'react';
-// import Slider from 'react-slick';
-// import 'slick-carousel/slick/slick.css';
-// import 'slick-carousel/slick/slick-theme.css';
 
 const HomeReviews = () => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1
-  };
-
   return (
-    <div className='boxReviews'>
-      <p>Some of our reviews</p>
-      <div style={{ width: '80%', margin: 'auto' }}>
-        {/* <Slider {...settings}>
-          <div>
-            <p>Rating ?/5<br />Review Text<br />- User Name</p>
-          </div>
-        </Slider> */}
-      </div>
+    <div className='box reviews'>
+    <p id="reviewHeader" className="sectionHeader">Some of our reviews</p>
+    <div className="reviews-flexbox">
+      <div id='review'><p>⭐⭐⭐⭐⭐<br></br>I like this app<br></br>- John Doe</p></div>
+      <div id='review'><p>⭐⭐⭐⭐⭐<br></br>this is really helpful for school<br></br>- NJIT student</p></div>
+      <div id='review'><p>⭐⭐⭐⭐⭐<br></br>I hate newark<br></br>- #1NewarkHater</p></div>
+      <div id='review'><p>⭐⭐⭐⭐⭐<br></br>Accurate and reliable!<br></br>- Jane</p></div>
     </div>
+  </div>
   );
 };
 
