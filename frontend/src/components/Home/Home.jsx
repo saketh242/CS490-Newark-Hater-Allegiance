@@ -44,17 +44,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className='box reviews'>
-        <p id="reviewHeader" className="sectionHeader">Some of our reviews</p>
-        <div className="reviews-flexbox">
-          <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
-          <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
-          <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
-          <div id='review'><p>Rating ?/5<br></br>Review Text<br></br>- User Name</p></div>
-        </div>
-      </div>
-
-      {/* <HomeReviews /> */}
+      <HomeReviews />
 
       <div className='box'>
         <p>Designed and Developed by</p>
