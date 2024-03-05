@@ -11,8 +11,8 @@ const getFeedbackUser = async (uid) => {
 
         return { firstName: user.firstName, lastName: user.lastName };
     } catch (error) {
-        console.error('Error fetching user by uid:', error);
-        throw error;
+        console.error('Error fetching user by uid'/*, error*/);
+        return null;
     }
 };
 
