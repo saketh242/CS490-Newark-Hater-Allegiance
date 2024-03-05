@@ -6,6 +6,6 @@ describe('CodeOutput', () => {
   it('renders the codeoutput component', () => {
     render(<CodeOutput />, {wrapper: MemoryRouter})
     
-    screen.debug(); // prints out the jsx in the App component unto the command line
+    // screen.debug(); // prints out the jsx in the App component unto the command line
   })
 })
