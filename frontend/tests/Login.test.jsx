@@ -1,22 +1,12 @@
-import { render, screen } from '@testing-library/react'
-import {vi} from "vitest"
-import Login from '../src/components/Login/Login'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { vi } from 'vitest';
+import Login from '../src/components/Login/Login'; // Update the import path accordingly
 import { MemoryRouter } from 'react-router-dom';
-import useAuth from '../src/useAuth';
-
-/*
-vi.mock('../src/useAuth', {
-  useAuth: () => ({
-    user: {firstname: "cram"},
-    isLoading: false, // Set isLoading to false to simulate that the authentication has already been checked
-  }),
-});
-*/
 
 describe('Login', () => {
-  it('renders the login component', () => {
+  it('renders the login component', async () => {
     render(<Login />, {wrapper: MemoryRouter})
     
-    screen.debug(); // prints out the jsx in the App component unto the command line
+    screen.debug(); // prints out the JSX in the Login component to the command line
   })
 })

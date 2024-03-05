@@ -1,36 +1,53 @@
-require('dotenv').config()
+// app.js
 const express = require("express");
-const cors = require("cors")
-const app = express()
+const cors = require("cors");
+const app = express();
 const mongoose = require("mongoose");
-const userRouter = require("./routes/userRoutes")
-const historyRouter = require("./routes/historyRoutes")
-const feedbackRouter = require("./routes/feedbackRoutes")
-const decodeToken = require("./middleware/index")
+const userRouter = require("./routes/userRoutes");
+const historyRouter = require("./routes/historyRoutes");
+const feedbackRouter = require("./routes/feedbackRoutes");
+const decodeToken = require("./middleware/index");
 
 app.use(express.json());
-app.use(cors()); // Corrected line
+app.use(cors());
+
 mongoose.connect(process.env.DATABASE)
-    .then(() => {
-        console.log("MongoDB connection successful :)")
-    }).catch((err) => {
-        console.log(err)
-        console.log("MongoDB connection unsuccessful :(")
-    })
+  .then(() => {
+    console.log("MongoDB connection successful :)");
+    // Start the server only if MongoDB connection is successful
+    const server = app.listen(3000, () => {
+      console.log("Server Started on port 3000...");
+    });
+
+    // Handle termination signals and close MongoDB connection
+    process.on('SIGINT', () => {
+      mongoose.connection.close(() => {
+        console.log('MongoDB connection closed through app termination');
+        server.close(() => {
+          console.log('Server closed');
+          process.exit(0);
+        });
+      });
+    });
+  })
+  .catch((err) => {
+    console.error("MongoDB connection unsuccessful :(", err);
+  });
 
 app.use("/users", decodeToken, userRouter);
 app.use("/history", decodeToken, historyRouter);
 app.use("/feedback", feedbackRouter);
 
 app.get("/test", (req, res) => {
-    // console.log(req)
-    res.json({message:"This is test for auth"})
-})
+    res.status(200).json({ message: "This is a test for auth" });
+});
+
+app.get("/", (req, res) => {
+  res.status(200).send("Welcome to NHA CS490!")
+});
 
 app.get("*", (req, res, next) => {
-    res.send("Welcome to NHA CS490 project!");
-})
+    res.status(404).send("Not Found");
+});
 
-app.listen(3000, (req, res, next) => {
-    console.log("Server Started on port 3000...");
-})
+module.exports = app;
