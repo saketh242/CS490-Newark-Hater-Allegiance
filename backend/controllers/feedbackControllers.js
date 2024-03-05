@@ -6,7 +6,7 @@ const getFeedbackUser = async (uid) => {
         const user = await User.findOne({ _id: uid });
 
         if (!user) {
-            return null; 
+            return null;
         }
 
         return { firstName: user.firstName, lastName: user.lastName };
@@ -16,9 +16,34 @@ const getFeedbackUser = async (uid) => {
     }
 };
 
+const validateFeedbackInput = (user_id, postId, Trating, Urating, ratingText) => {
+    if (!user_id || !postId || !Trating || !Urating || !ratingText) {
+        throw new Error('Missing required fields for feedback');
+    }
+
+    // Check if Trating and Urating are integers
+    if (!Number.isInteger(Trating) || !Number.isInteger(Urating)) {
+        throw new Error('Trating and Urating must be integer values');
+    }
+    
+    if (Trating < 1 || Trating > 5 || Urating < 1 || Urating > 5) {
+        throw new Error('Invalid rating values. Ratings should be between 1 and 5');
+    }
+
+    return true;
+};
+
+
 const postFeedback = async (req, res, next) => {
     try {
         const { user_id, postId, Trating, Urating, ratingText } = req.body;
+
+        // Validate input
+        try {
+            validateFeedbackInput(user_id, postId, Trating, Urating, ratingText);
+        } catch (validationError) {
+            return res.status(400).json({ error: validationError.message });
+        }
 
         const user = await getFeedbackUser(user_id);
 
@@ -30,7 +55,7 @@ const postFeedback = async (req, res, next) => {
             textMessage: ratingText,
             TranslationRating: Trating,
             UXRating: Urating,
-            user: user_id, 
+            user: user_id,
             history: postId,
         };
 
@@ -45,7 +70,7 @@ const postFeedback = async (req, res, next) => {
 const getFeedback = async (req, res, next) => {
     try {
         const feedbacks = await FeedBack.find({ TranslationRating: 5, UXRating: 5 }).select('-_id rating textMessage user');
-        console.log(feedbacks)
+        
         // Fetch user details for each feedback
         const feedbacksWithUserDetails = await Promise.all(
             feedbacks.map(async (feedback) => {
@@ -55,7 +80,7 @@ const getFeedback = async (req, res, next) => {
         );
 
         console.log("All feedbacks with rating 5 and user details:", feedbacksWithUserDetails);
-        res.send(feedbacksWithUserDetails);
+        res.status(200).send(feedbacksWithUserDetails);
     } catch (error) {
         console.error("Error fetching feedbacks:", error);
         res.status(500).send("Internal Server Error");

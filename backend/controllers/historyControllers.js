@@ -3,6 +3,9 @@ const History = require("../models/History")
 const getAllHistory = async (req, res, next) => {
     try {
         const { user_id } = req.query;
+        if (!user_id) {
+            return res.status(400).json({ error: 'Missing required field to get history' });
+        }
         const histories = await History.find({ user: user_id })
                                         .select('-_id Desired_language Source_language original_code converted_code createdAt')
                                         .sort({ createdAt: -1 });
@@ -14,9 +17,14 @@ const getAllHistory = async (req, res, next) => {
     }
 };
 
+// Unused right now, will be used later when fully implementing history
 const getPost = async (req, res, next) => {
     try {
         const { postId } = req.params;
+
+        if (!postId) {
+            return res.status(400).json({ error: 'Missing required field to get post' });
+        }
         const post = await History.findById(postId);
 
         if (!post) {
@@ -34,6 +42,10 @@ const getPost = async (req, res, next) => {
 const postHistory = async(req, res, next) => {
     try {
         const { user_id, inputCode, translateCode, sourceLanguage, desiredLanguage } = req.body;
+
+        if (!user_id || !inputCode || !translateCode || !sourceLanguage || !desiredLanguage) {
+            return res.status(400).json({ error: 'Missing required fields to post' });
+        }
         const post = {
             original_code: inputCode,
             Source_language: sourceLanguage,
