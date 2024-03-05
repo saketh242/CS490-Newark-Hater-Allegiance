@@ -37,6 +37,8 @@ const Login = () => {
     .then(async (userCredential) => {
         const user = userCredential.user;
         const userDetails = await nhaService.getUser(user);
+        const token = await user.getIdToken();
+        console.log(token)
 
         // userDetails should contain the first name and last name
         const { firstName, lastName } = userDetails;

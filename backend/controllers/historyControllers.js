@@ -54,7 +54,11 @@ const postHistory = async(req, res, next) => {
             user: user_id
         }
         const inserted = await History.create(post);
-        res.status(200).send(inserted._id);
+        const obj = {
+            insertedId: inserted._id,
+            message: "Translation inserted successfully"
+        }
+        res.status(200).send(obj);
     } catch(error) {
         console.error("Error fetching all users:", error);
         res.status(500).send("Internal Server Error");
