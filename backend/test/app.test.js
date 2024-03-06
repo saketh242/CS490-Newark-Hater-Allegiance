@@ -60,7 +60,7 @@ describe('API RESPONSES ', () => {
         done();
       });
   });
-  /*
+  
   it('should POST a new user and return 200 with success message /users/postUser', (done) => {
     const newUser = {
       firstName: 'John',
@@ -82,7 +82,7 @@ describe('API RESPONSES ', () => {
         done();
       });
   });
-  */
+  
   it('POST: should return 409 if user already exists /users/postUser', (done) => {
     const existingUser = {
       firstName: 'Existing',
