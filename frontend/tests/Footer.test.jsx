@@ -6,6 +6,6 @@ describe('Footer', () => {
   it('renders the Footer component', () => {
     render(<Footer />, {wrapper: MemoryRouter})
     
-    screen.debug(); // prints out the jsx in the App component unto the command line
+    // screen.debug(); // prints out the jsx in the App component unto the command line
   })
 })

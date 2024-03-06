@@ -6,6 +6,6 @@ describe('Feedback', () => {
   it('renders the Feedback component', () => {
     render(<Feedback />, {wrapper: MemoryRouter})
     
-    screen.debug(); // prints out the jsx in the App component unto the command line
+    // screen.debug(); // prints out the jsx in the App component unto the command line
   })
 })

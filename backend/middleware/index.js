@@ -17,7 +17,7 @@ const decodeToken = async (req, res, next) => {
         const decodeValue = await admin.auth().verifyIdToken(token);
 
         if (decodeValue) {
-            // if the token is valid uid is paesed with the req object
+            // if the token is valid uid is passed with the req object
             req.uid = decodeValue.uid;
             return next();
         } else {
