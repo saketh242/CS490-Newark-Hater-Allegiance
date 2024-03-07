@@ -36,8 +36,8 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
         const user = userCredential.user;
-        const idToken = userCredential.user.getIdToken();
-        console.log("ID TOKEN IS: ", idToken)
+        //const idToken = userCredential.user.getIdToken();
+        //console.log("ID TOKEN IS: ", idToken)
         const userDetails = await nhaService.getUser(user);
 
         // userDetails should contain the first name and last name
