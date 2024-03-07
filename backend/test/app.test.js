@@ -1,7 +1,7 @@
 let chai, expect;
 
 before(async () => {
-  // Import chai dynamically inside an async function
+  // Import chai
   const chaiModule = await import('chai');
   chai = chaiModule.default;
   expect = chaiModule.expect;
@@ -20,7 +20,7 @@ describe('API RESPONSES ', () => {
   let server;
 
   before(async () => {
-    // Start the server after generating the test token
+    // Start the server 
     server = app.listen(3001);
   });
 
@@ -98,7 +98,7 @@ describe('API RESPONSES ', () => {
       .end((err, res) => {
         if (err) return done(err);
 
-        // Assertions for the response body
+        // Making sure to show that the user already exists
         expect(res.body).to.have.property('error').equal('User already exists');
 
         done();
@@ -120,7 +120,7 @@ describe('API RESPONSES ', () => {
       .end((err, res) => {
         if (err) return done(err);
 
-        // Assertions for the response body
+        // Make sure that if the data is not validated then error
         expect(res.body).to.have.property('error').that.includes('Invalid input data');
 
         done();
@@ -141,10 +141,10 @@ describe('API RESPONSES ', () => {
       .end((err, res) => {
         if (err) return done(err);
 
-        // Assuming res.body is an array of history objects
+        
         const histories = res.body;
 
-        // Example assertions
+        
         expect(histories).to.be.an('array');
         expect(histories).to.have.lengthOf.at.least(1);
 
@@ -178,9 +178,9 @@ describe('API RESPONSES ', () => {
       .end((err, res) => {
         if (err) return done(err);
 
-        // Assertions for the response body
-        expect(res.body).to.be.a('string'); // Assuming the inserted ID is a string
-        expect(res.body).to.have.lengthOf.at.least(1); // Assuming the ID has a non-zero length
+        
+        expect(res.body).to.be.a('string');
+        expect(res.body).to.have.lengthOf.at.least(1); 
 
         done();
       });
@@ -203,7 +203,7 @@ describe('API RESPONSES ', () => {
       .end((err, res) => {
         if (err) return done(err);
 
-        // Assertions for the response body
+        // Making sure that the invalid fields throw error
         expect(res.body).to.have.property('error').that.includes('Missing required fields to post');
 
         done();
@@ -217,10 +217,10 @@ describe('API RESPONSES ', () => {
       .end((err, res) => {
         if (err) return done(err);
 
-        // Assuming res.body is an array of feedback objects
+        
         const feedbacks = res.body;
 
-        // Example assertions
+        
         expect(feedbacks).to.be.an('array');
         expect(feedbacks).to.have.lengthOf.at.least(1);
 
@@ -254,7 +254,7 @@ describe('API RESPONSES ', () => {
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
-        // Assertions for the response body
+        // Show that the feedback is inserted
         expect(res.text).to.equal('Feedback inserted!');
 
         done();
@@ -278,7 +278,7 @@ describe('API RESPONSES ', () => {
       .end((err, res) => {
         if (err) return done(err);
 
-        // Assertions for the response body
+        // Test if user is not found
         expect(res.body).to.have.property('error').equal('User not found');
 
         done();
@@ -302,7 +302,7 @@ describe('API RESPONSES ', () => {
       .end((err, res) => {
         if (err) return done(err);
 
-        // Assertions for the response body
+        // Type errors here
         expect(res.body).to.have.property('error').equal('Trating and Urating must be integer values');
 
         done();
@@ -325,7 +325,7 @@ describe('API RESPONSES ', () => {
       .end((err, res) => {
         if (err) return done(err);
 
-        // Assertions for the response body
+        // If the data dosen't contain the correct data
         expect(res.body).to.have.property('error').equal('Missing required fields for feedback');
 
         done();
@@ -349,7 +349,7 @@ describe('API RESPONSES ', () => {
       .end((err, res) => {
         if (err) return done(err);
 
-        // Assertions for the response body
+        // Out of the bounds error
         expect(res.body).to.have.property('error').equal('Invalid rating values. Ratings should be between 1 and 5');
 
         done();

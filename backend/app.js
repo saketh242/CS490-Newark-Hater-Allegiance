@@ -15,8 +15,8 @@ mongoose.connect(process.env.DATABASE)
   .then(() => {
     console.log("MongoDB connection successful :)");
     // Start the server only if MongoDB connection is successful
-    const server = app.listen(3000, () => {
-      console.log("Server Started on port 3000...");
+    const server = app.listen(8000, () => {
+      console.log("Server Started on port 8000...");
     });
 
     // Handle termination signals and close MongoDB connection
