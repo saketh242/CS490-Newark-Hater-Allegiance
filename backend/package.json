@@ -9,6 +9,7 @@
   "author": "Saketh Puramsetti, Ausberto Colon Jr, John Castro, Karam Assaf, Medina Dzhatdoyev",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
