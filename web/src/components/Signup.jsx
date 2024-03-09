@@ -47,7 +47,7 @@ const Signup = () => {
           .then(async (userCredential) => {
             const user = userCredential.user;
             const idToken = await user.getIdToken();
-            nhaService.postUser(firstName, lastName, email, idToken)
+            //nhaService.postUser(firstName, lastName, email, idToken)
             console.log(idToken);
             const msg = () => toast(`Welcome ${firstName} ${lastName}`);
             msg()

@@ -11,8 +11,17 @@
 # production
 /build
 
+# Ignore firebase.js in frontend
+web/src/firebase.js
+
+# Ignore serviceAccount.js in backend
+backend/config/serviceAccount.js
+
 # misc
 .DS_Store
+/.env
+/web/.env
+/backend/.env
 .env.local
 .env.development.local
 .env.test.local
