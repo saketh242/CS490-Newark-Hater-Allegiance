@@ -1,7 +1,7 @@
 const User = require("../models/User")
 
 const validateUserInput = (firstName, lastName, email, uid) => {
-    const nameRegex = /^[a-zA-Z]+$/;
+    const nameRegex = /^[a-zA-Z\s]+$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!nameRegex.test(firstName) || !nameRegex.test(lastName) || !emailRegex.test(email) || !uid) {

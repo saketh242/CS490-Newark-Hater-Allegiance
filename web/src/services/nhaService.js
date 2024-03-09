@@ -8,13 +8,10 @@ class NHAService {
             const headers = {
                 Authorization: `Bearer ${token}`
             };
-            // console.log("ARE WE IN HERE?");
-            // console.log(payload);
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}users/postUser`, payload, {headers});
             return response.data;
         } catch (error) {
             console.error('Error posting user: ', error);
-            throw error;
         }
     }
 

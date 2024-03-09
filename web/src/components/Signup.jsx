@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import {  createUserWithEmailAndPassword  } from 'firebase/auth';
+import {  createUserWithEmailAndPassword, setPersistence, browserSessionPersistence } from 'firebase/auth';
 import { isValidEmail, isValidPassword } from "../utils/fieldValidations";
 import { auth } from '../firebase';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import useAuth from "../useAuth";
 import nhaService from '../services/nhaService';
 
@@ -17,6 +17,12 @@ const Signup = () => {
     const [password, setPassword] = useState("")
     const [password2, setPassword2] = useState("")
     const [error, setError] = useState(null)
+    const [isChecked, setIsChecked] = useState(false);
+
+
+    const handleCheckboxChange = () => {
+      setIsChecked(!isChecked);
+    }
 
     const handleSignup = async (e) => {
 
@@ -42,25 +48,30 @@ const Signup = () => {
           return
         }
 
+        try {
+          // setting persistence here
+          if (!isChecked) {
+            await setPersistence(auth, browserSessionPersistence);
+          }
+        
+
        
-        await createUserWithEmailAndPassword(auth, email, password)
-          .then(async (userCredential) => {
-            const user = userCredential.user;
-            const idToken = await user.getIdToken();
-            //nhaService.postUser(firstName, lastName, email, idToken)
-            console.log(idToken);
-            const msg = () => toast(`Welcome ${firstName} ${lastName}`);
-            msg()
-            navigate("/")
-
-          })
-          .catch((err) => {
-            if (err.message === "Firebase: Error (auth/email-already-in-use)."){
-              setError("Email address already registered!")
-            }
-            console.log(err.message)
-
-          })
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+        const user = userCredential.user;
+        const idToken = await user.getIdToken();
+        nhaService.postUser(firstName, lastName, email, idToken)
+        const msg = () => toast(`Welcome ${firstName} ${lastName}`);
+        msg()
+        navigate("/")
+        
+        } catch(e){
+          if (e.message === "Firebase: Error (auth/email-already-in-use)."){
+            setError("Email address already registered!")
+          }
+          console.log(e.message)
+        }
+          
+          
 
     }
 
@@ -119,6 +130,12 @@ const Signup = () => {
         style={{ borderColor: error ? 'red' : '#0ac6c0',
                       transition: 'border-color 0.3s ease', }}
         />
+        <p className='check-box-p'>Remember Me? <input
+            type="checkbox"
+            id="myCheckbox"
+            checked={isChecked}
+            onChange={handleCheckboxChange}
+          /></p>
         <button type="submit" className='login-btn' onClick={handleSignup}>Signup</button>
         <div className='signup-msg'>
           <p>Already have an account?</p>

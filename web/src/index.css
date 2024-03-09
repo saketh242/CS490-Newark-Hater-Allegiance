@@ -641,6 +641,20 @@ select, button {
   padding-top: 4rem;
 }
 
+.check-box-p {
+  color: #9CA6B5;
+  font-family: "Kanit", sans-serif;
+  margin: 1rem 0 0 0;
+  font-size: 1.3rem;
+}
+
+input[type="checkbox"]{
+  height: 1.2rem;
+  width: 1.5rem;
+  background-color: #5469D4;
+  margin-left: 0.7rem;
+}
+
 
 .login-heading {
   font-family: "Kanit", sans-serif;
