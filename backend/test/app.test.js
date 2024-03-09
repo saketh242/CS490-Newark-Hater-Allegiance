@@ -1,20 +1,59 @@
+
+const axios = require('axios');
+const request = require('supertest');
+const app = require('../app');
+
 let chai, expect;
+let testToken;
+let postUserToken;
+let user_id = process.env.TESTING_USER_ID;
+let post_id = process.env.TESTING_POST_ID;
+const apiKey = process.env.FIREBASE_API_KEY;
+const signInEndpoint = process.env.FIREBASE_SIGNIN_ENDPOINT;
+
+const signInWithEmailAndPassword = async (email, password) => {
+  const requestBody = {
+    email: email,
+    password: password,
+    returnSecureToken: true,
+  };
+
+  try {
+    const response = await axios.post(`${signInEndpoint}?key=${apiKey}`, requestBody);
+    const responseData = response.data;
+
+    const idToken = responseData.idToken;
+
+    return idToken;
+  } catch (error) {
+    console.error('Error signing in:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
+const email = process.env.TESTING_EXISTING_USER_EMAIL;
+const password = process.env.TESTING_EXISTING_USER_PASSWORD;
+
+const emailN = process.env.TESTING_NEW_USER_EMAIL;
+const passwordN = process.env.TESTING_NEW_USER_PASSWORD;
 
 before(async () => {
   // Import chai
   const chaiModule = await import('chai');
   chai = chaiModule.default;
   expect = chaiModule.expect;
+
+  // Use Promise.all to wait for both sign-ins to complete
+  await Promise.all([
+    signInWithEmailAndPassword(email, password).then((token) => {
+      testToken = token;
+    }),
+    signInWithEmailAndPassword(emailN, passwordN).then((token) => {
+      postUserToken = token;
+    }),
+  ]);
 });
-const request = require('supertest');
-const app = require('../app');
 
-
-let testToken = process.env.TESTING_TOKEN_KEY;
-let postTestToken = process.env.TESTING_POST_TOKEN_KEY;
-let invalidTestToken = process.env.TESTING_POST_INVALID_KEY;
-let user_id = process.env.TESTING_USER_ID;
-let post_id = process.env.TESTING_POST_ID;
 
 describe('API RESPONSES ', () => {
   let server;
@@ -60,29 +99,29 @@ describe('API RESPONSES ', () => {
         done();
       });
   });
-  
+
   it('should POST a new user and return 200 with success message /users/postUser', (done) => {
     const newUser = {
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
+      firstName: 'Test',
+      lastName: 'User',
+      email: 'test@test.com',
     };
-  
+
     request(app)
       .post('/users/postUser')
       .send(newUser)
-      .set('Authorization', `Bearer ${postTestToken}`)
+      .set('Authorization', `Bearer ${postUserToken}`)
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
-  
+
         // Assertions for the response body
         expect(res.body).to.have.property('message').equal('User information received successfully');
-  
+
         done();
       });
   });
-  
+
   it('POST: should return 409 if user already exists /users/postUser', (done) => {
     const existingUser = {
       firstName: 'Existing',
@@ -93,7 +132,7 @@ describe('API RESPONSES ', () => {
     request(app)
       .post('/users/postUser')
       .send(existingUser)
-      .set('Authorization', `Bearer ${invalidTestToken}`)
+      .set('Authorization', `Bearer ${testToken}`)
       .expect(409)
       .end((err, res) => {
         if (err) return done(err);
@@ -111,11 +150,10 @@ describe('API RESPONSES ', () => {
       lastName: '1391',
       email: '@test.com',
     };
-
     request(app)
       .post('/users/postUser')
       .send(invalidUser)
-      .set('Authorization', `Bearer ${invalidTestToken}`)
+      .set('Authorization', `Bearer ${testToken}`)
       .expect(400)
       .end((err, res) => {
         if (err) return done(err);
@@ -141,10 +179,10 @@ describe('API RESPONSES ', () => {
       .end((err, res) => {
         if (err) return done(err);
 
-        
+
         const histories = res.body;
 
-        
+
         expect(histories).to.be.an('array');
         expect(histories).to.have.lengthOf.at.least(1);
 
@@ -178,9 +216,9 @@ describe('API RESPONSES ', () => {
       .end((err, res) => {
         if (err) return done(err);
 
-        
+
         expect(res.body).to.be.a('string');
-        expect(res.body).to.have.lengthOf.at.least(1); 
+        expect(res.body).to.have.lengthOf.at.least(1);
 
         done();
       });
@@ -216,11 +254,9 @@ describe('API RESPONSES ', () => {
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
-
-        
         const feedbacks = res.body;
 
-        
+
         expect(feedbacks).to.be.an('array');
         expect(feedbacks).to.have.lengthOf.at.least(1);
 
