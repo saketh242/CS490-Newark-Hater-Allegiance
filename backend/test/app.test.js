@@ -126,7 +126,7 @@ describe('API RESPONSES ', () => {
     const existingUser = {
       firstName: 'Existing',
       lastName: 'User',
-      email: 'test@test.com',
+      email: 'beep@beep.com',
     };
 
     request(app)

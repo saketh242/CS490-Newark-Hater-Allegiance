@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const userRouter = require("./routes/userRoutes");
 const historyRouter = require("./routes/historyRoutes");
 const feedbackRouter = require("./routes/feedbackRoutes");
+const chatGptRouter = require("./routes/chatGptRouter");
 const decodeToken = require("./middleware/index");
 
 app.use(express.json());
@@ -37,10 +38,12 @@ mongoose.connect(process.env.DATABASE)
 app.use("/users", decodeToken, userRouter);
 app.use("/history", decodeToken, historyRouter);
 app.use("/feedback", feedbackRouter);
+app.use("/openAI", decodeToken, chatGptRouter)
 
 app.get("/test", (req, res) => {
     res.status(200).json({ message: "This is a test for auth" });
 });
+
 
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to NHA CS490!")

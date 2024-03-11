@@ -54,24 +54,24 @@ const Translate = () => {
     setDesiredLanguage(e.target.value);
   };
 
-  const translateCode = () => {
+  const translateCode = async () => {
     if (!inputCode.trim()) {
       setError('Input code cannot be empty');
       return;
     }
-
+  
     setError(''); // Reset error message
     setTranslatedCode('');
     setLoading(true); // Set loading state to true before API call
   
-    // Simulating API call with setTimeout ... replace later
-    setTimeout(() => {
-      setTranslatedCode(inputCode); // Dummy translation for now
+      const response = await nhaService.postPrompt(user, sourceLanguage, desiredLanguage, JSON.stringify(inputCode));
+      const translatedCodeResponse = response.message;
+  
+      setTranslatedCode(translatedCodeResponse); // Update translated code
       setLoading(false); // Set loading state to false after receiving response
       setTranslationDone(true);
       toast(`Thanks for translating! Rate this translation below!`);
       setUserTriggeredChange(true);
-    }, 2000); // Simulating 2 seconds delay for API response
   };
   
 

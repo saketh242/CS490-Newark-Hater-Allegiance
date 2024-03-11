@@ -15,6 +15,21 @@ class NHAService {
         }
     }
 
+    async postPrompt(user, sourceLanguage, desiredLanguage, inputCode) {
+        try {
+            const idToken = await user.getIdToken();
+            const headers = {
+                Authorization: `Bearer ${idToken}`
+            };
+            const payload = {inputCode, sourceLanguage, desiredLanguage };
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}openAI/postTranslation`, payload, { headers });
+            return response.data;
+        } catch (error) {
+            console.error('Error posting history:', error);
+            throw error;
+        }
+    }
+
     async postHistory(user, inputCode, translateCode, sourceLanguage, desiredLanguage) {
         try {
             const user_id = await this.getUser(user);
