@@ -25,8 +25,8 @@ class NHAService {
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}openAI/postTranslation`, payload, { headers });
             return response.data;
         } catch (error) {
-            console.error('Error posting history:', error);
-            throw error;
+            console.log('Error calling api:', error);
+            return error.response.data
         }
     }
 
