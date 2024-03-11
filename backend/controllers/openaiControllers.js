@@ -15,7 +15,7 @@ const postPrompt = async (req, res, next) => {
                 { role: "user", content: prompt }
             ],
         });
-
+        //console.log(response)
         if (!(response && response.choices && response.choices.length > 0)) {
             throw new Error("Unexpected response from OpenAI API");
         }
@@ -32,14 +32,14 @@ const postPrompt = async (req, res, next) => {
             message: code,
         });
     } catch (error) {
-        console.log(error.message);
+        console.log("Error message: ", error);
 
-        if (error.response && error.response.status === 429) {
+        if (error.status === 429) {
             return res.status(429).json({
                 success: false,
                 message: "API rate limit exceeded. Please try again later.",
             });
-        } else if (error.response && error.response.status === 503) {
+        } else if (error.status === 503) {
             return res.status(503).json({
                 success: false,
                 message: "OpenAI API temporarily unavailable. Please try again later.",
@@ -47,7 +47,7 @@ const postPrompt = async (req, res, next) => {
         } else {
             return res.status(500).json({
                 success: false,
-                message: "An error occurred while processing your request.",
+                message: "An error occurred while processing your request. Please see API availability or try again.",
             });
         }
     }
