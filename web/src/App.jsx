@@ -12,6 +12,7 @@ import NHANav from './components/NHANav';
 import Footer from './components/Footer';
 import Signup from './components/Signup';
 import PageNotFound from "./components/PageNotFound"
+import ChangePassword from './components/ChangePassword';
 import "./index.css"
 import useAuth from './useAuth';
 import axios from 'axios'
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="/translate" element={user ? <Translate /> : <Navigate to="/login"/>} />
             <Route path="/docs" element={<Docs />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/changePassword" element={user ? <ChangePassword /> : <Navigate to="/login"/>} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </div>
