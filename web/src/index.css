@@ -989,4 +989,36 @@ ChangePassword Component Styling */
   margin: 1rem 0;
 }
 
+/* Delete Account Component Styling */
+.delete-account-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.delete-heading {
+  font-family: "Kanit", sans-serif;
+  margin: 1.5rem;
+  color: #9CA6B5;
+  font-size: 2rem;
+}
+
+.delete-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.delete-form button {
+  width: 65%;
+  margin: 1.3rem auto;
+  
+}
+
+.delete-form button:hover {
+  background-color: #7D0A0A;
+  color: black;
+  
+}
 
