@@ -59,7 +59,7 @@ const Translate = () => {
       setError('Input code cannot be empty');
       return;
     }
-  
+    
     setError(''); // Reset error message
     setTranslatedCode('');
     setLoading(true); // Set loading state to true before API call
@@ -206,7 +206,7 @@ useEffect(() => {
 
         <div className="conversionArrow">
           {/* Arrow icon button */}
-          <button id="translationButton" onClick={translateCode}>
+          <button id="translationButton" onClick={translateCode} disabled={loading}>
             <FontAwesomeIcon id="icon" icon={faArrowRightLong} size="7x" />
           </button>
           <p>Convert</p>
