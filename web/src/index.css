@@ -644,15 +644,15 @@ select, button {
 .check-box-p {
   color: #9CA6B5;
   font-family: "Kanit", sans-serif;
-  margin: 1rem 0 0 0;
-  font-size: 1.3rem;
+  margin: 0;
+  font-size: 1.2rem;
 }
 
 input[type="checkbox"]{
-  height: 1.2rem;
+  height: 1rem;
   width: 1.5rem;
   background-color: #5469D4;
-  margin-left: 0.7rem;
+  margin-left: 0.5rem;
 }
 
 
@@ -692,7 +692,7 @@ input[type="checkbox"]{
  padding: 0.4rem 1.7rem 0.4rem 1.7rem;
  font-size: 1.4rem;
  border-radius: 5px;
- margin-top: 2rem;
+ margin-top: 1rem;
 }
 
 .login-btn:hover {
@@ -703,7 +703,7 @@ input[type="checkbox"]{
 
 .signup-msg {
   display: flex;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   justify-content: center;
   align-items: center;
 }
@@ -946,3 +946,47 @@ input[type="checkbox"]{
     height: 15rem;
   }
 }
+
+/* 
+ChangePassword Component Styling */
+.chnage-password-heading {
+  font-family: "Kanit", sans-serif;
+  color: #9CA6B5;
+  font-size: 2rem;
+  margin: 2rem;
+}
+
+.change-password-form {
+  flex-direction: column;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  
+}
+
+.change-password-form button{
+  width: 68%;
+  margin: 1rem auto;
+
+}
+
+.change-password-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.password-change {
+  background-color: #23262F;
+  padding: 0.5rem;
+  color:#9CA6B5;
+  font-size: 1.3rem;
+  width: 20rem;
+  border: 1pt solid #9CA6B5;
+  border-radius: 5px;
+  margin: 1rem 0;
+}
+
+

@@ -28,13 +28,13 @@ const Login = () => {
 
     e.preventDefault();
 
-    if (email === "" || password == "") {
-      setError("Email and password required!");
+    if (!isValidEmail(email)) {
+      setError("Please enter a valid email!");
       return
     }
 
-    if (!isValidEmail(email)) {
-      setError("Please enter a valid email!");
+    else if (email == "" || password == "") {
+      setError("Email and password required!");
       return
     }
 

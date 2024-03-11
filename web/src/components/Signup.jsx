@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {  createUserWithEmailAndPassword, setPersistence, browserSessionPersistence } from 'firebase/auth';
-import { isValidEmail, isValidPassword } from "../utils/fieldValidations";
+import { isValidEmail, isValidPassword, isValidName } from "../utils/fieldValidations";
 import { auth } from '../firebase';
 import { toast } from 'react-toastify';
 import useAuth from "../useAuth";
@@ -33,17 +33,22 @@ const Signup = () => {
           return
         }
 
-        if (!isValidEmail(email)){
+        else if (!isValidName(firstName) || !isValidName(lastName)){
+          setError("Please enter a valid name")
+          return 
+        }
+
+        else if (!isValidEmail(email)){
           setError("Please enter a valid email!")
           return
         }
 
-        if (password != password2){
+        else if (password != password2){
           setError("Passwords are different!")
           return
         }
 
-        if (!isValidPassword(password)){
+        else if (!isValidPassword(password)){
           setError("Password should be 8 characters long, one lowercase, one uppercase, one digit")
           return
         }
@@ -53,9 +58,7 @@ const Signup = () => {
           if (!isChecked) {
             await setPersistence(auth, browserSessionPersistence);
           }
-        
-
-       
+  
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         const user = userCredential.user;
         const idToken = await user.getIdToken();

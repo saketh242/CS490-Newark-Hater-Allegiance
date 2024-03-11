@@ -4,6 +4,13 @@ export const isValidEmail = (email) => {
     return emailRegex.test(email);
 }
 
+// a function to check if the name is valid
+export const isValidName = (name) => {
+    const nameRegex = /^[a-zA-Z\s]+$/;
+    return nameRegex.test(name)
+
+}
+
 // a function to check if a passowrd entered is valid
 // password is minimum 8 characters long
 // atleast one uppercase
