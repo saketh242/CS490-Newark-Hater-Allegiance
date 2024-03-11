@@ -38,7 +38,7 @@ mongoose.connect(process.env.DATABASE)
 app.use("/users", decodeToken, userRouter);
 app.use("/history", decodeToken, historyRouter);
 app.use("/feedback", feedbackRouter);
-app.use("/openAI", chatGptRouter)
+app.use("/openAI", decodeToken, chatGptRouter)
 
 app.get("/test", (req, res) => {
     res.status(200).json({ message: "This is a test for auth" });
