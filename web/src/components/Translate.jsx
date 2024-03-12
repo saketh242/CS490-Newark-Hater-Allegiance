@@ -19,6 +19,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { sanitizeCode } from '../utils/codeUtils';
+
 
 const Translate = () => {
 
@@ -63,10 +65,14 @@ const Translate = () => {
     setError(''); // Reset error message
     setTranslatedCode('');
     setLoading(true); // Set loading state to true before API call
-  
-      const response = await nhaService.postPrompt(user, sourceLanguage, desiredLanguage, JSON.stringify(inputCode));
-      const translatedCodeResponse = response.message;
-  
+
+      console.log(inputCode);
+      const sanitized = sanitizeCode(inputCode, sourceLanguage);
+      console.log(sanitized);
+      //const response = await nhaService.postPrompt(user, sourceLanguage, desiredLanguage, JSON.stringify(sanitized));
+      //const translatedCodeResponse = response.message;
+      const translatedCodeResponse = inputCode; //testing to not make more calls to the api we are broke :(
+
       setTranslatedCode(translatedCodeResponse); // Update translated code
       setLoading(false); // Set loading state to false after receiving response
       setTranslationDone(true);
