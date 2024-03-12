@@ -16,6 +16,7 @@ import ChangePassword from './components/ChangePassword';
 import "./index.css"
 import useAuth from './useAuth';
 import axios from 'axios'
+import DeleteAccount from './components/DeleteAccount';
 
 
 
@@ -36,6 +37,7 @@ const App = () => {
             <Route path="/help" element={<Help />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/changePassword" element={user ? <ChangePassword /> : <Navigate to="/login"/>} />
+            <Route path="/deleteAccount" element={user ? <DeleteAccount /> : <Navigate to="/login"/>} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </div>
