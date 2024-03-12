@@ -12,7 +12,7 @@ const Home = () => {
       navigate('/signup')
   }
   return (
-    <div className='home'>
+    <div className='standard'>
       <div className='box'>
         <h1 className="title">NHA</h1>
         <h1 className="title title2">GPT</h1>

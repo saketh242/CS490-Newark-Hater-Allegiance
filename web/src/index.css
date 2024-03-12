@@ -5,6 +5,11 @@
   font-family: "Kanit", sans-serif;
 }
 
+.standard {
+  color: #BDC3D0;
+  font-family: sans-serif;
+}
+
 /* Navbar Styling */
 .nha-navbar{
   padding: 10px;
@@ -60,11 +65,6 @@
 }
 
 /* Home Page Styling */
-.home {
-  color: #BDC3D0;
-  font-family: sans-serif;
-}
-
 .title {
   text-align: center;
   font-family: "Kanit", sans-serif;
