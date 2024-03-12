@@ -70,13 +70,7 @@ const ChangePassword = () => {
                 setError("An error occured try again")
             }
         }
-        
-
-            
-
-
-
-        
+         
     }
 
     return (

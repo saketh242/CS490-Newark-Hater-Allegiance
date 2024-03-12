@@ -44,7 +44,6 @@ app.get("/test", (req, res) => {
     res.status(200).json({ message: "This is a test for auth" });
 });
 
-
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to NHA CS490!")
 });
