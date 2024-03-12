@@ -35,8 +35,14 @@ function NHANav() {
         </Link>
         <div className="links-flexbox">
 
+
           <Link className="nav-a nav-rl" to="/docs">
             Docs
+
+        
+          <Link className="nav-a nav-rl" to="/help">
+            Help
+
           </Link>
           <Link className="nav-a nav-rl" to="/translate">
             Translate

@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import Home from './components/Home';
 import Login from './components/Login';
 import Translate from './components/Translate';
-import Docs from './components/Docs';
+import Help from './components/Help';
 import NHANav from './components/NHANav';
 import Footer from './components/Footer';
 import Signup from './components/Signup';
@@ -34,7 +34,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={user ? <Navigate to="/"/> : <Login />} />
             <Route path="/translate" element={user ? <Translate /> : <Navigate to="/login"/>} />
-            <Route path="/docs" element={<Docs />} />
+            <Route path="/help" element={<Help />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/changePassword" element={user ? <ChangePassword /> : <Navigate to="/login"/>} />
             <Route path="/deleteAccount" element={user ? <DeleteAccount /> : <Navigate to="/login"/>} />
