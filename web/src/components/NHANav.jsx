@@ -33,13 +33,7 @@ function NHANav() {
         <Link className="nav-brand nav-a" to="/">
           NHAGPT
         </Link>
-        <div className="links-flexbox">
-
-
-          <Link className="nav-a nav-rl" to="/docs">
-            Docs
-
-        
+        <div className="links-flexbox">      
           <Link className="nav-a nav-rl" to="/help">
             Help
 
