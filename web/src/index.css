@@ -117,7 +117,6 @@
 }
 
 .signup-image {
-
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -989,4 +988,67 @@ ChangePassword Component Styling */
   margin: 1rem 0;
 }
 
+/* Help Page Styling */
+.help-subtitle {
+  padding-top: 0rem;
+  margin-top: 4rem;
+  font-size: 3rem;
+}
 
+#help-bar {
+  margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+}
+
+#help-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 0rem 2rem;
+}
+
+#help-active {
+  color: #0446c0;
+}
+
+#help-item:hover {
+  color: #0ac6c0;
+  cursor: pointer;
+}
+
+#help-icon {
+  color: #0ac6c0;
+  padding-right: 1rem;
+}
+
+.help {
+  text-align: center;
+}
+
+.help-intro, .help-guides, .help-faq, .help-contact, .help-egg {
+  display: none;
+  visibility: hidden;
+  padding-top: 2rem;
+}
+
+.help-guides, .help-faq {
+  text-align: left;
+}
+
+#question-list li {
+  padding-bottom: 2rem;
+  list-style-type: none;
+}
+
+#question-list h {
+  font-size: 2.5rem;
+}
+
+#question-list p {
+  font-size: 1.5rem;
+}
+
+#focus {
+  display: block;
+  visibility: visible;
+}
