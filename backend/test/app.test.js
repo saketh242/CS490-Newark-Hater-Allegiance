@@ -71,6 +71,24 @@ describe('API RESPONSES ', () => {
     });
   });
 
+  it('DELETE: should return 401 for unauthorized access for /users/deleteUser', (done) => {
+    request(app)
+    .delete('/users/deleteUser')
+    .expect(401, done);
+  });
+
+  it('DELETE: should return 200 for sucessful delete of user and their data for /users/deleteUser', (done) => {
+    request(app)
+    .delete('/users/deleteUser')
+    .set('Authorization', `Bearer ${postUserToken}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+          expect(res.body).to.have.property('message').equal('User and associated data deleted successfully');
+        done();
+      });
+  });
+
   it('GET: should return 200 OK for /', (done) => {
     request(app)
       .get('/')
@@ -256,7 +274,7 @@ describe('API RESPONSES ', () => {
         if (err) return done(err);
         const feedbacks = res.body;
 
-
+        console.log(feedbacks);
         expect(feedbacks).to.be.an('array');
         expect(feedbacks).to.have.lengthOf.at.least(1);
 
