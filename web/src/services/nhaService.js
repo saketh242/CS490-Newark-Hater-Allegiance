@@ -4,11 +4,11 @@ class NHAService {
 
     async postUser(firstName, lastName, email, token) {
         try {
-            const payload = { firstName, lastName, email};
+            const payload = { firstName, lastName, email };
             const headers = {
                 Authorization: `Bearer ${token}`
             };
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}users/postUser`, payload, {headers});
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}users/postUser`, payload, { headers });
             return response.data;
         } catch (error) {
             console.error('Error posting user: ', error);
@@ -21,7 +21,7 @@ class NHAService {
             const headers = {
                 Authorization: `Bearer ${idToken}`
             };
-            const payload = {inputCode, sourceLanguage, desiredLanguage };
+            const payload = { inputCode, sourceLanguage, desiredLanguage };
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}openAI/postTranslation`, payload, { headers });
             return response.data;
         } catch (error) {
@@ -53,7 +53,7 @@ class NHAService {
             const headers = {
                 Authorization: `Bearer ${idToken}`
             };
-            const payload = { user_id: user_id._id, postId, Trating, Urating, ratingText};
+            const payload = { user_id: user_id._id, postId, Trating, Urating, ratingText };
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}feedback/`, payload, { headers });
             return response.data;
         } catch (error) {
@@ -68,7 +68,7 @@ class NHAService {
             const headers = {
                 Authorization: `Bearer ${idToken}`
             };
-            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}feedback/getFeedback`, { headers});
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}feedback/getFeedback`, { headers });
             // console.log(response.data);
             return response.data;
         } catch (error) {
@@ -93,19 +93,33 @@ class NHAService {
             throw error;
         }
     }
-    
-    
+
+
     async getUser(user) {
         try {
             const idToken = await user.getIdToken();
             const headers = {
                 Authorization: `Bearer ${idToken}`
             };
-            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}users/`, {headers});
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}users/`, { headers });
             // console.log("User: ",response.data);
             return response.data;
         } catch (error) {
             console.error('Error fetching user:', error);
+            throw error;
+        }
+    }
+
+    async deleteUser(user) {
+        try {
+            const idToken = await user.getIdToken();
+            const headers = {
+                Authorization: `Bearer ${idToken}`
+            };
+            const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}users/deleteUser`, { headers });
+            return response.data;
+        } catch (error) {
+            console.error("Error deleting user: ", error);
             throw error;
         }
     }

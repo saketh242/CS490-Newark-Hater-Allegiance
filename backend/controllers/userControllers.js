@@ -1,4 +1,6 @@
 const User = require("../models/User")
+const Feedback = require("../models/Feedback")
+const History = require("../models/History")
 
 const validateUserInput = (firstName, lastName, email, uid) => {
     const nameRegex = /^[a-zA-Z\s]+$/;
@@ -10,6 +12,46 @@ const validateUserInput = (firstName, lastName, email, uid) => {
 
     return true;
 };
+
+const deleteUser = async (req, res, next) => {
+    const { uid } = req;
+    // Validate uid is not empty
+    try {
+        if (!uid) {
+            return res.status(400).json({ error: 'UID is missing in the request' });
+        }
+
+        // Find the user
+        const user = await User.findOne({ uid: uid });
+
+        // Check if the user exists
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Find user's history
+        const history = await History.find({ user: user._id });
+
+        // Check if the user has histories to delete
+        if (history) {
+            // Delete all feedback associated with the user
+            await Feedback.deleteMany({ user: user._id });
+
+            // Delete the user's history
+            await History.deleteMany({ user: user._id });
+        }
+
+        // Delete the user
+        await User.deleteOne({ uid: uid });
+
+        res.status(200).json({ message: 'User and associated data deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting user: ', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
 
 const insertUser = async (req, res, next) => {
     try {
@@ -67,3 +109,4 @@ const getUserId = async (req, res, next) => {
 
 module.exports.getUserId = getUserId;
 module.exports.insertUser = insertUser;
+module.exports.deleteUser = deleteUser;
