@@ -30,7 +30,7 @@ const ChangePassword = () => {
         }
 
         else if (!isValidPassword(newPassword) || !isValidPassword(newPassword2)){
-            setError("Enter a valid new password")
+            setError("Password should be 8 characters long, one lowercase, one uppercase, one digit")
             return
         }
 
