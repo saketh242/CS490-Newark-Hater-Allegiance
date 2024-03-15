@@ -86,7 +86,7 @@ class NHAService {
             };
             const params = { user_id: user_id._id };
             const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}history/getAllHistory`, { headers, params });
-            // console.log(response.data);
+            //console.log(response.data);
             return response.data;
         } catch (error) {
             console.error('Error fetching histories:', error);
