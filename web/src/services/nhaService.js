@@ -109,24 +109,7 @@ class NHAService {
             throw error;
         }
     }
-
-
-    async updateUser(user, email, firstName, lastName) {
-        try {
-            const idToken = await user.getIdToken();
-            const headers = {
-                Authorization: `Bearer ${idToken}`
-            };
-            const payload = {email: email, firstName: firstName, lastName: lastName}
-            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}users/updateUser`, payload, {headers});
-            console.log("User: ",response.data);
-            return response.data;
-        } catch (error) {
-            console.error('Error updating user:', error);
-            throw error;
-        }
-    }
-  
+ 
   async updateUser(user, email, firstName, lastName) {
         try {
             const idToken = await user.getIdToken();
@@ -150,19 +133,10 @@ class NHAService {
             const headers = {
                 Authorization: `Bearer ${idToken}`
             };
-
-            const payload = {email: email, firstName: firstName, lastName: lastName}
-            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}users/updateUser`, payload, {headers});
-            console.log("User: ",response.data);
-            return response.data;
-        } catch (error) {
-            console.error('Error updating user:', error);
-
             const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}users/deleteUser`, { headers });
             return response.data;
         } catch (error) {
             console.error("Error deleting user: ", error);
-
             throw error;
         }
     }
