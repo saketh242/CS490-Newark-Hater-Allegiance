@@ -4,6 +4,7 @@ import { isValidPassword } from '../utils/fieldValidations'
 import { reauthenticateWithCredential, EmailAuthProvider, updatePassword, signOut, deleteUser } from 'firebase/auth';
 import { auth } from '../firebase';
 import { toast } from 'react-toastify';
+import nhaService from '../services/nhaService';
 import useAuth from '../useAuth';
 import spongecry from "../memeGifs/crysponge.gif"
 
@@ -31,6 +32,7 @@ const DeleteAccount = () => {
             // now deleting the user
             setDeleted(true);
             setTimeout(async () => {
+                await nhaService.deleteUser(user);
                 await deleteUser(user);
                 console.log("User deleted!")
                 signOut(auth).then(() => {

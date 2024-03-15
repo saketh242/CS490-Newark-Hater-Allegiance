@@ -7,10 +7,10 @@ Repository to store the frontend, backend, and the integration with github, that
 ## Project Structure
 
 The repo has two folders
-- Frontend
+- Web
 - Backend
 
-The Frontend folder contains the code for the React frontend and the Backend folder contains code for the Express and Mongo Backend
+The Web folder contains the code for the React frontend and the Backend folder contains code for the Express and Mongo Backend
 
 The Backend folder has the app.js server file and 3 folders
 - models
