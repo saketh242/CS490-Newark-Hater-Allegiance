@@ -86,7 +86,7 @@ class NHAService {
             };
             const params = { user_id: user_id._id };
             const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}history/getAllHistory`, { headers, params });
-            // console.log(response.data);
+            //console.log(response.data);
             return response.data;
         } catch (error) {
             console.error('Error fetching histories:', error);
@@ -109,16 +109,15 @@ class NHAService {
             throw error;
         }
     }
- 
-  async updateUser(user, email, firstName, lastName) {
+
+    async updateUser(user, email, firstName, lastName, newEmailFlag, newFirstNameFlag, newLastNameFlag) {
         try {
             const idToken = await user.getIdToken();
             const headers = {
                 Authorization: `Bearer ${idToken}`
             };
-            const payload = {email: email, firstName: firstName, lastName: lastName}
-            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}users/updateUser`, payload, {headers});
-            console.log("User: ",response.data);
+            const payload = { email: email, firstName: firstName, lastName: lastName, newEmailFlag: newEmailFlag, newFirstNameFlag: newFirstNameFlag, newLastNameFlag: newLastNameFlag }
+            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}users/updateUser`, payload, { headers });
             return response.data;
         } catch (error) {
             console.error('Error updating user:', error);

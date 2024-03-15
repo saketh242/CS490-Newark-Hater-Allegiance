@@ -115,24 +115,40 @@ const updateUser = async (req, res, next) => {
 
     try {
         const { uid } = req;
-        const { email, firstName, lastName } = req.body;
+        const { email, firstName, lastName, newEmailFlag, newFirstNameFlag, newLastNameFlag } = req.body;
+        if (newEmailFlag) {
+            await admin.auth().updateUser(uid, {
+                email: email,
+                emailVerified: false,
+            })
+        }
+        const updateData = {};
 
-        await admin.auth().updateUser(uid, {
-            email: email,
-            emailVerified: false,
-            displayName: `${firstName} ${lastName}`
-        })
+        if (newFirstNameFlag) {
+            updateData.firstName = firstName;
+        }
 
-        // getting the user data and sending him the 
-        const user = await admin.auth().getUser(uid);
-        
-        console.log("Email updated and verification sent :)");
-        res.status(200).json(user)
+        if (newLastNameFlag) {
+            updateData.lastName = lastName;
+        }
+
+        if (newEmailFlag) {
+            updateData.email = email;
+        }
+
+        console.log(updateData)
+
+        // unsure what this is for anymore as it is unused now, keep it for later 
+        //const user = await admin.auth().getUser(uid);
+
+        await User.findOneAndUpdate({ uid: uid }, updateData, { new: true })
+
+        res.status(200).json("User details updated sucessfully!")
 
 
-    } catch (e){
+    } catch (e) {
         console.log(e);
-        res.status(500).json({ error: "An error occurred while updating user or triggering verification email" });
+        res.status(500).json({ error: "An error occurred while updating user" });
 
     }
 }
