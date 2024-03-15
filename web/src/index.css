@@ -11,8 +11,6 @@
 }
 
 /* Navbar Styling */
-
-
 .dropdown-nav:hover .dropdown-content {
   display: block;
 }
@@ -38,8 +36,6 @@
 .dropdown-content a:hover {
   background-color: #31304d;
 }
-
-
 
 .nha-navbar{
   padding: 10px;
@@ -194,10 +190,6 @@
   padding: 3rem 0;
 }
 
-/* #perks h1 {
-  font-size: 1.7rem;
-} */
-
 #home-icon {
   color: #0ac6c0;
   padding-bottom: 2rem;
@@ -342,8 +334,6 @@
     font-size: 1.4rem;
     font-weight: 500;
   }
-
-  
 }
 
 @media (860px <= width <= 1230px) {
@@ -376,7 +366,6 @@
     width: 39rem;
     height: 25rem;
   }
-
 }
 
 @media (width <= 860px) {
@@ -403,8 +392,6 @@
   }
 }
 
-
-
 /* Website Body Styling */
 .content {
   background-color: #1A1C23;
@@ -421,7 +408,6 @@
 }
 
 /* Translate component styling */
-
 .translateBody {
   display: flex;
   flex-direction: column;
@@ -430,10 +416,6 @@
   align-items: center; 
   justify-content: center; 
   padding-bottom: 3rem;
-}
-
-#history {
-  display:flex;
 }
 
 .apiStatus {
@@ -607,8 +589,6 @@ select, button {
       align-items: center;
     }
   }
-
-
   
 @media (width <= 600px){
   .codeBlocks {
@@ -854,13 +834,9 @@ input[type="checkbox"]{
     width: 18rem;
     font-size: 1rem;
   }
-
-
-  
 }
 
 /* Feedback component styling */ 
-
 .starClicked, .star, .starHover {
   border: none;
   background: none;
@@ -934,7 +910,6 @@ input[type="checkbox"]{
 }
 
 /* PageNotFound Component Styling */
-
 .not-found-div h1 {
   text-align: center;
   font-size: 5rem;
@@ -983,8 +958,7 @@ input[type="checkbox"]{
   }
 }
 
-/* 
-ChangePassword Component Styling */
+/* ChangePassword Component Styling */
 .chnage-password-heading {
   font-family: "Kanit", sans-serif;
   color: #9CA6B5;
@@ -1024,7 +998,6 @@ ChangePassword Component Styling */
   border-radius: 5px;
   margin: 1rem 0;
 }
-
 
 /* Help Page Styling */
 .help-subtitle {
@@ -1091,7 +1064,6 @@ ChangePassword Component Styling */
   visibility: visible;
 }
 
-
 /* Delete Account Component Styling */
 .delete-account-div {
   display: flex;
@@ -1134,3 +1106,13 @@ ChangePassword Component Styling */
   margin: 1rem;
   box-shadow: 0 20px 25px -5px #000, 0 8px 10px -6px #000;
 }
+
+/* .history {
+  left: 0;
+  top: 5.7rem;
+  position: absolute;
+  height: 100vh;
+  background-color: #23262F;
+  color:#9CA6B5;
+  box-shadow: 2px 0px 0px 0px rgba(0,0,0,0.2);
+} */

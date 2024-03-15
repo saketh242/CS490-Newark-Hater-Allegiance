@@ -37,6 +37,7 @@ const Translate = () => {
   const [loading, setLoading] = useState(false); // Loading state - display loading msg while api retrieves code response
   const [userTriggeredChange, setUserTriggeredChange] = useState(false); //Dummy right now, but will be implemented when we do getHistory from the sidebar, so we aren't posting when we are getting the history
   const [postId, setPostId] = useState("") //not really used right now, but will be useful when we want to post a feedback
+  const [historyData, setHistoryData] = useState(null);
   
   //input code and output code states
   const [inputCode, setInputCode] = useState('');
@@ -181,9 +182,16 @@ useEffect(() => {
     }
   };
 
+  useEffect(() => {
+    const handleGetAllHistory = async () => {
+      setHistoryData(await nhaService.getAllHistory(user));
+    };
+    if (user !== null) handleGetAllHistory();
+  }, [user])
+
   return (
     <div className="translateBody">
-      <History id="history" showSidebar={showSidebar} toggleSidebar={toggleSidebar}/>
+      <History history={historyData} showSidebar={showSidebar}/>
 
       <h1 className="apiStatus">
         OpenAI API Status:
