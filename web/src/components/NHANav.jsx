@@ -13,11 +13,10 @@ function NHANav() {
   const navigate = useNavigate()
   const { user, isLoading } = useAuth()
 
-
   // function to handle logout 
   const handleLogout = () => {
     signOut(auth).then(() => {
-      navigate("/login");
+      navigate("/");
       console.log("Signed out successfully")
       const msg = () => toast(`Logged out successfully`);
       msg();
@@ -51,9 +50,8 @@ function NHANav() {
                 </>
               ) : (
                 <>
-                  <Link onClick={handleLogout} className='nav-a nav-rl' to="/logout">Logout</Link>
-                  <Link className='nav-a nav-rl' to="/changePassword">Change Password</Link>
-                  <Link className='nav-a nav-rl' to="/deleteAccount">Delete Account</Link>
+                  <Link onClick={handleLogout} className='nav-a nav-rl'>Logout</Link>
+                  <Link className='nav-a nav-rl' to="/settings">Settings</Link>
                 </>
               )}
 

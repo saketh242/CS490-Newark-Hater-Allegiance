@@ -1,4 +1,5 @@
 const User = require("../models/User")
+const admin = require("../config/firebase")
 
 const validateUserInput = (firstName, lastName, email, uid) => {
     const nameRegex = /^[a-zA-Z\s]+$/;
@@ -44,6 +45,7 @@ const insertUser = async (req, res, next) => {
 
 const getUserId = async (req, res, next) => {
     try {
+
         const { uid } = req;
 
         // Validate uid is not empty
@@ -64,6 +66,36 @@ const getUserId = async (req, res, next) => {
     }
 };
 
+const updateUser = async (req, res, next) => {
+    // right now I am only trying to update email in fire base, 
+    // karam will update the email on MongoDB and the names accordingly
+    // I hope it works :)
+
+    try {
+        const { uid } = req;
+        const { email, firstName, lastName } = req.body;
+
+        await admin.auth().updateUser(uid, {
+            email: email,
+            emailVerified: false,
+            displayName: `${firstName} ${lastName}`
+        })
+
+        // getting the user data and sending him the 
+        const user = await admin.auth().getUser(uid);
+        
+        console.log("Email updated and verification sent :)");
+        res.status(200).json(user)
+
+
+    } catch (e){
+        console.log(e);
+        res.status(500).json({ error: "An error occurred while updating user or triggering verification email" });
+
+    }
+}
+
 
 module.exports.getUserId = getUserId;
 module.exports.insertUser = insertUser;
+module.exports.updateUser = updateUser;

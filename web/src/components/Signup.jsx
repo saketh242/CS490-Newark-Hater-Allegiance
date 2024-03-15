@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import {  createUserWithEmailAndPassword, setPersistence, browserSessionPersistence } from 'firebase/auth';
+import {  createUserWithEmailAndPassword, setPersistence, browserSessionPersistence, sendEmailVerification } from 'firebase/auth';
 import { isValidEmail, isValidPassword, isValidName } from "../utils/fieldValidations";
 import { auth } from '../firebase';
 import { toast } from 'react-toastify';
@@ -60,6 +60,9 @@ const Signup = () => {
           }
   
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+        // Send verification email to the new email address
+        await sendEmailVerification(auth.currentUser);
+        console.log("Verification email sent");
         const user = userCredential.user;
         const idToken = await user.getIdToken();
         nhaService.postUser(firstName, lastName, email, idToken)
@@ -73,13 +76,7 @@ const Signup = () => {
           }
           console.log(e.message)
         }
-          
-          
-
     }
-
-
-
   return (
     <div className='signup-content'>
       <form className="signup-form">
