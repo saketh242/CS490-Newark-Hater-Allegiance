@@ -66,7 +66,7 @@ const Signup = () => {
         const user = userCredential.user;
         const idToken = await user.getIdToken();
         nhaService.postUser(firstName, lastName, email, idToken)
-        const msg = () => toast(`Welcome ${firstName} ${lastName}`);
+        const msg = () => toast(`Welcome ${firstName} ${lastName}, verify email to continue!`);
         msg()
         navigate("/")
         

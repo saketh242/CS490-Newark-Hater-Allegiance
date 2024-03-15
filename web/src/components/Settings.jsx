@@ -1,13 +1,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGear } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { faTrash} from '@fortawesome/free-solid-svg-icons'
 import useAuth from '../useAuth';
 import { auth } from "../firebase";
 import { toast } from 'react-toastify';
 import { signInWithEmailAndPassword, EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification, signOut, onAuthStateChanged } from "firebase/auth";
 import { isValidEmail } from '../utils/fieldValidations';
 import nhaService from '../services/nhaService';
+
 
 const Settings = () => {
 
@@ -36,9 +38,15 @@ const Settings = () => {
       })
   }, [triggerEffect, user])
 
+  const handleChangePassword = () => {
+    navigate("/changePassword");
+    return
+  }
 
-
-
+  const handleDeleteAccount = () => {
+    navigate("/deleteAccount");
+    return
+  }
 
   const handleUpdateprofile = async (e) => {
     e.preventDefault()
@@ -86,23 +94,19 @@ const Settings = () => {
               const msg = () => toast(`Email address chnaged, you need to verify the email to use the app tho`);
               msg()
             })
+          } else {
+            const msg = () => toast(`User details updated successfully, :)`);
+            msg()
           }
           setTriggerEffect(!triggerEffect)
         }).catch((error) => {
           console.log(error)
         })
-
-
-
     } catch (e) {
       console.log(e)
       setError("Error updating profile");
     }
-
-
-
-
-  }
+}
 
 
   return receivedData && (
@@ -167,6 +171,17 @@ const Settings = () => {
         <button type="submit" className='login-btn' onClick={handleUpdateprofile}>Update Profile</button>
         {error && <p className='error-msg'>{error}</p>}
       </form>
+
+      <div className="options-div">
+        <div className='option-div' onClick={handleChangePassword}>
+          <FontAwesomeIcon icon={faPenToSquare}/>
+          <p>Change Password</p>
+        </div>
+        <div className='option-div' onClick={handleDeleteAccount}>
+            <FontAwesomeIcon icon={faTrash}/>
+            <p>Delete Account</p>
+          </div>
+      </div>
 
 
     </div>
