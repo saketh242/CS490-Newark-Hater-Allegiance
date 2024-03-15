@@ -7,7 +7,7 @@ const getAllHistory = async (req, res, next) => {
             return res.status(400).json({ error: 'Missing required field to get history' });
         }
         const histories = await History.find({ user: user_id })
-                                        .select('-_id Desired_language Source_language original_code converted_code createdAt')
+                                        .select('_id Desired_language Source_language original_code converted_code createdAt')
                                         .sort({ createdAt: -1 });
         console.log("All history:", histories);
         res.send(histories);

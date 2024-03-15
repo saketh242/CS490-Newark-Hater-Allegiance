@@ -11,6 +11,11 @@ export const isValidName = (name) => {
 
 }
 
+export const isValidUsername = (name) => {
+    const usernameRegex = /^[a-zA-Z0-9]+$/;
+    return usernameRegex.test(name)
+}
+
 // a function to check if a passowrd entered is valid
 // password is minimum 8 characters long
 // atleast one uppercase
