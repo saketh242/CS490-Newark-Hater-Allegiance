@@ -191,7 +191,7 @@ useEffect(() => {
 
   return (
     <div className="translateBody">
-      <History id="history" history={historyData} toggleSidebar={toggleSidebar}/>
+      <History history={historyData} showSidebar={showSidebar}/>
 
       <h1 className="apiStatus">
         OpenAI API Status:
