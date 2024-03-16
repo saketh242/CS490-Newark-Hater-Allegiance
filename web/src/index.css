@@ -423,6 +423,7 @@
   margin: 2rem;
   display: flex;
   align-items: center;
+  font-weight: bold;
 }
 
 #originLanguage, #desiredLanguage {
@@ -485,6 +486,7 @@ select, button {
   flex-direction: column;
   font-size: larger;
   align-items: center;
+  font-size: 1rem;
 }
 
 .inputArea {
@@ -542,6 +544,10 @@ select, button {
 .codeHeading, .outputHeading {
   display:flex;
   justify-content: space-between;
+}
+
+.codeHeading {
+  margin-bottom: 0.1rem;
 }
 
 .codeOutput {
@@ -1173,14 +1179,11 @@ input[type="checkbox"]{
   width: 13rem;
 }
 
-
+.historyButton, .uploadButton, .clearButton, .translationButton {
+  font-size: 1rem;
+}
 
 /* .history {
-  left: 0;
-  top: 5.7rem;
-  position: absolute;
-  height: 100vh;
   background-color: #23262F;
   color:#9CA6B5;
-  box-shadow: 2px 0px 0px 0px rgba(0,0,0,0.2);
 } */
