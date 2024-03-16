@@ -17,7 +17,7 @@ import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-s
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-//import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const Translate = () => {
@@ -191,7 +191,7 @@ useEffect(() => {
 
   return (
     <div className="translateBody">
-      <History id="history" history={historyData} toggleSidebar={toggleSidebar}/>
+      <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar}/>
 
       <h1 className="apiStatus">
         OpenAI API Status:
@@ -214,7 +214,7 @@ useEffect(() => {
 
         <div className="conversionArrow">
           {/* Arrow icon button */}
-          <button id="translationButton" onClick={translateCode} disabled={loading}>
+          <button id="translationButton" className="translationButton" onClick={translateCode} disabled={loading}>
             <FontAwesomeIcon id="icon" icon={faArrowRightLong} size="7x" />
           </button>
           <p>Convert</p>
@@ -237,7 +237,7 @@ useEffect(() => {
             <div className="buttonsContainer">
               {/* Icon button for toggling sidebar */}
               <button className="historyButton" title="History" onClick={toggleSidebar}>
-                <FontAwesomeIcon id="icon" size="2x" icon={faHistory} />
+                <FontAwesomeIcon id="icon" size="2x" icon={faHistory} fontSize={1}/>
               </button>
               {/* Icon button for uploading a file */}
               <button className="uploadButton" title="Upload file" onClick={() => fileInputRef.current.click()}>
