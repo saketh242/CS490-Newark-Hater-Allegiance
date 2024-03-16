@@ -12,6 +12,8 @@ import nhaService from '../services/nhaService';
 
 const Login = () => {
 
+  
+
 
   const navigate = useNavigate()
   const [email, setEmail] = useState("");
@@ -22,6 +24,10 @@ const Login = () => {
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
+  }
+
+  const handleForgot = () => {
+    navigate("/forgotPassword")
   }
 
   const handleLogin = async (e) => {
@@ -39,25 +45,22 @@ const Login = () => {
     }
 
     try {
+      // setting persistence here
+      if (!isChecked) {
+        await setPersistence(auth, browserSessionPersistence);
+      }
 
-    // setting persistence here
-    if (!isChecked) {
-      await setPersistence(auth, browserSessionPersistence);
-    }
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      const idToken = userCredential.user.getIdToken();
+      const userDetails = await nhaService.getUser(user);
+      const { firstName, lastName } = userDetails;
+      console.log(`Welcome ${firstName} ${lastName}`);
+      const msg = () => toast(`Welcome ${firstName} ${lastName}`);
+      msg();
+      navigate("/");
 
-
-
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    const idToken = userCredential.user.getIdToken();
-    const userDetails = await nhaService.getUser(user);
-    const { firstName, lastName } = userDetails;
-    console.log(`Welcome ${firstName} ${lastName}`);
-    const msg = () => toast(`Welcome ${firstName} ${lastName}`);
-    msg();
-    navigate("/");
-
-  } catch (err) {
+    } catch (err) {
       if (err.code === "auth/invalid-credential") {
         setError("Invalid Credentials");
       } else {
@@ -98,12 +101,16 @@ const Login = () => {
               transition: 'border-color 0.3s ease',
             }}
           />
-          <p className='check-box-p'>Remember Me? <input
-            type="checkbox"
-            id="myCheckbox"
-            checked={isChecked}
-            onChange={handleCheckboxChange}
-          /></p>
+          <div className='login-flex-box'>
+            <p className='check-box-p'>Remember Me? <input
+              type="checkbox"
+              id="myCheckbox"
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+            /></p>
+            <p className='check-box-p forgot-password' onClick={handleForgot}>Forgot Password?</p>
+          </div>
+
           <button type="submit" className='login-btn' onClick={handleLogin}>Login</button>
           <div className='signup-msg'>
             <p>No Account?</p>

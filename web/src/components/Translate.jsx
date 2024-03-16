@@ -6,7 +6,7 @@ import useAuth from '../useAuth';
 import Feedback from './Feedback';
 
 import CodeOutput from './CodeOutput';
-import History from './History';
+// import History from './History';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
@@ -17,7 +17,7 @@ import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-s
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const Translate = () => {
@@ -191,7 +191,7 @@ useEffect(() => {
 
   return (
     <div className="translateBody">
-      <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar}/>
+      {/* <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar}/> */}
 
       <h1 className="apiStatus">
         OpenAI API Status:
