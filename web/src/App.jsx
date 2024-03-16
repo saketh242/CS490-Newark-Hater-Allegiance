@@ -19,6 +19,7 @@ import axios from 'axios'
 import DeleteAccount from './components/DeleteAccount';
 import Settings from './components/Settings';
 import VerificationMessage from './components/VerificationMessage';
+import ForgotPassword from './components/ForgotPassword';
 
 
 
@@ -46,6 +47,7 @@ const App = () => {
             <Route path="/settings" element={user ? <Settings /> : <Navigate to="/login"/>} />
             <Route path="/changePassword" element={user ? <ChangePassword /> : <Navigate to="/login"/>} />
             <Route path="/deleteAccount" element={user ? <DeleteAccount /> : <Navigate to="/login"/>} />
+            <Route path="/forgotPassword" element={!user ? <ForgotPassword/> : <Navigate to = "/"/>}/>
             <Route path="/*" element={<PageNotFound />} />
           </Routes>
         </div>
