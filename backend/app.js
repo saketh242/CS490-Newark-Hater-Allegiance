@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
+const mongoSanitize = require('express-mongo-sanitize');
 const userRouter = require("./routes/userRoutes");
 const historyRouter = require("./routes/historyRoutes");
 const feedbackRouter = require("./routes/feedbackRoutes");
@@ -11,6 +12,7 @@ const decodeToken = require("./middleware/index");
 
 app.use(express.json());
 app.use(cors());
+app.use(mongoSanitize());
 
 mongoose.connect(process.env.DATABASE)
   .then(() => {
