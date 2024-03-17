@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from '../firebase';
 import useAuth from '../useAuth';
 import Feedback from './Feedback';
 
@@ -18,6 +16,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 //import 'bootstrap/dist/css/bootstrap.min.css';
+// import '../index.css';
 
 import { sanitizeCode } from '../utils/codeUtils';
 
