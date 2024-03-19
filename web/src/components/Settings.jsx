@@ -6,7 +6,7 @@ import { faTrash} from '@fortawesome/free-solid-svg-icons'
 import useAuth from '../useAuth';
 import { auth } from "../firebase";
 import { toast } from 'react-toastify';
-import { signInWithEmailAndPassword, EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification, signOut, onAuthStateChanged } from "firebase/auth";
+import { signInWithEmailAndPassword, EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification, signOut, updateEmail, verifyBeforeUpdateEmail } from "firebase/auth";
 import { isValidEmail } from '../utils/fieldValidations';
 import nhaService from '../services/nhaService';
 
@@ -78,30 +78,63 @@ const Settings = () => {
         return
       }
 
-      nhaService.updateUser(user, email, firstName, lastName, emailCheck, fNameCheck, lNameCheck)
-        .then(async (res) => {
-          // res is the user object now send verification email
-          console.log(res)
-          // logging in with new details, only if email was changed
-          if (emailCheck) {
-            await signInWithEmailAndPassword(auth, email, password);
-            // sending verification
-            sendEmailVerification(auth.currentUser);
-            // now signingout
+      verifyBeforeUpdateEmail(auth.currentUser, email)
+        .then(async () => {
+            console.log("Verification email sent!")
+            await nhaService.updateUser(user, email, firstName, lastName, emailCheck, fNameCheck, lNameCheck)
             signOut(auth).then(() => {
-              navigate("/login")
-              console.log("Signed out successfully")
-              const msg = () => toast(`Email address chnaged, you need to verify the email to use the app tho`);
-              msg()
+                        navigate("/login")
+                        const msg = () => toast(`Email address changed, you need to verify the email continue using the app`);
+                        msg()
+            }).catch((e)=>{
+              setError(e.message);
+              console.log(e)
             })
-          } else {
-            const msg = () => toast(`User details updated successfully, :)`);
-            msg()
-          }
-          setTriggerEffect(!triggerEffect)
-        }).catch((error) => {
-          console.log(error)
+        }).catch((e)=>{
+          console.log(e)
+          setError("An error occured when updating!")
+          return
         })
+
+      // signInWithEmailAndPassword(auth, user.email, password)
+      //   .then((user) => {
+      //     updateEmail(auth.currentUser, email)
+      //     // updated the email, now sending the verification email
+      //     signInWithEmailAndPassword(auth, email, password)
+      //       .then(()=>{
+      //         sendEmailVerification(auth.currentUser);
+      //         signOut(auth).then(() => {
+      //           navigate("/login")
+      //           const msg = () => toast(`Email address chnaged, you need to verify the email to use the app tho`);
+      //           msg()
+      //         })
+      //       })
+      //   })
+
+      // 
+      //   .then(async (res) => {
+      //     // res is the user object now send verification email
+      //     console.log(res)
+      //     // logging in with new details, only if email was changed
+      //     if (emailCheck) {
+      //       await signInWithEmailAndPassword(auth, email, password);
+      //       // sending verification
+      //       sendEmailVerification(auth.currentUser);
+      //       // now signingout
+      //       signOut(auth).then(() => {
+      //         navigate("/login")
+      //         console.log("Signed out successfully")
+      //         const msg = () => toast(`Email address chnaged, you need to verify the email to use the app tho`);
+      //         msg()
+      //       })
+      //     } else {
+      //       const msg = () => toast(`User details updated successfully, :)`);
+      //       msg()
+      //     }
+      //     setTriggerEffect(!triggerEffect)
+      //   }).catch((error) => {
+      //     console.log(error)
+      //   })
     } catch (e) {
       console.log(e)
       setError("Error updating profile");
@@ -169,7 +202,7 @@ const Settings = () => {
             />
           </>)}
         <button type="submit" className='login-btn' onClick={handleUpdateprofile}>Update Profile</button>
-        {error && <p className='error-msg'>{error}</p>}
+        
       </form>
 
       <div className="options-div">
@@ -182,6 +215,8 @@ const Settings = () => {
             <p>Delete Account</p>
           </div>
       </div>
+
+      {error && <p className='error-msg error-settings'>{error}</p>}
 
 
     </div>

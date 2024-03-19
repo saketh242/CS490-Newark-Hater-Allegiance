@@ -1127,6 +1127,16 @@ input[type="checkbox"]{
 }
 
 /* Settings.jsx component Styling */
+
+/* .error-settings{
+  position: absolute;
+  bottom: 2rem;
+} */
+
+.error-settings {
+  padding-top: 0;
+}
+
 .settings-div {
   display: flex;
   flex-direction: column;

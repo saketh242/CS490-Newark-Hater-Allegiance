@@ -44,7 +44,7 @@ const App = () => {
             <Route path="/translate" element={user ? (user.emailVerified ? <Translate /> : <VerificationMessage/>): <Navigate to="/login"/>} />
             <Route path="/help" element={<Help />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/settings" element={user ? <Settings /> : <Navigate to="/login"/>} />
+            <Route path="/settings" element={user ? (user.emailVerified ? <Settings /> : <VerificationMessage/>): <Navigate to="/login"/>}  />
             <Route path="/changePassword" element={user ? <ChangePassword /> : <Navigate to="/login"/>} />
             <Route path="/deleteAccount" element={user ? <DeleteAccount /> : <Navigate to="/login"/>} />
             <Route path="/forgotPassword" element={!user ? <ForgotPassword/> : <Navigate to = "/"/>}/>

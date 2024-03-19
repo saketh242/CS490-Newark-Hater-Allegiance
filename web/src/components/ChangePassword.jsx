@@ -66,8 +66,10 @@ const ChangePassword = () => {
             console.log(e.message)
             if (e.message == "Firebase: Error (auth/invalid-credential)."){
                 setError("Wrong password, try again :(")
+                return
             } else {
                 setError("An error occured try again")
+                return
             }
         }
          
