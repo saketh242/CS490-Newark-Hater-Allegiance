@@ -6,7 +6,8 @@ import useAuth from '../useAuth';
 import Feedback from './Feedback';
 
 import CodeOutput from './CodeOutput';
-// import History from './History';
+import History from './History';
+import { sanitizeCode } from '../utils/codeUtils';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
@@ -14,11 +15,8 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import nhaService from '../services/nhaService';
 import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
 
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-// import 'bootstrap/dist/css/bootstrap.min.css';
-
 
 const Translate = () => {
 
@@ -65,7 +63,8 @@ const Translate = () => {
     setTranslatedCode('');
     setLoading(true); // Set loading state to true before API call
   
-      const response = await nhaService.postPrompt(user, sourceLanguage, desiredLanguage, JSON.stringify(inputCode));
+      const sanitized = sanitizeCode(inputCode);
+      const response = await nhaService.postPrompt(user, sourceLanguage, desiredLanguage, JSON.stringify(sanitized));
       const translatedCodeResponse = response.message;
   
       setTranslatedCode(translatedCodeResponse); // Update translated code
