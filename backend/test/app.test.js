@@ -58,12 +58,12 @@ before(async () => {
 describe('API RESPONSES ', () => {
   let server;
 
-  before(async () => {
+  beforeEach(async () => {
     // Start the server 
     server = app.listen(3001);
   });
 
-  after((done) => {
+  afterEach((done) => {
     console.log("closing server")
     server.close(() => {
       console.log("server closed successfully")
@@ -120,9 +120,9 @@ describe('API RESPONSES ', () => {
 
   it('should POST a new user and return 200 with success message /users/postUser', (done) => {
     const newUser = {
-      firstName: 'Test',
-      lastName: 'User',
-      email: 'test@test.com',
+      firstName: 'Karam',
+      lastName: 'Assaf',
+      email: 'karamassaf3@gmail.com',
     };
 
     request(app)
@@ -142,9 +142,9 @@ describe('API RESPONSES ', () => {
 
   it('POST: should return 409 if user already exists /users/postUser', (done) => {
     const existingUser = {
-      firstName: 'Existing',
-      lastName: 'User',
-      email: 'beep@beep.com',
+      firstName: 'Cram',
+      lastName: 'Fassa',
+      email: 'ka534@njit.edu',
     };
 
     request(app)
@@ -274,7 +274,6 @@ describe('API RESPONSES ', () => {
         if (err) return done(err);
         const feedbacks = res.body;
 
-        console.log(feedbacks);
         expect(feedbacks).to.be.an('array');
         expect(feedbacks).to.have.lengthOf.at.least(1);
 
