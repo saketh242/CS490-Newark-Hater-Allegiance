@@ -10,9 +10,13 @@ const feedbackRouter = require("./routes/feedbackRoutes");
 const chatGptRouter = require("./routes/chatGptRouter");
 const decodeToken = require("./middleware/index");
 
+const queue = require('express-queue');
+
 app.use(express.json());
 app.use(cors());
 app.use(mongoSanitize()); //sanitize all user input
+
+app.use(queue({ activeLimit: 1, queuedLimit: -1 }));
 
 mongoose.connect(process.env.DATABASE)
   .then(() => {
