@@ -10,6 +10,31 @@ const Help = () => {
     setShowBox(e);
   }
 
+  const faqs = [
+    {header: "Is NHA GPT free to use?",
+    text: "Yes! Our online app is completely free to use! All you need is an account and you can start translating right away.",
+    id: 1},
+    {header: "Do you store translations?",
+    text: "In order to provide you with the best support, NHA GPT stores all translations made by every user. This gives our support team more context with each feedback inquiry we receive.",
+    id: 2},
+    {header: "My translation came out with syntax errors, what gives?!",
+    text: "Our translator is powered by OpenAI's GPT-3 api. If your translation came out wrong, please let us know so we can provide OpenAI with feedback to improve your experience!",
+    id: 3}
+  ]
+
+  const [searchItem, setSearchItem] = useState('')
+  const [filteredFaqs, setFilteredFaqs] = useState(faqs)
+
+  const handleInputChange = (e) => { 
+    const searchTerm = e.target.value;
+    setSearchItem(searchTerm)
+
+    const filteredItems = faqs.filter((faq) =>
+    faq.header.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setFilteredFaqs(filteredItems);
+  }
 
   return (
     <div className='standard'>
@@ -17,12 +42,12 @@ const Help = () => {
       <h1 className="subtitle help-subtitle">How can we help?</h1>
       
       <div id='help-bar'>
-        <div id='help-item' onClick={()=>handleBox(1)}><FontAwesomeIcon id='help-icon' size='3x' icon={faBook}/><h1 className='icon-txt' id={showBox===1 ? 'help-active': null}>Guides</h1></div>
-        <div id='help-item' onClick={()=>handleBox(2)}><FontAwesomeIcon id='help-icon' size='3x' icon={faQuestion}/><h1 className='icon-txt' id={showBox===2 ? 'help-active': null}>FAQ</h1></div>
-        <div id='help-item' onClick={()=>handleBox(3)}><FontAwesomeIcon id='help-icon' size='3x' icon={faMugHot}/><h1 className='icon-txt' id={showBox===3 ? 'help-active': null}>Contact Us</h1></div>
+        <div id='help-item' onClick={()=>handleBox(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='3x' icon={faBook}/><h1 className='icon-txt' id={showBox===1 ? 'help-active': null}>Guides</h1></div>
+        <div id='help-item' onClick={()=>handleBox(2)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='3x' icon={faQuestion}/><h1 className='icon-txt' id={showBox===2 ? 'help-active': null}>FAQ</h1></div>
+        <div id='help-item' onClick={()=>handleBox(3)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='3x' icon={faMugHot}/><h1 className='icon-txt' id={showBox===3 ? 'help-active': null}>Contact Us</h1></div>
       </div>
 
-      <div className='box help'>
+      <div className='help'>
         {/*Box 0*/}
         <div className='help-intro' id={showBox===0 ? 'focus': null}>
           <p>Click on the buttons above to change this view! :3</p>
@@ -36,23 +61,20 @@ const Help = () => {
 
         {/*Box 2*/}
         <div className='help-faq' id={showBox===2 ? 'focus': null}>
+          <div id='search-bar'>
+            <FontAwesomeIcon id='auto-icon' className='search-icon' size='1x' icon={faMagnifyingGlass}/>
+            <input id='search-input' className='help-search'
+              type="text"
+              value={searchItem}
+              onChange={handleInputChange}
+              placeholder='Type to search'
+            />
+          </div>
           <ul id='question-list'>
-            <li>
-              <h>Is NHA GPT free to use?</h>
-              <p>Yes! Our online app is completely free to use! All you need is an account and you can start translating right away.</p>
-            </li>
-            <li>
-              <h>Do you store translations?</h>
-              <p>In order to provide you with the best support, NHA GPT stores all translations made by every user. This gives our support team
-                  more context with each feedback inquiry we receive.
-              </p>
-            </li>
-            <li>
-              <h>My translation came out with syntax errors, what gives?!</h>
-              <p>Our translator is powered by OpenAI's GPT-3 api.
-                If your translation came out wrong, please let us know so we can provide OpenAI with feedback to improve your experience!
-              </p>
-            </li>
+            {filteredFaqs.map(faq => <li key={faq.id}>
+            <h>{faq.header}</h>
+            <p>{faq.text}</p>
+            </li>)}
           </ul>
         </div>
 
