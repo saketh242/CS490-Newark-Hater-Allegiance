@@ -6,7 +6,7 @@ import useAuth from '../useAuth';
 import Feedback from './Feedback';
 
 import CodeOutput from './CodeOutput';
-// import History from './History';
+import History from './History';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
@@ -191,7 +191,7 @@ useEffect(() => {
 
   return (
     <div className="translateBody">
-      {/* <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar}/> */}
+      <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar} />
 
       <h1 className="apiStatus">
         OpenAI API Status:

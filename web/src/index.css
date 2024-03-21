@@ -1260,3 +1260,20 @@ input[type="checkbox"]{
   justify-content: center;
   align-items: center;
 }
+
+.translationTitle, .translationHistory {
+  text-align: center;
+  border-bottom-width: "1rem";
+  border-bottom-color: #076966;
+  border-bottom-style: solid;
+}
+
+.translationHistory h5 {
+  text-decoration: underline;
+}
+
+.translationHistory p {
+  padding-left: 0.5rem;
+  padding-bottom: 1rem;
+  word-break: break-word;
+}
