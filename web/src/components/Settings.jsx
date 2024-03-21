@@ -145,7 +145,7 @@ const Settings = () => {
   return receivedData && (
     <div className='settings-div'>
       <div className='settings-head-div'>
-        <FontAwesomeIcon size='4x' icon={faGear} />
+        <FontAwesomeIcon size='4x' icon={faGear} className='settings-icon' />
         <p className='settings-head-p'>Settings</p>
       </div>
 
@@ -206,11 +206,11 @@ const Settings = () => {
       </form>
 
       <div className="options-div">
-        <div className='option-div' onClick={handleChangePassword}>
+        <div className='option-div hover-div1' onClick={handleChangePassword}>
           <FontAwesomeIcon icon={faPenToSquare}/>
           <p>Change Password</p>
         </div>
-        <div className='option-div' onClick={handleDeleteAccount}>
+        <div className='option-div hover-div2' onClick={handleDeleteAccount}>
             <FontAwesomeIcon icon={faTrash}/>
             <p>Delete Account</p>
           </div>
