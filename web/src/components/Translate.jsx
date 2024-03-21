@@ -42,8 +42,8 @@ const Translate = () => {
   const [translatedCode, setTranslatedCode] = useState('');
 
   //source and destination language dropdown states
-  const [sourceLanguage, setSourceLanguage] = useState('python'); 
-  const [desiredLanguage, setDesiredLanguage] = useState('python');
+  const [sourceLanguage, setSourceLanguage] = useState(''); 
+  const [desiredLanguage, setDesiredLanguage] = useState('');
 
   const handleSourceLanguageChange = (e) => {
     setSourceLanguage(e.target.value);
@@ -54,6 +54,22 @@ const Translate = () => {
   };
 
   const translateCode = async () => {
+
+    if (sourceLanguage==="" && desiredLanguage===""){
+      alert("Please select the source and desired languages");
+      return
+    }
+
+    else if (sourceLanguage===""){
+      alert("Please select a source language")
+      return
+    } 
+
+    else if (desiredLanguage===""){
+      alert("Please select a desired language")
+      return
+    }
+
     if (!inputCode.trim()) {
       setError('Input code cannot be empty');
       return;
@@ -205,6 +221,7 @@ useEffect(() => {
         <div className="dropdownContainer" id="leftDropdownContainer">
           <label htmlFor="originLanguage">Source Language:</label>
           <select id="originLanguage" onChange={handleSourceLanguageChange}>
+          <option value="">Select</option>
             {languages.map((language, index) => (
               <option key={index} value={language.value}>{language.label}</option>
             ))}
@@ -222,6 +239,7 @@ useEffect(() => {
         <div className="dropdownContainer" id="rightDropdownContainer">
           <label htmlFor="desiredLanguage">Desired Language:</label>
           <select id="desiredLanguage" onChange={handleDesiredLanguageChange}>
+          <option value="">Select</option>
             {languages.map((language, index) => (
               <option key={index} value={language.value}>{language.label}</option>
             ))}
