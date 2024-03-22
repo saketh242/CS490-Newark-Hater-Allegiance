@@ -7,9 +7,9 @@ web/node_modules/
 # Ignore node_modules in the backend directory
 backend/node_modules/
 
-# Ignore package.json and package-lock.json
-package.json
-package-lock.json
+# Ignore package.json and package-lock.json in the root only
+/package.json
+/package-lock.json
 
 # Ignore .env files
 web/.env
