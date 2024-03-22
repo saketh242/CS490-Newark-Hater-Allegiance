@@ -9,7 +9,6 @@ const getAllHistory = async (req, res, next) => {
         const histories = await History.find({ user: user_id })
                                         .select('_id Desired_language Source_language original_code converted_code createdAt')
                                         .sort({ createdAt: -1 });
-        console.log("All history:", histories);
         res.send(histories);
     } catch (error) {
         console.error("Error fetching all users:", error);
