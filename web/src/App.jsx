@@ -15,7 +15,7 @@ import PageNotFound from "./components/PageNotFound"
 import ChangePassword from './components/ChangePassword';
 import "./index.css"
 import useAuth from './useAuth';
-import axios from 'axios'
+// import axios from 'axios'
 import DeleteAccount from './components/DeleteAccount';
 import Settings from './components/Settings';
 import VerificationMessage from './components/VerificationMessage';
@@ -24,6 +24,7 @@ import ForgotPassword from './components/ForgotPassword';
 
 
 const App = () => {
+  
 
   const { user, isLoading } = useAuth();
 
@@ -33,6 +34,7 @@ const App = () => {
 
   return !isLoading && (
     <>
+
       <Router>
 
         <div className="content">

@@ -6,7 +6,8 @@ import useAuth from '../useAuth';
 import Feedback from './Feedback';
 
 import CodeOutput from './CodeOutput';
-// import History from './History';
+import History from './History';
+import { sanitizeCode } from '../utils/codeUtils';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
@@ -14,11 +15,8 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import nhaService from '../services/nhaService';
 import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
 
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-// import 'bootstrap/dist/css/bootstrap.min.css';
-
 
 const Translate = () => {
 
@@ -44,8 +42,8 @@ const Translate = () => {
   const [translatedCode, setTranslatedCode] = useState('');
 
   //source and destination language dropdown states
-  const [sourceLanguage, setSourceLanguage] = useState('python'); 
-  const [desiredLanguage, setDesiredLanguage] = useState('python');
+  const [sourceLanguage, setSourceLanguage] = useState(''); 
+  const [desiredLanguage, setDesiredLanguage] = useState('');
 
   const handleSourceLanguageChange = (e) => {
     setSourceLanguage(e.target.value);
@@ -56,6 +54,22 @@ const Translate = () => {
   };
 
   const translateCode = async () => {
+
+    if (sourceLanguage==="" && desiredLanguage===""){
+      alert("Please select the source and desired languages");
+      return
+    }
+
+    else if (sourceLanguage===""){
+      alert("Please select a source language")
+      return
+    } 
+
+    else if (desiredLanguage===""){
+      alert("Please select a desired language")
+      return
+    }
+
     if (!inputCode.trim()) {
       setError('Input code cannot be empty');
       return;
@@ -65,7 +79,8 @@ const Translate = () => {
     setTranslatedCode('');
     setLoading(true); // Set loading state to true before API call
   
-      const response = await nhaService.postPrompt(user, sourceLanguage, desiredLanguage, JSON.stringify(inputCode));
+      const sanitized = sanitizeCode(inputCode);
+      const response = await nhaService.postPrompt(user, sourceLanguage, desiredLanguage, JSON.stringify(sanitized));
       const translatedCodeResponse = response.message;
   
       setTranslatedCode(translatedCodeResponse); // Update translated code
@@ -80,9 +95,8 @@ const Translate = () => {
     try {
         if (translatedCode !== '' && userTriggeredChange) {
             const post = await nhaService.postHistory(user, inputCode, translatedCode, sourceLanguage, desiredLanguage);
-
             setPostId(post);
-
+            handleGetAllHistory();
             setUserTriggeredChange(false);
         }
     } catch (error) {
@@ -182,16 +196,17 @@ useEffect(() => {
     }
   };
 
+  const handleGetAllHistory = async () => {
+    setHistoryData(await nhaService.getAllHistory(user));
+  };
+
   useEffect(() => {
-    const handleGetAllHistory = async () => {
-      setHistoryData(await nhaService.getAllHistory(user));
-    };
     if (user !== null) handleGetAllHistory();
   }, [user])
 
   return (
     <div className="translateBody">
-      {/* <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar}/> */}
+      <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar} setInputCode={setInputCode} />
 
       <h1 className="apiStatus">
         OpenAI API Status:
@@ -206,6 +221,7 @@ useEffect(() => {
         <div className="dropdownContainer" id="leftDropdownContainer">
           <label htmlFor="originLanguage">Source Language:</label>
           <select id="originLanguage" onChange={handleSourceLanguageChange}>
+          <option value="">Select</option>
             {languages.map((language, index) => (
               <option key={index} value={language.value}>{language.label}</option>
             ))}
@@ -223,6 +239,7 @@ useEffect(() => {
         <div className="dropdownContainer" id="rightDropdownContainer">
           <label htmlFor="desiredLanguage">Desired Language:</label>
           <select id="desiredLanguage" onChange={handleDesiredLanguageChange}>
+          <option value="">Select</option>
             {languages.map((language, index) => (
               <option key={index} value={language.value}>{language.label}</option>
             ))}

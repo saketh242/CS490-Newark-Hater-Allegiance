@@ -79,7 +79,7 @@ const ChangePassword = () => {
         <div className='change-password-div'>
             
             <form className='change-password-form'>
-                <p className='chnage-password-heading'>Change Password</p>
+                <p className='change-password-heading'>Change Password</p>
                 <input
                     type="password"
                     className='password-change'
