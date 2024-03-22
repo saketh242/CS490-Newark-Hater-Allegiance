@@ -7,6 +7,10 @@ web/node_modules/
 # Ignore node_modules in the backend directory
 backend/node_modules/
 
+# Ignore package.json and package-lock.json in root because of oopsies
+package.json
+package-lock.json
+
 # Ignore .env files
 web/.env
 backend/.env
