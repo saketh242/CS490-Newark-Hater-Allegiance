@@ -9,6 +9,7 @@ const historyRouter = require("./routes/historyRoutes");
 const feedbackRouter = require("./routes/feedbackRoutes");
 const chatGptRouter = require("./routes/chatGptRouter");
 const decodeToken = require("./middleware/index");
+const expressQueue = require("express-queue");
 
 app.use(express.json());
 app.use(cors());
@@ -37,21 +38,31 @@ mongoose.connect(process.env.DATABASE)
     console.error("MongoDB connection unsuccessful :(", err);
   });
 
+// Create a queue instance
+const queue = expressQueue({
+  activeLimit: 1, // Limit of active requests being processed
+  queuedLimit: -1 // No limit on queued requests
+});
+
+// Use the queue middleware
+app.use(queue);
+
+// Routes
 app.use("/users", decodeToken, userRouter);
 app.use("/history", decodeToken, historyRouter);
 app.use("/feedback", feedbackRouter);
-app.use("/openAI", decodeToken, chatGptRouter)
+app.use("/openAI", decodeToken, chatGptRouter);
 
 app.get("/test", (req, res) => {
-    res.status(200).json({ message: "This is a test for auth" });
+  res.status(200).json({ message: "This is a test for auth" });
 });
 
 app.get("/", (req, res) => {
-  res.status(200).send("Welcome to NHA CS490!")
+  res.status(200).send("Welcome to NHA CS490!");
 });
 
 app.get("*", (req, res, next) => {
-    res.status(404).send("Not Found");
+  res.status(404).send("Not Found");
 });
 
 module.exports = app;

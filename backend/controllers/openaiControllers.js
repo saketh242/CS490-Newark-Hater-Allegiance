@@ -26,7 +26,6 @@ const postPrompt = async (req, res, next) => {
         const filtered = translatedCode.replace(/```/g, '');
 
         const code = filtered.split('\n').slice(1).map(line => line.trim()).join('\n');
-
         return res.status(200).json({
             success: true,
             message: code,
