@@ -17,7 +17,7 @@ const Feedback = ({ postId }) => {
     const [error, setError] = useState("");
 
     const submitted = async () => {
-        if (!postId || translation === -1 || userExperience === -1 || textBox.trim() === '') {
+        if (!postId || translation === -1 || userExperience === -1 || textBox === '') {
             setError("Please fill out all fields.");
             // toast("Please fill out all fields.");
             return;
@@ -62,7 +62,6 @@ const Feedback = ({ postId }) => {
                 value={textBox}
                 onChange={(e) => {
                     setTextBox(e.target.value);
-                    setError("");
                 }}
                 style={{
                     borderColor: error ? 'red' : '#0ac6c0',

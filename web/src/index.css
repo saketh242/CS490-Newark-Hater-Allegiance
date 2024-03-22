@@ -84,11 +84,18 @@
 
 @media (width <= 900px) {
   .nav-brand{
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    padding-top: 0.08rem;
   }
 
   .nav-rl {
-    font-size: 0.9rem;
+    font-size: 1rem;
+  }
+
+  .nav-icon {
+    width: 1.2rem;
+    height: 1.2rem;
   }
 }
 
@@ -782,6 +789,21 @@ input[type="checkbox"]{
   .login-btn {
     font-size: 1rem;
   }
+
+  .login-flex-box {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .check-box-p {
+    text-align: center;
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+
+  .forgot-password{
+    padding-right: 1.5rem;
+  }
 }
 
 /* Sign up page Styling */
@@ -978,7 +1000,7 @@ input[type="checkbox"]{
 }
 
 /* ChangePassword Component Styling */
-.chnage-password-heading {
+.change-password-heading {
   font-family: "Kanit", sans-serif;
   color: #9CA6B5;
   font-size: 2rem;
@@ -1017,6 +1039,14 @@ input[type="checkbox"]{
   border-radius: 5px;
   margin: 1rem 0;
 }
+
+@media (width <= 900px) {
+  .change-password-heading{
+    font-size: 1.5rem;
+  }
+}
+
+
 
 /* Help Page Styling */
 .help-subtitle {
@@ -1089,7 +1119,6 @@ input[type="checkbox"]{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
 }
 
 .delete-heading {
@@ -1126,12 +1155,33 @@ input[type="checkbox"]{
   box-shadow: 0 20px 25px -5px #000, 0 8px 10px -6px #000;
 }
 
-/* Settings.jsx component Styling */
 
-/* .error-settings{
-  position: absolute;
-  bottom: 2rem;
-} */
+@media (width <= 900px) {
+  .delete-heading{
+    font-size: 1.4rem;
+    font-weight: 550;
+    text-align: center;
+  }
+
+  .password-change {
+    font-size: 1rem;
+  }
+
+  .meme2 {
+    width: 75%;
+    height: 20rem;
+  }
+}
+
+
+
+
+
+
+
+
+
+/* Settings.jsx component Styling */
 
 .error-settings {
   padding-top: 0;
@@ -1220,9 +1270,74 @@ input[type="checkbox"]{
   padding-top: 0.7rem;
 }
 
-.options-div:hover {
+.hover-div1:hover {
   color:#0ac6c0;
 }
+
+.hover-div2:hover {
+  color:#0ac6c0;
+}
+
+@media (width <= 900px) {
+  .settings-head-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .names-box{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .name-input-box-settings {
+    width: 97%;
+  }
+
+  .options-div {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .option-div{
+    margin: 0;
+    font-size: 1.2rem;
+    padding: 0.3rem;
+  }
+
+  .settings-email-input{
+    font-size: 1rem;
+  }
+
+  .name-input-box-settings{
+    font-size: 1rem;
+  }
+
+  .settings-head-p {
+    font-size: 1.5rem;
+
+  }
+
+  .settings-icon{
+    width: 2rem;
+    height: 2rem;
+    padding-top: 0.7rem;
+  }
+
+  .error-msg {
+    font-size: 1.1rem;
+  }
+
+  .edit-profile{
+    font-size: 1.3rem;
+  }
+
+
+
+}
+
+
 
 
 /* VerificationMessage.jsx styling */
