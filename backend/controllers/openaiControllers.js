@@ -5,7 +5,7 @@ const openai = new OpenAIApi.OpenAI({ key: process.env.OPENAI_API_KEY });
 
 const postPrompt = async (req, res, next) => {
     const { inputCode, sourceLanguage, desiredLanguage } = req.body;
-    const prompt = `Translate the following ${sourceLanguage} code to ${desiredLanguage} and provide only the ${desiredLanguage} code:\n\n\`\`\`${inputCode}\n\`\`\``;
+    const prompt = `Please, Translate this input code: "${inputCode}" and convert it to the ${desiredLanguage}. If any part of the input code is not valid code written in any programming language, just return that portion of the input code as it is(not in quotes or any other things added just return it normally). If the input code has portions of valid code then convert and give me only the translated code in the ${desiredLanguage}(also, when converting the output code, it should look like it is written professionally do not try to convert word to word, do not try to fix any syntax errors, don't give me anything else just give me the output language code that's it), please understand thank you`;
 
     try {
         const response = await openai.chat.completions.create({

@@ -15,7 +15,7 @@ import PageNotFound from "./components/PageNotFound"
 import ChangePassword from './components/ChangePassword';
 import "./index.css"
 import useAuth from './useAuth';
-import axios from 'axios'
+// import axios from 'axios'
 import DeleteAccount from './components/DeleteAccount';
 import Settings from './components/Settings';
 import VerificationMessage from './components/VerificationMessage';
@@ -24,6 +24,7 @@ import ForgotPassword from './components/ForgotPassword';
 
 
 const App = () => {
+  
 
   const { user, isLoading } = useAuth();
 
@@ -33,6 +34,7 @@ const App = () => {
 
   return !isLoading && (
     <>
+
       <Router>
 
         <div className="content">
@@ -44,7 +46,7 @@ const App = () => {
             <Route path="/translate" element={user ? (user.emailVerified ? <Translate /> : <VerificationMessage/>): <Navigate to="/login"/>} />
             <Route path="/help" element={<Help />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/settings" element={user ? <Settings /> : <Navigate to="/login"/>} />
+            <Route path="/settings" element={user ? (user.emailVerified ? <Settings /> : <VerificationMessage/>): <Navigate to="/login"/>}  />
             <Route path="/changePassword" element={user ? <ChangePassword /> : <Navigate to="/login"/>} />
             <Route path="/deleteAccount" element={user ? <DeleteAccount /> : <Navigate to="/login"/>} />
             <Route path="/forgotPassword" element={!user ? <ForgotPassword/> : <Navigate to = "/"/>}/>

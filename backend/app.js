@@ -3,14 +3,20 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
+const mongoSanitize = require('express-mongo-sanitize');
 const userRouter = require("./routes/userRoutes");
 const historyRouter = require("./routes/historyRoutes");
 const feedbackRouter = require("./routes/feedbackRoutes");
 const chatGptRouter = require("./routes/chatGptRouter");
 const decodeToken = require("./middleware/index");
 
+const queue = require('express-queue');
+
 app.use(express.json());
 app.use(cors());
+app.use(mongoSanitize()); //sanitize all user input
+
+app.use(queue({ activeLimit: 1, queuedLimit: -1 }));
 
 mongoose.connect(process.env.DATABASE)
   .then(() => {

@@ -15,7 +15,8 @@ const dateAndTimeConversion = (date) => {
   return string;
 };
 
-const History = ({ history, showSidebar, toggleSidebar }) => {
+const History = ({ history, showSidebar, toggleSidebar, setInputCode }) => {
+  console.log(history);
   if (history === null || showSidebar === false) return (<></>);
   return (
     <>
@@ -29,6 +30,7 @@ const History = ({ history, showSidebar, toggleSidebar }) => {
           borderLeftWidth: "medium",
           borderLeftColor: "#076966",
           borderLeftStyle: "solid",
+          borderRadius: "14px",
           overflowY: "scroll",
           scrollbarColor: "#076966 #1A1C23",
           scrollbarWidth: "thin"
@@ -54,6 +56,9 @@ const History = ({ history, showSidebar, toggleSidebar }) => {
             <p>
               {history[i].converted_code}
             </p>
+
+            <button onClick={() => setInputCode(history[i].original_code)}> Load Source Code </button>
+            <button onClick={() => setInputCode(history[i].converted_code)}> Load Translated Code </button>
           </div>
         ))}
       </Drawer>

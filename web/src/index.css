@@ -1127,6 +1127,16 @@ input[type="checkbox"]{
 }
 
 /* Settings.jsx component Styling */
+
+/* .error-settings{
+  position: absolute;
+  bottom: 2rem;
+} */
+
+.error-settings {
+  padding-top: 0;
+}
+
 .settings-div {
   display: flex;
   flex-direction: column;
@@ -1272,8 +1282,27 @@ input[type="checkbox"]{
   text-decoration: underline;
 }
 
+.translationHistory h4 {
+  padding-top: 1rem;
+}
+
 .translationHistory p {
   padding-left: 0.5rem;
   padding-bottom: 1rem;
   word-break: break-word;
+  max-height: "50px";
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.translationHistory button {
+  background-color: #5469D4;
+  border: 0;
+  border-radius: 1rem;
+  width: fit-content;
+  padding: 0.35rem;
+  margin-bottom: 1rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
 }

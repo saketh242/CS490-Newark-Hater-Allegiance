@@ -116,12 +116,14 @@ const updateUser = async (req, res, next) => {
     try {
         const { uid } = req;
         const { email, firstName, lastName, newEmailFlag, newFirstNameFlag, newLastNameFlag } = req.body;
-        if (newEmailFlag) {
-            await admin.auth().updateUser(uid, {
-                email: email,
-                emailVerified: false,
-            })
-        }
+        // commented this the email update happens in front end now
+        
+        // if (newEmailFlag) {
+        //     await admin.auth().updateUser(uid, {
+        //         email: email,
+        //         emailVerified: false,
+        //     })
+        // }
         const updateData = {};
 
         if (newFirstNameFlag) {
