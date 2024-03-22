@@ -875,6 +875,10 @@ input[type="checkbox"]{
     width: 18rem;
     font-size: 1rem;
   }
+
+  .signup-msg p, .signup-msg a{
+    font-size: 1.1rem;
+  }
 }
 
 /* Feedback component styling */ 
