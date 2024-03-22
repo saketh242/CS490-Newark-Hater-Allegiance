@@ -1385,3 +1385,45 @@ input[type="checkbox"]{
   justify-content: center;
   align-items: center;
 }
+
+.translationTitle, .translationHistory {
+  text-align: center;
+  border-bottom-width: "1rem";
+  border-bottom-color: #076966;
+  border-bottom-style: solid;
+}
+
+.translationHistory h5 {
+  text-decoration: underline;
+}
+
+.translationHistory h4 {
+  padding-top: 1rem;
+}
+
+.translationHistory p {
+  padding-left: 0.5rem;
+  padding-bottom: 1rem;
+  word-break: break-word;
+  max-height: "50px";
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.translationHistory button {
+  background-color: #5469D4;
+  border: 0;
+  border-radius: 1rem;
+  width: fit-content;
+  padding: 0.35rem;
+  margin-bottom: 1rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.translationHistory button:hover {
+  border-color: #BDC3D0;
+  border-width: 0.15rem;
+  border-style: solid;
+}

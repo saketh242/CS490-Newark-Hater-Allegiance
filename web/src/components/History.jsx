@@ -1,5 +1,6 @@
 import React from 'react';
-import { Offcanvas } from 'react-bootstrap';
+import Drawer from 'react-modern-drawer'
+import 'react-modern-drawer/dist/index.css'
 
 const dateAndTimeConversion = (date) => {
   const dateObject = new Date(date);
@@ -14,27 +15,55 @@ const dateAndTimeConversion = (date) => {
   return string;
 };
 
-const History = ({ history, showSidebar, toggleSidebar }) => {
+const History = ({ history, showSidebar, toggleSidebar, setInputCode }) => {
+  console.log(history);
   if (history === null || showSidebar === false) return (<></>);
   return (
-    <div>
-      <Offcanvas show={showSidebar} onHide={toggleSidebar} placement="end">
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Translate History</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          {history.map((historyLabel, i) => (
-            <p key={i} on>
-              {/* the sacred fuckin texts do not delete these lines */}
-              {dateAndTimeConversion(history[i].createdAt)}:&nbsp;
-              {history[i].Source_language}:&nbsp;
-              {history[i].original_code} -- {history[i].Desired_language}: {history[i].converted_code}
-            </p>
-          ))}
-        </Offcanvas.Body>
-      </Offcanvas>
-    </div>
-  )
-};
+    <>
+      <Drawer
+        open={showSidebar}
+        onClose={toggleSidebar}
+        direction='right'
+        size={'500px'}
+        style={{
+          backgroundColor: "#23262F",
+          borderLeftWidth: "medium",
+          borderLeftColor: "#076966",
+          borderLeftStyle: "solid",
+          borderRadius: "14px",
+          overflowY: "scroll",
+          scrollbarColor: "#076966 #1A1C23",
+          scrollbarWidth: "thin"
+        }}
+      >
+        <h1 className="translationTitle"> Translation History </h1>
+        {history.map((historyLabel, i) => (
+          <div className="translationHistory" key={i}>
+            <h4>
+              {dateAndTimeConversion(history[i].createdAt)}
+            </h4>
 
-export default History;
+            <h5>
+              Source Code ({history[i].Source_language})
+            </h5>
+            <p>
+              {history[i].original_code}
+            </p>
+
+            <h5>
+              Converted Code ({history[i].Desired_language})
+            </h5>
+            <p>
+              {history[i].converted_code}
+            </p>
+
+            <button onClick={() => setInputCode(history[i].original_code)}> Load Source Code </button>
+            <button onClick={() => setInputCode(history[i].converted_code)}> Load Translated Code </button>
+          </div>
+        ))}
+      </Drawer>
+    </>
+  )
+}
+
+export default History

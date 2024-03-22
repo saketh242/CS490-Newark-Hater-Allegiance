@@ -19,6 +19,7 @@
     "react-bootstrap-sidebar-menu": "^2.0.3",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
+    "react-modern-drawer": "^1.2.2",
     "react-router-dom": "^6.22.2",
     "react-scripts": "5.0.1",
     "react-slick": "^0.30.2",
