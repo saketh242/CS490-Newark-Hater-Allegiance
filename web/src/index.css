@@ -1421,3 +1421,9 @@ input[type="checkbox"]{
   margin-left: 0.25rem;
   margin-right: 0.25rem;
 }
+
+.translationHistory button:hover {
+  border-color: #BDC3D0;
+  border-width: 0.15rem;
+  border-style: solid;
+}

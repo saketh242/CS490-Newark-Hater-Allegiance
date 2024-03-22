@@ -95,9 +95,8 @@ const Translate = () => {
     try {
         if (translatedCode !== '' && userTriggeredChange) {
             const post = await nhaService.postHistory(user, inputCode, translatedCode, sourceLanguage, desiredLanguage);
-
             setPostId(post);
-
+            handleGetAllHistory();
             setUserTriggeredChange(false);
         }
     } catch (error) {
@@ -197,10 +196,11 @@ useEffect(() => {
     }
   };
 
+  const handleGetAllHistory = async () => {
+    setHistoryData(await nhaService.getAllHistory(user));
+  };
+
   useEffect(() => {
-    const handleGetAllHistory = async () => {
-      setHistoryData(await nhaService.getAllHistory(user));
-    };
     if (user !== null) handleGetAllHistory();
   }, [user])
 
