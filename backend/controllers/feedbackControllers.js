@@ -79,7 +79,6 @@ const getFeedback = async (req, res, next) => {
             })
         );
 
-        console.log("All feedbacks with rating 5 and user details:", feedbacksWithUserDetails);
         res.status(200).send(feedbacksWithUserDetails);
     } catch (error) {
         console.error("Error fetching feedbacks:", error);

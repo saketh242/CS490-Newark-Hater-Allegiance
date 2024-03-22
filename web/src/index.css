@@ -10,6 +10,10 @@
   font-family: sans-serif;
 }
 
+#auto-icon {
+  color: #0ac6c0;
+}
+
 /* Navbar Styling */
 .dropdown-nav:hover .dropdown-content {
   display: block;
@@ -131,7 +135,6 @@
 .box {
   padding: 2rem 5rem 2rem 5rem;
   font-size: 2rem;
-  
 }
 
 .features {
@@ -198,8 +201,7 @@
   padding: 3rem 0;
 }
 
-#home-icon {
-  color: #0ac6c0;
+.home-icon {
   padding-bottom: 2rem;
 }
 
@@ -275,7 +277,18 @@
   }
 
   .features-flexbox {
-    font-size: 0.5rem;
+    font-size: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  #perks {
+    flex-basis: calc(50% - 20px); 
+    text-align: center;
+    margin: 10px;
+    box-sizing: border-box;
+    padding: 1rem;
   }
 
   .signup-button {
@@ -312,10 +325,6 @@
     font-size: 1rem;
   }
 
-  .features-flexbox {
-    font-size: 0.4rem;
-  }
-
   .signup-button {
     padding: 1rem 2rem;
     font-size: 1rem;
@@ -337,19 +346,7 @@
   }
 }
 
-@media (1230px <= width <= 1400px) {
-  .icon-txt {
-    font-size: 1.4rem;
-    font-weight: 500;
-  }
-}
-
 @media (860px <= width <= 1230px) {
-  .icon-txt {
-    font-size: 1.4rem;
-    font-weight: 500;
-  }
-  
   .features-flexbox {
     display: flex;
     flex-wrap: wrap;
@@ -363,12 +360,6 @@
     box-sizing: border-box;
     padding: 1rem;
   }
-  
-  #home-icon {
-    margin-bottom: 10px;
-    width:12rem;
-    height: 10rem;
-  }
 
   .signup-image {
     width: 39rem;
@@ -376,24 +367,13 @@
   }
 }
 
-@media (width <= 860px) {
+@media (width <= 765px) {
   .features-flexbox {
     display: flex;
     flex-direction: column;
+    font-size: 0.5rem;
   }
 
-  #home-icon {
-    width:11rem;
-    height: 8rem;
-  }
-
-  .icon-txt {
-    font-size: 1.5rem;
-  }
-
-}
-
-@media (width <= 765px){
   .signup-image{
     width: 22rem;
     height: 18rem;
@@ -723,9 +703,8 @@ input[type="checkbox"]{
   margin: 1rem 0;
 }
 
-.email-input:focus, .password-login:focus  {
+.email-input:focus, .password-login:focus, #search-input:focus  {
   outline: none; 
-
 }
 
 .login-btn {
@@ -1048,9 +1027,18 @@ input[type="checkbox"]{
 
 
 /* Help Page Styling */
+.help {
+  padding: 2rem 5rem 2rem 5rem;
+  font-size: 2rem;
+  text-align: center;
+}
+
 .help-subtitle {
-  padding-top: 0rem;
+  text-align: center;
   margin-top: 4rem;
+}
+
+.help-header, .help-subtitle {
   font-size: 3rem;
 }
 
@@ -1058,6 +1046,29 @@ input[type="checkbox"]{
   margin-top: 5rem;
   display: flex;
   justify-content: center;
+}
+
+#search-bar {
+  max-width: 20rem;
+  display: flex;
+  background-color: #23262F;
+  border: 2pt solid #23262F;
+  color: #9CA6B5;
+  margin: auto;
+  padding: 0.5rem;
+  border-radius: 1rem;
+}
+
+#search-input {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  color: #9CA6B5;
+}
+
+.help-search {
+  padding: 0rem 0.1rem;
+  font-size: 1.2rem;
 }
 
 #help-item {
@@ -1075,13 +1086,8 @@ input[type="checkbox"]{
   cursor: pointer;
 }
 
-#help-icon {
-  color: #0ac6c0;
+.help-icon {
   padding-right: 1rem;
-}
-
-.help {
-  text-align: center;
 }
 
 .help-intro, .help-guides, .help-faq, .help-contact, .help-egg {
@@ -1110,6 +1116,66 @@ input[type="checkbox"]{
 #focus {
   display: block;
   visibility: visible;
+}
+
+
+@media (width < 1280px) {
+  .help {
+    padding-top: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  .help-header, .help-subtitle {
+    font-size: 2.5rem;
+  }
+
+  .search-icon {
+    font-size: 2rem;
+  }
+  
+  #help-bar {
+    font-size: 0.75rem;
+  }
+  
+  #search-bar {
+    transform: scale(0.8);
+  }
+
+  #question-list h {
+    font-size: 2rem;
+  }
+
+  #question-list p {
+    font-size: 1rem;
+  }
+
+}
+
+@media (width <= 640px) {
+  .help {
+    padding-top: 0rem;
+    font-size: 1rem;
+  }
+
+  .help-header, .help-subtitle {
+    font-size: 1.5rem;
+  }
+
+  #help-bar {
+    font-size: 0.5rem;
+  }
+
+  #search-bar {
+    transform: scale(0.6);
+  }
+
+  #question-list h {
+    font-size: 1.5rem;
+  }
+
+  #question-list p {
+    font-size: 0.75rem;
+  }
 }
 
 /* Delete Account Component Styling */
