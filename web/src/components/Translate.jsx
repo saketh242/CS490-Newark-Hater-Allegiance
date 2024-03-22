@@ -31,7 +31,6 @@ const Translate = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   
-  const [apiReady, setApiReady] = useState(true); // API status -- manually set true/false right now for testing purposes
   const [loading, setLoading] = useState(false); // Loading state - display loading msg while api retrieves code response
   const [userTriggeredChange, setUserTriggeredChange] = useState(false); //Dummy right now, but will be implemented when we do getHistory from the sidebar, so we aren't posting when we are getting the history
   const [postId, setPostId] = useState("") //not really used right now, but will be useful when we want to post a feedback
@@ -44,6 +43,26 @@ const Translate = () => {
   //source and destination language dropdown states
   const [sourceLanguage, setSourceLanguage] = useState(''); 
   const [desiredLanguage, setDesiredLanguage] = useState('');
+
+  const [apiReady, setApiReady] = useState(false); // Initialize with false
+  const [loadingAPI, setLoadingAPI] = useState(true); // Loading state for API status
+  const [errorAPI, setErrorAPI] = useState('');
+
+  useEffect(() => {
+    const fetchAPIStatus = async () => {
+      try {
+        const response = await nhaService.getOpenAIStatus();
+        console.log(response);
+        setApiReady(response);
+      } catch (error) {
+        setErrorAPI('Error fetching API status');
+      } finally {
+        setLoadingAPI(false);
+      }
+    };
+
+    fetchAPIStatus();
+  }, []);
 
   const handleSourceLanguageChange = (e) => {
     setSourceLanguage(e.target.value);
@@ -208,14 +227,20 @@ useEffect(() => {
     <div className="translateBody">
       <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar} setInputCode={setInputCode} />
 
-      <h1 className="apiStatus">
-        OpenAI API Status:
-        {apiReady ? (
-          <FontAwesomeIcon icon={faCheckCircle} size="2x" style={{ color: 'green', marginLeft: '1rem' }} />
+    <div className="apiStatusMessage">
+        <h1 className="apiStatus">
+          OpenAI API Status:
+          {apiReady ? (
+            <FontAwesomeIcon icon={faCheckCircle} size="2x" style={{ color: 'green', marginLeft: '1rem' }} />
           ) : (
             <FontAwesomeIcon icon={faTimesCircle} size="2x" style={{ color: 'red', marginLeft: '1rem' }} />
           )}
-      </h1>
+        </h1>
+        {errorAPI &&
+          <div className="apiErrorMsg">
+            <p>The translation service is currently unavailable. Please try again later.</p>
+          </div>}
+      </div>
 
       <div className="dropdown">
         <div className="dropdownContainer" id="leftDropdownContainer">
@@ -230,7 +255,7 @@ useEffect(() => {
 
         <div className="conversionArrow">
           {/* Arrow icon button */}
-          <button id="translationButton" className="translationButton" onClick={translateCode} disabled={loading}>
+          <button id="translationButton" className="translationButton" onClick={translateCode} disabled={loading || !apiReady}>
             <FontAwesomeIcon id="icon" icon={faArrowRightLong} size="7x" />
           </button>
           <p>Convert</p>
