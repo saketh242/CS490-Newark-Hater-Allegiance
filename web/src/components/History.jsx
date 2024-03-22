@@ -2,6 +2,17 @@ import React from 'react';
 import Drawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
 
+const sideBarStyle = {
+  backgroundColor: "#23262F",
+  borderLeftWidth: "medium",
+  borderLeftColor: "#076966",
+  borderLeftStyle: "solid",
+  borderRadius: "14px",
+  overflowY: "scroll",
+  scrollbarColor: "#076966 #1A1C23",
+  scrollbarWidth: "thin"
+};
+
 const dateAndTimeConversion = (date) => {
   const dateObject = new Date(date);
   const string = dateObject.toLocaleDateString('en-US', {
@@ -25,16 +36,7 @@ const History = ({ history, showSidebar, toggleSidebar, setInputCode }) => {
         onClose={toggleSidebar}
         direction='right'
         size={'500px'}
-        style={{
-          backgroundColor: "#23262F",
-          borderLeftWidth: "medium",
-          borderLeftColor: "#076966",
-          borderLeftStyle: "solid",
-          borderRadius: "14px",
-          overflowY: "scroll",
-          scrollbarColor: "#076966 #1A1C23",
-          scrollbarWidth: "thin"
-        }}
+        style={sideBarStyle}
       >
         <h1 className="translationTitle"> Translation History </h1>
         {history.map((historyLabel, i) => (
