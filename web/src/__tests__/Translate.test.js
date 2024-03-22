@@ -5,6 +5,11 @@ import Translate from '../components/Translate';
 import '@testing-library/jest-dom'; // Import this for better assertion messages
 import userEvent from '@testing-library/user-event';
 
+//TODO:
+// test empty input
+// test copy
+// test download
+
 // Mock useNavigate
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -59,17 +64,19 @@ describe('Translate component', () => {
   //       </MemoryRouter>
   //     );
   //   });
-
+  
   //   const inputArea = screen.getByPlaceholderText('Enter code to translate');
   //   const translateButton = screen.getByText('Convert');
-
+  
   //   fireEvent.change(inputArea, { target: { value: '' } });
   //   fireEvent.click(translateButton);
-
+  
+  //   // Wait for the error message to appear
   //   await waitFor(() => {
   //     expect(screen.getByText('Input code cannot be empty')).toBeInTheDocument();
   //   });
   // });
+  
 
   test('updates input code value when typing', () => {
     const { getByPlaceholderText } = render(<Translate />);
