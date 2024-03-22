@@ -39,7 +39,7 @@ const Help = () => {
   return (
     <div className='standard'>
       {/* */}
-      <h1 className="subtitle help-subtitle">How can we help?</h1>
+      <h1 className="help-subtitle help-header">How can we help?</h1>
       
       <div id='help-bar'>
         <div id='help-item' onClick={()=>handleBox(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='3x' icon={faBook}/><h1 className='icon-txt' id={showBox===1 ? 'help-active': null}>Guides</h1></div>
@@ -72,7 +72,7 @@ const Help = () => {
           </div>
           <ul id='question-list'>
             {filteredFaqs.map(faq => <li key={faq.id}>
-            <h>{faq.header}</h>
+            <h1 className='help-header'>{faq.header}</h1>
             <p>{faq.text}</p>
             </li>)}
           </ul>
@@ -80,7 +80,7 @@ const Help = () => {
 
         {/*Box 3*/}
         <div className='help-contact' id={showBox===3 ? 'focus': null}>
-          <h>Send us a message to get additional support!</h>
+          <h1 className='help-header'>Send us a message to get additional support!</h1>
           <p>Our team will give you a response between 3-7 business days (excludes weekends and holidays)</p>
           <p>Email: nhaproj@gmail.com</p>
         </div>

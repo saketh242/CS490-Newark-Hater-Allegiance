@@ -1005,8 +1005,11 @@ input[type="checkbox"]{
 }
 
 .help-subtitle {
-  padding-top: 0rem;
+  text-align: center;
   margin-top: 4rem;
+}
+
+.help-header, .help-subtitle {
   font-size: 3rem;
 }
 
@@ -1086,30 +1089,27 @@ input[type="checkbox"]{
   visibility: visible;
 }
 
-@media (width <= 900px) {
+
+@media (width < 1280px) {
   .help {
+    padding-top: 1rem;
     font-size: 1.5rem;
   }
-
-  #search-bar {
-    font-size: 5rem;
-  }
-
-  .help-subtitle {
+  
+  .help-header, .help-subtitle {
     font-size: 2.5rem;
   }
+
+  .search-icon {
+    font-size: 2rem;
+  }
   
-  #help-bar, #search-bar {
+  #help-bar {
     font-size: 0.75rem;
   }
   
   #search-bar {
-    padding: 0rem;
-    max-width: 15rem;
-  }
-
-  #search-input {
-    font-size: 1rem;
+    transform: scale(0.8);
   }
 
   #question-list h {
@@ -1122,25 +1122,22 @@ input[type="checkbox"]{
 
 }
 
-@media (width <= 600px) {
+@media (width <= 640px) {
   .help {
+    padding-top: 0rem;
     font-size: 1rem;
   }
 
-  .help-subtitle {
-    font-size: 2rem;
+  .help-header, .help-subtitle {
+    font-size: 1.5rem;
   }
 
-  #help-bar, #search-bar {
+  #help-bar {
     font-size: 0.5rem;
   }
 
   #search-bar {
-    max-width: 10rem;
-  }
-
-  #search-input {
-    font-size: 0.75rem;
+    transform: scale(0.6);
   }
 
   #question-list h {
