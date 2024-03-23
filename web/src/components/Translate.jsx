@@ -105,8 +105,8 @@ const Translate = () => {
       if(!response.success){
         setLoading(false);
         setTranslationError(response.message);
-        setUserTriggeredChange(false);
-        //log error here ...
+        setUserTriggeredChange(true);
+        //log error here? ...
         return;
       }
 
