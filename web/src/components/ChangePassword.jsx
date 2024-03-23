@@ -39,6 +39,11 @@ const ChangePassword = () => {
             return
         }
 
+        else if (newPassword != newPassword2){
+            setError("Both passwords has to be the same")
+            return
+        }
+
 
         try {
             // all field validations pass now time to reauthenticate user and change password :)

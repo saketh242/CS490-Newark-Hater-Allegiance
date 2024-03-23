@@ -242,7 +242,7 @@
   .features {
     font-size: 2.5rem;
   }
-
+  
   #review {
     width: 15rem;
     height: 15rem;
@@ -641,7 +641,6 @@ select, button {
   }
 }
 
-
 /* Login Component Styling */
 .login-content {
   display: flex;
@@ -838,6 +837,11 @@ input[type="checkbox"]{
 
 
 @media (width <= 930px) {
+  .signup-msg p, .signup-msg a {
+    font-size: 1rem;
+
+  }
+
   .login-heading{
     font-size: 4rem;
     text-align: center;
@@ -853,6 +857,10 @@ input[type="checkbox"]{
   .name-input-box,.signup-email-input, .signup-password-input  {
     width: 18rem;
     font-size: 1rem;
+  }
+
+  .signup-msg p, .signup-msg a{
+    font-size: 1.1rem;
   }
 }
 
@@ -1479,17 +1487,21 @@ input[type="checkbox"]{
 
 .translationHistory button {
   background-color: #5469D4;
-  border: 0;
   border-radius: 1rem;
   width: fit-content;
   padding: 0.35rem;
   margin-bottom: 1rem;
   margin-left: 0.25rem;
   margin-right: 0.25rem;
+  border-width: 0.18rem;
+  border-style: solid;
+  border-color: transparent;
 }
 
 .translationHistory button:hover {
   border-color: #BDC3D0;
-  border-width: 0.15rem;
-  border-style: solid;
+}
+
+.translationHistory button:active {
+  background-color: #076966;
 }
