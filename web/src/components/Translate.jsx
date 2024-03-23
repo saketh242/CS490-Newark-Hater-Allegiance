@@ -352,7 +352,11 @@ const Translate = () => {
             </div>
           </div>
           <div className="outputArea">
-            {loading && <p>Loading...</p>} {/*loading text*/}
+            {loading && <p className="loadingText">Loading
+              <span class="dot1">.</span>
+              <span class="dot2">.</span>
+              <span class="dot3">.</span>
+            </p>} {/*loading text*/}
             <CodeOutput code={translatedCode} language={desiredLanguage} />
           </div>
         </div>
