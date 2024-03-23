@@ -407,10 +407,35 @@
 }
 
 .apiStatus {
-  margin: 2rem;
+  margin: 1rem;
   display: flex;
   align-items: center;
   font-weight: bold;
+}
+
+.apiStatusMessage {
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#errorIcon {
+  color:red;
+  padding-right: 1rem;
+}
+
+.translationError{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  margin: 1rem;
+  font-size: 1.3rem;
+  border: 2.5px solid red;
+  border-radius: 8px;
+  background-color: rgba(255, 0, 0, 0.069); /* Red with 50% opacity */
 }
 
 #originLanguage, #desiredLanguage {
