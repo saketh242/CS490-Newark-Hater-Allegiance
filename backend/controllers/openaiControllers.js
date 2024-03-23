@@ -30,7 +30,6 @@ const postPrompt = async (req, res, next) => {
             languageMismatchError.status = 400;
             throw languageMismatchError;
         }
-
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo-0125",
             messages: [
@@ -62,7 +61,7 @@ const postPrompt = async (req, res, next) => {
             message: code,
         });
     } catch (error) {
-        console.log("Error message: ", error);
+        
 
         if (error.status === 400) {
             return res.status(400).json({

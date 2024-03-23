@@ -3,6 +3,7 @@ const axios = require('axios');
 const request = require('supertest');
 const app = require('../app');
 
+
 let chai, expect;
 let testToken;
 let postUserToken;
@@ -526,4 +527,57 @@ describe('API RESPONSES ', () => {
       });
   });
 
+  /*
+  it('POST: should return 200 for sucessful translation for /openAI/postTranslation', (done) => {
+    const inputCode = {
+      inputCode: "print(\"Hello World!\")",
+      sourceLanguage: "python",
+      desiredLanguage: "c",
+    };
+
+    request(app)
+      .post('/openAI/postTranslation')
+      .send(inputCode)
+      .set('Authorization', `Bearer ${testToken}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        // sucessful translation
+        expect(res.body).to.have.property('success').equal(true);
+
+        done();
+      });
+  });
+  */
+
+  it('POST: should return 400 for language mismatch, gibberish, or other language errors for /openAI/postTranslation', (done) => {
+    const inputCode = {
+      inputCode: "the fitnessgram pacer test",
+      sourceLanguage: "python",
+      desiredLanguage: "c",
+    };
+
+    request(app)
+      .post('/openAI/postTranslation')
+      .send(inputCode)
+      .set('Authorization', `Bearer ${testToken}`)
+      .expect(400)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        // sucessful translation
+        expect(res.body).to.have.property('success').equal(false);
+        expect(res.body).to.have.property('message').equal("Input code does not match specified source language");
+
+        done();
+      });
+  });
+
 });
+
+
+
+
+
+
