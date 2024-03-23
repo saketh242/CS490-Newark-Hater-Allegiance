@@ -859,6 +859,11 @@ input[type="checkbox"]{
 
 
 @media (width <= 930px) {
+  .signup-msg p, .signup-msg a {
+    font-size: 1rem;
+
+  }
+
   .login-heading{
     font-size: 4rem;
     text-align: center;
