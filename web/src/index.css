@@ -242,7 +242,7 @@
   .features {
     font-size: 2.5rem;
   }
-
+  
   #review {
     width: 15rem;
     height: 15rem;
@@ -837,6 +837,11 @@ input[type="checkbox"]{
 
 
 @media (width <= 930px) {
+  .signup-msg p, .signup-msg a {
+    font-size: 1rem;
+
+  }
+
   .login-heading{
     font-size: 4rem;
     text-align: center;
@@ -852,6 +857,10 @@ input[type="checkbox"]{
   .name-input-box,.signup-email-input, .signup-password-input  {
     width: 18rem;
     font-size: 1rem;
+  }
+
+  .signup-msg p, .signup-msg a{
+    font-size: 1.1rem;
   }
 }
 
