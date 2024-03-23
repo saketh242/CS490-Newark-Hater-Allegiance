@@ -1,6 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Drawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
+
+const sideBarStyle = {
+  backgroundColor: "#23262F",
+  borderLeftWidth: "medium",
+  borderLeftColor: "#076966",
+  borderLeftStyle: "solid",
+  borderRadius: "14px",
+  overflowY: "scroll",
+  scrollbarColor: "#076966 #1A1C23",
+  scrollbarWidth: "thin",
+};
 
 const dateAndTimeConversion = (date) => {
   const dateObject = new Date(date);
@@ -15,8 +26,26 @@ const dateAndTimeConversion = (date) => {
   return string;
 };
 
-const History = ({ history, showSidebar, toggleSidebar, setInputCode }) => {
-  //console.log(history);
+const loadInputAndTranslatedCode = (setInputCode, setTranslatedCode, inputCode, translatedCode) => {
+  setInputCode(inputCode);
+  setTranslatedCode(translatedCode);
+}
+
+const History = ({ history, showSidebar, toggleSidebar, setInputCode, setTranslatedCode }) => {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [window.innerWidth]);
+
   if (history === null || showSidebar === false) return (<></>);
   return (
     <>
@@ -24,17 +53,8 @@ const History = ({ history, showSidebar, toggleSidebar, setInputCode }) => {
         open={showSidebar}
         onClose={toggleSidebar}
         direction='right'
-        size={'500px'}
-        style={{
-          backgroundColor: "#23262F",
-          borderLeftWidth: "medium",
-          borderLeftColor: "#076966",
-          borderLeftStyle: "solid",
-          borderRadius: "14px",
-          overflowY: "scroll",
-          scrollbarColor: "#076966 #1A1C23",
-          scrollbarWidth: "thin"
-        }}
+        size={width * 0.3}
+        style={sideBarStyle}
       >
         <h1 className="translationTitle"> Translation History </h1>
         {history.map((historyLabel, i) => (
@@ -57,8 +77,7 @@ const History = ({ history, showSidebar, toggleSidebar, setInputCode }) => {
               {history[i].converted_code}
             </p>
 
-            <button onClick={() => setInputCode(history[i].original_code)}> Load Source Code </button>
-            <button onClick={() => setInputCode(history[i].converted_code)}> Load Translated Code </button>
+            <button onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, history[i].original_code, history[i].converted_code)}> Load Code </button>
           </div>
         ))}
       </Drawer>

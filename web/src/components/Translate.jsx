@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Translate = () => {
 
-  const {user} = useAuth();
+  const { user } = useAuth();
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -30,18 +30,19 @@ const Translate = () => {
 
   //const navigate = useNavigate();
   const [error, setError] = useState('');
-  
+
   const [loading, setLoading] = useState(false);
   const [userTriggeredChange, setUserTriggeredChange] = useState(false); 
   const [postId, setPostId] = useState("")
+
   const [historyData, setHistoryData] = useState(null);
-  
+
   //input code and output code states
   const [inputCode, setInputCode] = useState('');
   const [translatedCode, setTranslatedCode] = useState('');
 
   //source and destination language dropdown states
-  const [sourceLanguage, setSourceLanguage] = useState(''); 
+  const [sourceLanguage, setSourceLanguage] = useState('');
   const [desiredLanguage, setDesiredLanguage] = useState('');
 
   const [apiReady, setApiReady] = useState(false);
@@ -75,17 +76,17 @@ const Translate = () => {
 
   const translateCode = async () => {
 
-    if (sourceLanguage==="" && desiredLanguage===""){
+    if (sourceLanguage === "" && desiredLanguage === "") {
       alert("Please select the source and desired languages");
       return
     }
 
-    else if (sourceLanguage===""){
+    else if (sourceLanguage === "") {
       alert("Please select a source language")
       return
-    } 
+    }
 
-    else if (desiredLanguage===""){
+    else if (desiredLanguage === "") {
       alert("Please select a desired language")
       return
     }
@@ -94,7 +95,7 @@ const Translate = () => {
       setError('Input code cannot be empty');
       return;
     }
-    
+
     setError(''); // Reset error message
     setTranslatedCode('');
     setLoading(true); // Set loading state to true before API call
@@ -105,7 +106,6 @@ const Translate = () => {
       if(!response.success){
         setLoading(false);
         setTranslationError(response.message);
-        setUserTriggeredChange(true);
         //log error here? ...
         return;
       }
@@ -123,25 +123,23 @@ const Translate = () => {
   //     alert(translationError);
   //   }
   // }, [translationError]);
-  
-  
 
   const handlePostHistory = async () => {
     try {
-        if (translatedCode !== '' && userTriggeredChange) {
-            const post = await nhaService.postHistory(user, inputCode, translatedCode, sourceLanguage, desiredLanguage);
-            setPostId(post);
-            handleGetAllHistory();
-            setUserTriggeredChange(false);
-        }
+      if (translatedCode !== '' && userTriggeredChange) {
+        const post = await nhaService.postHistory(user, inputCode, translatedCode, sourceLanguage, desiredLanguage);
+        setPostId(post);
+        handleGetAllHistory();
+        setUserTriggeredChange(false);
+      }
     } catch (error) {
-        console.error('Error posting history:', error);
+      console.error('Error posting history:', error);
     }
-};
+  };
 
-useEffect(() => {
+  useEffect(() => {
     handlePostHistory();
-}, [userTriggeredChange]);
+  }, [userTriggeredChange]);
 
   //function to generate file for download
   const downloadFile = () => {
@@ -241,8 +239,8 @@ useEffect(() => {
 
   return (
     <div className="translateBody">
-      <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar} setInputCode={setInputCode} />
-
+      <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar}
+        setInputCode={setInputCode} setTranslatedCode={setTranslatedCode} />
 
     <div className="apiStatusMessage">
         <h1 className="apiStatus">
@@ -263,7 +261,7 @@ useEffect(() => {
         <div className="dropdownContainer" id="leftDropdownContainer">
           <label htmlFor="originLanguage">Source Language:</label>
           <select id="originLanguage" onChange={handleSourceLanguageChange}>
-          <option value="">Select</option>
+            <option value="">Select</option>
             {languages.map((language, index) => (
               <option key={index} value={language.value}>{language.label}</option>
             ))}
@@ -281,7 +279,7 @@ useEffect(() => {
         <div className="dropdownContainer" id="rightDropdownContainer">
           <label htmlFor="desiredLanguage">Desired Language:</label>
           <select id="desiredLanguage" onChange={handleDesiredLanguageChange}>
-          <option value="">Select</option>
+            <option value="">Select</option>
             {languages.map((language, index) => (
               <option key={index} value={language.value}>{language.label}</option>
             ))}
@@ -302,7 +300,7 @@ useEffect(() => {
             <div className="buttonsContainer">
               {/* Icon button for toggling sidebar */}
               <button className="historyButton" title="History" onClick={toggleSidebar}>
-                <FontAwesomeIcon id="icon" size="2x" icon={faHistory} fontSize={1}/>
+                <FontAwesomeIcon id="icon" size="2x" icon={faHistory} fontSize={1} />
               </button>
               {/* Icon button for uploading a file */}
               <button className="uploadButton" title="Upload file" onClick={() => fileInputRef.current.click()}>
@@ -317,11 +315,11 @@ useEffect(() => {
                 onChange={handleFileUpload}
               />
               {/* Icon button for clearing text input */}
-              <button className="clearButton" title="Clear text" 
-              onClick={() => {
-                setInputCode('');
-                setTranslatedCode('');
-              }}>
+              <button className="clearButton" title="Clear text"
+                onClick={() => {
+                  setInputCode('');
+                  setTranslatedCode('');
+                }}>
                 <FontAwesomeIcon id="icon" size="2x" icon={faBroom} />
               </button>
 
@@ -341,11 +339,10 @@ useEffect(() => {
             <h2>Converted code:</h2>
             <div className="buttonsContainer">
               {/* Icon button for copying the output */}
-              <button className="copyButton" title="Copy code" onClick={() => 
-                {
-                  navigator.clipboard.writeText(translatedCode)
-                  toast(`Copied to clipboard!`);
-                  }}>
+              <button className="copyButton" title="Copy code" onClick={() => {
+                navigator.clipboard.writeText(translatedCode)
+                toast(`Copied to clipboard!`);
+              }}>
                 <FontAwesomeIcon id="icon" size="2x" icon={faCopy} />
               </button>
               {/* Icon button for downloading the output */}
