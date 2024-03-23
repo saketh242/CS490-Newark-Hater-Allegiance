@@ -16,7 +16,7 @@ const dateAndTimeConversion = (date) => {
 };
 
 const History = ({ history, showSidebar, toggleSidebar, setInputCode }) => {
-  console.log(history);
+  //console.log(history);
   if (history === null || showSidebar === false) return (<></>);
   return (
     <>

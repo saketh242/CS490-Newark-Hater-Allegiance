@@ -8,11 +8,11 @@ import Feedback from './Feedback';
 import CodeOutput from './CodeOutput';
 import History from './History';
 import { sanitizeCode } from '../utils/codeUtils';
+import nhaService from '../services/nhaService';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import nhaService from '../services/nhaService';
+import { faCheckCircle, faTimesCircle, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
 
 import { toast } from 'react-toastify';
@@ -28,12 +28,12 @@ const Translate = () => {
 
   const [translationDone, setTranslationDone] = useState(false); // State variable to track translation status to display feedback
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [error, setError] = useState('');
   
-  const [loading, setLoading] = useState(false); // Loading state - display loading msg while api retrieves code response
-  const [userTriggeredChange, setUserTriggeredChange] = useState(false); //Dummy right now, but will be implemented when we do getHistory from the sidebar, so we aren't posting when we are getting the history
-  const [postId, setPostId] = useState("") //not really used right now, but will be useful when we want to post a feedback
+  const [loading, setLoading] = useState(false);
+  const [userTriggeredChange, setUserTriggeredChange] = useState(false); 
+  const [postId, setPostId] = useState("")
   const [historyData, setHistoryData] = useState(null);
   
   //input code and output code states
@@ -44,7 +44,7 @@ const Translate = () => {
   const [sourceLanguage, setSourceLanguage] = useState(''); 
   const [desiredLanguage, setDesiredLanguage] = useState('');
 
-  const [apiReady, setApiReady] = useState(false); // Initialize with false
+  const [apiReady, setApiReady] = useState(false);
   const [loadingAPI, setLoadingAPI] = useState(true); // Loading state for API status
   const [errorAPI, setErrorAPI] = useState('');
 
@@ -52,7 +52,6 @@ const Translate = () => {
     const fetchAPIStatus = async () => {
       try {
         const response = await nhaService.getOpenAIStatus();
-        console.log(response);
         setApiReady(response);
       } catch (error) {
         setErrorAPI('Error fetching API status');
@@ -71,6 +70,8 @@ const Translate = () => {
   const handleDesiredLanguageChange = (e) => {
     setDesiredLanguage(e.target.value);
   };
+
+  const [ translationError, setTranslationError ] = useState('');
 
   const translateCode = async () => {
 
@@ -100,14 +101,28 @@ const Translate = () => {
   
       const sanitized = sanitizeCode(inputCode);
       const response = await nhaService.postPrompt(user, sourceLanguage, desiredLanguage, JSON.stringify(sanitized));
+
+      if(!response.success){
+        setLoading(false);
+        setTranslationError(response.message);
+        //log error here ...
+        return;
+      }
+
       const translatedCodeResponse = response.message;
-  
       setTranslatedCode(translatedCodeResponse); // Update translated code
       setLoading(false); // Set loading state to false after receiving response
       setTranslationDone(true);
       toast(`Thanks for translating! Rate this translation below!`);
       setUserTriggeredChange(true);
   };
+
+  // useEffect(() => {
+  //   if (translationError) {
+  //     alert(translationError);
+  //   }
+  // }, [translationError]);
+  
   
 
   const handlePostHistory = async () => {
@@ -227,6 +242,7 @@ useEffect(() => {
     <div className="translateBody">
       <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar} setInputCode={setInputCode} />
 
+
     <div className="apiStatusMessage">
         <h1 className="apiStatus">
           OpenAI API Status:
@@ -272,6 +288,12 @@ useEffect(() => {
         </div>
       </div>
 
+      {translationError && 
+      <div className="translationError">
+        <FontAwesomeIcon icon={faCircleExclamation} id="errorIcon" size="2x"/>
+        <p>{translationError}</p>
+      </div>}
+
       <div className="codeBlocks">
         <div className="src">
           <h2 className="codeHeading">
@@ -289,7 +311,7 @@ useEffect(() => {
                 ref={fileInputRef}
                 type="file"
                 data-testid="file-input"
-                accept=".txt,.py,.js,.java,.c,.cs,.cpp,.php,.go,.rb,.ts" // Specify accepted file types
+                accept=".txt,.py,.js,.java,.c,.cs,.cpp,.php,.go,.rb,.ts"
                 style={{ display: 'none' }}
                 onChange={handleFileUpload}
               />
@@ -307,7 +329,7 @@ useEffect(() => {
           <textarea className="inputArea"
             value={inputCode}
             onChange={(e) => setInputCode(e.target.value)}
-            placeholder={error || "Enter code to translate"} // Use error message as placeholder when error exists
+            placeholder={error || "Enter code to translate"}
             style={{ borderColor: error ? 'red' : '#0ac6c0',
                       transition: 'border-color 0.3s ease', }} // Change border color when error exists
           />
