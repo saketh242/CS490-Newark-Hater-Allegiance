@@ -4,6 +4,8 @@ const hljs = require('highlight.js');
 
 const openai = new OpenAIApi.OpenAI({ key: process.env.OPENAI_API_KEY });
 
+const logger = require('../logs/logger');
+
 const detectLanguage = (code) => {
     const detected = hljs.highlightAuto(code, ["python", "javascript", "java", "c", "csharp", "cplusplus", "php", "go", "ruby", "typescript"]);
     const language = detected.language;
@@ -64,7 +66,8 @@ const postPrompt = async (req, res, next) => {
             message: code,
         });
     } catch (error) {
-        console.log("Error message: ", error);
+        //console.log("Error message: ", error);
+        logger.error(`Error: ${error.message}, Input: ${inputCode}, SourceLanguage: ${sourceLanguage}, DetectedLanguage: ${detectedSourceLanguage}, DesiredLanguage: ${desiredLanguage}`);
 
         if (error.status === 400) { 
             return res.status(400).json({
