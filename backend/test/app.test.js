@@ -220,6 +220,20 @@ describe('API RESPONSES ', () => {
       });
   });
 
+  it('GET: should return 400 for missing user id field /history/getAllHistory', (done) => {
+    request(app)
+      .get(`/history/getAllHistory`)
+      .set('Authorization', `Bearer ${testToken}`)
+      .expect(400)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        expect(res.body).to.have.property('error').that.includes('Missing required field to get history');
+
+        done();
+      });
+  });
+
   it('GET: should return 200 OK for /feedback/getFeedback', (done) => {
     request(app)
       .get('/feedback/getFeedback')
@@ -372,10 +386,10 @@ describe('API RESPONSES ', () => {
 
   it('POST: should return 400 for an invalid history entry /history', (done) => {
     const invalidHistoryEntry = {
-      user_id: '',
+      user_id: user_id,
       inputCode: 'print("Hello, World!")',
       translateCode: 'print("Hola, Mundo!")',
-      sourceLanguage: 'python',
+      sourceLanguage: 'xml',
       desiredLanguage: 'python',
     };
 
@@ -388,7 +402,7 @@ describe('API RESPONSES ', () => {
         if (err) return done(err);
 
         // Making sure that the invalid fields throw error
-        expect(res.body).to.have.property('error').that.includes('Missing required fields to post');
+        expect(res.body).to.have.property('error').that.includes('Missing required fields to post or invalid input');
 
         done();
       });
