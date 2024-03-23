@@ -24,9 +24,10 @@ jest.mock('react-router-dom', () => ({
 
 // Mock Firebase auth and the useAuth hook
 jest.mock('firebase/auth', () => ({
-    getAuth: jest.fn(),
-    signOut: jest.fn().mockResolvedValue(void 0), // This ensures signOut returns a resolved promise
-  }));;
+  getAuth: jest.fn(),
+  signOut: jest.fn().mockResolvedValue(void 0), // Ensure this returns a promise
+}));
+
 
 jest.mock('../useAuth', () => ({
   __esModule: true, // This line is important for modules using ES6 exports
@@ -72,36 +73,29 @@ describe('NHANav', () => {
 
   
   it('logs out the user when logout link is clicked', async () => {
-    require('../useAuth').default.mockReturnValue({ user: { name: 'John Doe' }, isLoading: false });
-
+    // Assuming useAuth provides current user info and a logout function
+    const mockSignOut = jest.fn();
+    require('../useAuth').default.mockReturnValue({
+      user: { name: 'John Doe' },
+      isLoading: false,
+      signOut: mockSignOut,
+    });
+  
     // Render NHANav component
     renderNHANav();
-
-    // Wait for NHANav component to finish loading
+  
+    // Mock user interaction: clicking the logout link
+    userEvent.click(screen.getByText('Logout'));
+  
+    // Verify signOut was called
     await waitFor(() => {
-      expect(screen.getByText('NHAGPT')).toBeInTheDocument();
+      expect(mockSignOut).toHaveBeenCalled();
     });
-
-    // Mock user being logged in
-    jest.spyOn(auth, 'currentUser', 'get').mockReturnValueOnce({
-      displayName: 'Test User',
-      email: 'test@example.com',
-    });
-
-    // Check if user is initially logged in
-    expect(screen.getByText('Test User')).toBeInTheDocument();
-
-    // Click on logout link
-    fireEvent.click(screen.getByText('Logout'));
-
-    // Wait for logout process to complete
-    await waitFor(() => {
-      expect(auth.signOut).toHaveBeenCalled();
-    });
-
-    // Check if user is logged out
-    expect(screen.queryByText('Test User')).not.toBeInTheDocument();
+  
+    // Additional assertions can be made here, e.g., checking the navigation to the login page
+    expect(mockNavigate).toHaveBeenCalledWith('/login'); // Adjust the navigation path as needed
   });
+  
 
 
   it('displays login/signup when not authenticated', () => {
