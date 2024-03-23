@@ -16,28 +16,6 @@ const getAllHistory = async (req, res, next) => {
     }
 };
 
-// Unused right now, will be used later when fully implementing history
-const getPost = async (req, res, next) => {
-    try {
-        const { postId } = req.params;
-
-        if (!postId) {
-            return res.status(400).json({ error: 'Missing required field to get post' });
-        }
-        const post = await History.findById(postId);
-
-        if (!post) {
-            return res.status(404).json({ error: 'Post not found' });
-        }
-
-        res.json(post._id);
-    } catch (error) {
-        console.error("Error fetching post:", error);
-        res.status(500).send("Internal Server Error");
-    }
-};
-
-
 const postHistory = async(req, res, next) => {
     try {
         const { user_id, inputCode, translateCode, sourceLanguage, desiredLanguage } = req.body;

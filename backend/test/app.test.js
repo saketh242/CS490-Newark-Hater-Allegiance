@@ -58,12 +58,12 @@ before(async () => {
 describe('API RESPONSES ', () => {
   let server;
 
-  beforeEach(async () => {
+  before(async () => {
     // Start the server 
     server = app.listen(3001);
   });
 
-  afterEach((done) => {
+  after((done) => {
     console.log("closing server")
     server.close(() => {
       console.log("server closed successfully")
@@ -73,26 +73,176 @@ describe('API RESPONSES ', () => {
 
   it('DELETE: should return 401 for unauthorized access for /users/deleteUser', (done) => {
     request(app)
-    .delete('/users/deleteUser')
-    .expect(401, done);
+      .delete('/users/deleteUser')
+      .expect(401, done);
   });
 
   it('DELETE: should return 200 for sucessful delete of user and their data for /users/deleteUser', (done) => {
     request(app)
-    .delete('/users/deleteUser')
-    .set('Authorization', `Bearer ${postUserToken}`)
+      .delete('/users/deleteUser')
+      .set('Authorization', `Bearer ${postUserToken}`)
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
-          expect(res.body).to.have.property('message').equal('User and associated data deleted successfully');
+        expect(res.body).to.have.property('message').equal('User and associated data deleted successfully');
         done();
       });
+  });
+
+  it('DELETE: should return 404 for user not found for /users/deleteUser', (done) => {
+    request(app)
+      .delete('/users/deleteUser')
+      .set('Authorization', `Bearer ${postUserToken}`)
+      .expect(404)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.body).to.have.property('error').equal('User not found');
+        done();
+      });
+  });
+
+  it('PUT: should return 400 for validation error /users/updateUser', (done) => {
+    const invalidUser = {
+      firstName: '',
+      lastName: '1391',
+      email: '@test.com',
+    };
+    request(app)
+      .put('/users/updateUser')
+      .send(invalidUser)
+      .set('Authorization', `Bearer ${testToken}`)
+      .expect(400)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        // Make sure that if the data is not validated then error
+        expect(res.body).to.have.property('error').that.includes('Invalid user input data');
+
+        done();
+      });
+  });
+
+  it('PUT: should return 404 for user not found /users/updateUser', (done) => {
+    const invalidUser = {
+      firstName: 'Karam',
+      lastName: 'Assaf',
+      email: 'karamassaf3@gmail.com',
+    };
+    request(app)
+      .put('/users/updateUser')
+      .send(invalidUser)
+      .set('Authorization', `Bearer ${postUserToken}`)
+      .expect(404)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        // Make sure that the user is not found in the database
+        expect(res.body).to.have.property('error').that.includes('User not found');
+
+        done();
+      });
+  });
+
+  it('PUT: should return 200 for sucessfull update for /users/updateUser', (done) => {
+    const updateUser = {
+      email: 'ka534@njit.edu',
+      firstName: 'Karam',
+      lastName: 'Assaf',
+      newEmailFlag: false,
+      newFirstNameFlag: true,
+      newLastNameFlag: true
+    };
+    request(app)
+      .put('/users/updateUser')
+      .send(updateUser)
+      .set('Authorization', `Bearer ${testToken}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        // Make sure that the user is not found in the database
+        expect(res.body).to.have.property('message').that.includes('User details updated successfully!');
+
+        done();
+      });
+  });
+
+  it('GET: should return 404 for an invalid route', (done) => {
+    request(app)
+      .get('/invalid-route')
+      .expect(404, done);
+  });
+
+  it('GET: should return a specific response for /test', (done) => {
+    request(app)
+      .get('/test')
+      .expect(200)
+      .expect({ message: 'This is a test for auth' }, done);
   });
 
   it('GET: should return 200 OK for /', (done) => {
     request(app)
       .get('/')
       .expect(200, done);
+  });
+
+  it('GET: should return 401 for unauthorized access for /history', (done) => {
+    request(app)
+      .get('/history')
+      .expect(401, done);
+  });
+
+  it('GET: should return 200 OK for /history/getAllHistory', (done) => {
+    request(app)
+      .get(`/history/getAllHistory?user_id=${user_id}`)
+      .set('Authorization', `Bearer ${testToken}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+
+        const histories = res.body;
+
+
+        expect(histories).to.be.an('array');
+        expect(histories).to.have.lengthOf.at.least(1);
+
+        // Check properties of each history object
+        histories.forEach(history => {
+          expect(history).to.have.property('original_code').that.is.a('string');
+          expect(history).to.have.property('Source_language').that.is.a('string');
+          expect(history).to.have.property('Desired_language').that.is.a('string');
+          expect(history).to.have.property('converted_code').that.is.a('string');
+          expect(history).to.have.property('createdAt').that.is.a('string');
+        });
+
+        done();
+      });
+  });
+
+  it('GET: should return 200 OK for /feedback/getFeedback', (done) => {
+    request(app)
+      .get('/feedback/getFeedback')
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const feedbacks = res.body;
+
+        expect(feedbacks).to.be.an('array');
+        expect(feedbacks).to.have.lengthOf.at.least(1);
+
+        // Check properties of each feedback object
+        feedbacks.forEach(feedback => {
+          expect(feedback).to.have.property('textMessage').that.is.a('string');
+          expect(feedback).to.have.property('user').that.is.an('object');
+
+          const user = feedback.user;
+          expect(user).to.have.property('firstName').that.is.a('string');
+          expect(user).to.have.property('lastName').that.is.a('string');
+        });
+
+        done();
+      });
   });
 
   it('GET: should return 401 for unauthorized access for /users', (done) => {
@@ -118,7 +268,19 @@ describe('API RESPONSES ', () => {
       });
   });
 
-  it('should POST a new user and return 200 with success message /users/postUser', (done) => {
+  it('GET: should return 404 for user not found for /users', (done) => {
+    request(app)
+      .get('/users')
+      .set('Authorization', `Bearer ${postUserToken}`)
+      .expect(404)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.body).to.have.property('error').equal('User not found');
+        done();
+      });
+  });
+
+  it('POST: a new user and return 200 with success message /users/postUser', (done) => {
     const newUser = {
       firstName: 'Karam',
       lastName: 'Assaf',
@@ -177,41 +339,7 @@ describe('API RESPONSES ', () => {
         if (err) return done(err);
 
         // Make sure that if the data is not validated then error
-        expect(res.body).to.have.property('error').that.includes('Invalid input data');
-
-        done();
-      });
-  });
-
-  it('GET: should return 401 for unauthorized access for /history', (done) => {
-    request(app)
-      .get('/history')
-      .expect(401, done);
-  });
-
-  it('GET: should return 200 OK for /history/getAllHistory', (done) => {
-    request(app)
-      .get(`/history/getAllHistory?user_id=${user_id}`)
-      .set('Authorization', `Bearer ${testToken}`)
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-
-
-        const histories = res.body;
-
-
-        expect(histories).to.be.an('array');
-        expect(histories).to.have.lengthOf.at.least(1);
-
-        // Check properties of each history object
-        histories.forEach(history => {
-          expect(history).to.have.property('original_code').that.is.a('string');
-          expect(history).to.have.property('Source_language').that.is.a('string');
-          expect(history).to.have.property('Desired_language').that.is.a('string');
-          expect(history).to.have.property('converted_code').that.is.a('string');
-          expect(history).to.have.property('createdAt').that.is.a('string');
-        });
+        expect(res.body).to.have.property('error').that.includes('Invalid user input data');
 
         done();
       });
@@ -261,31 +389,6 @@ describe('API RESPONSES ', () => {
 
         // Making sure that the invalid fields throw error
         expect(res.body).to.have.property('error').that.includes('Missing required fields to post');
-
-        done();
-      });
-  });
-
-  it('GET: should return 200 OK for /feedback/getFeedback', (done) => {
-    request(app)
-      .get('/feedback/getFeedback')
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const feedbacks = res.body;
-
-        expect(feedbacks).to.be.an('array');
-        expect(feedbacks).to.have.lengthOf.at.least(1);
-
-        // Check properties of each feedback object
-        feedbacks.forEach(feedback => {
-          expect(feedback).to.have.property('textMessage').that.is.a('string');
-          expect(feedback).to.have.property('user').that.is.an('object');
-
-          const user = feedback.user;
-          expect(user).to.have.property('firstName').that.is.a('string');
-          expect(user).to.have.property('lastName').that.is.a('string');
-        });
 
         done();
       });
@@ -409,18 +512,4 @@ describe('API RESPONSES ', () => {
       });
   });
 
-
-
-  it('GET: should return 404 for an invalid route', (done) => {
-    request(app)
-      .get('/invalid-route')
-      .expect(404, done);
-  });
-
-  it('GET: should return a specific response for /test', (done) => {
-    request(app)
-      .get('/test')
-      .expect(200)
-      .expect({ message: 'This is a test for auth' }, done);
-  });
 });
