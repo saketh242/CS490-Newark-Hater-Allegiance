@@ -242,7 +242,7 @@
   .features {
     font-size: 2.5rem;
   }
-
+  
   #review {
     width: 15rem;
     height: 15rem;
@@ -407,10 +407,35 @@
 }
 
 .apiStatus {
-  margin: 2rem;
+  margin: 1rem;
   display: flex;
   align-items: center;
   font-weight: bold;
+}
+
+.apiStatusMessage {
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#errorIcon {
+  color:red;
+  padding-right: 1rem;
+}
+
+.translationError{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  margin: 1rem;
+  font-size: 1.3rem;
+  border: 2.5px solid red;
+  border-radius: 8px;
+  background-color: rgba(255, 0, 0, 0.069); /* Red with 50% opacity */
 }
 
 #originLanguage, #desiredLanguage {
@@ -459,6 +484,72 @@ select, button {
   background-color: #23262F;
   border-radius: 5px;
 }
+
+.dot1 {
+  animation: visibility 3s linear infinite;
+ }
+ @keyframes visibility {
+  0% {
+  opacity: 1;
+  }
+  65% {
+  opacity: 1;
+  }
+  66% {
+  opacity: 0;
+  }
+  100% {
+  opacity: 0;
+  }
+ }
+
+ .dot2 {
+  animation: visibility2 3s linear infinite;
+ }
+ @keyframes visibility2 {
+  0% {
+   opacity: 0;
+  }
+  21% {
+   opacity: 0;
+  }
+  22% {
+   opacity: 1;
+  }
+  65% {
+   opacity: 1;
+  }
+  66% {
+   opacity: 0;
+  }
+  100% {
+   opacity: 0;
+  }
+ }
+
+ .dot3 {
+  animation: visibility3 3s linear infinite;
+ }
+ @keyframes visibility3 {
+  0% {
+   opacity: 0;
+  }
+  43% {
+   opacity: 0;
+  }
+  44% {
+   opacity: 1;
+  }
+  65% {
+   opacity: 1;
+  }
+  66% {
+   opacity: 0;
+  }
+  100% {
+   opacity: 0;
+  }
+ }
 
 .upload{
   padding: 1rem;
@@ -640,7 +731,6 @@ select, button {
     font-size: 1rem;
   }
 }
-
 
 /* Login Component Styling */
 .login-content {
@@ -838,6 +928,11 @@ input[type="checkbox"]{
 
 
 @media (width <= 930px) {
+  .signup-msg p, .signup-msg a {
+    font-size: 1rem;
+
+  }
+
   .login-heading{
     font-size: 4rem;
     text-align: center;
@@ -853,6 +948,10 @@ input[type="checkbox"]{
   .name-input-box,.signup-email-input, .signup-password-input  {
     width: 18rem;
     font-size: 1rem;
+  }
+
+  .signup-msg p, .signup-msg a{
+    font-size: 1.1rem;
   }
 }
 
@@ -1479,17 +1578,21 @@ input[type="checkbox"]{
 
 .translationHistory button {
   background-color: #5469D4;
-  border: 0;
   border-radius: 1rem;
   width: fit-content;
   padding: 0.35rem;
   margin-bottom: 1rem;
   margin-left: 0.25rem;
   margin-right: 0.25rem;
+  border-width: 0.18rem;
+  border-style: solid;
+  border-color: transparent;
 }
 
 .translationHistory button:hover {
   border-color: #BDC3D0;
-  border-width: 0.15rem;
-  border-style: solid;
+}
+
+.translationHistory button:active {
+  background-color: #076966;
 }

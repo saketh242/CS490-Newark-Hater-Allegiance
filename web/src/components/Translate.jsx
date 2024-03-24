@@ -8,11 +8,11 @@ import Feedback from './Feedback';
 import CodeOutput from './CodeOutput';
 import History from './History';
 import { sanitizeCode } from '../utils/codeUtils';
+import nhaService from '../services/nhaService';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import nhaService from '../services/nhaService';
+import { faCheckCircle, faTimesCircle, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
 
 import { toast } from 'react-toastify';
@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Translate = () => {
 
-  const {user} = useAuth();
+  const { user } = useAuth();
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -28,22 +28,41 @@ const Translate = () => {
 
   const [translationDone, setTranslationDone] = useState(false); // State variable to track translation status to display feedback
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [error, setError] = useState('');
-  
-  const [apiReady, setApiReady] = useState(true); // API status -- manually set true/false right now for testing purposes
-  const [loading, setLoading] = useState(false); // Loading state - display loading msg while api retrieves code response
-  const [userTriggeredChange, setUserTriggeredChange] = useState(false); //Dummy right now, but will be implemented when we do getHistory from the sidebar, so we aren't posting when we are getting the history
-  const [postId, setPostId] = useState("") //not really used right now, but will be useful when we want to post a feedback
+
+  const [loading, setLoading] = useState(false);
+  const [userTriggeredChange, setUserTriggeredChange] = useState(false); 
+  const [postId, setPostId] = useState("")
+
   const [historyData, setHistoryData] = useState(null);
-  
+
   //input code and output code states
   const [inputCode, setInputCode] = useState('');
   const [translatedCode, setTranslatedCode] = useState('');
 
   //source and destination language dropdown states
-  const [sourceLanguage, setSourceLanguage] = useState(''); 
+  const [sourceLanguage, setSourceLanguage] = useState('');
   const [desiredLanguage, setDesiredLanguage] = useState('');
+
+  const [apiReady, setApiReady] = useState(false);
+  const [loadingAPI, setLoadingAPI] = useState(true); // Loading state for API status
+  const [errorAPI, setErrorAPI] = useState('');
+
+  useEffect(() => {
+    const fetchAPIStatus = async () => {
+      try {
+        const response = await nhaService.getOpenAIStatus();
+        setApiReady(response);
+      } catch (error) {
+        setErrorAPI('Error fetching API status');
+      } finally {
+        setLoadingAPI(false);
+      }
+    };
+
+    fetchAPIStatus();
+  }, []);
 
   const handleSourceLanguageChange = (e) => {
     setSourceLanguage(e.target.value);
@@ -53,19 +72,21 @@ const Translate = () => {
     setDesiredLanguage(e.target.value);
   };
 
+  const [ translationError, setTranslationError ] = useState('');
+
   const translateCode = async () => {
 
-    if (sourceLanguage==="" && desiredLanguage===""){
+    if (sourceLanguage === "" && desiredLanguage === "") {
       alert("Please select the source and desired languages");
       return
     }
 
-    else if (sourceLanguage===""){
+    else if (sourceLanguage === "") {
       alert("Please select a source language")
       return
-    } 
+    }
 
-    else if (desiredLanguage===""){
+    else if (desiredLanguage === "") {
       alert("Please select a desired language")
       return
     }
@@ -74,39 +95,53 @@ const Translate = () => {
       setError('Input code cannot be empty');
       return;
     }
-    
+
     setError(''); // Reset error message
-    setTranslatedCode('');
+    setTranslationError('') //Reset translationerror message
+    setTranslatedCode(''); //reset output
+    setTranslationDone(false);
     setLoading(true); // Set loading state to true before API call
   
       const sanitized = sanitizeCode(inputCode);
       const response = await nhaService.postPrompt(user, sourceLanguage, desiredLanguage, JSON.stringify(sanitized));
+
+      if(!response.success){
+        setLoading(false);
+        setTranslationError(response.message);
+        //log error here? ...
+        return;
+      }
+
       const translatedCodeResponse = response.message;
-  
       setTranslatedCode(translatedCodeResponse); // Update translated code
       setLoading(false); // Set loading state to false after receiving response
       setTranslationDone(true);
       toast(`Thanks for translating! Rate this translation below!`);
       setUserTriggeredChange(true);
   };
-  
+
+  // useEffect(() => {
+  //   if (translationError) {
+  //     alert(translationError);
+  //   }
+  // }, [translationError]);
 
   const handlePostHistory = async () => {
     try {
-        if (translatedCode !== '' && userTriggeredChange) {
-            const post = await nhaService.postHistory(user, inputCode, translatedCode, sourceLanguage, desiredLanguage);
-            setPostId(post);
-            handleGetAllHistory();
-            setUserTriggeredChange(false);
-        }
+      if (translatedCode !== '' && userTriggeredChange) {
+        const post = await nhaService.postHistory(user, inputCode, translatedCode, sourceLanguage, desiredLanguage);
+        setPostId(post);
+        handleGetAllHistory();
+        setUserTriggeredChange(false);
+      }
     } catch (error) {
-        console.error('Error posting history:', error);
+      console.error('Error posting history:', error);
     }
-};
+  };
 
-useEffect(() => {
+  useEffect(() => {
     handlePostHistory();
-}, [userTriggeredChange]);
+  }, [userTriggeredChange]);
 
   //function to generate file for download
   const downloadFile = () => {
@@ -206,22 +241,29 @@ useEffect(() => {
 
   return (
     <div className="translateBody">
-      <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar} setInputCode={setInputCode} />
+      <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar}
+        setInputCode={setInputCode} setTranslatedCode={setTranslatedCode} />
 
-      <h1 className="apiStatus">
-        OpenAI API Status:
-        {apiReady ? (
-          <FontAwesomeIcon icon={faCheckCircle} size="2x" style={{ color: 'green', marginLeft: '1rem' }} />
+    <div className="apiStatusMessage">
+        <h1 className="apiStatus">
+          OpenAI API Status:
+          {apiReady ? (
+            <FontAwesomeIcon icon={faCheckCircle} size="2x" style={{ color: 'green', marginLeft: '1rem' }} />
           ) : (
             <FontAwesomeIcon icon={faTimesCircle} size="2x" style={{ color: 'red', marginLeft: '1rem' }} />
           )}
-      </h1>
+        </h1>
+        {errorAPI &&
+          <div className="apiErrorMsg">
+            <p>The translation service is currently unavailable. Please try again later.</p>
+          </div>}
+      </div>
 
       <div className="dropdown">
         <div className="dropdownContainer" id="leftDropdownContainer">
           <label htmlFor="originLanguage">Source Language:</label>
           <select id="originLanguage" onChange={handleSourceLanguageChange}>
-          <option value="">Select</option>
+            <option value="">Select</option>
             {languages.map((language, index) => (
               <option key={index} value={language.value}>{language.label}</option>
             ))}
@@ -230,7 +272,7 @@ useEffect(() => {
 
         <div className="conversionArrow">
           {/* Arrow icon button */}
-          <button id="translationButton" className="translationButton" onClick={translateCode} disabled={loading}>
+          <button id="translationButton" className="translationButton" onClick={translateCode} disabled={loading || !apiReady}>
             <FontAwesomeIcon id="icon" icon={faArrowRightLong} size="7x" />
           </button>
           <p>Convert</p>
@@ -239,13 +281,19 @@ useEffect(() => {
         <div className="dropdownContainer" id="rightDropdownContainer">
           <label htmlFor="desiredLanguage">Desired Language:</label>
           <select id="desiredLanguage" onChange={handleDesiredLanguageChange}>
-          <option value="">Select</option>
+            <option value="">Select</option>
             {languages.map((language, index) => (
               <option key={index} value={language.value}>{language.label}</option>
             ))}
           </select>
         </div>
       </div>
+
+      {translationError !== ''  && 
+      <div className="translationError">
+        <FontAwesomeIcon icon={faCircleExclamation} id="errorIcon" size="2x"/>
+        <p>{translationError}</p>
+      </div>}
 
       <div className="codeBlocks">
         <div className="src">
@@ -254,7 +302,7 @@ useEffect(() => {
             <div className="buttonsContainer">
               {/* Icon button for toggling sidebar */}
               <button className="historyButton" title="History" onClick={toggleSidebar}>
-                <FontAwesomeIcon id="icon" size="2x" icon={faHistory} fontSize={1}/>
+                <FontAwesomeIcon id="icon" size="2x" icon={faHistory} fontSize={1} />
               </button>
               {/* Icon button for uploading a file */}
               <button className="uploadButton" title="Upload file" onClick={() => fileInputRef.current.click()}>
@@ -264,16 +312,16 @@ useEffect(() => {
                 ref={fileInputRef}
                 type="file"
                 data-testid="file-input"
-                accept=".txt,.py,.js,.java,.c,.cs,.cpp,.php,.go,.rb,.ts" // Specify accepted file types
+                accept=".txt,.py,.js,.java,.c,.cs,.cpp,.php,.go,.rb,.ts"
                 style={{ display: 'none' }}
                 onChange={handleFileUpload}
               />
               {/* Icon button for clearing text input */}
-              <button className="clearButton" title="Clear text" 
-              onClick={() => {
-                setInputCode('');
-                setTranslatedCode('');
-              }}>
+              <button className="clearButton" title="Clear text"
+                onClick={() => {
+                  setInputCode('');
+                  setTranslatedCode('');
+                }}>
                 <FontAwesomeIcon id="icon" size="2x" icon={faBroom} />
               </button>
 
@@ -282,7 +330,7 @@ useEffect(() => {
           <textarea className="inputArea"
             value={inputCode}
             onChange={(e) => setInputCode(e.target.value)}
-            placeholder={error || "Enter code to translate"} // Use error message as placeholder when error exists
+            placeholder={error || "Enter code to translate"}
             style={{ borderColor: error ? 'red' : '#0ac6c0',
                       transition: 'border-color 0.3s ease', }} // Change border color when error exists
           />
@@ -293,11 +341,10 @@ useEffect(() => {
             <h2>Converted code:</h2>
             <div className="buttonsContainer">
               {/* Icon button for copying the output */}
-              <button className="copyButton" title="Copy code" onClick={() => 
-                {
-                  navigator.clipboard.writeText(translatedCode)
-                  toast(`Copied to clipboard!`);
-                  }}>
+              <button className="copyButton" title="Copy code" onClick={() => {
+                navigator.clipboard.writeText(translatedCode)
+                toast(`Copied to clipboard!`);
+              }}>
                 <FontAwesomeIcon id="icon" size="2x" icon={faCopy} />
               </button>
               {/* Icon button for downloading the output */}
@@ -307,7 +354,11 @@ useEffect(() => {
             </div>
           </div>
           <div className="outputArea">
-            {loading && <p>Loading...</p>} {/*loading text*/}
+            {loading && <p className="loadingText">Loading
+              <span class="dot1">.</span>
+              <span class="dot2">.</span>
+              <span class="dot3">.</span>
+            </p>} {/*loading text*/}
             <CodeOutput code={translatedCode} language={desiredLanguage} />
           </div>
         </div>

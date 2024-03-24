@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { faTrash} from '@fortawesome/free-solid-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import useAuth from '../useAuth';
 import { auth } from "../firebase";
 import { toast } from 'react-toastify';
@@ -67,160 +67,142 @@ const Settings = () => {
     const fNameCheck = firstName === userData.firstName ? false : true
     const lNameCheck = lastName === userData.lastName ? false : true
 
-    try {
-      // re authenticating the user before updating anything
-      try {
-        const credential = EmailAuthProvider.credential(user.email, password);
-        await reauthenticateWithCredential(user, credential)
-        console.log("re authentication successful")
-      } catch (e) {
-        setError("Invalid Password, try again");
-        return
-      }
-
-      verifyBeforeUpdateEmail(auth.currentUser, email)
-        .then(async () => {
-            console.log("Verification email sent!")
-            await nhaService.updateUser(user, email, firstName, lastName, emailCheck, fNameCheck, lNameCheck)
-            signOut(auth).then(() => {
-                        navigate("/login")
-                        const msg = () => toast(`Email address changed, you need to verify the email continue using the app`);
-                        msg()
-            }).catch((e)=>{
-              setError(e.message);
-              console.log(e)
-            })
-        }).catch((e)=>{
-          console.log(e)
-          setError("An error occured when updating!")
-          return
-        })
-
-      // signInWithEmailAndPassword(auth, user.email, password)
-      //   .then((user) => {
-      //     updateEmail(auth.currentUser, email)
-      //     // updated the email, now sending the verification email
-      //     signInWithEmailAndPassword(auth, email, password)
-      //       .then(()=>{
-      //         sendEmailVerification(auth.currentUser);
-      //         signOut(auth).then(() => {
-      //           navigate("/login")
-      //           const msg = () => toast(`Email address chnaged, you need to verify the email to use the app tho`);
-      //           msg()
-      //         })
-      //       })
-      //   })
-
-      // 
-      //   .then(async (res) => {
-      //     // res is the user object now send verification email
-      //     console.log(res)
-      //     // logging in with new details, only if email was changed
-      //     if (emailCheck) {
-      //       await signInWithEmailAndPassword(auth, email, password);
-      //       // sending verification
-      //       sendEmailVerification(auth.currentUser);
-      //       // now signingout
-      //       signOut(auth).then(() => {
-      //         navigate("/login")
-      //         console.log("Signed out successfully")
-      //         const msg = () => toast(`Email address chnaged, you need to verify the email to use the app tho`);
-      //         msg()
-      //       })
-      //     } else {
-      //       const msg = () => toast(`User details updated successfully, :)`);
-      //       msg()
-      //     }
-      //     setTriggerEffect(!triggerEffect)
-      //   }).catch((error) => {
-      //     console.log(error)
-      //   })
-    } catch (e) {
-      console.log(e)
-      setError("Error updating profile");
+    if (!emailCheck && !fNameCheck && !lNameCheck){
+      setError("Edit profile to update");
+      return
     }
-}
+
+    try {
+      // reauthenticating user 
+      const credential = EmailAuthProvider.credential(user.email, password);
+      await reauthenticateWithCredential(user, credential)
+      console.log("re authentication successful")
+    } catch (e) {
+      setError("Invalid Password, try again");
+      return
+    }
+
+
+    try {
+      await nhaService.updateUser(user, email, firstName, lastName, emailCheck, fNameCheck, lNameCheck);
+      
+        if (emailCheck) {
+          // if email changed
+          verifyBeforeUpdateEmail(auth.currentUser, email)
+            .then(async () => {
+              console.log("Verification email sent!")
+
+              signOut(auth).then(() => {
+                navigate("/login")
+                const msg = () => toast(`Email change initiated, check your inbox and profile updated :)`);
+                msg()
+              }).catch((e) => {
+                setError(e.message);
+                console.log(e)
+              })
+            }).catch((e) => {
+              console.log(e)
+              setError("An error occured when updating!")
+              return
+            })
+        } else {
+          const msg = () => toast(`Profile updated :)`);
+          msg()
+        }
+      
+    } catch (e) {
+      setError("Error updating profile")
+      return
+    }
+
+   
+
+      }
+  
+
+      
+  
 
 
   return receivedData && (
-    <div className='settings-div'>
-      <div className='settings-head-div'>
-        <FontAwesomeIcon size='4x' icon={faGear} className='settings-icon' />
-        <p className='settings-head-p'>Settings</p>
-      </div>
-
-      <p className='edit-profile'>Edit Profile</p>
-
-      <form className='settings-form'>
-        <div className="names-box">
-          <input
-            className="name-input-box-settings"
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder="First Name"
-            style={{
-              borderColor: error ? 'red' : '#0ac6c0',
-              transition: 'border-color 0.3s ease',
-            }}
-          />
-          <input
-            className="name-input-box-settings"
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder="Last Name"
-            style={{
-              borderColor: error ? 'red' : '#0ac6c0',
-              transition: 'border-color 0.3s ease',
-            }}
-          />
-        </div>
-        {user && (
-          <>
-            <input
-              className='settings-email-input'
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              style={{
-                borderColor: error ? 'red' : '#0ac6c0',
-                transition: 'border-color 0.3s ease',
-              }}
-            />
-            <input
-              className='settings-email-input'
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder='Enter password before updating'
-              style={{
-                borderColor: error ? 'red' : '#0ac6c0',
-                transition: 'border-color 0.3s ease',
-              }}
-            />
-          </>)}
-        <button type="submit" className='login-btn' onClick={handleUpdateprofile}>Update Profile</button>
-        
-      </form>
-
-      <div className="options-div">
-        <div className='option-div hover-div1' onClick={handleChangePassword}>
-          <FontAwesomeIcon icon={faPenToSquare}/>
-          <p>Change Password</p>
-        </div>
-        <div className='option-div hover-div2' onClick={handleDeleteAccount}>
-            <FontAwesomeIcon icon={faTrash}/>
-            <p>Delete Account</p>
+        <div className='settings-div'>
+          <div className='settings-head-div'>
+            <FontAwesomeIcon size='4x' icon={faGear} className='settings-icon' />
+            <p className='settings-head-p'>Settings</p>
           </div>
-      </div>
 
-      {error && <p className='error-msg error-settings'>{error}</p>}
+          <p className='edit-profile'>Edit Profile</p>
+
+          <form className='settings-form'>
+            <div className="names-box">
+              <input
+                className="name-input-box-settings"
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="First Name"
+                style={{
+                  borderColor: error ? 'red' : '#0ac6c0',
+                  transition: 'border-color 0.3s ease',
+                }}
+              />
+              <input
+                className="name-input-box-settings"
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Last Name"
+                style={{
+                  borderColor: error ? 'red' : '#0ac6c0',
+                  transition: 'border-color 0.3s ease',
+                }}
+              />
+            </div>
+            {user && (
+              <>
+                <input
+                  className='settings-email-input'
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email"
+                  style={{
+                    borderColor: error ? 'red' : '#0ac6c0',
+                    transition: 'border-color 0.3s ease',
+                  }}
+                />
+                <input
+                  className='settings-email-input'
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder='Enter password before updating'
+                  style={{
+                    borderColor: error ? 'red' : '#0ac6c0',
+                    transition: 'border-color 0.3s ease',
+                  }}
+                />
+              </>)}
+            <button type="submit" className='login-btn' onClick={handleUpdateprofile}>Update Profile</button>
+
+          </form>
+
+          <div className="options-div">
+            <div className='option-div hover-div1' onClick={handleChangePassword}>
+              <FontAwesomeIcon icon={faPenToSquare} />
+              <p>Change Password</p>
+            </div>
+            <div className='option-div hover-div2' onClick={handleDeleteAccount}>
+              <FontAwesomeIcon icon={faTrash} />
+              <p>Delete Account</p>
+            </div>
+          </div>
+
+          {error && <p className='error-msg error-settings'>{error}</p>}
 
 
-    </div>
-  )
-}
+        </div>
+      )
+    }
 
 export default Settings
