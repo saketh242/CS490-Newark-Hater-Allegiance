@@ -31,6 +31,11 @@ const Login = () => {
 
     e.preventDefault();
 
+    if (email === '' || password == ""){
+      setError("Please fill all the fields");
+      return
+    }
+
     if (!isValidEmail(email)) {
       setError("Please enter a valid email!");
       return
@@ -76,7 +81,12 @@ const Login = () => {
             className='email-input'
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={
+              (e) => {
+                setEmail(e.target.value)
+                setError(null)
+              }
+            }
             placeholder="Email"
             autoComplete='off'
             required
@@ -89,7 +99,13 @@ const Login = () => {
             className='password-login'
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={
+              (e) => {
+                setPassword(e.target.value)
+                setError(null);
+              }
+              
+            }
             placeholder="Password"
             autoComplete='off'
             required

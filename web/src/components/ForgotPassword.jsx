@@ -39,7 +39,10 @@ const ForgotPassword = () => {
                 placeholder="Enter email"
                 value={email}
                 className="forgot-input"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                    setEmail(e.target.value)
+                    setError(null)
+                }}
                 style={{
                     borderColor: error ? 'red' : '#0ac6c0',
                     transition: 'border-color 0.3s ease',
