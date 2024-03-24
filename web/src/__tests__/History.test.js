@@ -1,76 +1,112 @@
-// import React from 'react';
-// import { render, fireEvent } from '@testing-library/react';
-// import History from '../components/History';
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
+import History from '../components/History';
 
-// describe('History component', () => {
-//   const mockHistory = [
-//     {
-//       createdAt: '2024-03-23T10:30:00Z',
-//       Source_language: 'javascript',
-//       Desired_language: 'python',
-//       original_code: 'console.log("Hello, world!");',
-//       converted_code: 'print("Hello, world!")',
-//     },
-//     {
-//       createdAt: '2024-03-22T15:45:00Z',
-//       Source_language: 'python',
-//       Desired_language: 'javascript',
-//       original_code: 'print("Hello, world!")',
-//       converted_code: 'console.log("Hello, world!");',
-//     },
-//   ];
+const dateAndTimeConversion = (date) => {
+  const dateObject = new Date(date);
+  const string = dateObject.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    timeZoneName: 'short'
+  });
+  return string;
+};
 
-//   const mockSetInputCode = jest.fn();
-//   const mockSetTranslatedCode = jest.fn();
+describe('History component', () => {
+  const mockHistory = [
+    {
+      createdAt: '2024-03-23T10:30:00Z',
+      Source_language: 'javascript',
+      Desired_language: 'python',
+      original_code: 'console.log("Hello, world!");',
+      converted_code: 'print("Hello, world!")',
+    },
+    {
+      createdAt: '2024-03-22T15:45:00Z',
+      Source_language: 'c',
+      Desired_language: 'java',
+      original_code: 'printf("Hello, world!");',
+      converted_code: 'System.out.println("Hello, world!");',
+    },
+  ];
 
-//   it('renders correctly with history data and sidebar shown', () => {
-//     const { getByText } = render(
-//       <History
-//         history={mockHistory}
-//         showSidebar={true}
-//         toggleSidebar={() => {}}
-//         setInputCode={mockSetInputCode}
-//         setTranslatedCode={mockSetTranslatedCode}
-//       />
-//     );
+  const mockSetInputCode = jest.fn();
+  const mockSetTranslatedCode = jest.fn();
 
-//     expect(getByText('Translation History')).toBeInTheDocument();
+  test('renders correctly with history data and sidebar activated', () => {
+    const { getByText, getAllByText } = render(
+      <History
+        history={mockHistory}
+        showSidebar={true}
+        toggleSidebar={() => {}}
+        setInputCode={mockSetInputCode}
+        setTranslatedCode={mockSetTranslatedCode}
+      />
+    );
 
-//     mockHistory.forEach(historyItem => {
-//       expect(getByText("Source Code (" + historyItem.Source_language + ")")).toBeInTheDocument;
-//       expect(getByText("Source Code (" + historyItem.Desired_language + ")")).toBeInTheDocument();
-//       expect(getByText(historyItem.original_code)).toBeInTheDocument();
-//       expect(getByText(historyItem.converted_code)).toBeInTheDocument();
-//     });
-//   });
+    expect(getByText('Translation History')).toBeInTheDocument();
 
-//   it('does not render anything when history is null or sidebar is not shown', () => {
-//     const { container } = render(
-//       <History
-//         history={null}
-//         showSidebar={false}
-//         toggleSidebar={() => {}}
-//         setInputCode={mockSetInputCode}
-//         setTranslatedCode={mockSetTranslatedCode}
-//       />
-//     );
+    const loadButtons = getAllByText("Load Code");
+    expect(loadButtons.length).toBeGreaterThan(0);
 
-//     expect(container.firstChild).toBeNull();
-//   });
+    mockHistory.forEach(historyItem => {
+      expect(getByText(dateAndTimeConversion(historyItem.createdAt))).toBeInTheDocument();
+      expect(getByText("Source Code (" + historyItem.Source_language + ")")).toBeInTheDocument();
+      expect(getByText("Converted Code (" + historyItem.Desired_language + ")")).toBeInTheDocument();
+      expect(getByText(historyItem.original_code)).toBeInTheDocument();
+      expect(getByText(historyItem.converted_code)).toBeInTheDocument();
+    });
+  });
 
-//   it('calls setInputCode and setTranslatedCode when Load Code button is clicked', () => {
-//     const { getByText } = render(
-//       <History
-//         history={mockHistory}
-//         showSidebar={true}
-//         toggleSidebar={() => {}}
-//         setInputCode={mockSetInputCode}
-//         setTranslatedCode={mockSetTranslatedCode}
-//       />
-//     );
+  test('does not render anything when history is null', () => {
+    const { container } = render(
+      <History
+        history={null}
+        showSidebar={true}
+        toggleSidebar={() => {}}
+        setInputCode={mockSetInputCode}
+        setTranslatedCode={mockSetTranslatedCode}
+      />
+    );
 
-//     fireEvent.click(getByText('Load Code'));
-//     expect(mockSetInputCode).toHaveBeenCalledWith(mockHistory[0].original_code);
-//     expect(mockSetTranslatedCode).toHaveBeenCalledWith(mockHistory[0].converted_code);
-//   });
-// });
+    expect(container.firstChild).toBeNull();
+  });
+
+  test('does not render anything when sidebar is supposed to be hidden with valid history', () => {
+    const { container } = render(
+      <History
+        history={mockHistory}
+        showSidebar={false}
+        toggleSidebar={() => {}}
+        setInputCode={mockSetInputCode}
+        setTranslatedCode={mockSetTranslatedCode}
+      />
+    );
+
+    expect(container.firstChild).toBeNull();
+  });
+
+  test('setInputCode and setTranslatedCode send the right data when Load Code buttons are clicked', () => {
+    const { getAllByText } = render(
+
+        <History
+          history={mockHistory}
+          showSidebar={true}
+          toggleSidebar={() => {}}
+          setInputCode={mockSetInputCode}
+          setTranslatedCode={mockSetTranslatedCode}
+        />
+    );
+
+    const loadButtons = getAllByText("Load Code");
+
+    for (let i = 0; i < loadButtons.length; i++) {
+      fireEvent.click(loadButtons[i]);
+      expect(mockSetInputCode).toHaveBeenCalledWith(mockHistory[i].original_code);
+      expect(mockSetTranslatedCode).toHaveBeenCalledWith(mockHistory[i].converted_code);
+    }
+  });
+});
