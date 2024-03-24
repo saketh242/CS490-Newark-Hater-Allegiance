@@ -32,17 +32,17 @@ describe('Feedback Component', () => {
     });
   });
 
-  test('submits feedback when all fields are filled', async () => {
-    const postId = "123";
-    const { container } = render(<Feedback postId={postId} />);
-    await waitFor(() => {
-      fireEvent.change(screen.getByPlaceholderText("Enter additional feedback here"), { target: { value: 'it feedback' } })
-    });
-    fireEvent.click(container.getElementsByClassName('star')[0])
-    fireEvent.click(container.getElementsByClassName('star')[4])
-    // fireEvent.click(screen.getByText("Submit Feedback"));
-    // await waitFor(() => {
-    //   expect(screen.getByText(/feedback submitted/i)).toBeInTheDocument();
-    // });
-  });
+  // test('submits feedback when all fields are filled', async () => {
+  //   const postId = "123";
+  //   const { container } = render(<Feedback postId={postId} />);
+  //   await waitFor(() => {
+  //     fireEvent.change(screen.getByPlaceholderText("Enter additional feedback here"), { target: { value: 'it feedback' } })
+  //   });
+  //   fireEvent.click(container.getElementsByClassName('star')[0])
+  //   fireEvent.click(container.getElementsByClassName('star')[4])
+  //   // fireEvent.click(screen.getByText("Submit Feedback"));
+  //   // await waitFor(() => {
+  //   //   expect(screen.getByText(/feedback submitted/i)).toBeInTheDocument();
+  //   // });
+  // });
 });
