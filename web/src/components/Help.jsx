@@ -82,7 +82,7 @@ const Help = () => {
         <div className='help-contact' id={showBox===3 ? 'focus': null}>
           <h1 className='help-header'>Send us a message to get additional support!</h1>
           <p>Our team will give you a response between 3-7 business days (excludes weekends and holidays)</p>
-          <p>Email: nhaproj@gmail.com</p>
+          <p>Email: nhagpt490@gmail.com</p>
         </div>
 
         {/*Box Egg*/}

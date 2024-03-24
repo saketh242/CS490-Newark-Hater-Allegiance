@@ -97,7 +97,9 @@ const Translate = () => {
     }
 
     setError(''); // Reset error message
-    setTranslatedCode('');
+    setTranslationError('') //Reset translationerror message
+    setTranslatedCode(''); //reset output
+    setTranslationDone(false);
     setLoading(true); // Set loading state to true before API call
   
       const sanitized = sanitizeCode(inputCode);
@@ -287,7 +289,7 @@ const Translate = () => {
         </div>
       </div>
 
-      {translationError && 
+      {translationError !== ''  && 
       <div className="translationError">
         <FontAwesomeIcon icon={faCircleExclamation} id="errorIcon" size="2x"/>
         <p>{translationError}</p>
