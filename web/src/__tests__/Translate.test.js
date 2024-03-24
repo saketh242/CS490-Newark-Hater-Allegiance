@@ -5,10 +5,13 @@ import Translate from '../components/Translate';
 import '@testing-library/jest-dom'; // Import this for better assertion messages
 import userEvent from '@testing-library/user-event';
 
+import nhaService from '../services/nhaService'
+
 //TODO:
 // test empty input
 // test copy
 // test download
+// test translation error message popup
 
 // Mock useNavigate
 jest.mock('react-router-dom', () => ({
@@ -164,4 +167,24 @@ describe('Translate component', () => {
   // async function pause(delay) {
   //   return await new Promise(resolve => setTimeout(resolve, delay));
   // }
+
+  // test('displays translation error message when translation fails', async () => {
+  //   // Mock the service function to return a failure response
+  //   jest.spyOn(nhaService, 'postPrompt').mockResolvedValueOnce({ success: false, message: 'Translation failed' });
+  
+  //   // Render the component
+  //   render(<Translate />);
+  
+  //   // Enter input code and initiate translation
+  //   const inputArea = screen.getByPlaceholderText('Enter code to translate');
+  //   const translateButton = screen.getByText('Convert');
+  //   fireEvent.change(inputArea, { target: { value: 'console.log("Invalid code")' } });
+  //   fireEvent.click(translateButton);
+  
+  //   // Wait for the translation process to complete and the error message to appear
+  //   await waitFor(() => {
+  //     expect(screen.queryByText('Translation failed')).toBeInTheDocument();
+  //   });
+  // });
+  
 });
