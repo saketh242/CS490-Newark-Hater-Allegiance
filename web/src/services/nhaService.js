@@ -139,6 +139,28 @@ class NHAService {
             throw error;
         }
     }
+
+    async getOpenAIStatus() {
+        try {
+          const response = await axios.get('https://status.openai.com/api/v2/summary.json');
+          const jsonData = response.data;
+      
+          // Check if JSON data contains components array --> contains api status
+          if (!jsonData || !jsonData.components || !Array.isArray(jsonData.components)) {
+            console.error('Invalid JSON data format');
+            return false;
+          }
+      
+          // Find the API component and check its status
+          const apiComponent = jsonData.components.find(component => component.name === "API");
+          const apiReady = apiComponent && apiComponent.status === 'operational';
+          return apiReady;
+        } catch (error) {
+          console.error('Error fetching OpenAI API status:', error);
+          throw error;
+        }
+      }
+      
 }
 
 export default new NHAService();
