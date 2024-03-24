@@ -37,13 +37,13 @@ function sendErrorLogEmail() {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'med.dzhatdo@gmail.com',
-      pass: 'mqtl iobt sisn iwzq'
+      user: 'nhagptupdates@gmail.com',
+      pass: process.env.NHAUPDATES_PASS
     }
   });
 
   const mailOptions = {
-    from: 'med.dzhatdo@gmail.com',
+    from: 'nhagptupdates@gmail.com',
     to: 'nhagpt490@gmail.com',
     subject: `NHAGPT Error Log Report - ${currentDate}`,
     text: `Please find attached the NHAGPT error log for ${currentDate}.`,
