@@ -18,6 +18,18 @@ app.use(mongoSanitize()); //sanitize all user input
 
 app.use(queue({ activeLimit: 1, queuedLimit: -1 }));
 
+const sendErrorLogEmail = require('./logs/notifyDevs');
+const cron = require('node-cron');
+
+// Schedule the cron job to run at 8 AM when app running
+// gonna change to 0 8 * * 1-5 (weekdays only)
+cron.schedule('0 8 * * *', async () => {
+  console.log("Sending email");
+  sendErrorLogEmail();
+}, {
+  timezone: 'America/New_York'
+});
+
 mongoose.connect(process.env.DATABASE)
   .then(() => {
     console.log("MongoDB connection successful :)");
