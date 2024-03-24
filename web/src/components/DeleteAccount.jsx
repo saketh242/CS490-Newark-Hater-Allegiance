@@ -67,7 +67,10 @@ const DeleteAccount = () => {
                     type="password"
                     className='password-change'
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                        setPassword(e.target.value)
+                        setError(null)
+                    }}
                     placeholder='Enter password'
                     autoComplete='off'
                     required
