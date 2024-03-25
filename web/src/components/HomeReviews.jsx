@@ -15,3 +15,44 @@ const HomeReviews = () => {
 };
 
 export default HomeReviews;
+
+// import React, { useState, useEffect } from 'react';
+// import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+// import { Carousel } from 'react-responsive-carousel';
+
+// import nhaService from '../services/nhaService';
+// import useAuth from '../useAuth';
+
+// const HomeReviews = () => {
+//   const { user } = useAuth();
+//   const [reviews, setReviews] = useState([]);
+
+//     useEffect(() => {
+//       async function fetchReviews() {
+//         try {
+//           const response = response = await nhaService.getFeedback(user);
+//           setReviews(response.data);
+//           console.log(reviews);
+//         } catch (error) {
+//           console.error('Error fetching reviews:', error);
+//         }
+//       }
+  
+//       fetchReviews();
+//     }, []);
+  
+//     return (
+//       <div className='box reviews'>
+//         <p id="reviewHeader" className="sectionHeader">Some of our reviews</p>
+//         <div className="reviews-flexbox">
+//           {reviews.map((review, index) => (
+//             <div className="review" id={`review-${index}`} key={index}>
+//               <p>{`⭐⭐⭐⭐⭐<br></br>${review.textMessage}<br></br>- ${review.user}`}</p>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+//     );
+//   };
+
+// export default HomeReviews;
