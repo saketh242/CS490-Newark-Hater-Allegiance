@@ -62,13 +62,9 @@ class NHAService {
         }
     }
 
-    async getFeedback(user) {
+    async getFeedback() {
         try {
-            const idToken = await user.getIdToken();
-            const headers = {
-                Authorization: `Bearer ${idToken}`
-            };
-            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}feedback/getFeedback`, { headers });
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}feedback/getFeedback`);
             // console.log(response.data);
             return response.data;
         } catch (error) {
