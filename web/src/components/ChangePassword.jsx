@@ -89,7 +89,10 @@ const ChangePassword = () => {
                     type="password"
                     className='password-change'
                     value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    onChange={(e) => {
+                        setCurrentPassword(e.target.value)
+                        setError(null)                    
+                    }}
                     placeholder='Current Password'
                     autoComplete='off'
                     required
@@ -102,7 +105,10 @@ const ChangePassword = () => {
                     type="password"
                     className='password-change'
                     value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
+                    onChange={(e) => {
+                        setNewPassword(e.target.value)
+                        setError(null)
+                    }}
                     placeholder='New Password'
                     autoComplete='off'
                     required
@@ -115,7 +121,10 @@ const ChangePassword = () => {
                     type="password"
                     className='password-change'
                     value={newPassword2}
-                    onChange={(e) => setNewPassword2(e.target.value)}
+                    onChange={(e) => {
+                        setNewPassword2(e.target.value)
+                        setError(null);
+                    }}
                     placeholder='Retype New Password'
                     autoComplete='off'
                     required

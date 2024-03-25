@@ -88,7 +88,10 @@ const Signup = () => {
                 className="name-input-box"
                 type="text"
                 value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={(e) => {
+                  setFirstName(e.target.value)
+                  setError(null)
+                }}
                 placeholder="First Name"
                 style={{ borderColor: error ? 'red' : '#0ac6c0',
                       transition: 'border-color 0.3s ease', }}
@@ -97,7 +100,10 @@ const Signup = () => {
                 className="name-input-box"
                 type="text"
                 value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={(e) => {
+                  setLastName(e.target.value)
+                  setError(null)
+                }}
                 placeholder="Last Name"
                 style={{ borderColor: error ? 'red' : '#0ac6c0',
                       transition: 'border-color 0.3s ease', }}
@@ -107,7 +113,10 @@ const Signup = () => {
           className='signup-email-input'
           type="email" 
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value)
+            setError(null)
+          }}
           placeholder="Email"
           style={{ borderColor: error ? 'red' : '#0ac6c0',
                       transition: 'border-color 0.3s ease', }}
@@ -116,7 +125,10 @@ const Signup = () => {
         className='signup-password-input'
         type="password" 
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e) => {
+          setPassword(e.target.value)
+          setError(null)
+        }}
         placeholder="Password"
         style={{ borderColor: error ? 'red' : '#0ac6c0',
                       transition: 'border-color 0.3s ease', }}
@@ -125,7 +137,10 @@ const Signup = () => {
         className='signup-password-input'
         type="password" 
         value={password2}
-        onChange={(e) => setPassword2(e.target.value)}
+        onChange={(e) => {
+          setPassword2(e.target.value)
+          setError(null)
+        }}
         placeholder="Retype Password"
         style={{ borderColor: error ? 'red' : '#0ac6c0',
                       transition: 'border-color 0.3s ease', }}

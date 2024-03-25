@@ -62,6 +62,7 @@ const Feedback = ({ postId }) => {
                 value={textBox}
                 onChange={(e) => {
                     setTextBox(e.target.value);
+                    setError(null); // added this to change back the box
                 }}
                 style={{
                     borderColor: error ? 'red' : '#0ac6c0',

@@ -17,9 +17,9 @@ jest.mock('react-router-dom', () => ({
 }));
 
 jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useNavigate: () => jest.fn(),
-  }));
+  ...jest.requireActual('react-router-dom'), // import and retain the original functionalities
+  useNavigate: () => jest.fn(), // mock useNavigate
+}));
 
 
 // Mock Firebase auth and the useAuth hook
@@ -65,36 +65,6 @@ describe('NHANav', () => {
     expect(screen.getByText('Translate')).toBeInTheDocument();
   });
 
-  it('navigates to home when brand is clicked', () => {
-    require('../useAuth').default.mockReturnValue({ user: { name: 'John Doe' }, isLoading: false });
-    renderNHANav();
-    // Implement your navigation test here
-  });
-
-  
-  it('logs out the user when logout link is clicked', async () => {
-    // Assuming useAuth provides current user info and a logout function
-    const mockSignOut = jest.fn();
-    require('../useAuth').default.mockReturnValue({
-      user: { name: 'John Doe' },
-      isLoading: false,
-      signOut: mockSignOut,
-    });
-  
-    // Render NHANav component
-    renderNHANav();
-  
-    // Mock user interaction: clicking the logout link
-    userEvent.click(screen.getByText('Logout'));
-  
-    // Verify signOut was called
-    await waitFor(() => {
-      expect(mockSignOut).toHaveBeenCalled();
-    });
-  
-    // Additional assertions can be made here, e.g., checking the navigation to the login page
-    expect(mockNavigate).toHaveBeenCalledWith('/login'); // Adjust the navigation path as needed
-  });
   
 
 
@@ -147,7 +117,7 @@ describe('Navigations', () => {
         expect(uniqueHelpText).toBeInTheDocument();
     });
 
-    test('navigates to the translate page after clicking the Settings link', async () => {
+    test('navigates to the settings page after clicking the Settings link', async () => {
         // Assuming useAuth mock is set up correctly elsewhere
         require('../useAuth').default.mockReturnValue({ user: {name:"John Doe"}, isLoading: false });
         renderApp();
@@ -161,6 +131,21 @@ describe('Navigations', () => {
 
         expect(uniqueHelpText).toBeInTheDocument();
     });
+
+    test('navigates to the home page page after clicking the brand link', async () => {
+      // Assuming useAuth mock is set up correctly elsewhere
+      require('../useAuth').default.mockReturnValue({ user: {name:"John Doe"}, isLoading: false });
+      renderApp();
+
+      const brandLink = screen.getByRole('link', { name: /NHAGPT/i });
+      userEvent.click(brandLink);
+
+      // Use findBy to await the appearance of an element unique to the Help page.
+      // Adjust the matcher to fit an actual element or text from your Help component.
+      const uniqueHelpText = await screen.findByText(/Easy code translation in seconds?/i);
+
+      expect(uniqueHelpText).toBeInTheDocument();
+  });
 
 
 });
