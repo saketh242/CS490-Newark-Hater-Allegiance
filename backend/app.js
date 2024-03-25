@@ -9,6 +9,8 @@ const historyRouter = require("./routes/historyRoutes");
 const feedbackRouter = require("./routes/feedbackRoutes");
 const chatGptRouter = require("./routes/chatGptRouter");
 const decodeToken = require("./middleware/index");
+const sendErrorLogEmail = require('./logs/notifyDevs');
+const cron = require('node-cron');
 
 const queue = require('express-queue');
 
@@ -17,9 +19,6 @@ app.use(cors());
 app.use(mongoSanitize()); //sanitize all user input
 
 app.use(queue({ activeLimit: 1, queuedLimit: -1 }));
-
-const sendErrorLogEmail = require('./logs/notifyDevs');
-const cron = require('node-cron');
 
 // Schedule the cron job to run at 8 AM when app running
 // gonna change to 0 8 * * 1-5 (weekdays only)

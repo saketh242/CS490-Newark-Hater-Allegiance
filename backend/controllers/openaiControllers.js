@@ -1,6 +1,6 @@
 const axios = require('axios');
 const OpenAIApi = require('openai');
-const hljs = require('highlight.js'); 
+const hljs = require('highlight.js');
 
 const openai = new OpenAIApi.OpenAI({ key: process.env.OPENAI_API_KEY });
 
@@ -18,7 +18,6 @@ const postPrompt = async (req, res, next) => {
 
     // Detect the language of the input code
     const detectedSourceLanguage = detectLanguage(inputCode);
-
     const prompt = `
     [no prose] Translate the following ${sourceLanguage} code to ${desiredLanguage} and provide only the ${desiredLanguage} code:
 
@@ -26,15 +25,14 @@ const postPrompt = async (req, res, next) => {
     \`\`\`
     
     If the source language is not recognized or supported, or if the input code contradicts the specified ${sourceLanguage} language, please output "Language does not match", and do not proceed with the translation`;
-    
+
     try {
 
         if (detectedSourceLanguage !== sourceLanguage) {
             const languageMismatchError = new Error("Input code does not match specified source language");
-            languageMismatchError.status = 400; 
+            languageMismatchError.status = 400;
             throw languageMismatchError;
         }
-
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo-0125",
             messages: [
@@ -60,7 +58,7 @@ const postPrompt = async (req, res, next) => {
         const filtered = translatedCode.replace(/```/g, '');
 
         const code = filtered.split('\n').slice(1).map(line => line.trim()).join('\n');
-        
+
         return res.status(200).json({
             success: true,
             message: code,
@@ -69,7 +67,7 @@ const postPrompt = async (req, res, next) => {
         //console.log("Error message: ", error);
         logger.error(`Error: ${error.message}, Input: ${inputCode}, SourceLanguage: ${sourceLanguage}, DetectedLanguage: ${detectedSourceLanguage}, DesiredLanguage: ${desiredLanguage}`);
 
-        if (error.status === 400) { 
+        if (error.status === 400) {
             return res.status(400).json({
                 success: false,
                 message: error.message,

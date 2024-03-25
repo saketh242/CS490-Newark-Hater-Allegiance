@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^3.2.5",
-    "axios": "^1.6.7",
+    "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -21,6 +21,7 @@
     "firebase-admin": "^12.0.0",
     "highlight.js": "^11.9.0",
     "mongoose": "^8.1.2",
+    "nock": "^13.5.4",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.13",
     "openai": "^4.28.4",
