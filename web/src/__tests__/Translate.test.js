@@ -204,6 +204,14 @@ describe('Translate component', () => {
   });
 });
 
+describe('Sidebar rendered component', () => {
+  it('triggers sidebar history when button is pressed', () => {
+    const { container } = render(<Translate />);
+    fireEvent.click(container.getElementsByClassName("historyButton")[0]);
+    expect(screen.findByText("Translation History"));
+  });
+});
+
 // describe('Translate component', () => {
 //   it('displays an error when trying to convert with empty input', async () => {
 //     const { container } = render(<Translate />);
