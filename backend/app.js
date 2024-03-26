@@ -21,8 +21,8 @@ app.use(mongoSanitize()); //sanitize all user input
 app.use(queue({ activeLimit: 1, queuedLimit: -1 }));
 
 // Schedule the cron job to run at 8 AM when app running
-// gonna change to 0 8 * * 1-5 (weekdays only)
-cron.schedule('0 8 * * *', async () => {
+// should go off at 9pm
+cron.schedule('28 10 * * *', async () => {
   console.log("Sending email");
   sendErrorLogEmail();
 }, {
