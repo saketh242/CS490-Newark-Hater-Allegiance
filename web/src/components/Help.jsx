@@ -2,6 +2,8 @@ import React, { useState, Popup } from 'react'
 import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown} from '@fortawesome/free-solid-svg-icons'
+import sample from '../images/sample.png'
+import feedback from "../images/feedback.png"
 
 const Help = () => {
   const [showBox, setShowBox] = useState(0);
@@ -74,10 +76,38 @@ const Help = () => {
         {/*Box 1*/}
         <div className='help-guides' id={showBox===1 ? 'focus': null}>
           <h id='guide-title'>Have a look at these quick and detailed guides!</h>
-          <div id='guide-item' onClick={()=>handleGuide(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><h id={openG1 ? 'help-active': null}>Dropdown1</h></div>
-          {openG1 ? <div id='guide-text'>Text1 is visible!</div> : null}
-          <div id='guide-item' onClick={()=>handleGuide(2)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><h id={openG2 ? 'help-active': null}>Dropdown2</h></div>
-          {openG2 ? <div id='guide-text'>Text2 is visible!</div> : null}
+          <div id='guide-item' onClick={()=>handleGuide(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><h id={openG1 ? 'help-active': null}>Getting Started</h></div>
+          {openG1 ? <div id='guide-text'>
+          <div className='box' id="getting-started-div">
+        <p id="instructionHeader" className="sectionHeader">Getting Started</p>
+        <ul className='instructions'>
+          <li>Copy code into the text area or upload a file</li>
+          <li>Enter the source and destination languages</li>
+          <li>Click "Convert", and that's it!</li>
+          <li>Download or copy the code to save it</li>
+        </ul>
+        <div className='signup'>
+          <img className='signup-image' src={sample} alt="Sample Image"/>
+          
+        </div>
+      </div>
+          </div> : null}
+          <div id='guide-item' onClick={()=>handleGuide(2)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><h id={openG2 ? 'help-active': null}>How to submit a feedback?</h></div>
+          {openG2 ? <div id='guide-text'>
+          <div className='box' id="getting-started-div">
+        <p id="instructionHeader" className="sectionHeader">Submitting a Feedback</p>
+        <ul className='instructions'>
+          <li>After you make a translation, you can scroll down to submit feedback</li>
+          <li>Rate the number of stars and enter your response</li>
+          <li>Click submit feedback and it is saved</li>
+          <li>We also store ratings</li>
+        </ul>
+        <div className='signup'>
+          <img className='signup-image' src={feedback} alt="feedBack Image"/>
+          
+        </div>
+      </div>
+          </div> : null}
         </div>
 
 

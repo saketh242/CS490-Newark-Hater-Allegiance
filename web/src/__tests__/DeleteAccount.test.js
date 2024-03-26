@@ -20,9 +20,6 @@ describe('DeleteAccount Component Tests', () => {
       fireEvent.click(getByText(/Delete Account/i));
       expect(handleDelete).toHaveBeenCalledTimes(1);
   });
-  
-
-    
   });
   
 
