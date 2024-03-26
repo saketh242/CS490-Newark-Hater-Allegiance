@@ -36,8 +36,3 @@ describe('Login Component Tests', () => {
     //     expect(screen.getByPlaceholderText(/Invalid Credentials/i)).toBeInTheDocument();
     // })
   });
-  
-
-  
-
-
