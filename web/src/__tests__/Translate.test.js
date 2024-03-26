@@ -142,49 +142,79 @@ describe('Translate component', () => {
     });
   });
 
-  // test('should copy translated text to clipboard', async () => {
-  //   const translatedCode = 'console.log("Translated code")';
-  //   render(<Translate />);
+  test('should copy translated text to clipboard', async () => {
+    const translatedCode = 'console.log("Translated code")';
+    render(<Translate />);
   
-  //   //Simulate translation process completion
-  //   await waitFor(() => {
-  //     expect(screen.getByText(translatedCode)).toBeInTheDocument();
-  //   });
+    //Simulate translation process completion
+    // await waitFor(() => {
+    //   expect(screen.getByText(translatedCode)).toBeInTheDocument();
+    // });
   
-  //   // Click the copy button
-  //   userEvent.click(screen.getByTitle('Copy code'));
+    // Click the copy button
+    userEvent.click(screen.getByTitle('Copy code'));
   
-  //   // Wait for a short delay
-  //   await pause(10);
+    // // Wait for a short delay
+    // await pause(10);
   
-  //   // Read the text from the clipboard
-  //   const copiedText = await navigator.clipboard.readText();
+    // // Read the text from the clipboard
+    // const copiedText = await navigator.clipboard.readText();
   
-  //   // Expect the copied text to match the translated code
-  //   expect(copiedText).toEqual(translatedCode);
-  // });
-  
-  // async function pause(delay) {
-  //   return await new Promise(resolve => setTimeout(resolve, delay));
-  // }
+    // // Expect the copied text to match the translated code
+    // expect(copiedText).toEqual(translatedCode);
 
-  // test('displays translation error message when translation fails', async () => {
-  //   // Mock the service function to return a failure response
-  //   jest.spyOn(nhaService, 'postPrompt').mockResolvedValueOnce({ success: false, message: 'Translation failed' });
+        // // Wait for the copy process to complete
+        // await waitFor(() => {
+        //   const copied = screen.getByText('Copied to clipboard!');
+        //   expect(copied).toBeInTheDocument();
+        // });
+  });
   
-  //   // Render the component
-  //   render(<Translate />);
+  async function pause(delay) {
+    return await new Promise(resolve => setTimeout(resolve, delay));
+  }
+
+  test('displays translation error message when translation fails', async () => {
+    // // Mock the service function to return a failure response
+    // jest.spyOn(nhaService, 'postPrompt').mockResolvedValueOnce({ success: false, message: 'Translation failed' });
   
-  //   // Enter input code and initiate translation
-  //   const inputArea = screen.getByPlaceholderText('Enter code to translate');
-  //   const translateButton = screen.getByText('Convert');
-  //   fireEvent.change(inputArea, { target: { value: 'console.log("Invalid code")' } });
-  //   fireEvent.click(translateButton);
+    // Render the component
+    render(<Translate />);
   
-  //   // Wait for the translation process to complete and the error message to appear
-  //   await waitFor(() => {
-  //     expect(screen.queryByText('Translation failed')).toBeInTheDocument();
-  //   });
-  // });
+    // // Enter input code and initiate translation
+    // const inputArea = screen.getByPlaceholderText('Enter code to translate');
+    // const translateButton = screen.getByText('Convert');
+    // fireEvent.change(inputArea, { target: { value: 'console.log("Invalid code")' } });
+    // fireEvent.click(translateButton);
+  
+    // // Wait for the translation process to complete and the error message to appear
+    // await waitFor(() => {
+    //   expect(screen.queryByText('Translation failed')).toBeInTheDocument();
+    // });
+  });
+  
+});
+
+
+const { sanitizeCode } = require('../utils/codeUtils');
+
+describe('sanitizeCode function', () => {
+  it('should remove leading and trailing whitespace', () => {
+    const code = '   const x;   ';
+    const sanitizedCode = sanitizeCode(code, 'javascript');
+    expect(sanitizedCode).toEqual('const x;');
+  });
+
+  it('should remove unnecessary trailing semicolons for Python', () => {
+    const code = 'print(5);;;;;;';
+    const sanitizedCode = sanitizeCode(code, 'python');
+    expect(sanitizedCode).toEqual('print(5)');
+  });
+
+  it('should keep one trailing semicolon for other languages', () => {
+    const code = 'int x;;;;;;';
+    const sanitizedCode = sanitizeCode(code, 'java');
+    expect(sanitizedCode).toEqual('int x;');
+  });
   
 });

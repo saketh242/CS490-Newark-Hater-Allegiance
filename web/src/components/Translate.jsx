@@ -108,6 +108,7 @@ const Translate = () => {
       if(!response.success){
         setLoading(false);
         setTranslationError(response.message);
+        alert(response.message);
         //log error here? ...
         return;
       }

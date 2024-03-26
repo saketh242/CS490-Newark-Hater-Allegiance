@@ -112,7 +112,7 @@ describe('Navigations', () => {
 
         // Use findBy to await the appearance of an element unique to the Help page.
         // Adjust the matcher to fit an actual element or text from your Help component.
-        const uniqueHelpText = await screen.findByText(/OpenAi?/i);
+        const uniqueHelpText = await screen.findByText(/Getting Started/i);
 
         expect(uniqueHelpText).toBeInTheDocument();
     });
@@ -150,5 +150,4 @@ describe('Navigations', () => {
 
 });
 
-  
   
