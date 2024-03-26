@@ -27,12 +27,13 @@ const postPrompt = async (req, res, next) => {
     If the source language is not recognized or supported, or if the input code contradicts the specified ${sourceLanguage} language, please output "Language does not match", and do not proceed with the translation`;
 
     try {
-
+        /* it no work, fix later
         if (detectedSourceLanguage !== sourceLanguage) {
             const languageMismatchError = new Error("Input code does not match specified source language");
             languageMismatchError.status = 400;
             throw languageMismatchError;
         }
+        */
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo-0125",
             messages: [

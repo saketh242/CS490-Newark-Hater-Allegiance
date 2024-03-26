@@ -19,7 +19,6 @@ const getAllHistory = async (req, res, next) => {
 const postHistory = async (req, res, next) => {
     try {
         const { user_id, inputCode, translateCode, sourceLanguage, desiredLanguage } = req.body;
-
         const validLanguages = ["python", "javascript", "java", "c", "csharp", "cplusplus", "php", "go", "ruby", "typescript"];
 
         if (!user_id || !inputCode || !translateCode || typeof inputCode !== 'string' || typeof translateCode !== 'string' 
