@@ -78,7 +78,6 @@ const getFeedback = async (req, res, next) => {
                 return { ...feedback.toObject(), user };
             })
         );
-
         res.status(200).send(feedbacksWithUserDetails);
     } catch (error) {
         console.error("Error fetching feedbacks:", error);
