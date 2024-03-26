@@ -8,7 +8,7 @@ export const sanitizeCode = (code, sourceLanguage) => {
     else code = code.replace(/;+\s*$/g, ';'); //keep one for every other language 
   
     // Escape special characters
-    code = escapeSpecialCharacters(code);
+    /*code = escapeSpecialCharacters(code);*/ //temporary commented due to coding issues, will reinstate when we move highlight js to frontned
 
     return code;
 };
