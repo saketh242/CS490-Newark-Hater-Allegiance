@@ -1,15 +1,11 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import NHAService from '../services/nhaService'; // Import NHAService using default import
 import Feedback from '../components/Feedback';
-import nhaService from '../services/nhaService';
-import useAuth from '../useAuth';
+import { jest } from '@jest/globals';
+import { toast } from 'react-toastify';
 
-// jest.doMock("../components/StarGroup", () => {
-//   const StarGroup = ({ testRating, }) => {
-//     <div />
-//   };
-//   return StarGroup;
-// });
+let mockToast; // Declare mockToast outside of the describe block
 
 describe('Feedback Component', () => {
   test('renders with correct props', async () => {
@@ -32,17 +28,21 @@ describe('Feedback Component', () => {
     });
   });
 
-  // test('submits feedback when all fields are filled', async () => {
-  //   const postId = "123";
-  //   const { container } = render(<Feedback postId={postId} />);
-  //   await waitFor(() => {
-  //     fireEvent.change(screen.getByPlaceholderText("Enter additional feedback here"), { target: { value: 'it feedback' } })
-  //   });
-  //   fireEvent.click(container.getElementsByClassName('star')[0])
-  //   fireEvent.click(container.getElementsByClassName('star')[4])
-  //   // fireEvent.click(screen.getByText("Submit Feedback"));
-  //   // await waitFor(() => {
-  //   //   expect(screen.getByText(/feedback submitted/i)).toBeInTheDocument();
-  //   // });
-  // });
+  test('submits feedback when all fields are filled', async () => {
+    const postId = "123";
+    const { container } = render(<Feedback postId={postId} />);
+    await waitFor(() => {
+      fireEvent.change(screen.getByPlaceholderText("Enter additional feedback here"), { target: { value: 'it feedback' } })
+    });
+    fireEvent.click(container.getElementsByClassName('star')[0])
+    fireEvent.click(container.getElementsByClassName('star')[4])
+
+    // Spy on postFeedback after importing NHAService
+    jest.spyOn(NHAService, 'postFeedback').mockResolvedValue();
+
+    fireEvent.click(screen.getByText("Submit Feedback"));
+    await waitFor(() => {
+      expect(screen.findByText("Feedback Submitted!"));
+    });
+  });
 });
