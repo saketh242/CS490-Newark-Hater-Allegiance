@@ -9,9 +9,6 @@ import nhaService from '../services/nhaService'
 
 //TODO:
 // test empty input
-// test copy
-// test download
-// test translation error message popup
 
 // Mock useNavigate
 jest.mock('react-router-dom', () => ({
@@ -58,28 +55,6 @@ describe('Translate component', () => {
     </MemoryRouter>
     
   });
-
-  // test('displays error message when input code is empty', async () => {
-  //   await act(async () => {
-  //     render(
-  //       <MemoryRouter>
-  //         <Translate />
-  //       </MemoryRouter>
-  //     );
-  //   });
-  
-  //   const inputArea = screen.getByPlaceholderText('Enter code to translate');
-  //   const translateButton = screen.getByText('Convert');
-  
-  //   fireEvent.change(inputArea, { target: { value: '' } });
-  //   fireEvent.click(translateButton);
-  
-  //   // Wait for the error message to appear
-  //   await waitFor(() => {
-  //     expect(screen.getByText('Input code cannot be empty')).toBeInTheDocument();
-  //   });
-  // });
-  
 
   test('updates input code value when typing', () => {
     const { getByPlaceholderText } = render(<Translate />);
@@ -142,38 +117,6 @@ describe('Translate component', () => {
     });
   });
 
-  test('should copy translated text to clipboard', async () => {
-    const translatedCode = 'console.log("Translated code")';
-    render(<Translate />);
-  
-    //Simulate translation process completion
-    // await waitFor(() => {
-    //   expect(screen.getByText(translatedCode)).toBeInTheDocument();
-    // });
-  
-    // Click the copy button
-    userEvent.click(screen.getByTitle('Copy code'));
-  
-    // // Wait for a short delay
-    // await pause(10);
-  
-    // // Read the text from the clipboard
-    // const copiedText = await navigator.clipboard.readText();
-  
-    // // Expect the copied text to match the translated code
-    // expect(copiedText).toEqual(translatedCode);
-
-        // // Wait for the copy process to complete
-        // await waitFor(() => {
-        //   const copied = screen.getByText('Copied to clipboard!');
-        //   expect(copied).toBeInTheDocument();
-        // });
-  });
-  
-  async function pause(delay) {
-    return await new Promise(resolve => setTimeout(resolve, delay));
-  }
-
   test('displays translation error message when translation fails', async () => {
     // // Mock the service function to return a failure response
     // jest.spyOn(nhaService, 'postPrompt').mockResolvedValueOnce({ success: false, message: 'Translation failed' });
@@ -218,3 +161,101 @@ describe('sanitizeCode function', () => {
   });
   
 });
+
+// Mocking the clipboard API
+Object.assign(navigator, {
+  clipboard: {
+    writeText: jest.fn(),
+  },
+});
+
+describe('Translate component', () => {
+  it('copies code to the clipboard when the copy button is clicked', async () => {
+    const { getByTitle } = render(<Translate />);
+    const copyButton = getByTitle('Copy code');
+
+    // Simulating a click on the copy button
+    await act(async () => {
+      fireEvent.click(copyButton);
+    });
+
+    // Expecting the clipboard.writeText method to be called
+    expect(navigator.clipboard.writeText).toHaveBeenCalled();
+  });
+});
+
+describe('Translate component', () => {
+  it('triggers code download when the download button is clicked', () => {
+    // Mocking createObjectURL and revokeObjectURL
+    const mockCreateObjectURL = jest.fn();
+    const mockRevokeObjectURL = jest.fn();
+    global.URL.createObjectURL = mockCreateObjectURL;
+    global.URL.revokeObjectURL = mockRevokeObjectURL;
+
+    const { getByTitle } = render(<Translate />);
+    const downloadButton = getByTitle('Download code'); 
+
+    fireEvent.click(downloadButton);
+
+    // Expect createObjectURL to be called, indicating that a Blob was created for download
+    expect(mockCreateObjectURL).toHaveBeenCalled();
+    // Optionally, check that revokeObjectURL was called to clean up the object URL
+    expect(mockRevokeObjectURL).toHaveBeenCalled();
+  });
+});
+
+// describe('Translate component', () => {
+//   it('displays an error when trying to convert with empty input', async () => {
+//     const { container } = render(<Translate />);
+//     // Using placeholder or test ID for input as before
+//     const inputField = screen.getByPlaceholderText('Enter code to translate'); 
+
+//     // Alternative approach using container.querySelector to select the convert button by its id
+//     const convertButton = container.querySelector('#translationButton');
+
+//     // Attempt to click the convert button without entering any input
+//     await userEvent.click(convertButton);
+
+//     // Check for an error message
+//     const errorMessage = screen.getByText('Input code cannot be empty');
+//     expect(errorMessage).toBeInTheDocument();
+//   });
+// });
+
+
+
+// // Mock the entire module to mock the postPrompt function
+// jest.mock('../services/nhaService');
+
+// describe('Translate component', () => {
+//   test('displays translation error message when translation fails', async () => {
+//     // Setup the mock for postPrompt to return a failed response
+//     nhaService.postPrompt.mockResolvedValueOnce({
+//       success: false,
+//       message: 'Translation failed due to an error',
+//     });
+
+//     render(<Translate />);
+
+//     // Assume your language dropdowns and input area are correctly identified
+//     const sourceLanguageDropdown = screen.getByLabelText('Source Language:');
+//     const desiredLanguageDropdown = screen.getByLabelText('Desired Language:');
+//     const inputArea = screen.getByPlaceholderText('Enter code to translate');
+//     const translateButton = screen.getByText('Convert');
+
+//     // Simulate selecting languages and entering code
+//     fireEvent.change(sourceLanguageDropdown, { target: { value: 'javascript' } });
+//     fireEvent.change(desiredLanguageDropdown, { target: { value: 'python' } });
+//     fireEvent.change(inputArea, { target: { value: 'console.log("Hello, World!")' } });
+
+//     // Simulate clicking the translate button
+//     fireEvent.click(translateButton);
+
+//     // Wait for the error message to appear
+//     await waitFor(() => {
+//       const errorMessage = screen.getByText('Translation failed due to an error');
+//       expect(errorMessage).toBeInTheDocument();
+//     });
+//   });
+// });
+
