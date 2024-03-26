@@ -1275,7 +1275,7 @@ input[type="checkbox"]{
   color: #0446c0;
 }
 
-#help-item:hover {
+#help-item:hover, #guide-item:hover {
   color: #0ac6c0;
   cursor: pointer;
 }
@@ -1290,8 +1290,12 @@ input[type="checkbox"]{
   padding-top: 2rem;
 }
 
-.help-guides, .help-faq {
+#guide-item, #guide-text, .help-faq {
   text-align: left;
+}
+
+#guide-title {
+  text-align: center;
 }
 
 #question-list li {

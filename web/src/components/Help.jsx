@@ -1,15 +1,27 @@
 import React, { useState, Popup } from 'react'
 import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestion, faMagnifyingGlass, faBook, faMugHot} from '@fortawesome/free-solid-svg-icons'
+import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown} from '@fortawesome/free-solid-svg-icons'
 
 const Help = () => {
   const [showBox, setShowBox] = useState(0);
-
+  const [openG1, setOpenG1] = useState(false);
+  const [openG2, setOpenG2] = useState(false);
+  
   const handleBox = (e) => {
     setShowBox(e);
   }
+  
+  // let guides = [false, false, false]
 
+  const handleGuide = (e) => {
+    switch(e) {
+      case 1: setOpenG1(!openG1); break;
+      case 2: setOpenG2(!openG2); break;
+    }
+  };
+
+  
   const faqs = [
     {header: "Is NHA GPT free to use?",
     text: "Yes! Our online app is completely free to use! All you need is an account and you can start translating right away.",
@@ -19,7 +31,13 @@ const Help = () => {
     id: 2},
     {header: "My translation came out with syntax errors, what gives?!",
     text: "Our translator is powered by OpenAI's GPT-3 api. If your translation came out wrong, please let us know so we can provide OpenAI with feedback to improve your experience!",
-    id: 3}
+    id: 3},
+    {header: "Why must I make a translation first before I can give feedback?",
+    text: "We feel like it only makes sense for a user to provide feedback after using our tool rather than to provide feedback outside of using the tool.",
+    id: 4},
+    {header: "The translator says the API is down, what's going on?",
+    text: "Because our translator is powered by OpenAI's GPT-3 api, if their system is down then so will our translator be. Unfortunately there is not much else we can do but wait.",
+    id: 5}
   ]
 
   const [searchItem, setSearchItem] = useState('')
@@ -55,7 +73,11 @@ const Help = () => {
 
         {/*Box 1*/}
         <div className='help-guides' id={showBox===1 ? 'focus': null}>
-          <p>Test 1</p>
+          <h id='guide-title'>Have a look at these quick and detailed guides!</h>
+          <div id='guide-item' onClick={()=>handleGuide(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><h id={openG1 ? 'help-active': null}>Dropdown1</h></div>
+          {openG1 ? <div id='guide-text'>Text1 is visible!</div> : null}
+          <div id='guide-item' onClick={()=>handleGuide(2)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><h id={openG2 ? 'help-active': null}>Dropdown2</h></div>
+          {openG2 ? <div id='guide-text'>Text2 is visible!</div> : null}
         </div>
 
 
