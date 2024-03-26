@@ -17,7 +17,7 @@ const postPrompt = async (req, res, next) => {
 
 
     // Detect the language of the input code
-    const detectedSourceLanguage = detectLanguage(inputCode);
+    //const detectedSourceLanguage = detectLanguage(inputCode);
     const prompt = `
     [no prose] Translate the following ${sourceLanguage} code to ${desiredLanguage} and provide only the ${desiredLanguage} code:
 
@@ -66,7 +66,7 @@ const postPrompt = async (req, res, next) => {
         });
     } catch (error) {
         //console.log("Error message: ", error);
-        logger.error(`Error: ${error.message}, Input: ${inputCode}, SourceLanguage: ${sourceLanguage}, DetectedLanguage: ${detectedSourceLanguage}, DesiredLanguage: ${desiredLanguage}`);
+        logger.error(`Error: ${error.message}, Input: ${inputCode}, SourceLanguage: ${sourceLanguage}, DetectedLanguage: "AHHHHH", DesiredLanguage: ${desiredLanguage}`);
 
         if (error.status === 400) {
             return res.status(400).json({

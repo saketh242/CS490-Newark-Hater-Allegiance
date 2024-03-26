@@ -1,4 +1,3 @@
-
 const axios = require('axios');
 const request = require('supertest');
 const app = require('../app');
@@ -75,7 +74,14 @@ describe('API RESPONSES ', () => {
   it('DELETE: should return 401 for unauthorized access for /users/deleteUser', (done) => {
     request(app)
       .delete('/users/deleteUser')
-      .expect(401, done);
+      .expect(401)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        expect(res.body).to.have.property('message').equal('Unauthorized: Missing Authorization Header');
+  
+        done();
+      });
   });
 
   it('DELETE: should return 200 for sucessful delete of user and their data for /users/deleteUser', (done) => {
@@ -190,7 +196,14 @@ describe('API RESPONSES ', () => {
   it('GET: should return 401 for unauthorized access for /history', (done) => {
     request(app)
       .get('/history')
-      .expect(401, done);
+      .expect(401)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        expect(res.body).to.have.property('message').equal('Unauthorized: Missing Authorization Header');
+  
+        done();
+      });
   });
 
   it('GET: should return 200 OK for /history/getAllHistory', (done) => {
@@ -263,7 +276,14 @@ describe('API RESPONSES ', () => {
   it('GET: should return 401 for unauthorized access for /users', (done) => {
     request(app)
       .get('/users')
-      .expect(401, done);
+      .expect(401)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        expect(res.body).to.have.property('message').equal('Unauthorized: Missing Authorization Header');
+  
+        done();
+      });
   });
 
   it('GET: should return the user for authorized access to /users', (done) => {
@@ -527,7 +547,27 @@ describe('API RESPONSES ', () => {
       });
   });
 
-  /*
+  it('POST: should return 401 for unauthorized access to /openAI/postTranslation', (done) => {
+    const inputCode = {
+      inputCode: "print(\"Hello World!\")",
+      sourceLanguage: "python",
+      desiredLanguage: "c",
+    };
+  
+    request(app)
+      .post('/openAI/postTranslation')
+      .send(inputCode)
+      .expect(401)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        expect(res.body).to.have.property('message').equal('Unauthorized: Missing Authorization Header');
+  
+        done();
+      });
+  });
+  
+
   it('POST: should return 200 for sucessful translation for /openAI/postTranslation', (done) => {
     const inputCode = {
       inputCode: "print(\"Hello World!\")",
@@ -548,8 +588,7 @@ describe('API RESPONSES ', () => {
 
         done();
       });
-  });
-  */
+  }).timeout(10000);
 
   it('POST: should return 400 for language mismatch, gibberish, or other language errors for /openAI/postTranslation', (done) => {
     const inputCode = {
@@ -571,13 +610,7 @@ describe('API RESPONSES ', () => {
         expect(res.body).to.have.property('message').equal("Input code does not match specified source language");
 
         done();
-      });
+      }).timeout(10000);
   });
 
 });
-
-
-
-
-
-

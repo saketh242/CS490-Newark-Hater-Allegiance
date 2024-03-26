@@ -25,14 +25,4 @@ describe('Login Component Tests', () => {
 
     })
 
-    // test('test for error messages' , () => {
-    //     const { getByPlaceholderText } = render(<Login/>);
-    //     const emailInput = getByPlaceholderText('Email');
-    //     fireEvent.change(emailInput, { target: { value: 'user@example.com' } });
-    //     const passwordInput = getByPlaceholderText('Password');
-    //     fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    //     const { getByText } = render(<button onClick={handleLogin}>Login</button>);
-    //     fireEvent.click(getByText('Login'));
-    //     expect(screen.getByPlaceholderText(/Invalid Credentials/i)).toBeInTheDocument();
-    // })
   });

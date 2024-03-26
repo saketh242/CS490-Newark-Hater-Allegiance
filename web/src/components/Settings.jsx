@@ -114,15 +114,7 @@ const Settings = () => {
       setError("Error updating profile")
       return
     }
-
-   
-
-      }
-  
-
-      
-  
-
+ }
 
   return receivedData && (
         <div className='settings-div'>

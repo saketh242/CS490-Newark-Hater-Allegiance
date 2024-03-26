@@ -124,7 +124,7 @@ const Help = () => {
           </div>
           <ul id='question-list'>
             {filteredFaqs.map(faq => <li key={faq.id}>
-            <h1 className='help-header'>{faq.header}</h1>
+            <h1 data-testid='faq-item' className='help-header'>{faq.header}</h1>
             <p>{faq.text}</p>
             </li>)}
           </ul>
