@@ -1,28 +1,60 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
-import Login from '../components/Login';
-import { signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from 'firebase/auth';
+import { render, fireEvent, waitFor } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { Router } from 'react-router-dom'
+import Login from '../components/Login'
+import { auth } from '../firebase'
+import { toast } from 'react-toastify'
 
+jest.mock('../firebase')
+jest.mock('react-toastify')
 
-describe('Login Component Tests', () => {
-    test('renders the Login component', () => {
-      render(
-        <Router>
-          <Login />
-        </Router>
-      );
- 
-      expect(screen.getByText(/Forgot Password?/i)).toBeInTheDocument();
-      expect(screen.getByPlaceholderText(/Password/i)).toBeInTheDocument();
-    });
+describe('Login', () => {
+  it('renders without crashing', () => {
+    const { getByText } = render(<Login />)
+    getByText('NHAGPT')
+  })
 
-    test('calls the handleLogin on login button click' , () => {
-        const handleLogin = jest.fn();
-        const { getByText } = render(<button onClick={handleLogin}>Login</button>);
-        fireEvent.click(getByText('Login'));
-        expect(handleLogin).toHaveBeenCalledTimes(1);
+  it('displays error message when email and password fields are empty', async () => {
+    const { getByText, getByPlaceholderText } = render(<Login />)
+    const emailInput = getByPlaceholderText('Email')
+    const passwordInput = getByPlaceholderText('Password')
+    const loginButton = getByText('Login')
 
+    fireEvent.click(loginButton)
+
+    await waitFor(() => {
+      getByText('Please fill all the fields')
     })
 
-  });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } })
+    fireEvent.change(passwordInput, { target: { value: 'password' } })
+    fireEvent.click(loginButton)
+
+    await waitFor(() => {
+      getByText('Login failed. Please check your email and password.')
+    })
+  })
+
+  it('navigates to home page when login is successful', async () => {
+    const history = createMemoryHistory()
+    const { getByText, getByPlaceholderText } = render(
+      <Router history={history}>
+        <Login />
+      </Router>
+    )
+    const emailInput = getByPlaceholderText('Email')
+    const passwordInput = getByPlaceholderText('Password')
+    const loginButton = getByText('Login')
+
+    auth.signInWithEmailAndPassword = jest.fn(() => Promise.resolve())
+    toast.success = jest.fn()
+
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } })
+    fireEvent.change(passwordInput, { target: { value: 'password' } })
+    fireEvent.click(loginButton)
+
+    await waitFor(() => {
+      expect(history.location.pathname).toBe('/')
+    })
+  })
+})

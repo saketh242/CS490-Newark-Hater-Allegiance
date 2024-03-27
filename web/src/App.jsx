@@ -20,36 +20,38 @@ import DeleteAccount from './components/DeleteAccount';
 import Settings from './components/Settings';
 import VerificationMessage from './components/VerificationMessage';
 import ForgotPassword from './components/ForgotPassword';
+import nhaService from './services/nhaService';
+import ViewProfile from './components/ViewProfile';
 
 
 
 const App = () => {
   
 
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, name } = useAuth();
 
   // if (isLoading) {
   //   return <div>Loading...</div>;
   // }
 
-  return !isLoading && (
+  return !isLoading &&  (
     <>
 
       <Router>
 
         <div className="content">
-          <NHANav />
+          <NHANav/>
           <Routes>
             <Route path="/" element={<Home />} />
-            
             <Route path="/login" element={user ? <Navigate to="/"/> : <Login />} />
             <Route path="/translate" element={user ? (user.emailVerified ? <Translate /> : <VerificationMessage/>): <Navigate to="/login"/>} />
             <Route path="/help" element={<Help />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/settings" element={user ? (user.emailVerified ? <Settings /> : <VerificationMessage/>): <Navigate to="/login"/>}  />
+            <Route path="/settings" element={user ?  <Settings /> : <Navigate to="/login"/>}  />
             <Route path="/changePassword" element={user ? <ChangePassword /> : <Navigate to="/login"/>} />
             <Route path="/deleteAccount" element={user ? <DeleteAccount /> : <Navigate to="/login"/>} />
             <Route path="/forgotPassword" element={!user ? <ForgotPassword/> : <Navigate to = "/"/>}/>
+            <Route path="/viewProfile" element={user ? <ViewProfile/>: <Navigate to="/login"/>}/>
             <Route path="/*" element={<PageNotFound />} />
           </Routes>
         </div>

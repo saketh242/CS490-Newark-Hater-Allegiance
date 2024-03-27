@@ -11,11 +11,12 @@ import { FaUserCircle } from "react-icons/fa";
 function NHANav() {
 
   const navigate = useNavigate()
-  const { user, isLoading } = useAuth()
+  const { user, isLoading, name, setName } = useAuth()
 
   // function to handle logout 
   const handleLogout = () => {
     signOut(auth).then(() => {
+      setName(null);
       navigate("/");
       console.log("Signed out successfully")
       navigate("/login")
@@ -42,7 +43,9 @@ function NHANav() {
             Translate
           </Link>
           <div className="dropdown-nav">
-            <Link className='nav-a nav-rl '><FaUserCircle className='nav-icon' /></Link>
+            <Link className='nav-a nav-rl '>
+              <FaUserCircle className='nav-icon' />
+            </Link>
             <div className="dropdown-content">
               {!user ? (
                 <>
@@ -51,6 +54,7 @@ function NHANav() {
                 </>
               ) : (
                 <>
+                  <Link className='nav-a nav-rl' to="/viewProfile">Hi {name} (👉ﾟヮﾟ)👉</Link>
                   <Link onClick={handleLogout} className='nav-a nav-rl'>Logout</Link>
                   <Link className='nav-a nav-rl' to="/settings">Settings</Link>
                 </>
