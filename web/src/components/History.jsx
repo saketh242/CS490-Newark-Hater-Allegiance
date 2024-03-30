@@ -103,7 +103,7 @@ const History = ({ history, showSidebar, toggleSidebar, setInputCode, setTransla
         <div className="historyOptions">
           {/* sort asc/desc */}
           <button>
-            <FontAwesomeIcon icon={ascend === 1 ? faArrowUp : faArrowDown} onClick = {() => setAscend(ascend * -1)}/>
+            <FontAwesomeIcon id="ascdsc" icon={ascend === 1 ? faArrowUp : faArrowDown} onClick = {() => setAscend(ascend * -1)}/>
           </button>
 
         {/* sort by */}

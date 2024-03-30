@@ -1656,14 +1656,14 @@ input[type="checkbox"]{
 }
 
 #clearAll{
-  background-color: transparent;
+  /* background-color: transparent; */
   border-radius: 1rem;
   border:none;
   padding: 0.5rem;
 }
 
 #clearAll:hover{
-  background-color:#1A1C23;
+  /* background-color:#1A1C23; */
   color:#0ac6c0;
 }
 
@@ -1673,10 +1673,10 @@ input[type="checkbox"]{
   transition: background 0.8s;
 }
 .ripple:hover {
-  background: #1A1C23 radial-gradient(circle, transparent 1%, #23262F 1%) center/15000%;
+  background: #1A1C23 radial-gradient(circle, transparent 1%, #1A1C23 1%) center/15000%;
 }
 .ripple:active {
-  background-color: #6eb9f7;
+  background-color: #23262F;
   background-size: 100%;
   transition: background 0s;
 }
@@ -1721,7 +1721,7 @@ input[type="checkbox"]{
   background-color: transparent;
 }
 
-#xIcon:hover{
+#ascdsc, #xIcon:hover{
   color:#0ac6c0;
 }
 
@@ -1745,8 +1745,8 @@ input[type="checkbox"]{
 .historyOptions select {
   border-radius: 0.25rem;
   margin-top: 0.5rem;
-  margin-bottom: 1rem;
   margin-left: 0.5rem;
+  height:fit-content;
   width: fit-content;
   background-color: #5469D4;
   border-width: 0.18rem;
@@ -1757,7 +1757,7 @@ input[type="checkbox"]{
 .historyOptions button {
   border: none;
   background: none;
-  color:#0ac6c0;
+  /* color:#0ac6c0; */
   font-size: larger;
 }
 
