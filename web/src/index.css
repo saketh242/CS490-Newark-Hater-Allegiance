@@ -1655,7 +1655,33 @@ input[type="checkbox"]{
   align-items: center;
 }
 
-.translationHeader, .translationHistory {
+#clearAll{
+  background-color: transparent;
+  border-radius: 1rem;
+  border:none;
+  padding: 0.5rem;
+}
+
+#clearAll:hover{
+  background-color:#1A1C23;
+  color:#0ac6c0;
+}
+
+/* Ripple effect for clearButton*/
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+.ripple:hover {
+  background: #1A1C23 radial-gradient(circle, transparent 1%, #23262F 1%) center/15000%;
+}
+.ripple:active {
+  background-color: #6eb9f7;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+.historyOptions, .translationHistory, .historyTop {
   border-bottom-width: "1rem";
   border-bottom-color: #076966;
   border-bottom-style: solid;
@@ -1665,7 +1691,58 @@ input[type="checkbox"]{
   text-align: center
 }
 
-.translationHeader select {
+.historyTop{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.codeHistory{
+  display:flex;
+  flex-direction:column;
+  max-width: 90%;
+}
+
+.translationHistory:hover{
+  background-color:#1A1C23;
+}
+
+.translationHistory{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#closeHistory{
+  margin:1rem;
+  border:none;
+  background-color: transparent;
+}
+
+#xIcon:hover{
+  color:#0ac6c0;
+}
+
+.translationTitle, .historyOptions{
+  padding:1rem;
+}
+
+.historyOptions{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.historyTop{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.historyOptions select {
   border-radius: 0.25rem;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
@@ -1677,14 +1754,14 @@ input[type="checkbox"]{
   border-color: transparent;
 }
 
-.translationHeader button {
+.historyOptions button {
   border: none;
   background: none;
   color:#0ac6c0;
   font-size: larger;
 }
 
-.translationHeader select:hover {
+.historyOptions select:hover {
   border-color: #BDC3D0;
 }
 
@@ -1725,6 +1802,7 @@ input[type="checkbox"]{
 
 .translationHistory button:hover {
   border-color: #BDC3D0;
+  cursor:pointer;
 }
 
 .translationHistory button:active {
