@@ -1704,6 +1704,10 @@ input[type="checkbox"]{
   max-width: 90%;
 }
 
+.entrySource, .entryDest{
+  padding:0.5rem;
+}
+
 .translationHistory:hover{
   background-color:#1A1C23;
 }
@@ -1721,7 +1725,7 @@ input[type="checkbox"]{
   background-color: transparent;
 }
 
-#ascdsc, #xIcon:hover{
+#ascdsc, #xIcon:hover, #trashIcon:hover{
   color:#0ac6c0;
 }
 
@@ -1778,8 +1782,8 @@ input[type="checkbox"]{
 }
 
 .translationHistory p {
-  padding-left: 0.5rem;
-  padding-bottom: 1rem;
+  /* padding-left: 0.5rem;
+  padding-bottom: 1rem; */
   word-break: break-word;
   max-height: "50px";
   white-space: nowrap;
@@ -1787,12 +1791,11 @@ input[type="checkbox"]{
   text-overflow: ellipsis;
 }
 
-.translationHistory button {
+#translateAgain {
   background-color: #5469D4;
   border-radius: 1rem;
   width: fit-content;
   padding: 0.35rem;
-  margin-bottom: 1rem;
   margin-left: 0.25rem;
   margin-right: 0.25rem;
   border-width: 0.18rem;
@@ -1800,13 +1803,32 @@ input[type="checkbox"]{
   border-color: transparent;
 }
 
-.translationHistory button:hover {
+#translateAgain:hover {
   border-color: #BDC3D0;
   cursor:pointer;
 }
 
-.translationHistory button:active {
+#translateAgain:active {
   background-color: #076966;
+}
+
+.historyEntryOptions {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  padding:0.5rem;
+  margin:0.5rem;
+}
+
+#translateAgain, #removeEntry{
+  padding:0.5rem;
+}
+
+#removeEntry{
+  border-radius: 0.5px;
+  border:none;
+  background-color: transparent;
 }
 
 /* View profile page component Styling */

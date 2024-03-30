@@ -3,7 +3,7 @@ import Drawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX } from '@fortawesome/free-solid-svg-icons'
+import { faX, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 const sideBarStyle = {
   backgroundColor: "#23262F",
@@ -133,22 +133,32 @@ const History = ({ history, showSidebar, toggleSidebar, setInputCode, setTransla
             </h4>
 
           <div className="codeHistory">
-            <h5>
-              Source Code ({history[i].Source_language})
-            </h5>
-            <p>
-              {history[i].original_code}
-            </p>
 
-            <h5>
-              Converted Code ({history[i].Desired_language})
-            </h5>
-            <p>
-              {history[i].converted_code}
-            </p>
+              <div className="entrySource">
+                <h5>
+                  Source Code ({history[i].Source_language})
+                </h5>
+                <p>
+                  {history[i].original_code}
+                </p>
+              </div>
+
+              <div className="entryDest">
+                <h5>
+                  Converted Code ({history[i].Desired_language})
+                </h5>
+                <p>
+                  {history[i].converted_code}
+                </p>
+              </div>
             </div>
 
-            <button onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, history[i].original_code, history[i].converted_code)}> Translate again </button>
+            <div className="historyEntryOptions">
+              <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, history[i].original_code, history[i].converted_code)}> Translate again </button>
+            <button id="removeEntry">
+            <FontAwesomeIcon id="trashIcon" icon={faTrashCan} size="2x"/>
+            </button>
+            </div>
           </div>
         ))}
       </Drawer>
