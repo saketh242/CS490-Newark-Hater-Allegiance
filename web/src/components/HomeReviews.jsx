@@ -34,22 +34,27 @@ const HomeReviews = () => {
     <div className='box reviews' id="reviewContainer">
       <p id="reviewHeader" className="sectionHeader">Some of our reviews</p>
       <div className="reviews-flexbox">
-        <Carousel className="homeCarousel" infiniteLoop showStatus={false}>
-          {randomReviews && randomReviews.length > 0 ? (
-            randomReviews.map((review, index) => (
+        {randomReviews && randomReviews.length > 0 ? (
+          <Carousel className="homeCarousel" infiniteLoop showStatus={false}>
+            {randomReviews.map((review, index) => (
               <div className="review" key={index}>
                 <p>{`⭐⭐⭐⭐⭐`}</p>
                 <p>{`${review.textMessage}`}</p>
                 <p>{`- ${review.user}`}</p>
               </div>
-            ))
-          ) : (
-            <p>Loading reviews...</p>
-          )}
-        </Carousel>
+            ))}
+          </Carousel>
+        ) : (
+          <p className="loadingText" style={{ textAlign: 'center', margin: '4rem' }}>
+            Loading reviews
+            <span className="dot1">.</span>
+            <span className="dot2">.</span>
+            <span className="dot3">.</span>
+          </p>
+        )}
       </div>
     </div>
   );
-};
+}
 
 export default HomeReviews;
