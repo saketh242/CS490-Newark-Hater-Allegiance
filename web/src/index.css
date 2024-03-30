@@ -1655,6 +1655,34 @@ input[type="checkbox"]{
   align-items: center;
 }
 
+.emptyHistory{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin:3rem;
+  padding:2rem;
+}
+
+#emptyCredit{
+  color:#BDC3D0;
+  text-decoration: none;
+}
+
+#emptyCredit:hover{
+  color:#0ac6c0;
+  text-decoration:none;
+}
+
+#emptyCredit:visited {
+  color: #076966;
+  text-decoration: underline;
+}
+
+#emptyText, #emptyPicture{
+  padding:1rem;
+}
+
 #clearAll{
   /* background-color: transparent; */
   border-radius: 1rem;
@@ -1696,6 +1724,7 @@ input[type="checkbox"]{
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  font-size: larger;
 }
 
 .codeHistory{
