@@ -165,7 +165,7 @@ const History = ({ history, showSidebar, toggleSidebar, setInputCode, setTransla
 
                   <div className="historyEntryOptions">
                     <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, history[i].original_code, history[i].converted_code)}> Translate again </button>
-                    <button id="removeEntry">
+                    <button id="removeEntry" title="Remove translation">
                       <FontAwesomeIcon id="trashIcon" icon={faTrashCan} size="2x" />
                     </button>
                   </div>

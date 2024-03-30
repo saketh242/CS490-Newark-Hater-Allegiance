@@ -1642,6 +1642,7 @@ input[type="checkbox"]{
 #emptyCredit{
   color:#BDC3D0;
   text-decoration: none;
+  font-size:14px;
 }
 
 #emptyCredit:hover{
@@ -1684,14 +1685,19 @@ input[type="checkbox"]{
   transition: background 0s;
 }
 
-.historyOptions, .translationHistory, .historyTop {
+.historyOptions, .historyTop, .translationHistory {
   border-bottom-width: "1rem";
-  border-bottom-color: #076966;
   border-bottom-style: solid;
-  border-bottom-width: "1rem";
-  border-bottom-color: #076966;
   border-bottom-style: solid;
   text-align: center
+}
+
+.historyOptions, .historyTop {
+  border-bottom-color: #076966;
+}
+
+.translationHistory{
+  border-bottom-color: #16181e8e;
 }
 
 .historyTop{
