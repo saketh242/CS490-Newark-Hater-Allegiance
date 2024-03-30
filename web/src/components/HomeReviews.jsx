@@ -24,9 +24,9 @@ const HomeReviews = () => {
     fetchReviews();
   }, []);
 
-  // Get 5 random reviews with text messages of 100 characters or less
+  // Get 5 random reviews with text messages of 150 characters or less
   const randomReviews = reviews
-    .filter(review => review.textMessage.length <= 100)
+    .filter(review => review.textMessage.length <= 150)
     .sort(() => Math.random() - 0.5)
     .slice(0, 5);
 
