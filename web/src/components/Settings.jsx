@@ -6,14 +6,17 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import useAuth from '../useAuth';
 import { auth } from "../firebase";
 import { toast } from 'react-toastify';
-import { signInWithEmailAndPassword, EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification, signOut, updateEmail, verifyBeforeUpdateEmail } from "firebase/auth";
+import { signInWithEmailAndPassword, EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification, signOut, updateEmail, verifyBeforeUpdateEmail, updateProfile } from "firebase/auth";
 import { isValidEmail } from '../utils/fieldValidations';
 import nhaService from '../services/nhaService';
-
+import { useDispatch } from 'react-redux';
+import { updateUserName } from '../features/user/userSlice';
 
 const Settings = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   // getting currenlty signed in user
   const user = auth.currentUser;
@@ -85,7 +88,11 @@ const Settings = () => {
 
     try {
       await nhaService.updateUser(user, email, firstName, lastName, emailCheck, fNameCheck, lNameCheck);
-      
+      await updateProfile(user, {
+        displayName: `${firstName}`
+      })
+      dispatch(updateUserName(firstName));
+      setPassword("");
         if (emailCheck) {
           // if email changed
           verifyBeforeUpdateEmail(auth.currentUser, email)
@@ -109,9 +116,16 @@ const Settings = () => {
           const msg = () => toast(`Profile updated :)`);
           msg()
         }
+
+        // doing this to help users chnage names again
+        setUserData({
+          firstName: firstName,
+          lastName: lastName
+        })
       
     } catch (e) {
       setError("Error updating profile")
+      console.log(e)
       return
     }
  }
