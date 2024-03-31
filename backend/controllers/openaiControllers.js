@@ -17,7 +17,7 @@ const postPrompt = async (req, res, next) => {
     // Detect the language of the input code
     //const detectedSourceLanguage = detectLanguage(inputCode);
     const prompt = `
-    [no prose] Translate the following ${sourceLanguage} code to ${desiredLanguage} and provide only the ${desiredLanguage} code, full code:
+    [no prose] Translate the following ${sourceLanguage} code to ${desiredLanguage} and provide only the full ${desiredLanguage} code:
 
     \`\`\`${inputCode}
     \`\`\`
