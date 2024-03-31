@@ -12,7 +12,7 @@ const getAllHistory = async (req, res, next) => {
         res.status(200).send(histories);
     } catch (error) {
         console.error("Error fetching all users:", error);
-        res.status(500).send("Internal Server Error");
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 
@@ -21,7 +21,7 @@ const postHistory = async (req, res, next) => {
         const { user_id, inputCode, translateCode, sourceLanguage, desiredLanguage } = req.body;
         const validLanguages = ["python", "javascript", "java", "c", "csharp", "cplusplus", "php", "go", "ruby", "typescript"];
 
-        if (!user_id || !inputCode || !translateCode || typeof inputCode !== 'string' || typeof translateCode !== 'string' 
+        if (!user_id || !inputCode || !translateCode || typeof inputCode !== 'string' || typeof translateCode !== 'string'
             || !sourceLanguage || !desiredLanguage || !validLanguages.includes(sourceLanguage) || !validLanguages.includes(desiredLanguage)) {
             return res.status(400).json({ error: 'Missing required fields to post or invalid input' });
         }
@@ -36,12 +36,10 @@ const postHistory = async (req, res, next) => {
         const inserted = await History.create(post);
         res.status(200).send(inserted._id);
     } catch (error) {
-        console.error("Error fetching all users:", error);
-        res.status(500).send("Internal Server Error");
+        console.error("Error posting history:", error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-}
-
-
+};
 
 module.exports.getAllHistory = getAllHistory
 module.exports.postHistory = postHistory

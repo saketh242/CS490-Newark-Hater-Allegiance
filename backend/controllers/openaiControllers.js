@@ -1,4 +1,3 @@
-const axios = require('axios');
 const OpenAIApi = require('openai');
 const hljs = require('highlight.js');
 
@@ -15,11 +14,10 @@ const detectLanguage = (code) => {
 const postPrompt = async (req, res, next) => {
     const { inputCode, sourceLanguage, desiredLanguage } = req.body;
 
-
     // Detect the language of the input code
     //const detectedSourceLanguage = detectLanguage(inputCode);
     const prompt = `
-    [no prose] Translate the following ${sourceLanguage} code to ${desiredLanguage} and provide only the ${desiredLanguage} code:
+    [no prose] Translate the following ${sourceLanguage} code to ${desiredLanguage} and provide only the ${desiredLanguage} code, full code:
 
     \`\`\`${inputCode}
     \`\`\`
@@ -37,7 +35,7 @@ const postPrompt = async (req, res, next) => {
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo-0125",
             messages: [
-                { role: "system", content: "You are a helpful assistant." },
+                { role: "system", content: "You are a helpful assistant who's job is to convert code from one language!" },
                 { role: "user", content: prompt }
             ],
         });
@@ -48,7 +46,7 @@ const postPrompt = async (req, res, next) => {
 
         const translatedCode = response.choices[0].message.content;
 
-        if (translatedCode.startsWith('Language does not match')) {
+        if (translatedCode.includes('Language does not match')) {
             // Language is oof
             const languageMismatchError = new Error("Input code does not match specified source language");
             languageMismatchError.status = 400; // Set status code to 400
@@ -58,7 +56,7 @@ const postPrompt = async (req, res, next) => {
         // Remove triple backticks
         const filtered = translatedCode.replace(/```/g, '');
 
-        const code = filtered.split('\n').slice(1).map(line => line.trim()).join('\n');
+        const code = filtered.split('\n').slice(1).join('\n').trim();
 
         return res.status(200).json({
             success: true,
@@ -67,28 +65,25 @@ const postPrompt = async (req, res, next) => {
     } catch (error) {
         //console.log("Error message: ", error);
         logger.error(`Error: ${error.message}, Input: ${inputCode}, SourceLanguage: ${sourceLanguage}, DetectedLanguage: "AHHHHH", DesiredLanguage: ${desiredLanguage}`);
+        
+        let statusCode = 500;
+        let errorMessage = "An error occurred while processing your request. Please try again.";
 
-        if (error.status === 400) {
-            return res.status(400).json({
-                success: false,
-                message: error.message,
-            });
+        if (error.message === "Input code does not match specified source language") {
+            statusCode = 400;
+            errorMessage = error.message;
         } else if (error.status === 429) {
-            return res.status(429).json({
-                success: false,
-                message: "API rate limit exceeded. Please try again later.",
-            });
+            statusCode = 429;
+            errorMessage = "API rate limit exceeded. Please try again later.";
         } else if (error.status === 503) {
-            return res.status(503).json({
-                success: false,
-                message: "OpenAI API temporarily unavailable. Please try again later.",
-            });
-        } else {
-            return res.status(500).json({
-                success: false,
-                message: "An error occurred while processing your request. Please see API availability or try again.",
-            });
+            statusCode = 503;
+            errorMessage = "OpenAI API temporarily unavailable. Please try again later.";
         }
+
+        return res.status(statusCode).json({
+            success: false,
+            message: errorMessage,
+        });
     }
 };
 
