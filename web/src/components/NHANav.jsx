@@ -7,7 +7,7 @@ import useAuth from '../useAuth';
 import { FaUserCircle } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 
-
+import Gravatar from 'react-gravatar'
 
 
 function NHANav() {
@@ -50,6 +50,7 @@ function NHANav() {
           <div className="dropdown-nav">
             <Link className='nav-a nav-rl '>
               <FaUserCircle className='nav-icon' />
+              {/* <Gravatar className='nav-icon' default="mp" email={user.email} /> */}
             </Link>
             <div className="dropdown-content">
               {!user ? (

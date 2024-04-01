@@ -211,6 +211,22 @@
   padding-bottom: 2rem;
 }
 
+#devCredits {
+  display:flex;
+  flex-direction:column;
+  text-align: center;
+}
+
+#devsArea{
+  display:flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+.dev, #devImage{
+  padding: 0.5rem;
+}
+
 .reviews {
   background-color: #31304d;
   height:29rem;
@@ -1833,6 +1849,10 @@ input[type="checkbox"]{
   padding:0.5rem;
 }
 
+#removeEntry {
+  border-radius: 1rem;
+}
+
 #removeEntry{
   border-radius: 0.5px;
   border:none;
@@ -1901,6 +1921,12 @@ input[type="checkbox"]{
   font-weight: 500;
   padding: 2rem;
 }
+
+.profileAvatar {
+  border-radius: 50%; /* Makes it circular */
+  overflow: hidden; /* Ensures the image stays within the circular boundary */
+}
+
 
 .settings-div-view{
   padding-top: 2rem;
