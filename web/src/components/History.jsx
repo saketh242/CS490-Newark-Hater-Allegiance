@@ -110,6 +110,7 @@ const History = ({ history, showSidebar, toggleSidebar, setInputCode, setTransla
         ) : (
           <>
             <div className="historyOptions">
+              <div className="sortAndFilter">
               {/* sort asc/desc */}
               <button>
                 <FontAwesomeIcon id="ascdsc" icon={ascend === 1 ? faArrowUp : faArrowDown} onClick={() => setAscend(ascend * -1)} />
@@ -130,6 +131,7 @@ const History = ({ history, showSidebar, toggleSidebar, setInputCode, setTransla
                 <option value="Source"> Source Language </option>
                 <option value="Destination"> Destination Language </option>
               </select>
+              </div>
 
               {/* clear all history */}
               <button id="clearAll" className="ripple">Clear all history</button>

@@ -280,14 +280,14 @@
   }
 }
 
-@media(width<=555px){
+@media(width<=560px){
   .reviews{
-    height:26rem;
+    height:27rem;
   }
   
   .review{
     margin-bottom:3rem;
-    font-size:1.25rem;
+    font-size:1rem;
   }
 
   .reviews-flexbox{
@@ -1792,8 +1792,6 @@ input[type="checkbox"]{
 }
 
 .translationHistory p {
-  /* padding-left: 0.5rem;
-  padding-bottom: 1rem; */
   word-break: break-word;
   max-height: "50px";
   white-space: nowrap;
@@ -1840,6 +1838,48 @@ input[type="checkbox"]{
   border:none;
   background-color: transparent;
 }
+
+@media(width<=1275px){
+  .historyOptions{
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+}
+
+@media(width<=1185px){
+  .historyOptions{
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+  .historyOptions select{
+    width:25%;
+    text-wrap: pretty;
+  }
+} 
+
+@media(width<=700px){
+  .historyOptions{
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+  .sortAndFilter{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #closeHistory{
+    display:none;
+  }
+} 
+
+@media(width<=500px){
+  .translationTitle{
+    font-size: smaller;
+  }
+}
+
 
 /* View profile page component Styling */
 
