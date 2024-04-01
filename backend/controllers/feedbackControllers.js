@@ -63,9 +63,10 @@ const postFeedback = async (req, res, next) => {
         res.status(200).send("Feedback inserted!");
     } catch (error) {
         console.error("Error posting feedback:", error);
-        res.status(500).send("Internal Server Error");
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
 
 const getFeedback = async (req, res, next) => {
     try {
@@ -81,7 +82,7 @@ const getFeedback = async (req, res, next) => {
         res.status(200).send(feedbacksWithUserDetails);
     } catch (error) {
         console.error("Error fetching feedbacks:", error);
-        res.status(500).send("Internal Server Error");
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 

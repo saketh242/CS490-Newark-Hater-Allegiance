@@ -19,8 +19,8 @@ const useAuth = () => {
       if (user){
         nhaService.getUser(user)
           .then(data=>{
-            console.log(user)
-            console.log(data)
+            //console.log(user)
+            //console.log(data)
             setName(`${data.firstName}`)
             setDBUser(data)
             setIsLoading(false)
