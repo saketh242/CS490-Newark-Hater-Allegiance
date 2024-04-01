@@ -212,14 +212,14 @@
 }
 
 .reviews {
-  /* text-align: left; */
   background-color: #31304d;
-  height:30rem;
+  height:29rem;
   max-width: 100vw;
 }
 
 #reviewHeader {
   text-align:center;
+  padding:1rem;
 }
 
 .sectionHeader {
@@ -227,7 +227,7 @@
 }
 
 .reviews-flexbox {
-  padding: 3rem;
+  padding: 2rem;
 }
 
 .homeCarousel {
@@ -247,36 +247,6 @@
   align-content: space-between;
 }
 
-/* 
-.carousel .slider-wrapper.axis-horizontal .slider .slide {
-  display:flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.carousel .carousel-slider{
-  height:100%;
-} */
-
-/* .homeCarousel{
-  width: 100%;
-  max-width: 100vw;
-  height: 100%;
-  max-height: min-content;
-  display:flex;
-  justify-content: center;
-} */
-
-/* #reviewContainer{
-  width: 100%;
-  max-width: 100vw;
-  box-sizing: border-box;
-  height:32rem;
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-} */
-
 .review {
   padding: 1rem;
   margin-bottom:3rem;
@@ -287,6 +257,7 @@
 
 .review p{
   padding:1rem;
+  font-size: larger;
 }
 
 @media(width<=900px){
@@ -302,6 +273,10 @@
 
   .reviews-flexbox{
     padding-top:0;
+  }
+
+  .reviews{
+    height:26rem;
   }
 }
 
@@ -1655,21 +1630,137 @@ input[type="checkbox"]{
   align-items: center;
 }
 
-.translationHeader, .translationHistory {
+.emptyHistory{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin:3rem;
+  padding:2rem;
+}
+
+#emptyCredit{
+  color:#BDC3D0;
+  text-decoration: none;
+  font-size:14px;
+}
+
+#emptyCredit:hover{
+  color:#0ac6c0;
+  text-decoration:none;
+}
+
+#emptyCredit:visited {
+  color: #076966;
+  text-decoration: underline;
+}
+
+#emptyText, #emptyPicture{
+  padding:1rem;
+}
+
+#clearAll{
+  /* background-color: transparent; */
+  border-radius: 1rem;
+  border:none;
+  padding: 0.5rem;
+}
+
+#clearAll:hover{
+  /* background-color:#1A1C23; */
+  color:#0ac6c0;
+}
+
+/* Ripple effect for clearButton*/
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+.ripple:hover {
+  background: #1A1C23 radial-gradient(circle, transparent 1%, #1A1C23 1%) center/15000%;
+}
+.ripple:active {
+  background-color: #23262F;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+.historyOptions, .historyTop, .translationHistory {
   border-bottom-width: "1rem";
-  border-bottom-color: #076966;
   border-bottom-style: solid;
-  border-bottom-width: "1rem";
-  border-bottom-color: #076966;
   border-bottom-style: solid;
   text-align: center
 }
 
-.translationHeader select {
+.historyOptions, .historyTop {
+  border-bottom-color: #076966;
+}
+
+.translationHistory{
+  border-bottom-color: #16181e8e;
+}
+
+.historyTop{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: larger;
+}
+
+.codeHistory{
+  display:flex;
+  flex-direction:column;
+  max-width: 90%;
+}
+
+.entrySource, .entryDest{
+  padding:0.5rem;
+}
+
+.translationHistory:hover{
+  background-color:#1A1C23;
+}
+
+.translationHistory{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#closeHistory{
+  margin:1rem;
+  border:none;
+  background-color: transparent;
+}
+
+#ascdsc, #xIcon:hover, #trashIcon:hover{
+  color:#0ac6c0;
+}
+
+.translationTitle, .historyOptions{
+  padding:1rem;
+}
+
+.historyOptions{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.historyTop{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.historyOptions select {
   border-radius: 0.25rem;
   margin-top: 0.5rem;
-  margin-bottom: 1rem;
   margin-left: 0.5rem;
+  height:fit-content;
   width: fit-content;
   background-color: #5469D4;
   border-width: 0.18rem;
@@ -1677,14 +1768,14 @@ input[type="checkbox"]{
   border-color: transparent;
 }
 
-.translationHeader button {
+.historyOptions button {
   border: none;
   background: none;
-  color:#0ac6c0;
+  /* color:#0ac6c0; */
   font-size: larger;
 }
 
-.translationHeader select:hover {
+.historyOptions select:hover {
   border-color: #BDC3D0;
 }
 
@@ -1701,8 +1792,8 @@ input[type="checkbox"]{
 }
 
 .translationHistory p {
-  padding-left: 0.5rem;
-  padding-bottom: 1rem;
+  /* padding-left: 0.5rem;
+  padding-bottom: 1rem; */
   word-break: break-word;
   max-height: "50px";
   white-space: nowrap;
@@ -1710,12 +1801,11 @@ input[type="checkbox"]{
   text-overflow: ellipsis;
 }
 
-.translationHistory button {
+#translateAgain {
   background-color: #5469D4;
   border-radius: 1rem;
   width: fit-content;
   padding: 0.35rem;
-  margin-bottom: 1rem;
   margin-left: 0.25rem;
   margin-right: 0.25rem;
   border-width: 0.18rem;
@@ -1723,12 +1813,32 @@ input[type="checkbox"]{
   border-color: transparent;
 }
 
-.translationHistory button:hover {
+#translateAgain:hover {
   border-color: #BDC3D0;
+  cursor:pointer;
 }
 
-.translationHistory button:active {
+#translateAgain:active {
   background-color: #076966;
+}
+
+.historyEntryOptions {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  padding:0.5rem;
+  margin:0.5rem;
+}
+
+#translateAgain, #removeEntry{
+  padding:0.5rem;
+}
+
+#removeEntry{
+  border-radius: 0.5px;
+  border:none;
+  background-color: transparent;
 }
 
 /* View profile page component Styling */
