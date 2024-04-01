@@ -34,7 +34,6 @@ function NHANav() {
 
   return (
     <>
-
       <nav className="nha-navbar">
         <Link className="nav-brand nav-a" to="/">
           NHAGPT
@@ -49,8 +48,11 @@ function NHANav() {
           </Link>
           <div className="dropdown-nav">
             <Link className='nav-a nav-rl '>
-              <FaUserCircle className='nav-icon' />
-              {/* <Gravatar className='nav-icon' default="mp" email={user.email} /> */}
+              {user ? (
+                <Gravatar className='nav-icon' id="navPic" default="mp" email={user.email} />
+              ) : (
+                <FaUserCircle className='nav-icon' />
+              )}
             </Link>
             <div className="dropdown-content">
               {!user ? (

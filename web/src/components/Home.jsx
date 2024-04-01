@@ -52,23 +52,23 @@ const Home = () => {
         <div id="devsArea">
           <div className="dev">
             <p>Saketh Puramsetti</p>
-            <Gravatar email="saketh.puramsetti@gmail.com" size={225} className='profileAvatar' id="devImage" default="mp"/>
+            <Gravatar email={process.env.REACT_APP_SAKETH_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp"/>
           </div>
           <div className="dev">
             <p>Medina Dzhatdoyev</p>
-            <Gravatar email="med.dzhatdo@gmail.com" size={225} className='profileAvatar' id="devImage" default="mp"/>
+            <Gravatar email={process.env.REACT_APP_MEDINA_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp"/>
           </div>
           <div className="dev">
             <p>Ausberto Colon Jr</p>
-            <Gravatar email="med.dzhatdo@gmail.com" size={225} className='profileAvatar' id="devImage" default="mp"/>
+            <Gravatar email={process.env.REACT_APP_AJ_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp"/>
           </div>
           <div className="dev">
             <p>John Cena</p>
-            <Gravatar email="med.dzhatdo@gmail.com" size={225} className='profileAvatar' id="devImage" default="mp"/>
+            <Gravatar email={process.env.REACT_APP_JOHN_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp"/>
           </div>
           <div className="dev">
             <p>Karam Assaf</p>
-            <Gravatar email="med.dzhatdo@gmail.com" size={225} className='profileAvatar' id="devImage" default="mp"/>
+            <Gravatar email={process.env.REACT_APP_KARAM_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp"/>
           </div>
         </div>
       </div>
