@@ -5,12 +5,14 @@ import StarGroup from "./StarGroup";
 import nhaService from '../services/nhaService';
 import useAuth from '../useAuth';
 import { toast } from 'react-toastify';
+import { auth } from '../firebase';
 
 const Feedback = ({ postId }) => {
     const [translation, setTranslation] = useState(-1);
     const [userExperience, setUserExperience] = useState(-1);
     const [textBox, setTextBox] = useState("");
-    const { user } = useAuth();
+    // const { user } = useAuth();
+    const user = auth.currentUser;
     const textAreaRef = useRef(null);
 
     const [isSubmitted, setIsSubmitted] = useState(false);
