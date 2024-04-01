@@ -12,16 +12,17 @@ import { useSelector } from 'react-redux';
 
 function NHANav() {
 
-  const userName = useSelector((state) => state.user.name);
+  const user = useSelector((state) => state.user.user);
+  const dbUser = useSelector((state) => state.user.dbUser);
+  const isLoading = useSelector((state) => state.user.isLoading);
+
 
 
   const navigate = useNavigate()
-  const { user, isLoading, name, setName } = useAuth()
 
   // function to handle logout 
   const handleLogout = () => {
     signOut(auth).then(() => {
-      //setName(null);
       navigate("/");
       console.log("Signed out successfully")
       navigate("/login")
@@ -59,9 +60,9 @@ function NHANav() {
                 </>
               ) : (
                 <>
-                  <Link className='nav-a nav-rl' to="/viewProfile">Hi {userName? userName:name} (👉ﾟヮﾟ)👉</Link>
-                  <Link onClick={handleLogout} className='nav-a nav-rl'>Logout</Link>
+                  <Link className='nav-a nav-rl' to="/viewProfile">Hi {dbUser&& dbUser.firstName} (👉ﾟヮﾟ)👉</Link>
                   <Link className='nav-a nav-rl' to="/settings">Settings</Link>
+                  <Link onClick={handleLogout} className='nav-a nav-rl'>Logout</Link>
                 </>
               )}
 
