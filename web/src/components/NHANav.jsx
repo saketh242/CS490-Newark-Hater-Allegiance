@@ -5,10 +5,15 @@ import { toast } from 'react-toastify';
 import { auth } from '../firebase';
 import useAuth from '../useAuth';
 import { FaUserCircle } from "react-icons/fa";
+import { useSelector } from 'react-redux';
+
 
 
 
 function NHANav() {
+
+  const userName = useSelector((state) => state.user.name);
+
 
   const navigate = useNavigate()
   const { user, isLoading, name, setName } = useAuth()
@@ -16,7 +21,7 @@ function NHANav() {
   // function to handle logout 
   const handleLogout = () => {
     signOut(auth).then(() => {
-      setName(null);
+      //setName(null);
       navigate("/");
       console.log("Signed out successfully")
       navigate("/login")
@@ -54,7 +59,7 @@ function NHANav() {
                 </>
               ) : (
                 <>
-                  <Link className='nav-a nav-rl' to="/viewProfile">Hi {name} (👉ﾟヮﾟ)👉</Link>
+                  <Link className='nav-a nav-rl' to="/viewProfile">Hi {userName? userName:name} (👉ﾟヮﾟ)👉</Link>
                   <Link onClick={handleLogout} className='nav-a nav-rl'>Logout</Link>
                   <Link className='nav-a nav-rl' to="/settings">Settings</Link>
                 </>

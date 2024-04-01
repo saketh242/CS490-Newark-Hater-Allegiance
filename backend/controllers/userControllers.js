@@ -27,7 +27,7 @@ const deleteUser = async (req, res, next) => {
         res.status(200).json({ message: 'User and associated data deleted successfully' });
     } catch (error) {
         console.error('Error deleting user:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'An error occurred while deleting user' });
     }
 };
 
@@ -48,7 +48,7 @@ const insertUser = async (req, res, next) => {
             return res.status(400).json({ error: 'Invalid user input data' });
         }
         console.error('Error inserting user:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'An error occurred while inserting user' });
     }
 };
 
@@ -62,7 +62,7 @@ const getUserId = async (req, res, next) => {
         res.send(user);
     } catch (error) {
         console.error('Error fetching user by uid:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'An error occured while getting user ID' });
     }
 };
 
