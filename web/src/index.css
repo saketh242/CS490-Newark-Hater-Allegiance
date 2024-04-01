@@ -110,8 +110,8 @@
   }
 
   .nav-icon {
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 1.75rem;
+    height: 1.75rem;
   }
 }
 
@@ -282,9 +282,34 @@
   font-size: larger;
 }
 
+@media(width<=1230px){
+  #devImage{
+    width:10rem;
+    height:10rem;
+  }
+}
+
 @media(width<=900px){
   .review{
     margin-bottom:1rem;
+  }
+
+  #devImage{
+    width:8rem;
+    height:8rem;
+  }
+}
+
+@media(width<=800px){
+  #devImage{
+    width:7rem;
+    height:7rem;
+  }
+}
+
+@media(width<=600px){
+  #devsArea{
+    flex-direction: column;
   }
 }
 
