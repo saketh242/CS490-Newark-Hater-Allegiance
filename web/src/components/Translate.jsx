@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faTimesCircle, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
+import hljs from 'highlight.js'; // Import Highlight.js
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -32,7 +33,7 @@ const Translate = () => {
   const [error, setError] = useState('');
 
   const [loading, setLoading] = useState(false);
-  const [userTriggeredChange, setUserTriggeredChange] = useState(false); 
+  const [userTriggeredChange, setUserTriggeredChange] = useState(false);
   const [postId, setPostId] = useState("")
 
   const [historyData, setHistoryData] = useState(null);
@@ -72,7 +73,7 @@ const Translate = () => {
     setDesiredLanguage(e.target.value);
   };
 
-  const [ translationError, setTranslationError ] = useState('');
+  const [translationError, setTranslationError] = useState('');
 
   const translateCode = async () => {
 
@@ -101,24 +102,24 @@ const Translate = () => {
     setTranslatedCode(''); //reset output
     setTranslationDone(false);
     setLoading(true); // Set loading state to true before API call
-  
-      const sanitized = sanitizeCode(inputCode);
-      const response = await nhaService.postPrompt(user, sourceLanguage, desiredLanguage, JSON.stringify(sanitized));
 
-      if(!response.success){
-        setLoading(false);
-        setTranslationError(response.message);
-        //alert(response.message);
-        //log error here? ...
-        return;
-      }
+    const sanitized = sanitizeCode(inputCode);
+    const response = await nhaService.postPrompt(user, sourceLanguage, desiredLanguage, JSON.stringify(sanitized));
 
-      const translatedCodeResponse = response.message;
-      setTranslatedCode(translatedCodeResponse); // Update translated code
-      setLoading(false); // Set loading state to false after receiving response
-      setTranslationDone(true);
-      toast(`Thanks for translating! Rate this translation below!`);
-      setUserTriggeredChange(true);
+    if (!response.success) {
+      setLoading(false);
+      setTranslationError(response.message);
+      //alert(response.message);
+      //log error here? ...
+      return;
+    }
+
+    const translatedCodeResponse = response.message;
+    setTranslatedCode(translatedCodeResponse); // Update translated code
+    setLoading(false); // Set loading state to false after receiving response
+    setTranslationDone(true);
+    toast(`Thanks for translating! Rate this translation below!`);
+    setUserTriggeredChange(true);
   };
 
   // useEffect(() => {
@@ -240,12 +241,24 @@ const Translate = () => {
     if (user !== null) handleGetAllHistory();
   }, [user])
 
+  const detectLanguage = () => {
+    const textarea = document.querySelector('.inputArea');
+    if (textarea) {
+      const detected = hljs.highlightAuto(textarea.textContent, ["python", "javascript", "java", "c", "csharp", "cplusplus", "php", "go", "ruby", "typescript"]);
+      setSourceLanguage(detected.language || '');
+    }
+  };
+
+  useEffect(() => {
+    detectLanguage();
+  }, [inputCode]);
+
   return (
     <div className="translateBody">
       <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar}
         setInputCode={setInputCode} setTranslatedCode={setTranslatedCode} />
 
-    <div className="apiStatusMessage">
+      <div className="apiStatusMessage">
         <h1 className="apiStatus">
           OpenAI API Status:
           {apiReady ? (
@@ -263,7 +276,7 @@ const Translate = () => {
       <div className="dropdown">
         <div className="dropdownContainer" id="leftDropdownContainer">
           <label htmlFor="originLanguage">Source Language:</label>
-          <select id="originLanguage" onChange={handleSourceLanguageChange}>
+          <select id="originLanguage" value={sourceLanguage} onChange={handleSourceLanguageChange}>
             <option value="">Select</option>
             {languages.map((language, index) => (
               <option key={index} value={language.value}>{language.label}</option>
@@ -290,11 +303,11 @@ const Translate = () => {
         </div>
       </div>
 
-      {translationError !== ''  && 
-      <div className="translationError">
-        <FontAwesomeIcon icon={faCircleExclamation} id="errorIcon" size="2x"/>
-        <p>{translationError}</p>
-      </div>}
+      {translationError !== '' &&
+        <div className="translationError">
+          <FontAwesomeIcon icon={faCircleExclamation} id="errorIcon" size="2x" />
+          <p>{translationError}</p>
+        </div>}
 
       <div className="codeBlocks">
         <div className="src">
@@ -332,8 +345,10 @@ const Translate = () => {
             value={inputCode}
             onChange={(e) => setInputCode(e.target.value)}
             placeholder={error || "Enter code to translate"}
-            style={{ borderColor: error ? 'red' : '#0ac6c0',
-                      transition: 'border-color 0.3s ease', }} // Change border color when error exists
+            style={{
+              borderColor: error ? 'red' : '#0ac6c0',
+              transition: 'border-color 0.3s ease',
+            }} // Change border color when error exists
           />
         </div>
 
