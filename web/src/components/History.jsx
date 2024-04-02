@@ -104,7 +104,7 @@ const History = ({ history, showSidebar, toggleSidebar, setInputCode, setTransla
         {history.length === 0 ? (
           <div className="emptyHistory">
             <img id="emptyPicture" src={emptybox} alt="History empty" style={{ width: '70%', height: '70%' }}/>
-            <a href="https://www.freepik.com/icons/empty" id="emptyCredit">Icon by Ghozi Muhtarom</a>
+            <a href="https://www.freepik.com/icons/empty" target="_blank" rel="noopener noreferrer" className="link" id="emptyCredit">Icon by Ghozi Muhtarom</a>
             <h1 id="emptyText">No past translations</h1>
           </div>
         ) : (
