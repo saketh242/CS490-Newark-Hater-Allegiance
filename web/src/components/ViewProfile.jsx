@@ -3,10 +3,13 @@ import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useNavigate } from 'react-router-dom';
 import Gravatar from 'react-gravatar'
+import { useSelector } from 'react-redux';
 
 const ViewProfile = () => {
 
-  const { user, isLoading, name, dbUser } = useAuth();
+  const user = useSelector((state) => state.user.user);
+  const dbUser = useSelector((state) => state.user.dbUser);
+  const isLoading = useSelector((state) => state.user.isLoading);
   const navigate = useNavigate()
 
   const redirectSettings = () => {

@@ -22,17 +22,20 @@ import VerificationMessage from './components/VerificationMessage';
 import ForgotPassword from './components/ForgotPassword';
 import nhaService from './services/nhaService';
 import ViewProfile from './components/ViewProfile';
+import { useSelector } from 'react-redux';
 
 
 
 const App = () => {
-  
+  useAuth();
+  const user = useSelector((state) => state.user.user);
+  const dbUser = useSelector((state) => state.user.dbUser);
+  const isLoading = useSelector((state) => state.user.isLoading);
 
-  const { user, isLoading, name } = useAuth();
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return !isLoading &&  (
     <>

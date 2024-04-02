@@ -13,7 +13,8 @@ const ChangePassword = () => {
     const [newPassword, setNewPassword] = useState("");
     const [newPassword2, setNewPassword2] = useState("");
     const [error, setError] = useState(null);
-    const {user, isLoading} = useAuth()
+    // const {user, isLoading} = useAuth()
+    const user = auth.currentUser;
 
     const handleChangePassword = async (e) => {
 

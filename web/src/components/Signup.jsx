@@ -10,7 +10,7 @@ import nhaService from '../services/nhaService';
 const Signup = () => {
 
     const navigate = useNavigate();
-    const { user, isLoading } = useAuth();
+    const user = auth.currentUser;
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [email, setEmail] = useState("")
