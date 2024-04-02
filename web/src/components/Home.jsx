@@ -40,7 +40,7 @@ const Home = () => {
         </ul>
         <div className='signup'>
           <img className='signup-image' src={sample} alt="Sample Image"/>
-          <br></br><button className='signup-button' onClick={handleSignup}>Signup today!</button>
+          <br></br><button className='default-button' id='signup-button' onClick={handleSignup}>Signup today!</button>
         </div>
       </div>
 
