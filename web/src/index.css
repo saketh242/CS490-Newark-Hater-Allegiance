@@ -394,6 +394,10 @@
   .reviews-flexbox{
     padding-top:0;
   }
+
+  #reviewHeader {
+    font-size: 2rem;
+  }
 }
 
 @media(width<=530px){
@@ -431,7 +435,7 @@
   }
 }
 
-@media (width <= 1200px) {
+@media (width <= 1250px) {
   .title {
     font-size: 10rem;
   }
@@ -478,6 +482,10 @@
     font-size: 0.75rem;
   }
 
+  .review{
+    font-size:smaller;
+  }
+
   .signup-button {
     font-size: 1.4rem;
   }
@@ -514,7 +522,10 @@
   #review {
     width: 7rem;
     height: 7rem;
-    font-size: 0.6rem;
+  }
+
+  .review{
+    font-size: larger;
   }
 
   .signup-button {
@@ -548,6 +559,10 @@
     display: flex;
     flex-direction: column;
     font-size: 0.5rem;
+  }
+
+  .review{
+    font-size: smaller;
   }
 
   .signup-image{
