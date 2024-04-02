@@ -281,38 +281,39 @@ const Translate = () => {
         </div>
 
         {/* <div className="conversionArrow"> */}
-          {/* Arrow icon button */}
-          {/* <button id="translationButton" className="translationButton" onClick={translateCode} disabled={loading || !apiReady}>
+        {/* <button id="translationButton" className="translationButton" onClick={translateCode} disabled={loading || !apiReady}>
             <FontAwesomeIcon id="icon" icon={faArrowRightLong} size="7x" />
           </button>
           <p>Convert</p>
         </div> */}
 
-<div className="conversionArrow">
-  {loading || !apiReady ? (
-    <ThreeDots
-      visible={true}
-      height="80"
-      width="80"
-      color="#0ac6c0"
-      radius="9"
-      ariaLabel="three-dots-loading"
-      wrapperStyle={{}}
-      wrapperClass=""
-    />
-  ) : (
-    <button
-      id="translationButton"
-      className="translationButton"
-      onClick={translateCode}
-      disabled={loading || !apiReady}
-    >
-      <FontAwesomeIcon id="icon" icon={faArrowRightLong} size="7x" />
-    </button>
-  )}
-  <p>Convert</p>
-</div>
-
+        {/* Arrow icon button */}
+        <div className="conversionArrow">
+          {loading || !apiReady ? (
+            <ThreeDots
+              visible={true}
+              height="80"
+              width="80"
+              color="#0ac6c0"
+              radius="9"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          ) : (
+            <>
+              <button
+                id="translationButton"
+                className="translationButton"
+                onClick={translateCode}
+                disabled={loading || !apiReady}
+              >
+                <FontAwesomeIcon id="icon" icon={faArrowRightLong} size="7x" />
+              </button>
+              <p>Convert</p>
+            </>
+          )}
+        </div>
 
         <div className="dropdownContainer" id="rightDropdownContainer">
           <label htmlFor="desiredLanguage">Desired Language:</label>
