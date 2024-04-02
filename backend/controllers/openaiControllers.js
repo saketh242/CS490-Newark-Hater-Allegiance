@@ -1,37 +1,50 @@
 const OpenAIApi = require('openai');
-const hljs = require('highlight.js');
+const logger = require('../logs/logger');
 
 const openai = new OpenAIApi.OpenAI({ key: process.env.OPENAI_API_KEY });
 
-const logger = require('../logs/logger');
+const detectLanguage = async (code) => {
+    const prompt = `
+    [no prose] what language is the following code:
 
-const detectLanguage = (code) => {
-    const detected = hljs.highlightAuto(code, ["python", "javascript", "java", "c", "csharp", "cplusplus", "php", "go", "ruby", "typescript"]);
-    const language = detected.language;
-    return language;
+    \`\`\`${code}
+    \`\`\`
+    
+    please respond with one of the following languages and only say the language: ["python", "javascript", "java", "c", "csharp", "cplusplus", "php", "go", "ruby", "typescript"]`;
+
+    const response = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo-0125",
+        messages: [
+            { role: "system", content: "You are a helpful assistant who's job is to detect the language of input code!" },
+            { role: "user", content: prompt }
+        ],
+    });
+
+    if (!(response && response.choices && response.choices.length > 0)) {
+        throw new Error("Unexpected response from OpenAI API");
+    }
+    console.log(response.choices[0].message.content)
+    return response.choices[0].message.content;
 };
 
 const postPrompt = async (req, res, next) => {
     const { inputCode, sourceLanguage, desiredLanguage } = req.body;
 
-    // Detect the language of the input code
-    //const detectedSourceLanguage = detectLanguage(inputCode);
-    const prompt = `
-    [no prose] Translate the following ${sourceLanguage} code to ${desiredLanguage} and provide only the full ${desiredLanguage} code:
-
-    \`\`\`${inputCode}
-    \`\`\`
-    
-    If the source language is not recognized or supported, or if the input code contradicts the specified ${sourceLanguage} language, please output "Language does not match", and do not proceed with the translation`;
-
     try {
-        /* it no work, fix later
+        const detectedSourceLanguage = await detectLanguage(inputCode);
+
         if (detectedSourceLanguage !== sourceLanguage) {
-            const languageMismatchError = new Error("Input code does not match specified source language");
-            languageMismatchError.status = 400;
-            throw languageMismatchError;
+            throw new Error("Input code does not match specified source language");
         }
-        */
+
+        const prompt = `
+        [no prose] Translate the following ${sourceLanguage} code to ${desiredLanguage} and provide only the full ${desiredLanguage} code:
+
+        \`\`\`${inputCode}
+        \`\`\`
+        
+        If the source language is not recognized or supported, or if the input code contradicts the specified ${sourceLanguage} language, please output "Language does not match", and do not proceed with the translation`;
+
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo-0125",
             messages: [
@@ -47,15 +60,10 @@ const postPrompt = async (req, res, next) => {
         const translatedCode = response.choices[0].message.content;
 
         if (translatedCode.includes('Language does not match')) {
-            // Language is oof
-            const languageMismatchError = new Error("Input code does not match specified source language");
-            languageMismatchError.status = 400; // Set status code to 400
-            throw languageMismatchError;
+            throw new Error("Input code does not match specified source language");
         }
 
-        // Remove triple backticks
         const filtered = translatedCode.replace(/```/g, '');
-
         const code = filtered.split('\n').slice(1).join('\n').trim();
 
         return res.status(200).json({
@@ -63,9 +71,8 @@ const postPrompt = async (req, res, next) => {
             message: code,
         });
     } catch (error) {
-        //console.log("Error message: ", error);
         logger.error(`Error: ${error.message}, Input: ${inputCode}, SourceLanguage: ${sourceLanguage}, DetectedLanguage: "AHHHHH", DesiredLanguage: ${desiredLanguage}`);
-        
+
         let statusCode = 500;
         let errorMessage = "An error occurred while processing your request. Please try again.";
 
