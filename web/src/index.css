@@ -14,6 +14,28 @@
   color: #0ac6c0;
 }
 
+.default-button {
+  border: none;
+}
+
+.default-textarea, .default-input {
+  resize: none;
+  flex: 1;
+  background-color: #23262F;
+  color: #BDC3D0;
+  border-radius: 5px;
+  border:1pt solid #0ac6c0;
+}
+
+.default-input {
+  border: none;
+}
+
+.default-textarea:focus, .default-input:focus {
+  outline: none; 
+}
+
+
 /* Navbar Styling */
 
 .nav-name {
@@ -192,7 +214,7 @@
   border: 0;
   border-radius: 1rem;
 }
-.signup-button {
+#signup-button {
   padding: 1.5rem;
   font-size: 1.5rem;
   border-radius: 10px;
@@ -200,7 +222,7 @@
   border: none;
 }
 
-.signup-button:hover, .login-btn:hover {
+.default-button:hover, .login-btn:hover {
   background-color: #0ac6c0;
   color: #1A1C23;
   cursor: pointer;
@@ -1370,6 +1392,33 @@ input[type="checkbox"]{
 #focus {
   display: block;
   visibility: visible;
+}
+
+#contact-form {
+  margin: 0 auto;
+  max-width: 50%;
+}
+
+#contact-name, #contact-email {
+  width: 16rem;
+  max-width: 50%;
+  height: 1rem;
+  padding: 0.5rem;
+  margin: auto;
+}
+
+#contact-text {
+  margin: auto;
+  width: 36rem;
+  max-width: 75%;
+  height: 12rem;
+  padding: 1rem;
+}
+
+#contact-button {
+  padding: 0.5rem;
+  font-size: 50%;
+  border-radius: 10px;
 }
 
 
