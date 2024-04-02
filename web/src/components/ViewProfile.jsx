@@ -30,7 +30,7 @@ const ViewProfile = () => {
           To add or update your profile picture, please create a <a href="https://gravatar.com/" target="_blank" rel="noopener noreferrer" id="gravatarLink" className="link">gravatar</a> account using the same email as your NHAGPT account.
         </p> */}
         <Link to="/help" className='link' id="gravatarNote">
-          How-to: Change profile picture
+          Help: How to set a profile picture
         </Link>
         <div className="profile-info-text">
           <div className="profileSegment">
