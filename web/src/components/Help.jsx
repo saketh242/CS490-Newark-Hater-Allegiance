@@ -22,15 +22,19 @@ const Help = () => {
   const handleContactEmail = async (e) => {
     e.preventDefault();
     try {
-      // await nhaService.emailDev(name, email, message);
-      console.log("email sent");
+      const res = await nhaService.emailDev(name, email, message);
       toast(`Message sent, thank you!`);
-      // setName('');
-      // setEmail('');
-      // setMessage('');
+
+      // clear form after submission
+      setName('');
+      setEmail('');
+      setMessage('');
+      document.getElementById("contact-name").value = "";
+      document.getElementById("contact-email").value = "";
+      document.getElementById("contact-text").value = "";
     }
     catch (error){
-      console.log("error posting email: ", error)
+      console.log("error posting email: ", error);
     }
   }
 
