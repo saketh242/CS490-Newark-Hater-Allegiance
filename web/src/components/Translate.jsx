@@ -9,13 +9,13 @@ import CodeOutput from './CodeOutput';
 import History from './History';
 import { sanitizeCode } from '../utils/codeUtils';
 import nhaService from '../services/nhaService';
-// const logger = require('../../../backend/logs/logger');
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faTimesCircle, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
 import hljs from 'highlight.js'; // Import Highlight.js
+import { ThreeDots } from 'react-loader-spinner'
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -250,6 +250,7 @@ const Translate = () => {
 
   return (
     <div className="translateBody">
+
       <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar}
         setInputCode={setInputCode} setTranslatedCode={setTranslatedCode} />
 
@@ -279,13 +280,39 @@ const Translate = () => {
           </select>
         </div>
 
-        <div className="conversionArrow">
+        {/* <div className="conversionArrow"> */}
           {/* Arrow icon button */}
-          <button id="translationButton" className="translationButton" onClick={translateCode} disabled={loading || !apiReady}>
+          {/* <button id="translationButton" className="translationButton" onClick={translateCode} disabled={loading || !apiReady}>
             <FontAwesomeIcon id="icon" icon={faArrowRightLong} size="7x" />
           </button>
           <p>Convert</p>
-        </div>
+        </div> */}
+
+<div className="conversionArrow">
+  {loading || !apiReady ? (
+    <ThreeDots
+      visible={true}
+      height="80"
+      width="80"
+      color="#0ac6c0"
+      radius="9"
+      ariaLabel="three-dots-loading"
+      wrapperStyle={{}}
+      wrapperClass=""
+    />
+  ) : (
+    <button
+      id="translationButton"
+      className="translationButton"
+      onClick={translateCode}
+      disabled={loading || !apiReady}
+    >
+      <FontAwesomeIcon id="icon" icon={faArrowRightLong} size="7x" />
+    </button>
+  )}
+  <p>Convert</p>
+</div>
+
 
         <div className="dropdownContainer" id="rightDropdownContainer">
           <label htmlFor="desiredLanguage">Desired Language:</label>
