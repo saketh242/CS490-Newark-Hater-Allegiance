@@ -9,7 +9,7 @@ const getFeedbackUser = async (uid) => {
             return null;
         }
 
-        return { firstName: user.firstName, lastName: user.lastName };
+        return { firstName: user.firstName, lastName: user.lastName, email:user.email };
     } catch (error) {
         console.error('Error fetching user by uid'/*, error*/);
         return null;

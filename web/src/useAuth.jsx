@@ -1,45 +1,54 @@
-// this is a custom hook that tells us if an user is logged in or not
-
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from 'react-redux';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase';
-import nhaService from "./services/nhaService";
+import { auth } from './firebase'; 
+import nhaService from "./services/nhaService"; 
+import { setUser, setDbUser, setIsLoading } from './features/user/userSlice'; 
 
 const useAuth = () => {
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [name, setName] = useState(null);
-  const [dbUser, setDBUser] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      
-      if (user){
-        nhaService.getUser(user)
-          .then(data=>{
-            //console.log(user)
-            //console.log(data)
-            setName(`${data.firstName}`)
-            setDBUser(data)
-            setIsLoading(false)
-          }).catch((e) => {
-            console.log(e);
-            setIsLoading(false);
-          })
-      } else {
-        setIsLoading(false);
-      }
+   
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      dispatch(setIsLoading(true)); 
 
-      
-      
+      if (firebaseUser) {
+
+        const userData = {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          displayName: firebaseUser.displayName,
+          accessToken: firebaseUser.stsTokenManager.accessToken,
+          emailVerified: firebaseUser.emailVerified,
+          // Simplifying the meta into a serilizable object because redux likes only serilizable data
+          metadata: {
+            creationTime: firebaseUser.metadata.creationTime,
+            lastSignInTime: firebaseUser.metadata.lastSignInTime,
+          },
+        };
+
+        nhaService.getUser(firebaseUser)
+          .then(dbUser => {
+            dispatch(setUser(userData)); 
+            dispatch(setDbUser(dbUser)); 
+            dispatch(setIsLoading(false)); 
+          })
+          .catch((error) => {
+            console.error(error);
+            dispatch(setIsLoading(false)); 
+          });
+      } else {
+        
+        dispatch(setUser(null));
+        dispatch(setDbUser(null)); 
+        dispatch(setIsLoading(false)); 
+      }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [dispatch]);
 
-  return { user, isLoading, name, setName, dbUser };
 };
 
 export default useAuth;

@@ -12,7 +12,8 @@ const DeleteAccount = () => {
 
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
-    const { user, isLoading } = useAuth()
+    // const { user, isLoading } = useAuth()
+    const user = auth.currentUser;
     const navigate = useNavigate()
     const [deleted, setDeleted] = useState(false);
    

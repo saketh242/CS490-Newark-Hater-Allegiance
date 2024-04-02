@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRobot, faBoltLightning, faUser, faCode} from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
+import Gravatar from 'react-gravatar'
 
 import HomeReviews from './HomeReviews';
 
@@ -40,19 +41,36 @@ const Home = () => {
         </ul>
         <div className='signup'>
           <img className='signup-image' src={sample} alt="Sample Image"/>
-          <br></br><button className='signup-button' onClick={handleSignup}>Signup today!</button>
+          <br></br><button className='default-button' id='signup-button' onClick={handleSignup}>Signup today!</button>
         </div>
       </div>
 
       <HomeReviews />
 
-      <div className='box'>
-        <p>Designed and Developed by</p>
-          <p>Saketh Puramsetti</p>
-          <p>John Cena</p>
-          <p>Medina Dzhatdoyev</p>
-          <p>Karam Assaf</p>
-          <p>Ausberto Colon Jr</p>
+      <div className='box' id="devCredits">
+        <h2>Designed and Developed by</h2>
+        <div id="devsArea">
+          <div className="dev">
+            <p>Saketh Puramsetti</p>
+            <Gravatar email={process.env.REACT_APP_SAKETH_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp"/>
+          </div>
+          <div className="dev">
+            <p>Medina Dzhatdoyev</p>
+            <Gravatar email={process.env.REACT_APP_MEDINA_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp"/>
+          </div>
+          <div className="dev">
+            <p>Ausberto Colon Jr</p>
+            <Gravatar email={process.env.REACT_APP_AJ_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp"/>
+          </div>
+          <div className="dev">
+            <p>John Cena</p>
+            <Gravatar email={process.env.REACT_APP_JOHN_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp"/>
+          </div>
+          <div className="dev">
+            <p>Karam Assaf</p>
+            <Gravatar email={process.env.REACT_APP_KARAM_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp"/>
+          </div>
+        </div>
       </div>
       
     </div>
