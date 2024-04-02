@@ -295,16 +295,33 @@
 }
 
 .review {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 1rem;
   margin-bottom:3rem;
-  vertical-align: middle;
+  /* vertical-align: middle; */
   font-size: 1.5rem;
   font-size: 1.5rem;
 }
-
 .review p{
   padding:1rem;
   font-size: larger;
+}
+
+
+#reviewUserDetails {
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#homereviewerIcon{
+  border-radius: 50%;
+  width: 50px !important;
+  height: 50px !important;
 }
 
 @media(width<=1390px){
@@ -385,7 +402,7 @@
   }
   .review{
     margin-bottom:1rem;
-    font-size:1.2rem;
+    font-size:1rem;
   }
 
   .review p{

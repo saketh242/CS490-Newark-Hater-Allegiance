@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
-
+import Gravatar from 'react-gravatar'
 import nhaService from '../services/nhaService';
 
 const HomeReviews = () => {
@@ -13,7 +13,8 @@ const HomeReviews = () => {
         const response = await nhaService.getFeedback();
         const extractedReviews = response.map(item => ({
           textMessage: item.textMessage,
-          user: `${item.user.firstName} ${item.user.lastName}`
+          user: `${item.user.firstName} ${item.user.lastName}`,
+          email:item.user.email
         }));
         setReviews(extractedReviews);
       } catch (error) {
@@ -40,7 +41,10 @@ const HomeReviews = () => {
               <div className="review" key={index}>
                 <p>{`⭐⭐⭐⭐⭐`}</p>
                 <p>{`${review.textMessage}`}</p>
-                <p>{`- ${review.user}`}</p>
+                <div id="reviewUserDetails">
+                  <Gravatar id="homereviewerIcon" size={30} default="mp" email={review.email} />
+                <p>{`${review.user}`}</p>
+                </div>
               </div>
             ))}
           </Carousel>
