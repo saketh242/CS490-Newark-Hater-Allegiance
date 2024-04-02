@@ -258,9 +258,9 @@
   padding: 1rem;
 }
 
-.reviews {
+#reviewContainer {
   background-color: #31304d;
-  height:29rem;
+  height:fit-content;
   max-width: 100vw;
 }
 
@@ -305,11 +305,11 @@
   font-size: 1.5rem;
   font-size: 1.5rem;
 }
+
 .review p{
   padding:1rem;
   font-size: larger;
 }
-
 
 #reviewUserDetails {
   display:flex;
@@ -382,6 +382,7 @@
 }
 
 @media(width<=560px){
+
   .reviews{
     height:27rem;
   }
