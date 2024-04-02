@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown} from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
 import feedback from "../images/feedback.png"
+import nhaService from "../services/nhaService";
+import { toast } from 'react-toastify';
 
 const FORM_ENDPOINT = "https://herotofu.com/start"; // TODO - update to the correct endpoint
 
@@ -12,6 +14,25 @@ const Help = () => {
   const [openG1, setOpenG1] = useState(false);
   const [openG2, setOpenG2] = useState(false);
   const [openG3, setOpenG3] = useState(false);
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleContactEmail = async (e) => {
+    e.preventDefault();
+    try {
+      // await nhaService.emailDev(name, email, message);
+      console.log("email sent");
+      toast(`Message sent, thank you!`);
+      // setName('');
+      // setEmail('');
+      // setMessage('');
+    }
+    catch (error){
+      console.log("error posting email: ", error)
+    }
+  }
 
   const handleBox = (e) => {
     setShowBox(e);
@@ -60,10 +81,10 @@ const Help = () => {
     setFilteredFaqs(filteredItems);
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    e.target.reset()
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   e.target.reset()
+  // };
 
   return (
     <div className='standard'>
@@ -148,20 +169,49 @@ const Help = () => {
         <div className='help-contact' id={showBox===3 ? 'focus': null}>
           <h1 className='help-header'>Send us a message to get additional support!</h1>
           <p>Our team will give you a response between 3-7 business days (excludes weekends and holidays)</p>
-          <form id='contact-form' action={null} onSubmit={handleSubmit} method='POST'>
+          <div id='contact-form'>
             <div>
-              <input className='default-input' id='contact-name' type='text' placeholder='Your name' name='name' required/>
+              <input className='default-input' 
+              id='contact-name' type='text' 
+              placeholder='Your name' 
+              name='name' 
+              required
+              onChange={
+                (e) => {
+                  setName(e.target.value)
+                }
+              }
+              />
             </div>
             <div>
-              <input className='default-input' id='contact-email' type='email' placeholder='Email' name='email' required/>
+              <input className='default-input' 
+              id='contact-email' 
+              type='email' 
+              placeholder='Email' 
+              name='email' 
+              required
+              onChange={
+                (e) => {
+                  setEmail(e.target.value)
+                }
+              }/>
             </div>
             <div>
-              <textarea className='default-textarea' id='contact-text' placeholder='Your message' name='message' required/>
+              <textarea className='default-textarea' 
+              id='contact-text' 
+              placeholder='Your message' 
+              name='message' 
+              required
+              onChange={
+                (e) => {
+                  setMessage(e.target.value)
+                }
+              }/>
             </div>
             <div>
-              <button className='default-button' id='contact-button' type='submit'>Send a message</button>
+              <button className='default-button' id='contact-button' type='submit' onClick={handleContactEmail}>Send a message</button>
             </div>
-          </form>
+          </div>
         </div>
 
 

@@ -9,6 +9,7 @@ import CodeOutput from './CodeOutput';
 import History from './History';
 import { sanitizeCode } from '../utils/codeUtils';
 import nhaService from '../services/nhaService';
+// const logger = require('../../../backend/logs/logger');
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
@@ -79,17 +80,17 @@ const Translate = () => {
   const translateCode = async () => {
 
     if (sourceLanguage === "" && desiredLanguage === "") {
-      alert("Please select the source and desired languages");
+      setTranslationError("Please select the source and desired languages");
       return
     }
 
     else if (sourceLanguage === "") {
-      alert("Please select a source language")
+      setTranslationError("Please select a source language")
       return
     }
 
     else if (desiredLanguage === "") {
-      alert("Please select a desired language")
+      setTranslationError("Please select a desired language")
       return
     }
 
@@ -110,8 +111,6 @@ const Translate = () => {
     if (!response.success) {
       setLoading(false);
       setTranslationError(response.message);
-      //alert(response.message);
-      //log error here? ...
       return;
     }
 
@@ -123,12 +122,6 @@ const Translate = () => {
     setUserTriggeredChange(true);
   };
 
-  // useEffect(() => {
-  //   if (translationError) {
-  //     alert(translationError);
-  //   }
-  // }, [translationError]);
-
   const handlePostHistory = async () => {
     try {
       if (translatedCode !== '' && userTriggeredChange) {
@@ -138,7 +131,8 @@ const Translate = () => {
         setUserTriggeredChange(false);
       }
     } catch (error) {
-      console.error('Error posting history:', error);
+      // console.error('Error posting history:', error);
+      // logger.error(`Error posting history: ${error}`);
     }
   };
 

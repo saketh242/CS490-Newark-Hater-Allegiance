@@ -8,6 +8,7 @@ const userRouter = require("./routes/userRoutes");
 const historyRouter = require("./routes/historyRoutes");
 const feedbackRouter = require("./routes/feedbackRoutes");
 const chatGptRouter = require("./routes/chatGptRouter");
+const issueRouter = require("./routes/issueRoutes");
 const decodeToken = require("./middleware/index");
 const sendErrorLogEmail = require('./logs/notifyDevs');
 const cron = require('node-cron');
@@ -56,6 +57,7 @@ app.use("/users", decodeToken, userRouter);
 app.use("/history", decodeToken, historyRouter);
 app.use("/feedback", feedbackRouter);
 app.use("/openAI", decodeToken, chatGptRouter)
+app.use("/issues", issueRouter);
 
 app.get("/test", (req, res) => {
     res.status(200).json({ message: "This is a test for auth" });
