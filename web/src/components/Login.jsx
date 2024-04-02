@@ -31,7 +31,7 @@ const Login = () => {
 
     e.preventDefault();
 
-    if (email === '' || password == ""){
+    if (email === '' || password == "") {
       setError("Please fill all the fields");
       return
     }
@@ -74,7 +74,10 @@ const Login = () => {
   return (
     <div className='login-content'>
 
-      <h2 className="login-heading">NHAGPT</h2>
+      <div className="loginTop">
+        <h2 className="login-heading">NHAGPT</h2>
+        {/* <p className="loginHeaderText">Login</p> */}
+      </div>
       <form className='login-form'>
         <div className="login-box">
           <input
@@ -104,7 +107,7 @@ const Login = () => {
                 setPassword(e.target.value)
                 setError(null);
               }
-              
+
             }
             placeholder="Password"
             autoComplete='off'
