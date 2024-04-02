@@ -17,20 +17,37 @@ const ViewProfile = () => {
   return user && dbUser && (
     <div className="profile-info-div">
 
-        <h2 className='view-profile-head'>Profile Details</h2>
+      <h2 className='view-profile-head'>Profile Details</h2>
 
       <div className='details-view-profile'>
-        <Gravatar email={user.email} size={300} className='profileAvatar' default="mp"/>
-        <p>Name: {`${dbUser.firstName} ${dbUser.lastName}`}</p>
-        <p>Email: {user.email}</p>
-        <p>Last Login: {user.metadata.lastSignInTime}</p>
-        <p>Account created at: {user.metadata.creationTime}</p>
-        <p>Email Verified: {user.emailVerified? "Yes" : "No"}</p>
+        <div className="gravatarContainer">
+          <Gravatar email={user.email} size={225} className='profileAvatar' id="profilePagePic" default="mp" />
+        </div>
+        <p id="gravatarNote">
+          To add or update your profile picture, please create a <a href="https://gravatar.com/" target="_blank" rel="noopener noreferrer" id="gravatarLink" className="link">gravatar</a> account using the same email as your NHAGPT account.
+        </p>
+        <div className="profile-info-text">
+          <div className="profileSegment">
+            <h3>Personal Information</h3>
+            <div className="profilePersonalInfo">
+              <p>Name: {`${dbUser.firstName} ${dbUser.lastName}`}</p>
+              <p>Email: {user.email}</p>
+            </div>
+          </div>
+          <div className="profileSegment">
+            <h3>Account information</h3>
+            <div className="profileAccountInfo">
+              <p>Last Login: {user.metadata.lastSignInTime}</p>
+              <p>Account created at: {user.metadata.creationTime}</p>
+              <p>Email verified: {user.emailVerified ? "Yes" : "No"}</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className='settings-div-view' onClick={redirectSettings}>
-      <FontAwesomeIcon size='2x' icon={faGear} />
-      <p className='settings-p-tag-view'>Settings</p>
+        <FontAwesomeIcon size='2x' icon={faGear} />
+        <p className='settings-p-tag-view'>Settings</p>
       </div>
     </div>
   )

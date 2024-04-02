@@ -1686,18 +1686,31 @@ input[type="checkbox"]{
   padding:2rem;
 }
 
-#emptyCredit{
-  color:#BDC3D0;
+.link{
   text-decoration: none;
   font-size:14px;
 }
 
-#emptyCredit:hover{
+#gravatarNote, #gravatarLink{
+  font-size: 1rem;
+  font-style:italic;
+}
+
+#gravatarNote{
+  margin-top:1rem;
+}
+
+#emptyCredit{
+  color:#BDC3D0;
+  font-size:14px;
+}
+
+.link:hover, #emptyCredit:hover{
   color:#0ac6c0;
   text-decoration:none;
 }
 
-#emptyCredit:visited {
+.link:visited, #emptyCredit:visited {
   color: #076966;
   text-decoration: underline;
 }
@@ -1950,19 +1963,51 @@ input[type="checkbox"]{
 .view-profile-head{
   font-family: "Kanit", sans-serif;
   font-weight: 500;
-  padding: 2rem;
+  padding: 1.5rem;
 }
 
 .profileAvatar {
   border-radius: 50%; /* Makes it circular */
-  overflow: hidden; /* Ensures the image stays within the circular boundary */
+  /* overflow: hidden; */
+}
+
+.gravatarContainer, .profile-info-text,  .profileSegment {
+  padding:1rem;
+}
+
+.gravatarContainer{
+  width:205px;
+  height:205px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: #0ac6c0;
+}
+
+.profilePersonalInfo, .profileAccountInfo {
+  border: #0ac6c0 solid;
+  border-radius: 1rem;
+  background-color: #101216be;
+}
+
+.profilePersonalInfo p, .profileAccountInfo p {
+  padding:0.75rem;
+}
+
+.details-view-profile{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 
 .settings-div-view{
-  padding-top: 2rem;
+  padding: 0.5rem;
   display: flex;
   flex-direction: row;
+  margin-bottom: 2rem;
 }
 
 .settings-p-tag-view{
