@@ -221,6 +221,9 @@
   display:flex;
   flex-direction:column;
   text-align: center;
+  justify-content: center;
+  align-items: center;
+  overflow:hidden;
 }
 
 #devsArea{
@@ -230,7 +233,7 @@
 }
 
 .dev, #devImage{
-  padding: 0.5rem;
+  padding: 1rem;
 }
 
 .reviews {
@@ -282,7 +285,7 @@
   font-size: larger;
 }
 
-@media(width<=1230px){
+@media(width<=1390px){
   #devImage{
     width:10rem;
     height:10rem;
@@ -293,10 +296,15 @@
   .review{
     margin-bottom:1rem;
   }
+}
 
+@media(width<=1000px){
   #devImage{
     width:8rem;
     height:8rem;
+  }
+  .dev, #devImage{
+    padding: 0.5rem;
   }
 }
 
@@ -305,9 +313,16 @@
     width:7rem;
     height:7rem;
   }
+  .dev, #devImage{
+    padding: 0.5rem;
+  }
 }
 
-@media(width<=600px){
+@media(width<=700px){
+  #devImage{
+    width:225px;
+    height:225px;
+  }
   #devsArea{
     flex-direction: column;
   }
