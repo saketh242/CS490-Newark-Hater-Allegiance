@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from 'firebase/auth';
 import { auth } from "../firebase";
-import useAuth from '../useAuth';
 import { toast } from 'react-toastify';
 
 
@@ -17,7 +16,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
-  const { user, isLoading } = useAuth();
+  
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
