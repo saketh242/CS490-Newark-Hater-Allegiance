@@ -157,6 +157,18 @@ class NHAService {
         }
       }
       
+      async emailDev(name, email, message) {
+        try {
+            const payload = {name, email, message};
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}issues`, payload);
+            return response.data;
+        }
+        catch (error) {
+            console.error('Error with posting issue', error);
+            throw error;
+        }
+      }
+      
 }
 
 export default new NHAService();
