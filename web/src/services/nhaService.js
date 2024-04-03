@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useSelector } from 'react-redux';
 
 class NHAService {
 
@@ -30,14 +31,14 @@ class NHAService {
         }
     }
 
-    async postHistory(user, inputCode, translateCode, sourceLanguage, desiredLanguage) {
+    async postHistory(user, dbUser, inputCode, translateCode, sourceLanguage, desiredLanguage) {
         try {
-            const user_id = await this.getUser(user);
+            const user_id = dbUser._id;
             const idToken = await user.getIdToken();
             const headers = {
                 Authorization: `Bearer ${idToken}`
             };
-            const payload = { user_id: user_id._id, inputCode, translateCode, sourceLanguage, desiredLanguage };
+            const payload = { user_id: user_id, inputCode, translateCode, sourceLanguage, desiredLanguage };
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}history/`, payload, { headers });
             return response.data;
         } catch (error) {
@@ -46,14 +47,14 @@ class NHAService {
         }
     }
 
-    async postFeedback(user, postId, Trating, Urating, ratingText) {
+    async postFeedback(user, dbUser, postId, Trating, Urating, ratingText) {
         try {
-            const user_id = await this.getUser(user);
+            const user_id = dbUser._id;
             const idToken = await user.getIdToken();
             const headers = {
                 Authorization: `Bearer ${idToken}`
             };
-            const payload = { user_id: user_id._id, postId, Trating, Urating, ratingText };
+            const payload = { user_id: user_id, postId, Trating, Urating, ratingText };
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}feedback/`, payload, { headers });
             return response.data;
         } catch (error) {
@@ -73,14 +74,14 @@ class NHAService {
         }
     }
 
-    async getAllHistory(user) {
+    async getAllHistory(user, dbUser) {
         try {
-            const user_id = await this.getUser(user);
+            const user_id = dbUser._id;
             const idToken = await user.getIdToken();
             const headers = {
                 Authorization: `Bearer ${idToken}`
             };
-            const params = { user_id: user_id._id };
+            const params = { user_id: user_id };
             const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}history/getAllHistory`, { headers, params });
             //console.log(response.data);
             return response.data;
