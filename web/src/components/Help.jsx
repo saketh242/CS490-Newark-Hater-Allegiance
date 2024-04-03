@@ -22,12 +22,19 @@ const Help = () => {
   const handleContactEmail = async (e) => {
     e.preventDefault();
     try {
-      //await nhaService.emailDev(name, email, message);
-      console.log("email sent");
+      const res = await nhaService.emailDev(name, email, message);
       toast(`Message sent, thank you!`);
+
+      // clear form after submission
+      setName('');
+      setEmail('');
+      setMessage('');
+      document.getElementById("contact-name").value = "";
+      document.getElementById("contact-email").value = "";
+      document.getElementById("contact-text").value = "";
     }
     catch (error){
-      console.log("error posting email: ", error)
+      console.log("error posting email: ", error);
     }
   }
 
@@ -102,7 +109,7 @@ const Help = () => {
 
         {/*Box 1*/}
         <div className='help-guides' id={showBox===1 ? 'focus': null}>
-          <h2 id='guide-title'>Have a look at these quick and detailed guides!</h2>
+          <h id='guide-title'>Have a look at these quick and detailed guides!</h>
           {/*GETTING STARTED GUIDE*/}
           <div id='guide-item' onClick={()=>handleGuide(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><h id={openG1 ? 'help-active': null}>Getting Started</h></div>
           {openG1 ? <div id='guide-text'>

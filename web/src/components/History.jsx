@@ -82,7 +82,7 @@ const History = ({ history, showSidebar, toggleSidebar, setInputCode, setTransla
     setFilterField(e.target.value);
   }
 
-  console.log(`History: ${history}`);
+  // console.log(`History: ${history}`);
 
   if (history === null || showSidebar === false) return (<></>);
   return (

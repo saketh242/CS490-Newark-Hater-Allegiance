@@ -36,7 +36,7 @@ const HomeReviews = () => {
       <p id="reviewHeader" className="sectionHeader">Some of our reviews</p>
       <div className="reviews-flexbox">
         {randomReviews && randomReviews.length > 0 ? (
-          <Carousel className="homeCarousel" infiniteLoop showStatus={false}>
+          <Carousel className="homeCarousel" infiniteLoop showStatus={false} showThumbs={false}>
             {randomReviews.map((review, index) => (
               <div className="review" key={index}>
                 <p>{`⭐⭐⭐⭐⭐`}</p>
