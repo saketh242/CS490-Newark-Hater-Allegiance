@@ -1,9 +1,11 @@
 import React, { useState, Popup } from 'react'
+import { Link } from 'react-router-dom'
 import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown} from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
-import feedback from "../images/feedback.png"
+import feedback from '../images/feedback.png'
+import pfpImg from '../images/gravatar.png'
 
 const FORM_ENDPOINT = "https://herotofu.com/start"; // TODO - update to the correct endpoint
 
@@ -117,9 +119,20 @@ const Help = () => {
               </div>
             </div>
           </div> : null}
-          {/*TRANSLATING GUIDE*/}
+          {/*PFP GUIDE*/}
           <div id='guide-item' onClick={()=>handleGuide(3)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><h id={openG3 ? 'help-active': null}>How to set a profile picture</h></div>
           {openG3 ? <div id='guide-text'>
+            <div className='box' id='pfpguide'>
+              <p id="instructionHeader" className="sectionHeader">Setting a profile picture</p>
+                <ul className='instructions'>
+                  <li>First, start by going to <a className='link' id='guide-link' href="https://gravatar.com/" target="_blank">Gravatar</a> and creating an account with THE SAME EMAIL you used to sign up for NHAGPT</li>
+                  <li>Then navigate the menu to upload a new profile picture to your account</li>
+                  <li>Save it, and the changes should reflect momentarily on our end</li>
+                </ul>
+            </div>
+            <div className='signup'>
+                <img className='signup-image' src={pfpImg} alt="Gravatar Profile Example"/>
+              </div>
           </div> : null}
         </div>
 

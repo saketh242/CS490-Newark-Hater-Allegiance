@@ -27,10 +27,6 @@
   border:1pt solid #0ac6c0;
 }
 
-.default-input {
-  border: none;
-}
-
 .default-textarea:focus, .default-input:focus {
   outline: none; 
 }
@@ -1441,7 +1437,7 @@ input[type="checkbox"]{
 }
 
 #contact-text {
-  margin: auto;
+  margin: 1rem auto 0 auto;
   width: 36rem;
   max-width: 75%;
   height: 12rem;
@@ -1798,12 +1794,12 @@ input[type="checkbox"]{
 
 .link{
   text-decoration: none;
-  font-size:14px;
 }
 
 #gravatarNote, #gravatarLink{
+  font-size: 14px;
   font-size: 1rem;
-  font-style:italic;
+  font-style: italic;
 }
 
 #gravatarNote{
@@ -1907,6 +1903,7 @@ input[type="checkbox"]{
 
 #ascdsc, #xIcon:hover, #trashIcon:hover{
   color:#0ac6c0;
+  cursor: pointer;
 }
 
 .translationTitle, .historyOptions{
