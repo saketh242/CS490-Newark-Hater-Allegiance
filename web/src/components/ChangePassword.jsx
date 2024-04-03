@@ -4,7 +4,6 @@ import { isValidPassword } from '../utils/fieldValidations'
 import { reauthenticateWithCredential, EmailAuthProvider, updatePassword, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import { toast } from 'react-toastify';
-import useAuth from '../useAuth';
 const ChangePassword = () => {
 
     const navigate = useNavigate();

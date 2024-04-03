@@ -3,15 +3,15 @@ import React, { useState, useRef } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import StarGroup from "./StarGroup";
 import nhaService from '../services/nhaService';
-import useAuth from '../useAuth';
 import { toast } from 'react-toastify';
 import { auth } from '../firebase';
+import { useSelector } from 'react-redux';
 
 const Feedback = ({ postId }) => {
+    const dbUserFromRedux = useSelector((state) => state.user.dbUser);
     const [translation, setTranslation] = useState(-1);
     const [userExperience, setUserExperience] = useState(-1);
     const [textBox, setTextBox] = useState("");
-    // const { user } = useAuth();
     const user = auth.currentUser;
     const textAreaRef = useRef(null);
 
@@ -21,11 +21,10 @@ const Feedback = ({ postId }) => {
     const submitted = async () => {
         if (!postId || translation === -1 || userExperience === -1 || textBox === '') {
             setError("Please fill out all fields.");
-            // toast("Please fill out all fields.");
             return;
         } else {
             setIsSubmitted(true);
-            await nhaService.postFeedback(user, postId, translation, userExperience, textBox);
+            await nhaService.postFeedback(user, dbUserFromRedux, postId, translation, userExperience, textBox);
 
             const msg = () => toast("Feedback Submitted!");
             msg();

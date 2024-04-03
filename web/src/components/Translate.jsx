@@ -1,10 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from '../firebase';
-import useAuth from '../useAuth';
 import Feedback from './Feedback';
-
 import CodeOutput from './CodeOutput';
 import History from './History';
 import { sanitizeCode } from '../utils/codeUtils';
@@ -19,11 +15,16 @@ import { ThreeDots } from 'react-loader-spinner'
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
 
 const Translate = () => {
 
+  const dbUserFromRedux = useSelector((state) => state.user.dbUser);
+  // getting the dbUser from redux
+
   //const { user } = useAuth();
   const user = auth.currentUser;
+  
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -125,7 +126,7 @@ const Translate = () => {
   const handlePostHistory = async () => {
     try {
       if (translatedCode !== '' && userTriggeredChange) {
-        const post = await nhaService.postHistory(user, inputCode, translatedCode, sourceLanguage, desiredLanguage);
+        const post = await nhaService.postHistory(user, dbUserFromRedux,  inputCode, translatedCode, sourceLanguage, desiredLanguage);
         setPostId(post);
         handleGetAllHistory();
         setUserTriggeredChange(false);
@@ -229,7 +230,8 @@ const Translate = () => {
   };
 
   const handleGetAllHistory = async () => {
-    setHistoryData(await nhaService.getAllHistory(user));
+    
+    setHistoryData(await nhaService.getAllHistory(user, dbUserFromRedux));
   };
 
   useEffect(() => {

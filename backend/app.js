@@ -15,6 +15,12 @@ const cron = require('node-cron');
 
 const queue = require('express-queue');
 
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path} - ${req.ip}`);
+  next();
+});
+
+
 app.use(express.json());
 app.use(cors());
 app.use(mongoSanitize()); //sanitize all user input

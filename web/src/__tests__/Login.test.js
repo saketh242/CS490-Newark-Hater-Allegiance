@@ -2,16 +2,7 @@ import {fireEvent, render, screen, waitFor} from "@testing-library/react"
 import Login from "../components/Login"
 import { MemoryRouter as Router } from 'react-router-dom';
 
-// jest.mock('firebase/auth', () => ({
-//   __esModule: true,
-//   ...jest.requireActual('firebase/auth'),
-//   signInWithEmailAndPassword: jest.fn(() => Promise.resolve({
-//     user: {
-//       uid: 'testUid',
-//       email: 'test@example.com',
-//     }
-//   }))
-// }));
+
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'), 
