@@ -1,4 +1,5 @@
 const History = require("../models/History")
+const logger = require('../logs/logger');
 
 const getAllHistory = async (req, res, next) => {
     try {
@@ -12,6 +13,7 @@ const getAllHistory = async (req, res, next) => {
         res.status(200).send(histories);
     } catch (error) {
         // console.error("Error fetching all users:", error);
+        logger.error(`Error: ${error.message}, Location: backend/controllers/historyControllers.js`);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
@@ -37,6 +39,7 @@ const postHistory = async (req, res, next) => {
         res.status(200).send(inserted._id);
     } catch (error) {
         // console.error("Error posting history:", error);
+        logger.error(`Error: ${error.message}, Location: backend/controllers/historyControllers.js`);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };

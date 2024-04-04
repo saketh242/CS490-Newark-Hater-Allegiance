@@ -11,7 +11,10 @@ const getFeedbackUser = async (uid) => {
 
         return { firstName: user.firstName, lastName: user.lastName, email:user.email };
     } catch (error) {
-        console.error('Error fetching user by uid'/*, error*/);
+        // console.error('Error fetching user by uid'/*, error*/);
+        logger.error(`Error: error fetching user by uid, ${error.message}, 
+        Location: backend/controllers/feedbackControllers.js`);
+
         return null;
     }
 };
@@ -64,6 +67,8 @@ const postFeedback = async (req, res, next) => {
     } catch (error) {
         // console.error("Error posting feedback:", error);
         res.status(500).json({ error: 'Internal Server Error' });
+        logger.error(`Error: error posting feedback, ${error.message}, 
+        Location: backend/controllers/feedbackControllers.js`);
     }
 };
 
@@ -83,6 +88,8 @@ const getFeedback = async (req, res, next) => {
     } catch (error) {
         // console.error("Error fetching feedbacks:", error);
         res.status(500).json({ error: 'Internal Server Error' });
+        logger.error(`Error: error fetching feedbacks, ${error.message}, 
+        Location: backend/controllers/feedbackControllers.js`);
     }
 };
 
