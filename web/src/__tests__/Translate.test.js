@@ -3,9 +3,7 @@ import { render, screen, act, fireEvent, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom';
 import Translate from '../components/Translate';
 import '@testing-library/jest-dom'; // Import this for better assertion messages
-import userEvent from '@testing-library/user-event';
-
-import nhaService from '../services/nhaService'
+// import nhaService from '../services/nhaService'
 
 //TODO:
 // test empty input
@@ -211,26 +209,6 @@ describe('Sidebar rendered component', () => {
     expect(screen.findByText("Translation History"));
   });
 });
-
-// describe('Translate component', () => {
-//   it('displays an error when trying to convert with empty input', async () => {
-//     const { container } = render(<Translate />);
-//     // Using placeholder or test ID for input as before
-//     const inputField = screen.getByPlaceholderText('Enter code to translate'); 
-
-//     // Alternative approach using container.querySelector to select the convert button by its id
-//     const convertButton = container.querySelector('#translationButton');
-
-//     // Attempt to click the convert button without entering any input
-//     await userEvent.click(convertButton);
-
-//     // Check for an error message
-//     const errorMessage = screen.getByText('Input code cannot be empty');
-//     expect(errorMessage).toBeInTheDocument();
-//   });
-// });
-
-
 
 // // Mock the entire module to mock the postPrompt function
 // jest.mock('../services/nhaService');
