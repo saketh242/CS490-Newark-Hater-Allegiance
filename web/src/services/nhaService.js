@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 class NHAService {
 
@@ -26,7 +26,7 @@ class NHAService {
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}openAI/postTranslation`, payload, { headers });
             return response.data;
         } catch (error) {
-            console.log('Error calling api:', error);
+            // console.log('Error calling api:', error);
             return error.response.data
         }
     }
@@ -42,8 +42,8 @@ class NHAService {
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}history/`, payload, { headers });
             return response.data;
         } catch (error) {
-            console.error('Error posting history:', error);
-            throw error;
+            // console.error('Error posting history:', error);
+            return error.response.data;
         }
     }
 
@@ -58,8 +58,8 @@ class NHAService {
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}feedback/`, payload, { headers });
             return response.data;
         } catch (error) {
-            console.error('Error posting feedback:', error);
-            throw error;
+            // console.error('Error posting feedback:', error);
+            return error.response.data;
         }
     }
 
@@ -69,8 +69,8 @@ class NHAService {
             // console.log(response.data);
             return response.data;
         } catch (error) {
-            console.error('Error fetching feedback:', error);
-            throw error;
+            // console.error('Error fetching feedback:', error);
+            return error.response.data;
         }
     }
 
@@ -86,8 +86,8 @@ class NHAService {
             //console.log(response.data);
             return response.data;
         } catch (error) {
-            console.error('Error fetching histories:', error);
-            throw error;
+            // console.error('Error fetching histories:', error);
+            return error.response.data;
         }
     }
 
@@ -102,8 +102,8 @@ class NHAService {
             // console.log("User: ",response.data);
             return response.data;
         } catch (error) {
-            console.error('Error fetching user:', error);
-            throw error;
+            // console.error('Error fetching user:', error);
+            return error.response.data;
         }
     }
 
@@ -117,8 +117,8 @@ class NHAService {
             const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}users/updateUser`, payload, { headers });
             return response.data;
         } catch (error) {
-            console.error('Error updating user:', error);
-            throw error;
+            // console.error('Error updating user:', error);
+            return error.response.data;
         }
     }
 
@@ -132,8 +132,8 @@ class NHAService {
             const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}users/deleteUser`, { headers });
             return response.data;
         } catch (error) {
-            console.error("Error deleting user: ", error);
-            throw error;
+            // console.error("Error deleting user: ", error);
+            return error.response.data;
         }
     }
 
@@ -153,8 +153,8 @@ class NHAService {
           const apiReady = apiComponent && apiComponent.status === 'operational';
           return apiReady;
         } catch (error) {
-          console.error('Error fetching OpenAI API status:', error);
-          throw error;
+        //   console.error('Error fetching OpenAI API status:', error);
+          return error.response.data;
         }
       }
       
@@ -165,8 +165,8 @@ class NHAService {
             return response.data;
         }
         catch (error) {
-            console.error('Error with posting issue', error);
-            throw error;
+            // console.error('Error with posting issue', error);
+            return error.response.data;
         }
       }
       

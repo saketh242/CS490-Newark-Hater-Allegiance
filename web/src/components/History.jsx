@@ -51,12 +51,20 @@ const dateAndTimeConversion = (date) => {
 //   return objects;
 // }
 
-const loadInputAndTranslatedCode = (setInputCode, setTranslatedCode, inputCode, translatedCode) => {
+// const loadInputAndTranslatedCode = (setInputCode, setTranslatedCode, inputCode, translatedCode) => {
+//   setInputCode(inputCode);
+//   setTranslatedCode(translatedCode);
+// }
+
+const loadInputAndTranslatedCode = (setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage, inputCode, translatedCode, sourceLanguage, desiredLanguage) => {
   setInputCode(inputCode);
   setTranslatedCode(translatedCode);
+  setSourceLanguage(sourceLanguage); // Set the source language dropdown value
+  setDesiredLanguage(desiredLanguage); // Set the desired language dropdown value
 }
 
-const History = ({ history, showSidebar, toggleSidebar, setInputCode, setTranslatedCode }) => {
+
+const History = ({ history, showSidebar, toggleSidebar, setInputCode, setTranslatedCode, sourceLanguage, desiredLanguage, setSourceLanguage, setDesiredLanguage }) => {
   const [width, setWidth] = useState(window.innerWidth);
   useEffect(() => {
     const handleResize = () => {
@@ -166,7 +174,8 @@ const History = ({ history, showSidebar, toggleSidebar, setInputCode, setTransla
                   </div>
 
                   <div className="historyEntryOptions">
-                    <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, history[i].original_code, history[i].converted_code)}> Translate again </button>
+                    {/* <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, history[i].original_code, history[i].converted_code)}> Translate again </button> */}
+                    <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage, history[i].original_code, history[i].converted_code, history[i].Source_language, history[i].Desired_language)}> Translate again </button>
                     <button id="removeEntry" title="Remove translation">
                       <FontAwesomeIcon id="trashIcon" icon={faTrashCan} size="2x" />
                     </button>

@@ -57,6 +57,7 @@ const Translate = () => {
     const fetchAPIStatus = async () => {
       try {
         const response = await nhaService.getOpenAIStatus();
+        if(!response) throw error;
         setApiReady(response);
       } catch (error) {
         setErrorAPI('Error fetching API status');
@@ -250,11 +251,32 @@ const Translate = () => {
     detectLanguage();
   }, [inputCode]);
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const { selectionStart, selectionEnd } = e.target;
+      const newValue =
+        inputCode.substring(0, selectionStart) +
+        '\t' +
+        inputCode.substring(selectionEnd);
+      setInputCode(newValue);
+    }
+  };
+
   return (
     <div className="translateBody">
 
-      <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar}
-        setInputCode={setInputCode} setTranslatedCode={setTranslatedCode} />
+      <History 
+        history={historyData} 
+        showSidebar={showSidebar} 
+        toggleSidebar={toggleSidebar}
+        setInputCode={setInputCode} 
+        setTranslatedCode={setTranslatedCode} 
+        setSourceLanguage={setSourceLanguage} 
+        setDesiredLanguage={setDesiredLanguage} 
+        sourceLanguage={sourceLanguage}
+        desiredLanguage={desiredLanguage}
+        />
 
       <div className="apiStatusMessage">
         <h1 className="apiStatus">
@@ -369,6 +391,7 @@ const Translate = () => {
           <textarea className="inputArea"
             value={inputCode}
             onChange={(e) => setInputCode(e.target.value)}
+            onKeyDown={handleKeyPress} // Handle key press events
             placeholder={error || "Enter code to translate"}
             style={{
               borderColor: error ? 'red' : '#0ac6c0',
