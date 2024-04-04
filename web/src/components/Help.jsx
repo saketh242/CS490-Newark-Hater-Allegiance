@@ -1,13 +1,11 @@
 import React, { useState, Popup } from 'react'
 import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown} from '@fortawesome/free-solid-svg-icons'
+import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCircleExclamation} from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
 import feedback from "../images/feedback.png"
 import nhaService from "../services/nhaService";
 import { toast } from 'react-toastify';
-
-const FORM_ENDPOINT = "https://herotofu.com/start"; // TODO - update to the correct endpoint
 
 const Help = () => {
   const [showBox, setShowBox] = useState(0);
@@ -18,10 +16,13 @@ const Help = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   const handleContactEmail = async (e) => {
     e.preventDefault();
+    setEmailError(''); //reset email error
     try {
+      throw new Error('simulated error: error submitting contact-us form.');
       const res = await nhaService.emailDev(name, email, message);
       toast(`Message sent, thank you!`);
 
@@ -34,7 +35,8 @@ const Help = () => {
       document.getElementById("contact-text").value = "";
     }
     catch (error){
-      console.log("error posting email: ", error);
+      // console.log("error posting email: ", error);
+      setEmailError('Error submitting contact-us form.');
     }
   }
 
@@ -61,7 +63,7 @@ const Help = () => {
     text: "In order to provide you with the best support, NHA GPT stores all translations made by every user. This gives our support team more context with each feedback inquiry we receive.",
     id: 2},
     {header: "My translation came out with syntax errors, what gives?!",
-    text: "Our translator is powered by OpenAI's GPT-3 api. If your translation came out wrong, please let us know so we can provide OpenAI with feedback to improve your experience!",
+    text: "Our translator is powered by OpenAI's GPT-3.5 api. If your translation came out wrong, please let us know so we can provide OpenAI with feedback to improve your experience!",
     id: 3},
     {header: "Why must I make a translation first before I can give feedback?",
     text: "We feel like it only makes sense for a user to provide feedback after using our tool rather than to provide feedback outside of using the tool.",
@@ -92,7 +94,6 @@ const Help = () => {
 
   return (
     <div className='standard'>
-      {/* */}
       <h1 className="help-subtitle help-header">How can we help?</h1>
 
       <div id='help-bar'>
@@ -171,10 +172,18 @@ const Help = () => {
 
         {/*Box 3*/}
         <div className='help-contact' id={showBox===3 ? 'focus': null}>
-          <h1 className='help-header'>Send us a message to get additional support!</h1>
-          <p>Our team will give you a response between 3-7 business days (excludes weekends and holidays)</p>
+          <div id="contact-header">
+            <h1 className='help-header'>Send us a message to get additional support!</h1>
+            <p>Our team will give you a response between 3-7 business days (excludes weekends and holidays)</p>
+          </div>
+        
           <div id='contact-form'>
-            <div>
+            {emailError !== '' &&
+                <div className="emailError">
+                  <FontAwesomeIcon icon={faCircleExclamation} id="errorIcon" size="2x" />
+                  <p>{emailError}</p>
+                </div>}
+              <div>
               <input className='default-input' 
               id='contact-name' type='text' 
               placeholder='Your name' 
@@ -200,17 +209,14 @@ const Help = () => {
                 }
               }/>
             </div>
-            <div>
+            <div id="textArea-div">
               <textarea className='default-textarea' 
               id='contact-text' 
-              placeholder='Your message' 
-              name='message' 
-              required
-              onChange={
-                (e) => {
-                  setMessage(e.target.value)
-                }
-              }/>
+                placeholder='Your message'
+                name='message'
+                required
+                onChange={(e) => {setMessage(e.target.value)}} 
+              />
             </div>
             <div>
               <button className='default-button' id='contact-button' type='submit' onClick={handleContactEmail}>Send a message</button>
@@ -220,7 +226,7 @@ const Help = () => {
 
 
         {/*Box Egg*/}
-        <div className='help-egg' id={showBox===4 ? 'focus': null}>
+        <div className='help-egg' id={showBox === 4 ? 'focus' : null}>
           <p>
             The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues.
             The 20 meter pacer test will begin in 30 seconds. Line up at the start.
