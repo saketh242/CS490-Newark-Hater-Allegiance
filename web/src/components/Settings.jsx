@@ -327,11 +327,11 @@ const Settings = () => {
           </form>
 
           <div className="options-div">
-            <div className='option-div hover-div1' onClick={handleChangePassword}>
+            <div className='option-div hover-div' onClick={handleChangePassword}>
               <FontAwesomeIcon icon={faPenToSquare} />
               <p>Change Password</p>
             </div>
-            <div className='option-div hover-div2' onClick={handleDeleteAccount}>
+            <div className='option-div hover-div' onClick={handleDeleteAccount}>
               <FontAwesomeIcon icon={faTrash} />
               <p>Delete Account</p>
             </div>

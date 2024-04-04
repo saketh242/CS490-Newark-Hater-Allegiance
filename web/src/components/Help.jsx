@@ -163,13 +163,13 @@ const Help = () => {
           <p>Our team will give you a response between 3-7 business days (excludes weekends and holidays)</p>
           <form id='contact-form' action={null} onSubmit={handleSubmit} method='POST'>
             <div>
-              <input className='default-input' id='contact-name' type='text' placeholder='Your name' name='name' required/>
+              <input className='default-input rainbow-border' id='contact-name' type='text' placeholder='Your name' name='name' required/>
             </div>
             <div>
-              <input className='default-input' id='contact-email' type='email' placeholder='Email' name='email' required/>
+              <input className='default-input rainbow-border' id='contact-email' type='email' placeholder='Email' name='email' required/>
             </div>
             <div>
-              <textarea className='default-textarea' id='contact-text' placeholder='Your message' name='message' required/>
+              <textarea className='default-textarea rainbow-border' id='contact-text' placeholder='Your message' name='message' required/>
             </div>
             <div>
               <button className='default-button' id='contact-button' type='submit'>Send a message</button>

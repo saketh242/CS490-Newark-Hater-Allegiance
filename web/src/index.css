@@ -31,6 +31,109 @@
   outline: none; 
 }
 
+/*SOMETHING COOL IDK*/
+.rainbow {
+  animation: rainbow 2.5s linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes rainbow {
+  100%,0% {
+    color: rgb(255,0,0);
+  }
+  8% {
+    color: rgb(255,127,0);
+  }
+  16% {
+    color: rgb(255,255,0);
+  }
+  25% {
+    color: rgb(127,255,0);
+  }
+  33% {
+    color: rgb(0,255,0);
+  }
+  41% {
+    color: rgb(0,255,127);
+  }
+  50% {
+    color: rgb(0,255,255);
+  }
+  58% {
+    color: rgb(0,127,255);
+  }
+  66% {
+    color: rgb(0,0,255);
+  }
+  75% {
+    color: rgb(127,0,255);
+  }
+  83% {
+    color: rgb(255,0,255);
+  }
+  91% {
+    color: rgb(255,0,127);
+  }
+}
+
+.rainbow-border {
+  animation: rainbow-border 2.5s linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes rainbow-border {
+  100%,0% {
+    border-color: rgb(255,0,0);
+  }
+  8% {
+    border-color: rgb(255,127,0);
+  }
+  16% {
+    border-color: rgb(255,255,0);
+  }
+  25% {
+    border-color: rgb(127,255,0);
+  }
+  33% {
+    border-color: rgb(0,255,0);
+  }
+  41% {
+    border-color: rgb(0,255,127);
+  }
+  50% {
+    border-color: rgb(0,255,255);
+  }
+  58% {
+    border-color: rgb(0,127,255);
+  }
+  66% {
+    border-color: rgb(0,0,255);
+  }
+  75% {
+    border-color: rgb(127,0,255);
+  }
+  83% {
+    border-color: rgb(255,0,255);
+  }
+  91% {
+    border-color: rgb(255,0,127);
+  }
+}
+
+.warning-flash {
+  animation: warning 0.5s linear;
+  animation-iteration-count: 4
+}
+
+@keyframes warning {
+  100%,0% {
+    color: rgb(200, 0, 0);
+  }
+  50% {
+    color: rgb(128, 0, 0);
+  }
+}
+
 
 /* Navbar Styling */
 
@@ -1521,7 +1624,7 @@ input[type="checkbox"]{
 .delete-heading {
   font-family: "Kanit", sans-serif;
   margin: 1.5rem;
-  color: #9CA6B5;
+  color: rgb(200, 0, 0);
   font-size: 2rem;
 }
 
@@ -1533,7 +1636,10 @@ input[type="checkbox"]{
 .delete-form button {
   width: 65%;
   margin: 1.3rem auto;
-  
+}
+
+.delete-form button:hover {
+  background-color: rgb(200, 0, 0);
 }
 
 .bye-message {
@@ -1667,12 +1773,10 @@ input[type="checkbox"]{
   padding-top: 0.7rem;
 }
 
-.hover-div1:hover {
-  color:#0ac6c0;
-}
 
-.hover-div2:hover {
+.hover-div:hover {
   color:#0ac6c0;
+  cursor: pointer;
 }
 
 @media (width <= 900px) {

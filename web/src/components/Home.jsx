@@ -48,7 +48,7 @@ const Home = () => {
       <HomeReviews />
 
       <div className='box' id="devCredits">
-        <h2>Designed and Developed by</h2>
+        <h2 className='rainbow'>Designed and Developed by</h2>
         <div id="devsArea">
           <div className="dev">
             <p>Saketh Puramsetti</p>
