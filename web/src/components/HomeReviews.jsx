@@ -6,6 +6,7 @@ import nhaService from '../services/nhaService';
 
 const HomeReviews = () => {
   const [reviews, setReviews] = useState([]);
+  const [randomReviews, setRandomReviews] = useState([]);
 
   useEffect(() => {
     async function fetchReviews() {
@@ -14,7 +15,7 @@ const HomeReviews = () => {
         const extractedReviews = response.map(item => ({
           textMessage: item.textMessage,
           user: `${item.user.firstName} ${item.user.lastName}`,
-          email:item.user.email
+          email: item.user.email
         }));
         setReviews(extractedReviews);
       } catch (error) {
@@ -25,11 +26,30 @@ const HomeReviews = () => {
     fetchReviews();
   }, []);
 
-  // Get 6 random reviews with text messages of 150 characters or less
-  const randomReviews = reviews
-    .filter(review => review.textMessage.length <= 150)
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 6);
+    // Get 6 random reviews with text messages of 150 characters or less
+    // const randomReviews = reviews
+    // .filter(review => review.textMessage.length <= 150)
+    // .sort(() => Math.random() - 0.5)
+    // .slice(0, 6);
+
+  useEffect(() => {
+    // Randomize reviews and select 6 unique reviews
+    if (reviews.length > 0) {
+      const uniqueUsers = [];
+      const shuffledReviews = reviews.sort(() => Math.random() - 0.5);
+      const selected = [];
+
+      for (const review of shuffledReviews) {
+        if (uniqueUsers.length >= 6) break;
+        if (!uniqueUsers.includes(review.user)) {
+          uniqueUsers.push(review.user);
+          selected.push(review);
+        }
+      }
+
+      setRandomReviews(selected);
+    }
+  }, [reviews]);
 
   return (
     <div className='box reviews' id="reviewContainer">
@@ -43,7 +63,7 @@ const HomeReviews = () => {
                 <p>{`${review.textMessage}`}</p>
                 <div id="reviewUserDetails">
                   <Gravatar id="homereviewerIcon" size={30} default="mp" email={review.email} />
-                <p>{`${review.user}`}</p>
+                  <p>{`${review.user}`}</p>
                 </div>
               </div>
             ))}
