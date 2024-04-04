@@ -24,7 +24,7 @@ const Translate = () => {
 
   //const { user } = useAuth();
   const user = auth.currentUser;
-  
+
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -57,7 +57,7 @@ const Translate = () => {
     const fetchAPIStatus = async () => {
       try {
         const response = await nhaService.getOpenAIStatus();
-        if(!response) throw error;
+        if (!response) throw error;
         setApiReady(response);
       } catch (error) {
         setErrorAPI('Error fetching API status');
@@ -127,14 +127,14 @@ const Translate = () => {
   const handlePostHistory = async () => {
     try {
       if (translatedCode !== '' && userTriggeredChange) {
-        const post = await nhaService.postHistory(user, dbUserFromRedux,  inputCode, translatedCode, sourceLanguage, desiredLanguage);
+        // throw new Error('simulated error: Unable to save translation to history');
+        const post = await nhaService.postHistory(user, dbUserFromRedux, inputCode, translatedCode, sourceLanguage, desiredLanguage);
         setPostId(post);
         handleGetAllHistory();
         setUserTriggeredChange(false);
       }
     } catch (error) {
-      // console.error('Error posting history:', error);
-      // logger.error(`Error posting history: ${error}`);
+        setTranslationError("Unable to save translation to history.");
     }
   };
 
@@ -231,8 +231,13 @@ const Translate = () => {
   };
 
   const handleGetAllHistory = async () => {
-    
-    setHistoryData(await nhaService.getAllHistory(user, dbUserFromRedux));
+    try{
+      setHistoryData(await nhaService.getAllHistory(user, dbUserFromRedux));
+    }
+    catch (error) {
+      console.log(error);
+      //temporary --> fill with actual handling of failure to obtain history entries
+    }
   };
 
   useEffect(() => {
@@ -266,17 +271,17 @@ const Translate = () => {
   return (
     <div className="translateBody">
 
-      <History 
-        history={historyData} 
-        showSidebar={showSidebar} 
+      <History
+        history={historyData}
+        showSidebar={showSidebar}
         toggleSidebar={toggleSidebar}
-        setInputCode={setInputCode} 
-        setTranslatedCode={setTranslatedCode} 
-        setSourceLanguage={setSourceLanguage} 
-        setDesiredLanguage={setDesiredLanguage} 
+        setInputCode={setInputCode}
+        setTranslatedCode={setTranslatedCode}
+        setSourceLanguage={setSourceLanguage}
+        setDesiredLanguage={setDesiredLanguage}
         sourceLanguage={sourceLanguage}
         desiredLanguage={desiredLanguage}
-        />
+      />
 
       <div className="apiStatusMessage">
         <h1 className="apiStatus">

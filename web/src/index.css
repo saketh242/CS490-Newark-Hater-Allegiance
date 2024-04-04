@@ -617,7 +617,7 @@
   padding-right: 1rem;
 }
 
-.translationError{
+.translationError, .feedbackError{
   display:flex;
   flex-direction: row;
   align-items: center;
@@ -628,6 +628,14 @@
   border: 2.5px solid red;
   border-radius: 8px;
   background-color: rgba(255, 0, 0, 0.069); /* Red with 50% opacity */
+}
+
+.feedbackError{
+  width: 48rem;
+}
+
+#feedbackErrorAndInput {
+  margin:1rem;
 }
 
 #originLanguage, #desiredLanguage {
@@ -1194,7 +1202,7 @@ input[type="checkbox"]{
   padding: 0.5rem 1rem;
   height: 5.5rem;
   width: 12rem;
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
   border-radius: 1rem;
   border: none;
   cursor: pointer;

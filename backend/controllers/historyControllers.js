@@ -11,7 +11,7 @@ const getAllHistory = async (req, res, next) => {
             .sort({ createdAt: -1 });
         res.status(200).send(histories);
     } catch (error) {
-        console.error("Error fetching all users:", error);
+        // console.error("Error fetching all users:", error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
@@ -36,7 +36,7 @@ const postHistory = async (req, res, next) => {
         const inserted = await History.create(post);
         res.status(200).send(inserted._id);
     } catch (error) {
-        console.error("Error posting history:", error);
+        // console.error("Error posting history:", error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
