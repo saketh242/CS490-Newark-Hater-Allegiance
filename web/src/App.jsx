@@ -15,6 +15,7 @@ import PageNotFound from "./components/PageNotFound"
 import ChangePassword from './components/ChangePassword';
 import "./index.css"
 import useAuth from './useAuth';
+import { useDispatch } from 'react-redux';
 // import axios from 'axios'
 import DeleteAccount from './components/DeleteAccount';
 import Settings from './components/Settings';
@@ -23,14 +24,18 @@ import ForgotPassword from './components/ForgotPassword';
 import nhaService from './services/nhaService';
 import ViewProfile from './components/ViewProfile';
 import { useSelector } from 'react-redux';
-
+import { setReviews, startFetchingReviews, stopFetchingReviews } from './features/reviews/reviewSlice';
+import useFetchReviews from './useFetchReviews';
 
 
 const App = () => {
+  const dispatch = useDispatch();
   useAuth();
+  useFetchReviews();
   const user = useSelector((state) => state.user.user);
   const dbUser = useSelector((state) => state.user.dbUser);
   const isLoading = useSelector((state) => state.user.isLoading);
+
 
 
   if (isLoading) {

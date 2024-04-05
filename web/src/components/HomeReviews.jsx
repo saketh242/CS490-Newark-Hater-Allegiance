@@ -3,36 +3,11 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import Gravatar from 'react-gravatar'
 import nhaService from '../services/nhaService';
+import { useSelector } from 'react-redux';
 
 const HomeReviews = () => {
-  const [reviews, setReviews] = useState([]);
-  const [randomReviews, setRandomReviews] = useState([]);
+  const { reviews, fetchingReviews } = useSelector((state) => state.reviews);
 
-  useEffect(() => {
-    async function fetchReviews() {
-      try {
-        const response = await nhaService.getFeedback();
-        const extractedReviews = response.map(item => ({
-          textMessage: item.textMessage,
-          user: `${item.user.firstName} ${item.user.lastName}`,
-          email: item.user.email
-        }));
-        setReviews(extractedReviews);
-      } catch (error) {
-        console.error('Error fetching reviews:', error);
-      }
-    }
-
-    fetchReviews();
-  }, []);
-
-    // Get 6 random reviews with text messages of 150 characters or less
-    // const randomReviews = reviews
-    // .filter(review => review.textMessage.length <= 150)
-    // .sort(() => Math.random() - 0.5)
-    // .slice(0, 6);
-
-  useEffect(() => {
     // Randomize reviews and select 6 unique reviews
     if (reviews.length > 0) {
       const uniqueUsers = [];
@@ -47,23 +22,26 @@ const HomeReviews = () => {
         }
       }
 
-      setRandomReviews(selected);
-    }
-  }, [reviews]);
+  
+   
+
+
 
   return (
     <div className='box reviews' id="reviewContainer">
       <p id="reviewHeader" className="sectionHeader">Some of our reviews</p>
       <div className="reviews-flexbox">
-        {randomReviews && randomReviews.length > 0 ? (
+        {(randomReviews && randomReviews.length > 0 && !fetchingReviews) ? (
           <Carousel className="homeCarousel" infiniteLoop showStatus={false} showThumbs={false}>
-            {randomReviews.map((review, index) => (
+            {selected.map((review, index) => (
               <div className="review" key={index}>
                 <p>{`⭐⭐⭐⭐⭐`}</p>
                 <p>{`${review.textMessage}`}</p>
                 <div id="reviewUserDetails">
-                  <Gravatar id="homereviewerIcon" size={30} default="mp" email={review.email} />
-                  <p>{`${review.user}`}</p>
+
+                  <Gravatar id="homereviewerIcon" size={500} default="mp" email={review.user.email} />
+                <p>{`${review.user.firstName} ${review.user.lastName}`}</p>
+
                 </div>
               </div>
             ))}
