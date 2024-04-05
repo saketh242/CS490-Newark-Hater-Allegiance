@@ -76,15 +76,32 @@ const postFeedback = async (req, res, next) => {
 
 const getFeedback = async (req, res, next) => {
     try {
-        const feedbacks = await FeedBack.find({ TranslationRating: 5, UXRating: 5 }).select('-_id rating textMessage user');
-        
-        // Fetch user details for each feedback
+        const feedbacks = await FeedBack.aggregate([
+            {
+                $match: {
+                    TranslationRating: 5,
+                    UXRating: 5
+                }
+            },
+            {
+                $group: {
+                    _id: "$user", 
+                    feedback: { $first: "$$ROOT" }
+                }
+            },
+            {
+                $limit: 5
+            }
+        ]);
+
         const feedbacksWithUserDetails = await Promise.all(
-            feedbacks.map(async (feedback) => {
+            feedbacks.map(async ({ feedback }) => {
                 const user = await getFeedbackUser(feedback.user);
-                return { ...feedback.toObject(), user };
+                const { _id, ...feedbackDataWithoutId } = feedback;
+                return { ...feedbackDataWithoutId, user };
             })
         );
+
         res.status(200).send(feedbacksWithUserDetails);
     } catch (error) {
         // console.error("Error fetching feedbacks:", error);
@@ -93,6 +110,7 @@ const getFeedback = async (req, res, next) => {
         Location: backend/controllers/feedbackControllers.js`);
     }
 };
+
 
 module.exports.getFeedback = getFeedback;
 module.exports.postFeedback = postFeedback;
