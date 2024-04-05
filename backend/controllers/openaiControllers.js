@@ -71,7 +71,7 @@ const postPrompt = async (req, res, next) => {
             message: code,
         });
     } catch (error) {
-        logger.error(`Error: ${error.message}, Input: ${inputCode}, SourceLanguage: ${sourceLanguage}, DetectedLanguage: "AHHHHH", DesiredLanguage: ${desiredLanguage}`);
+        logger.error(`Error: ${error.message}, Input: ${inputCode}, SourceLanguage: ${sourceLanguage}, DesiredLanguage: ${desiredLanguage}`);
 
         let statusCode = 500;
         let errorMessage = "An error occurred while processing your request. Please try again.";
