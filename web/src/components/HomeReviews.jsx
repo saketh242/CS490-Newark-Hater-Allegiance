@@ -8,13 +8,24 @@ import { useSelector } from 'react-redux';
 const HomeReviews = () => {
   const { reviews, fetchingReviews } = useSelector((state) => state.reviews);
 
-  // Get 6 random reviews with text messages of 150 characters or less
-  const randomReviews = reviews
-    .filter(review => review.textMessage.length <= 150)
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 6);
+    // Randomize reviews and select 6 unique reviews
+    if (reviews.length > 0) {
+      const uniqueUsers = [];
+      const shuffledReviews = reviews.sort(() => Math.random() - 0.5);
+      const selected = [];
 
-  console.log(randomReviews)
+      for (const review of shuffledReviews) {
+        if (uniqueUsers.length >= 6) break;
+        if (!uniqueUsers.includes(review.user)) {
+          uniqueUsers.push(review.user);
+          selected.push(review);
+        }
+      }
+
+  
+   
+
+
 
   return (
     <div className='box reviews' id="reviewContainer">
@@ -22,13 +33,15 @@ const HomeReviews = () => {
       <div className="reviews-flexbox">
         {(randomReviews && randomReviews.length > 0 && !fetchingReviews) ? (
           <Carousel className="homeCarousel" infiniteLoop showStatus={false} showThumbs={false}>
-            {randomReviews.map((review, index) => (
+            {selected.map((review, index) => (
               <div className="review" key={index}>
                 <p>{`⭐⭐⭐⭐⭐`}</p>
                 <p>{`${review.textMessage}`}</p>
                 <div id="reviewUserDetails">
+
                   <Gravatar id="homereviewerIcon" size={500} default="mp" email={review.user.email} />
                 <p>{`${review.user.firstName} ${review.user.lastName}`}</p>
+
                 </div>
               </div>
             ))}
