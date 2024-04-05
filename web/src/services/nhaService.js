@@ -66,7 +66,7 @@ class NHAService {
     async getFeedback() {
         try {
             const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}feedback/getFeedback`);
-            // console.log(response.data);
+            //console.log(response.data);
             return response.data;
         } catch (error) {
             console.error('Error fetching feedback:', error);

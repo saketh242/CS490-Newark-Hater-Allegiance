@@ -4,7 +4,6 @@ import { signInWithEmailAndPassword, setPersistence, browserSessionPersistence }
 import { auth } from "../firebase";
 import { toast } from 'react-toastify';
 
-
 import { isValidEmail, isValidPassword } from '../utils/fieldValidations';
 
 import nhaService from '../services/nhaService';
@@ -54,10 +53,10 @@ const Login = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       const idToken = userCredential.user.getIdToken();
-      const userDetails = await nhaService.getUser(user);
-      const { firstName, lastName } = userDetails;
-      console.log(`Welcome ${firstName} ${lastName}`);
-      const msg = () => toast(`Welcome ${firstName} ${lastName}`);
+      //const userDetails = await nhaService.getUser(user);
+      // this line is calling it again lol
+      console.log(`Welcome ${user.displayName}`);
+      const msg = () => toast(`Welcome ${user.displayName}`);
       msg();
       navigate("/");
 
