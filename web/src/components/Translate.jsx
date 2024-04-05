@@ -1,10 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from '../firebase';
-import useAuth from '../useAuth';
 import Feedback from './Feedback';
-
 import CodeOutput from './CodeOutput';
 import History from './History';
 import { sanitizeCode } from '../utils/codeUtils';
@@ -15,14 +11,20 @@ import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faTimesCircle, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
 import hljs from 'highlight.js'; // Import Highlight.js
+import { ThreeDots } from 'react-loader-spinner'
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
 
 const Translate = () => {
 
+  const dbUserFromRedux = useSelector((state) => state.user.dbUser);
+  // getting the dbUser from redux
+
   //const { user } = useAuth();
   const user = auth.currentUser;
+
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -55,6 +57,7 @@ const Translate = () => {
     const fetchAPIStatus = async () => {
       try {
         const response = await nhaService.getOpenAIStatus();
+        if (!response) throw error;
         setApiReady(response);
       } catch (error) {
         setErrorAPI('Error fetching API status');
@@ -79,17 +82,17 @@ const Translate = () => {
   const translateCode = async () => {
 
     if (sourceLanguage === "" && desiredLanguage === "") {
-      alert("Please select the source and desired languages");
+      setTranslationError("Please select the source and desired languages");
       return
     }
 
     else if (sourceLanguage === "") {
-      alert("Please select a source language")
+      setTranslationError("Please select a source language")
       return
     }
 
     else if (desiredLanguage === "") {
-      alert("Please select a desired language")
+      setTranslationError("Please select a desired language")
       return
     }
 
@@ -110,8 +113,6 @@ const Translate = () => {
     if (!response.success) {
       setLoading(false);
       setTranslationError(response.message);
-      //alert(response.message);
-      //log error here? ...
       return;
     }
 
@@ -123,22 +124,17 @@ const Translate = () => {
     setUserTriggeredChange(true);
   };
 
-  // useEffect(() => {
-  //   if (translationError) {
-  //     alert(translationError);
-  //   }
-  // }, [translationError]);
-
   const handlePostHistory = async () => {
     try {
       if (translatedCode !== '' && userTriggeredChange) {
-        const post = await nhaService.postHistory(user, inputCode, translatedCode, sourceLanguage, desiredLanguage);
+        // throw new Error('simulated error: Unable to save translation to history');
+        const post = await nhaService.postHistory(user, dbUserFromRedux, inputCode, translatedCode, sourceLanguage, desiredLanguage);
         setPostId(post);
         handleGetAllHistory();
         setUserTriggeredChange(false);
       }
     } catch (error) {
-      console.error('Error posting history:', error);
+        setTranslationError("Unable to save translation to history.");
     }
   };
 
@@ -235,7 +231,13 @@ const Translate = () => {
   };
 
   const handleGetAllHistory = async () => {
-    setHistoryData(await nhaService.getAllHistory(user));
+    try{
+      setHistoryData(await nhaService.getAllHistory(user, dbUserFromRedux));
+    }
+    catch (error) {
+      console.log(error);
+      //temporary --> fill with actual handling of failure to obtain history entries
+    }
   };
 
   useEffect(() => {
@@ -254,10 +256,32 @@ const Translate = () => {
     detectLanguage();
   }, [inputCode]);
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const { selectionStart, selectionEnd } = e.target;
+      const newValue =
+        inputCode.substring(0, selectionStart) +
+        '\t' +
+        inputCode.substring(selectionEnd);
+      setInputCode(newValue);
+    }
+  };
+
   return (
     <div className="translateBody">
-      <History history={historyData} showSidebar={showSidebar} toggleSidebar={toggleSidebar}
-        setInputCode={setInputCode} setTranslatedCode={setTranslatedCode} />
+
+      <History
+        history={historyData}
+        showSidebar={showSidebar}
+        toggleSidebar={toggleSidebar}
+        setInputCode={setInputCode}
+        setTranslatedCode={setTranslatedCode}
+        setSourceLanguage={setSourceLanguage}
+        setDesiredLanguage={setDesiredLanguage}
+        sourceLanguage={sourceLanguage}
+        desiredLanguage={desiredLanguage}
+      />
 
       <div className="apiStatusMessage">
         <h1 className="apiStatus">
@@ -285,12 +309,39 @@ const Translate = () => {
           </select>
         </div>
 
-        <div className="conversionArrow">
-          {/* Arrow icon button */}
-          <button id="translationButton" className="translationButton" onClick={translateCode} disabled={loading || !apiReady}>
+        {/* <div className="conversionArrow"> */}
+        {/* <button id="translationButton" className="translationButton" onClick={translateCode} disabled={loading || !apiReady}>
             <FontAwesomeIcon id="icon" icon={faArrowRightLong} size="7x" />
           </button>
           <p>Convert</p>
+        </div> */}
+
+        {/* Arrow icon button */}
+        <div className="conversionArrow">
+          {loading || !apiReady ? (
+            <ThreeDots
+              visible={true}
+              height="80"
+              width="80"
+              color="#0ac6c0"
+              radius="9"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          ) : (
+            <>
+              <button
+                id="translationButton"
+                className="translationButton"
+                onClick={translateCode}
+                disabled={loading || !apiReady}
+              >
+                <FontAwesomeIcon id="icon" icon={faArrowRightLong} size="7x" />
+              </button>
+              <p>Convert</p>
+            </>
+          )}
         </div>
 
         <div className="dropdownContainer" id="rightDropdownContainer">
@@ -345,6 +396,7 @@ const Translate = () => {
           <textarea className="inputArea"
             value={inputCode}
             onChange={(e) => setInputCode(e.target.value)}
+            onKeyDown={handleKeyPress} // Handle key press events
             placeholder={error || "Enter code to translate"}
             style={{
               borderColor: error ? 'red' : '#0ac6c0',

@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const FeedBack = require("../models/Feedback");
+const logger = require('../logs/logger');
 
 const getFeedbackUser = async (uid) => {
     try {
@@ -11,7 +12,10 @@ const getFeedbackUser = async (uid) => {
 
         return { firstName: user.firstName, lastName: user.lastName, email:user.email };
     } catch (error) {
-        console.error('Error fetching user by uid'/*, error*/);
+        // console.error('Error fetching user by uid'/*, error*/);
+        logger.error(`Error: error fetching user by uid, ${error.message}, 
+        Location: backend/controllers/feedbackControllers.js`);
+
         return null;
     }
 };
@@ -62,29 +66,51 @@ const postFeedback = async (req, res, next) => {
         const inserted = await FeedBack.create(post);
         res.status(200).send("Feedback inserted!");
     } catch (error) {
-        console.error("Error posting feedback:", error);
+        // console.error("Error posting feedback:", error);
         res.status(500).json({ error: 'Internal Server Error' });
+        logger.error(`Error: error posting feedback, ${error.message}, 
+        Location: backend/controllers/feedbackControllers.js`);
     }
 };
 
 
 const getFeedback = async (req, res, next) => {
     try {
-        const feedbacks = await FeedBack.find({ TranslationRating: 5, UXRating: 5 }).select('-_id rating textMessage user');
-        
-        // Fetch user details for each feedback
+        const feedbacks = await FeedBack.aggregate([
+            {
+                $match: {
+                    TranslationRating: 5,
+                    UXRating: 5
+                }
+            },
+            {
+                $group: {
+                    _id: "$user", 
+                    feedback: { $first: "$$ROOT" }
+                }
+            },
+            {
+                $limit: 5
+            }
+        ]);
+
         const feedbacksWithUserDetails = await Promise.all(
-            feedbacks.map(async (feedback) => {
+            feedbacks.map(async ({ feedback }) => {
                 const user = await getFeedbackUser(feedback.user);
-                return { ...feedback.toObject(), user };
+                const { _id, ...feedbackDataWithoutId } = feedback;
+                return { ...feedbackDataWithoutId, user };
             })
         );
+
         res.status(200).send(feedbacksWithUserDetails);
     } catch (error) {
-        console.error("Error fetching feedbacks:", error);
+        // console.error("Error fetching feedbacks:", error);
         res.status(500).json({ error: 'Internal Server Error' });
+        logger.error(`Error: error fetching feedbacks, ${error.message}, 
+        Location: backend/controllers/feedbackControllers.js`);
     }
 };
+
 
 module.exports.getFeedback = getFeedback;
 module.exports.postFeedback = postFeedback;

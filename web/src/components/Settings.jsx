@@ -3,7 +3,6 @@ import { faGear, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
-import useAuth from '../useAuth';
 import { auth } from "../firebase";
 import { toast } from 'react-toastify';
 import { signInWithEmailAndPassword, EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification, signOut, updateEmail, verifyBeforeUpdateEmail, updateProfile } from "firebase/auth";
@@ -98,7 +97,7 @@ const Settings = () => {
               displayName: `${firstName}`
       })
       // now updating the dbUser in redux
-      const obj = {firstName: firstName, lastName: lastName, email: email};
+      const obj = {firstName: firstName, lastName: lastName, email: email, _id:dbUser._id};
       dispatch(setDbUser(obj))
       setUserData(obj)
       setPassword("");
