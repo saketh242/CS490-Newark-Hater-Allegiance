@@ -38,23 +38,27 @@ describe('History component', () => {
 
   const mockSetInputCode = jest.fn();
   const mockSetTranslatedCode = jest.fn();
+  const mockSetSourceLanguage = jest.fn();
+  const mockSetDesiredLanguage = jest.fn();
 
   test('renders correctly with history data and sidebar activated', () => {
     const { getByText, getAllByText } = render(
       <Provider store={store}>
         <History
-        history={mockHistory}
-        showSidebar={true}
-        toggleSidebar={() => {}}
-        setInputCode={mockSetInputCode}
-        setTranslatedCode={mockSetTranslatedCode}
-      />
+          history={mockHistory}
+          showSidebar={true}
+          toggleSidebar={() => {}}
+          setInputCode={mockSetInputCode}
+          setTranslatedCode={mockSetTranslatedCode}
+          setSourceLanguage={mockSetSourceLanguage}
+          setDesiredLanguage={mockSetDesiredLanguage}
+        />
       </Provider>
     );
 
     expect(getByText('Translation History')).toBeInTheDocument();
 
-    const loadButtons = getAllByText("Load Code");
+    const loadButtons = getAllByText("Translate again");
     expect(loadButtons.length).toBeGreaterThan(0);
 
     mockHistory.forEach(historyItem => {
@@ -64,59 +68,65 @@ describe('History component', () => {
       expect(getByText(historyItem.original_code)).toBeInTheDocument();
       expect(getByText(historyItem.converted_code)).toBeInTheDocument();
     });
+  });
 
-    test('does not render anything when history is null', () => {
-      const { container } = render(
-        <Provider store={store}>
-          <History
+  test('does not render anything when history is null', () => {
+    const { container } = render(
+      <Provider store={store}>
+        <History
           history={null}
           showSidebar={true}
           toggleSidebar={() => {}}
           setInputCode={mockSetInputCode}
           setTranslatedCode={mockSetTranslatedCode}
+          setSourceLanguage={mockSetSourceLanguage}
+          setDesiredLanguage={mockSetDesiredLanguage}
         />
-        </Provider>
-      );
-  
-      expect(container.firstChild).toBeNull();
-    });
-  
-    test('does not render anything when sidebar is supposed to be hidden with valid history', () => {
-      const { container } = render(
-        <Provider store={store}>
-          <History
+      </Provider>
+    );
+
+    expect(container.firstChild).toBeNull();
+  });
+
+  test('does not render anything when sidebar is supposed to be hidden with valid history', () => {
+    const { container } = render(
+      <Provider store={store}>
+        <History
           history={mockHistory}
           showSidebar={false}
           toggleSidebar={() => {}}
           setInputCode={mockSetInputCode}
           setTranslatedCode={mockSetTranslatedCode}
+          setSourceLanguage={mockSetSourceLanguage}
+          setDesiredLanguage={mockSetDesiredLanguage}
         />
-        </Provider>
-      );
-  
-      expect(container.firstChild).toBeNull();
-    });
-  
-    test('setInputCode and setTranslatedCode send the right data when Translate again buttons are clicked', () => {
-      const { getAllByText } = render(
-        <Provider store={store}>
-          <History
-            history={mockHistory}
-            showSidebar={true}
-            toggleSidebar={() => {}}
-            setInputCode={mockSetInputCode}
-            setTranslatedCode={mockSetTranslatedCode}
-          />
-        </Provider>
-      );
-  
-      const loadButtons = getAllByText("Translate again");
-  
-      for (let i = 0; i < loadButtons.length; i++) {
-        fireEvent.click(loadButtons[i]);
-        expect(mockSetInputCode).toHaveBeenCalledWith(mockHistory[i].original_code);
-        expect(mockSetTranslatedCode).toHaveBeenCalledWith(mockHistory[i].converted_code);
-      }
-    });
+      </Provider>
+    );
+
+    expect(container.firstChild).toBeNull();
   });
-})
+
+  test('setInputCode and setTranslatedCode send the right data when Translate again buttons are clicked', () => {
+    const { getAllByText } = render(
+      <Provider store={store}>
+        <History
+          history={mockHistory}
+          showSidebar={true}
+          toggleSidebar={() => {}}
+          setInputCode={mockSetInputCode}
+          setTranslatedCode={mockSetTranslatedCode}
+          setSourceLanguage={mockSetSourceLanguage}
+          setDesiredLanguage={mockSetDesiredLanguage}
+        />
+      </Provider>
+    );
+
+    const loadButtons = getAllByText("Translate again");
+
+    for (let i = 0; i < loadButtons.length; i++) {
+      fireEvent.click(loadButtons[i]);
+      expect(mockSetInputCode).toHaveBeenCalledWith(mockHistory[i].original_code);
+      expect(mockSetTranslatedCode).toHaveBeenCalledWith(mockHistory[i].converted_code);
+    }
+  });
+});
