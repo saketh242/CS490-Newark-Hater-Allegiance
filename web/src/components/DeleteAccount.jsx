@@ -5,7 +5,6 @@ import { reauthenticateWithCredential, EmailAuthProvider, updatePassword, signOu
 import { auth } from '../firebase';
 import { toast } from 'react-toastify';
 import nhaService from '../services/nhaService';
-import useAuth from '../useAuth';
 import spongecry from "../memeGifs/crysponge.gif"
 
 const DeleteAccount = () => {

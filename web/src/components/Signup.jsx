@@ -61,7 +61,7 @@ const Signup = () => {
   
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         updateProfile(userCredential.user, {
-          displayName: `${firstName}`
+          displayName: `${firstName} ${lastName}`
         })
         // Send verification email to the new email address
         await sendEmailVerification(auth.currentUser);

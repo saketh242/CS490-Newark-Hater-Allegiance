@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { toast } from 'react-toastify';
 import { auth } from '../firebase';
-import useAuth from '../useAuth';
 import { FaUserCircle } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 

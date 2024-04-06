@@ -6,48 +6,50 @@ import nhaService from "./services/nhaService";
 import { setUser, setDbUser, setIsLoading } from './features/user/userSlice'; 
 
 const useAuth = () => {
+  let authFlag = true;
   const dispatch = useDispatch();
 
   useEffect(() => {
-   
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      dispatch(setIsLoading(true)); 
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      dispatch(setIsLoading(true));
 
       if (firebaseUser) {
-
+        // extracting only required data because firebase does not like unserilizable data
         const userData = {
           uid: firebaseUser.uid,
           email: firebaseUser.email,
           displayName: firebaseUser.displayName,
           accessToken: firebaseUser.stsTokenManager.accessToken,
           emailVerified: firebaseUser.emailVerified,
-          // Simplifying the meta into a serilizable object because redux likes only serilizable data
           metadata: {
             creationTime: firebaseUser.metadata.creationTime,
             lastSignInTime: firebaseUser.metadata.lastSignInTime,
           },
         };
 
-        nhaService.getUser(firebaseUser)
-          .then(dbUser => {
-            dispatch(setUser(userData)); 
-            dispatch(setDbUser(dbUser)); 
-            dispatch(setIsLoading(false)); 
-          })
-          .catch((error) => {
-            console.error(error);
-            dispatch(setIsLoading(false)); 
-          });
-      } else {
+        try {
         
+          const dbUserDetails = await nhaService.getUser(firebaseUser);
+          // setting data in redux
+          dispatch(setUser(userData)); 
+          dispatch(setDbUser(dbUserDetails)); 
+        } catch (error) {
+          console.error("Failed to fetch user details:", error);
+          
+        }
+      } else {
+        // user not logged in so setting user and dbUser to null
         dispatch(setUser(null));
-        dispatch(setDbUser(null)); 
-        dispatch(setIsLoading(false)); 
+        dispatch(setDbUser(null));
       }
+
+      // Complete the loading process
+      dispatch(setIsLoading(false));
     });
 
+    // Cleanup function to unsubscribe from the auth state listener
     return () => unsubscribe();
-  }, [dispatch]);
+  }, [dispatch]); 
 
 };
 
