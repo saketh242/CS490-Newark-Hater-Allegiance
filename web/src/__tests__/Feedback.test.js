@@ -3,9 +3,11 @@ import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import NHAService from '../services/nhaService'; // Import NHAService using default import
 import Feedback from '../components/Feedback';
 import { jest } from '@jest/globals';
-import { toast } from 'react-toastify';
 
-let mockToast; // Declare mockToast outside of the describe block
+import { store } from '../app/store';
+import { Provider } from 'react-redux';
+
+//let mockToast; // Declare mockToast outside of the describe block
 
 describe('Feedback Component', () => {
   test('renders with correct props', async () => {

@@ -3,12 +3,17 @@ import '@testing-library/jest-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Home from '../components/Home';
 
+import { store } from '../app/store';
+import { Provider } from 'react-redux';
+
 describe('Home Component Tests', () => {
     test('renders the Home component', () => {
       render(
-        <Router>
-          <Home />
-        </Router>
+        <Provider store={store}>
+          <Router>
+            <Home />
+          </Router>
+        </Provider>
       );
  
       expect(screen.getByText(/Easy code translation in seconds!/i)).toBeInTheDocument()

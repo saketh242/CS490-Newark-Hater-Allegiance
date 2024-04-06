@@ -5,10 +5,11 @@ import userEvent from '@testing-library/user-event';
 import { BrowserRouter as Router } from 'react-router-dom';
 import NHANav from '../components/NHANav';
 import App from "../App" 
-import Help from "../components/Help"
-import { MemoryRouter } from 'react-router-dom'; 
+// import Help from "../components/Help"
+// import { MemoryRouter } from 'react-router-dom'; 
 
-
+import { store } from '../app/store';
+import { Provider } from 'react-redux';
 
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -42,13 +43,19 @@ jest.mock('../firebase', () => ({
 
 
 const renderNHANav = () => render(
-  <Router>
-    <NHANav />
-  </Router>
+  <Provider store={store}>
+    <Router>
+      <NHANav />
+    </Router>
+  </Provider>
 );
 
 const renderApp = () => render(
+    <Provider store={store}>
+      <Router>
       <App />
+      </Router>
+    </Provider>
   );
 describe('NHANav', () => {
   beforeEach(() => {
