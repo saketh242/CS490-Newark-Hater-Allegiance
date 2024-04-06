@@ -115,7 +115,7 @@ const Help = () => {
 
   return (
     <div className='standard'>
-      <h1 className="help-subtitle help-header">How can we help?</h1>
+      <h1 className="help-subtitle help-header" data-testid="help-header">How can we help?</h1>
 
       <div id='help-bar'>
         <div id='help-item' onClick={() => handleBox(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='3x' icon={faBook} /><h1 className='icon-txt' id={showBox === 1 ? 'help-active' : null}>Guides</h1></div>
