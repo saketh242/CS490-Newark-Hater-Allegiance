@@ -317,7 +317,7 @@ const Translate = () => {
         </div> */}
 
         {/* Arrow icon button */}
-        <div className="conversionArrow">
+        <div className="conversionArrow" data-testid="Convert">
           {loading || !apiReady ? (
             <ThreeDots
               visible={true}
