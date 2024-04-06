@@ -29,14 +29,11 @@ import useFetchReviews from './useFetchReviews';
 
 
 const App = () => {
-  const dispatch = useDispatch();
   useAuth();
   useFetchReviews();
   const user = useSelector((state) => state.user.user);
   const dbUser = useSelector((state) => state.user.dbUser);
   const isLoading = useSelector((state) => state.user.isLoading);
-
-
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -44,9 +41,7 @@ const App = () => {
 
   return !isLoading &&  (
     <>
-
       <Router>
-
         <div className="content">
           <NHANav/>
           <Routes>
@@ -64,18 +59,7 @@ const App = () => {
           </Routes>
         </div>
         <Footer />
-        {/* <ToastContainer
-          position="bottom-left"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-          transition:Bounce /> */}
+
         <ToastContainer
           position="bottom-right"
           autoClose={2000} 
