@@ -14,6 +14,7 @@ const Help = () => {
   const [openG1, setOpenG1] = useState(false);
   const [openG2, setOpenG2] = useState(false);
   const [openG3, setOpenG3] = useState(false);
+  const [openG4, setOpenG4] = useState(false);
 
   const handleBox = (e) => {
     setShowBox(e);
@@ -26,6 +27,7 @@ const Help = () => {
       case 1: setOpenG1(!openG1); break;
       case 2: setOpenG2(!openG2); break;
       case 3: setOpenG3(!openG3); break;
+      case 4: setOpenG4(!openG4); break;
     }
   };
 
@@ -86,12 +88,28 @@ const Help = () => {
 
         {/*Box 1*/}
         <div className='help-guides' id={showBox===1 ? 'focus': null}>
-          <h id='guide-title'>Have a look at these quick and detailed guides!</h>
-          {/*GETTING STARTED GUIDE*/}
-          <div id='guide-item' onClick={()=>handleGuide(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><h id={openG1 ? 'help-active': null}>Getting Started</h></div>
+          <p id='guide-title'>Have a look at these quick and detailed guides!</p>
+          {/*SIGNING UP GUIDE*/}
+          <div id='guide-item' onClick={()=>handleGuide(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><span id={openG1 ? 'help-active': null}>How to get started</span></div>
           {openG1 ? <div id='guide-text'>
-            <div className='box' id="getting-started-div">
-              <p id="instructionHeader" className="sectionHeader">Getting Started</p>
+            <div className='box' id="guide-div">
+              <p id="instructionHeader" className="sectionHeader">Getting started</p>
+              <ul className='instructions'>
+                <li>First, go to our login page and click the sign up button</li>
+                <li>Fill out the form with a valid email and sign up</li>
+                <li>Shortly after, you should recieve a verification email to finish the sign up process</li>
+                <li>Refresh the page and you should be let into the translator!</li>
+              </ul>
+              <div className='signup'>
+                <img className='signup-image guide-img' src={sample} alt="Sample Image"/>
+              </div>
+            </div>
+          </div> : null}
+          {/*TRANSLATING GUIDE*/}
+          <div id='guide-item' onClick={()=>handleGuide(2)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><span id={openG2 ? 'help-active': null}>How to translate</span></div>
+          {openG2 ? <div id='guide-text'>
+            <div className='box' id="guide-div">
+              <p id="instructionHeader" className="sectionHeader">Translating</p>
               <ul className='instructions'>
                 <li>Copy code into the text area or upload a file</li>
                 <li>Enter the source and destination languages</li>
@@ -99,14 +117,14 @@ const Help = () => {
                 <li>Download or copy the code to save it</li>
               </ul>
               <div className='signup'>
-                <img className='signup-image' src={sample} alt="Sample Image"/>
+                <img className='signup-image guide-img' src={sample} alt="Sample Image"/>
               </div>
             </div>
           </div> : null}
-          {/*TRANSLATING GUIDE*/}
-          <div id='guide-item' onClick={()=>handleGuide(2)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><h id={openG2 ? 'help-active': null}>How to submit a feedback</h></div>
-          {openG2 ? <div id='guide-text'>
-            <div className='box' id="getting-started-div">
+          {/*FEEDBACK GUIDE*/}
+          <div id='guide-item' onClick={()=>handleGuide(3)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><span id={openG3 ? 'help-active': null}>How to submit a feedback</span></div>
+          {openG3 ? <div id='guide-text'>
+            <div className='box' id="guide-div">
               <p id="instructionHeader" className="sectionHeader">Submitting a Feedback</p>
               <ul className='instructions'>
                 <li>After you make a translation, you can scroll down to submit feedback</li>
@@ -115,14 +133,14 @@ const Help = () => {
                 <li>We also store ratings</li>
               </ul>
               <div className='signup'>
-                <img className='signup-image' src={feedback} alt="feedBack Image"/>
+                <img className='signup-image guide-img' src={feedback} alt="feedBack Image"/>
               </div>
             </div>
           </div> : null}
           {/*PFP GUIDE*/}
-          <div id='guide-item' onClick={()=>handleGuide(3)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><h id={openG3 ? 'help-active': null}>How to set a profile picture</h></div>
-          {openG3 ? <div id='guide-text'>
-            <div className='box' id='pfpguide'>
+          <div id='guide-item' onClick={()=>handleGuide(4)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><span id={openG4 ? 'help-active': null}>How to set a profile picture</span></div>
+          {openG4 ? <div id='guide-text'>
+            <div className='box' id='guide-div'>
               <p id="instructionHeader" className="sectionHeader">Setting a profile picture</p>
                 <ul className='instructions'>
                   <li>First, start by going to <a className='link' id='guide-link' href="https://gravatar.com/" target="_blank">Gravatar</a> and creating an account with THE SAME EMAIL you used to sign up for NHAGPT</li>
@@ -131,7 +149,7 @@ const Help = () => {
                 </ul>
             </div>
             <div className='signup'>
-                <img className='signup-image' src={pfpImg} alt="Gravatar Profile Example"/>
+                <img className='signup-image guide-img' src={pfpImg} alt="Gravatar Profile Example"/>
               </div>
           </div> : null}
         </div>

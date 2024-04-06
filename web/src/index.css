@@ -1483,7 +1483,19 @@ input[type="checkbox"]{
 
 #help-active {
   color: #0446c0;
+  animation: clicked 1s linear;
+  animation-iteration-count: infinite
 }
+
+@keyframes clicked {
+  100%,0% {
+    color: #076966;
+  }
+  50% {
+    color: #0ac6c0;
+  }
+}
+
 
 #help-item:hover, #guide-item:hover {
   color: #0ac6c0;
@@ -1506,6 +1518,30 @@ input[type="checkbox"]{
 
 #guide-title {
   text-align: center;
+}
+
+.guide-img {
+  --g: 4px;     /* the gap */
+  --b: 5px;    /* border thickness*/
+  --c: #0ac6c0; /* the color */
+  
+  
+  padding: calc(var(--g) + var(--b));
+  --_c: #0000 0 25%, var(--c) 0 50%;
+  --_g1: repeating-linear-gradient(90deg ,var(--_c)) repeat-x;
+  --_g2: repeating-linear-gradient(180deg,var(--_c)) repeat-y;
+  background:
+    var(--_g1) var(--_p, 25%) 0   ,var(--_g2) 0    var(--_p,125%),
+    var(--_g1) var(--_p,125%) 100%,var(--_g2) 100% var(--_p, 25%);
+  background-size: 200% var(--b),var(--b) 200%;
+  cursor: pointer;
+  filter: grayscale(50%);
+  transition: .3s;
+}
+
+.guide-img:hover {
+  filter: grayscale(0%);
+  --_p: 75%;
 }
 
 #question-list li {
