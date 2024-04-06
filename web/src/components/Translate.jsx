@@ -346,7 +346,7 @@ const Translate = () => {
 
         <div className="dropdownContainer" id="rightDropdownContainer">
           <label htmlFor="desiredLanguage">Desired Language:</label>
-          <select id="desiredLanguage" onChange={handleDesiredLanguageChange}>
+          <select id="desiredLanguage" value={desiredLanguage} onChange={handleDesiredLanguageChange}>
             <option value="">Select</option>
             {languages.map((language, index) => (
               <option key={index} value={language.value}>{language.label}</option>
