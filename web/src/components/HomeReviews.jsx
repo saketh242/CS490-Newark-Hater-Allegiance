@@ -21,7 +21,7 @@ const HomeReviews = () => {
                 <p>{`${review.textMessage}`}</p>
                 <div id="reviewUserDetails">
 
-                  <Gravatar id="homereviewerIcon" size={500} default="mp" email={review.user.email} />
+                  <Gravatar id="homereviewerIcon" alt="Gravatar for reviewer" size={500} default="mp" email={review.user.email} />
                 <p>{`${review.user.firstName} ${review.user.lastName}`}</p>
 
                 </div>
