@@ -67,7 +67,7 @@ mongoose.connect(process.env.DATABASE)
     console.error("MongoDB connection unsuccessful :(", err);
   });
 
-app.use("/users", decodeToken, userRouter);
+app.use("/users", userRouter);
 app.use("/history", decodeToken, historyRouter);
 app.use("/feedback", feedbackRouter);
 app.use("/openAI", decodeToken, chatGptRouter)

@@ -6,7 +6,6 @@ import nhaService from "./services/nhaService";
 import { setUser, setDbUser, setIsLoading } from './features/user/userSlice'; 
 
 const useAuth = () => {
-  let authFlag = true;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,17 +25,13 @@ const useAuth = () => {
             lastSignInTime: firebaseUser.metadata.lastSignInTime,
           },
         };
-
-        try {
         
           const dbUserDetails = await nhaService.getUser(firebaseUser);
           // setting data in redux
           dispatch(setUser(userData)); 
           dispatch(setDbUser(dbUserDetails)); 
-        } catch (error) {
-          console.error("Failed to fetch user details:", error);
+        
           
-        }
       } else {
         // user not logged in so setting user and dbUser to null
         dispatch(setUser(null));

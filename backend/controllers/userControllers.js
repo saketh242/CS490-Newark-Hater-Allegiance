@@ -1,12 +1,15 @@
 const User = require("../models/User");
 const Feedback = require("../models/Feedback");
 const History = require("../models/History");
+const admin = require("../config/firebase");
+const auth = admin.auth();
 
-const validateUserInput = (firstName, lastName, email, uid) => {
+
+const validateUserInput = (firstName, lastName, email) => {
     const nameRegex = /^[a-zA-Z\s]+$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!nameRegex.test(firstName) || !nameRegex.test(lastName) || !emailRegex.test(email) || !uid) {
+    if (!nameRegex.test(firstName) || !nameRegex.test(lastName) || !emailRegex.test(email)) {
         throw new Error('Invalid input data');
     }
 
@@ -33,16 +36,28 @@ const deleteUser = async (req, res, next) => {
 
 const insertUser = async (req, res, next) => {
     try {
-        const { uid } = req;
-        const { firstName, lastName, email } = req.body;
+        //const { uid } = req;        
+        const { firstName, lastName, email, password } = req.body;
 
-        validateUserInput(firstName, lastName, email, uid);
+        validateUserInput(firstName, lastName, email);
 
-        if (await User.exists({ $or: [{ uid }, { email }] })) 
+        if (await User.exists({ $or: [ { email }] })) {
             return res.status(409).json({ error: 'User already exists' });
+        }
 
-        await User.create({ firstName, lastName, email, uid });
-        res.status(200).json({ message: 'User information received successfully' });
+        auth.createUser({
+            email: email,
+            displayName: firstName,
+            password: password,
+            emailVerified: false
+        }).then(async (userRecord) => {
+            const uid = userRecord.uid;
+            await User.create({ firstName, lastName, email, uid });
+            res.status(200).json({ message: 'User information received successfully' });
+        }).catch((e) => {
+            console.log("Error creating user");
+            throw e;
+        })
     } catch (error) {
         if (error.message === 'Invalid input data') {
             return res.status(400).json({ error: 'Invalid user input data' });

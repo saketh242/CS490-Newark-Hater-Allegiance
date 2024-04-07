@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { createUserWithEmailAndPassword, setPersistence, browserSessionPersistence, sendEmailVerification, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, setPersistence, browserSessionPersistence, sendEmailVerification, updateProfile, signInWithEmailAndPassword } from 'firebase/auth';
 import { isValidEmail, isValidPassword, isValidName } from "../utils/fieldValidations";
 import { auth } from '../firebase';
 import { toast } from 'react-toastify';
-import useAuth from "../useAuth";
 import nhaService from '../services/nhaService';
 
 const Signup = () => {
 
   const navigate = useNavigate();
-  const user = auth.currentUser;
+
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
@@ -24,9 +23,8 @@ const Signup = () => {
     setIsChecked(!isChecked);
   }
 
-  const handleSignup = async (e) => {
-
-    e.preventDefault();
+  const handleSignup = async (event) => {
+    event.preventDefault();
 
     if (firstName === "" || lastName === "" || email === "" || password === "" || password2 === "") {
       setError("All fields are required!")
@@ -54,31 +52,29 @@ const Signup = () => {
     }
 
     try {
-      // setting persistence here
-      if (!isChecked) {
-        await setPersistence(auth, browserSessionPersistence);
+     
+      // creating the user with backend 
+      const response = await nhaService.postUser(firstName, lastName, email, password);
+      if (response.message == "User information received successfully"){
+        console.log("Hello Saketh");
       }
-
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-      updateProfile(userCredential.user, {
-        displayName: `${firstName} ${lastName}`
-      })
+      await signInWithEmailAndPassword(auth, email, password);
       // Send verification email to the new email address
       await sendEmailVerification(auth.currentUser);
       console.log("Verification email sent");
-      const user = userCredential.user;
-      const idToken = await user.getIdToken();
-      await nhaService.postUser(firstName, lastName, email, idToken)
+       // setting persistence here
+       if (!isChecked) {
+        await setPersistence(auth, browserSessionPersistence);
+      }      
       const msg = () => toast(`Welcome ${firstName} ${lastName}, verify email to continue!`);
-      msg()
-      navigate("/")
+      msg();  
 
     } catch (e) {
-      if (e.message === "Firebase: Error (auth/email-already-in-use).") {
+      if (e.message == "User already exists"){
         setError("Email address already registered!")
         return
       }
-      console.log(e.message)
+      
     }
   }
   return (
@@ -165,7 +161,7 @@ const Signup = () => {
             checked={isChecked}
             onChange={handleCheckboxChange}
           /></p>
-          <button type="submit" className='login-btn' onClick={handleSignup}>Signup</button>
+          <button className='login-btn' onClick={handleSignup}>Signup</button>
           <div className='signup-msg'>
             <p>Already have an account?</p>
             <Link to="/login">

@@ -3,16 +3,19 @@ import axios from "axios";
 
 class NHAService {
 
-    async postUser(firstName, lastName, email, token) {
+    async postUser(firstName, lastName, email, password) {
         try {
-            const payload = { firstName, lastName, email };
-            const headers = {
-                Authorization: `Bearer ${token}`
-            };
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}users/postUser`, payload, { headers });
+            const payload = { firstName, lastName, email, password };
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}users/postUser`, payload);
             return response.data;
         } catch (error) {
-            console.error('Error posting user: ', error);
+            if (error.response){
+                if (error.response.status = 404){
+                    throw new Error('User already exists')
+                } else{
+                    throw new Error('An error occured when updating the user')
+                }
+            }
         }
     }
 

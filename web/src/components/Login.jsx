@@ -56,8 +56,7 @@ const Login = () => {
       //const userDetails = await nhaService.getUser(user);
       // this line is calling it again lol
       console.log(`Welcome ${user.displayName}`);
-      const msg = () => toast(`Welcome ${user.displayName}`);
-      msg();
+      toast(`Welcome ${user.displayName}`);
       navigate("/");
 
     } catch (err) {
