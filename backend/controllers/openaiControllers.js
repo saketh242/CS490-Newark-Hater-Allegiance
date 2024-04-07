@@ -2,6 +2,7 @@ const OpenAIApi = require('openai');
 const logger = require('../logs/logger');
 
 const openai = new OpenAIApi.OpenAI({ key: process.env.OPENAI_API_KEY });
+const openai2 = new OpenAIApi.OpenAI({ key: process.env.OPENAI_API_KEY2 });
 
 const detectLanguage = async (code) => {
     const prompt = `
@@ -12,7 +13,7 @@ const detectLanguage = async (code) => {
     
     please respond with one of the following languages and only say the language: ["python", "javascript", "java", "c", "csharp", "cplusplus", "php", "go", "ruby", "typescript"]`;
 
-    const response = await openai.chat.completions.create({
+    const response = await openai2.chat.completions.create({
         model: "gpt-3.5-turbo-0125",
         messages: [
             { role: "system", content: "You are a helpful assistant who's job is to detect the language of input code!" },
@@ -41,9 +42,7 @@ const postPrompt = async (req, res, next) => {
         [no prose] Translate the following ${sourceLanguage} code to ${desiredLanguage} and provide only the full ${desiredLanguage} code:
 
         \`\`\`${inputCode}
-        \`\`\`
-        
-        If the source language is not recognized or supported, or if the input code contradicts the specified ${sourceLanguage} language, please output "Language does not match", and do not proceed with the translation`;
+        \`\`\``;
 
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo-0125",
@@ -58,10 +57,6 @@ const postPrompt = async (req, res, next) => {
         }
 
         const translatedCode = response.choices[0].message.content;
-
-        if (translatedCode.includes('Language does not match')) {
-            throw new Error("Input code does not match specified source language");
-        }
 
         const filtered = translatedCode.replace(/```/g, '');
         const code = filtered.split('\n').slice(1).join('\n').trim();
