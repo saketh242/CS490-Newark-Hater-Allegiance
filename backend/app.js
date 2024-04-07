@@ -12,19 +12,27 @@ const issueRouter = require("./routes/issueRoutes");
 const decodeToken = require("./middleware/index");
 const sendErrorLogEmail = require('./logs/notifyDevs');
 const cron = require('node-cron');
-
+const rateLimit = require('express-rate-limit');
 const queue = require('express-queue');
 
+// express-rate-limit --> limits each IP to 100 requests per 15 mins :), 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 100, 
+  standardHeaders: true, 
+  legacyHeaders: false, 
+  message: "Rate limit exceeded, only 100 requests allowed per 15 minutes"
+});
+
+app.use(limiter);
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path} - ${req.ip}`);
   next();
 });
 
-
 app.use(express.json());
 app.use(cors());
 app.use(mongoSanitize()); //sanitize all user input
-
 app.use(queue({ activeLimit: 1, queuedLimit: -1 }));
 
 // Schedule the cron job to run at 8 AM when app running
