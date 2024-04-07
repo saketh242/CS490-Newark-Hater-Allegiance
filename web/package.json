@@ -15,6 +15,7 @@
     "bootstrap": "^5.3.3",
     "firebase": "^10.8.1",
     "highlight.js": "^11.9.0",
+    "node-fetch": "^3.3.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",
     "react-bootstrap-sidebar-menu": "^2.0.3",

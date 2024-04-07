@@ -7,18 +7,13 @@ import { FaUserCircle } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 
 import Gravatar from 'react-gravatar'
-
-
 function NHANav() {
 
   const user = useSelector((state) => state.user.user);
   const dbUser = useSelector((state) => state.user.dbUser);
   const isLoading = useSelector((state) => state.user.isLoading);
 
-
-
   const navigate = useNavigate()
-
   // function to handle logout 
   const handleLogout = () => {
     signOut(auth).then(() => {
