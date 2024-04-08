@@ -4,7 +4,6 @@ import { isValidPassword } from '../utils/fieldValidations'
 import { reauthenticateWithCredential, EmailAuthProvider, updatePassword, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import { toast } from 'react-toastify';
-import useAuth from '../useAuth';
 const ChangePassword = () => {
 
     const navigate = useNavigate();
@@ -13,7 +12,8 @@ const ChangePassword = () => {
     const [newPassword, setNewPassword] = useState("");
     const [newPassword2, setNewPassword2] = useState("");
     const [error, setError] = useState(null);
-    const {user, isLoading} = useAuth()
+    // const {user, isLoading} = useAuth()
+    const user = auth.currentUser;
 
     const handleChangePassword = async (e) => {
 

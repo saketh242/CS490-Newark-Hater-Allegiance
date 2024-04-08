@@ -3,25 +3,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { toast } from 'react-toastify';
 import { auth } from '../firebase';
-import useAuth from '../useAuth';
 import { FaUserCircle } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 
-
-
-
+import Gravatar from 'react-gravatar'
 function NHANav() {
 
-  const userName = useSelector((state) => state.user.name);
-
+  const user = useSelector((state) => state.user.user);
+  const dbUser = useSelector((state) => state.user.dbUser);
+  const isLoading = useSelector((state) => state.user.isLoading);
 
   const navigate = useNavigate()
-  const { user, isLoading, name, setName } = useAuth()
-
   // function to handle logout 
   const handleLogout = () => {
     signOut(auth).then(() => {
-      //setName(null);
       navigate("/");
       console.log("Signed out successfully")
       navigate("/login")
@@ -34,7 +29,6 @@ function NHANav() {
 
   return (
     <>
-
       <nav className="nha-navbar">
         <Link className="nav-brand nav-a" to="/">
           NHAGPT
@@ -49,7 +43,11 @@ function NHANav() {
           </Link>
           <div className="dropdown-nav">
             <Link className='nav-a nav-rl '>
-              <FaUserCircle className='nav-icon' />
+              {user ? (
+                <Gravatar className='nav-icon' id="navPic" default="mp" email={user.email} />
+              ) : (
+                <FaUserCircle className='nav-icon' />
+              )}
             </Link>
             <div className="dropdown-content">
               {!user ? (
@@ -59,9 +57,9 @@ function NHANav() {
                 </>
               ) : (
                 <>
-                  <Link className='nav-a nav-rl' to="/viewProfile">Hi {userName? userName:name} (👉ﾟヮﾟ)👉</Link>
-                  <Link onClick={handleLogout} className='nav-a nav-rl'>Logout</Link>
+                  <Link className='nav-a nav-rl' to="/viewProfile">Hi {dbUser&& dbUser.firstName} (👉ﾟヮﾟ)👉</Link>
                   <Link className='nav-a nav-rl' to="/settings">Settings</Link>
+                  <Link onClick={handleLogout} className='nav-a nav-rl'>Logout</Link>
                 </>
               )}
 

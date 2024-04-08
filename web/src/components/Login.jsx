@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from 'firebase/auth';
 import { auth } from "../firebase";
-import useAuth from '../useAuth';
 import { toast } from 'react-toastify';
-
 
 import { isValidEmail, isValidPassword } from '../utils/fieldValidations';
 
@@ -17,7 +15,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
-  const { user, isLoading } = useAuth();
+  
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -31,7 +29,7 @@ const Login = () => {
 
     e.preventDefault();
 
-    if (email === '' || password == ""){
+    if (email === '' || password == "") {
       setError("Please fill all the fields");
       return
     }
@@ -55,10 +53,10 @@ const Login = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       const idToken = userCredential.user.getIdToken();
-      const userDetails = await nhaService.getUser(user);
-      const { firstName, lastName } = userDetails;
-      console.log(`Welcome ${firstName} ${lastName}`);
-      const msg = () => toast(`Welcome ${firstName} ${lastName}`);
+      //const userDetails = await nhaService.getUser(user);
+      // this line is calling it again lol
+      console.log(`Welcome ${user.displayName}`);
+      const msg = () => toast(`Welcome ${user.displayName}`);
       msg();
       navigate("/");
 
@@ -74,7 +72,10 @@ const Login = () => {
   return (
     <div className='login-content'>
 
-      <h2 className="login-heading">NHAGPT</h2>
+      <div className="loginTop">
+        <h2 className="login-heading">NHAGPT</h2>
+        {/* <p className="loginHeaderText">Login</p> */}
+      </div>
       <form className='login-form'>
         <div className="login-box">
           <input
@@ -104,7 +105,7 @@ const Login = () => {
                 setPassword(e.target.value)
                 setError(null);
               }
-              
+
             }
             placeholder="Password"
             autoComplete='off'

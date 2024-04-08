@@ -3,9 +3,10 @@ import { render, screen, act, fireEvent, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom';
 import Translate from '../components/Translate';
 import '@testing-library/jest-dom'; // Import this for better assertion messages
-import userEvent from '@testing-library/user-event';
+// import nhaService from '../services/nhaService'
 
-import nhaService from '../services/nhaService'
+import { store } from '../app/store';
+import { Provider } from 'react-redux';
 
 //TODO:
 // test empty input
@@ -33,9 +34,9 @@ describe('Translate component', () => {
   it('renders input and output code areas', async () => {
     await act(async () => {
       render(
-        <MemoryRouter>
+        <Provider store={store}>
           <Translate />
-        </MemoryRouter>
+        </Provider>
       );
     });
 
@@ -51,13 +52,13 @@ describe('Translate component', () => {
 describe('Translate component', () => {
   test('renders Translate component', () => {
     <MemoryRouter>
-        render(<Translate />)
+        render(<Provider store={store}><Translate /></Provider>)
     </MemoryRouter>
     
   });
 
   test('updates input code value when typing', () => {
-    const { getByPlaceholderText } = render(<Translate />);
+    const { getByPlaceholderText } = render(<Provider store={store}><Translate /></Provider>);
     const inputArea = getByPlaceholderText('Enter code to translate');
 
     fireEvent.change(inputArea, { target: { value: 'console.log("Hello, world!")' } });
@@ -66,7 +67,7 @@ describe('Translate component', () => {
   });
 
   test('updates source language when selecting from dropdown', () => {
-    const { getByLabelText } = render(<Translate />);
+    const { getByLabelText } = render(<Provider store={store}><Translate /></Provider>);
     const sourceLanguageDropdown = getByLabelText('Source Language:');
 
     fireEvent.change(sourceLanguageDropdown, { target: { value: 'javascript' } });
@@ -75,7 +76,7 @@ describe('Translate component', () => {
   });
 
   test('updates desired language when selecting from dropdown', () => {
-    const { getByLabelText } = render(<Translate />);
+    const { getByLabelText } = render(<Provider store={store}><Translate /></Provider>);
     const desiredLanguageDropdown = getByLabelText('Desired Language:');
 
     fireEvent.change(desiredLanguageDropdown, { target: { value: 'python' } });
@@ -84,9 +85,9 @@ describe('Translate component', () => {
   });
 
   test('handles short code properly', async () => {
-    render(<Translate />);
+    render(<Provider store={store}><Translate /></Provider>);
     const inputArea = screen.getByPlaceholderText('Enter code to translate');
-    const translateButton = screen.getByText('Convert');
+    const translateButton = screen.getByTestId('Convert');
   
     fireEvent.change(inputArea, { target: { value: 'console.log("Short code")' } });
     fireEvent.click(translateButton);
@@ -99,9 +100,9 @@ describe('Translate component', () => {
   });
   
   test('handles long code properly', async () => {
-    render(<Translate />);
+    render(<Provider store={store}><Translate /></Provider>);
     const inputArea = screen.getByPlaceholderText('Enter code to translate');
-    const translateButton = screen.getByText('Convert');
+    const translateButton = screen.getByTestId('Convert');
   
     // Generate long code (for example purposes, we'll use a simple repetition)
     const longCode = 'console.log("Long code".repeat(100))';
@@ -122,7 +123,7 @@ describe('Translate component', () => {
     // jest.spyOn(nhaService, 'postPrompt').mockResolvedValueOnce({ success: false, message: 'Translation failed' });
   
     // Render the component
-    render(<Translate />);
+    render(<Provider store={store}><Translate /></Provider>);
   
     // // Enter input code and initiate translation
     // const inputArea = screen.getByPlaceholderText('Enter code to translate');
@@ -171,7 +172,7 @@ Object.assign(navigator, {
 
 describe('Translate component', () => {
   it('copies code to the clipboard when the copy button is clicked', async () => {
-    const { getByTitle } = render(<Translate />);
+    const { getByTitle } = render(<Provider store={store}><Translate /></Provider>);
     const copyButton = getByTitle('Copy code');
 
     // Simulating a click on the copy button
@@ -192,7 +193,7 @@ describe('Translate component', () => {
     global.URL.createObjectURL = mockCreateObjectURL;
     global.URL.revokeObjectURL = mockRevokeObjectURL;
 
-    const { getByTitle } = render(<Translate />);
+    const { getByTitle } = render(<Provider store={store}><Translate /></Provider>);
     const downloadButton = getByTitle('Download code'); 
 
     fireEvent.click(downloadButton);
@@ -206,31 +207,15 @@ describe('Translate component', () => {
 
 describe('Sidebar rendered component', () => {
   it('triggers sidebar history when button is pressed', () => {
-    const { container } = render(<Translate />);
+    const { container } = render(
+      <Provider store={store}>
+        <Translate />
+      </Provider>
+    );
     fireEvent.click(container.getElementsByClassName("historyButton")[0]);
     expect(screen.findByText("Translation History"));
   });
 });
-
-// describe('Translate component', () => {
-//   it('displays an error when trying to convert with empty input', async () => {
-//     const { container } = render(<Translate />);
-//     // Using placeholder or test ID for input as before
-//     const inputField = screen.getByPlaceholderText('Enter code to translate'); 
-
-//     // Alternative approach using container.querySelector to select the convert button by its id
-//     const convertButton = container.querySelector('#translationButton');
-
-//     // Attempt to click the convert button without entering any input
-//     await userEvent.click(convertButton);
-
-//     // Check for an error message
-//     const errorMessage = screen.getByText('Input code cannot be empty');
-//     expect(errorMessage).toBeInTheDocument();
-//   });
-// });
-
-
 
 // // Mock the entire module to mock the postPrompt function
 // jest.mock('../services/nhaService');

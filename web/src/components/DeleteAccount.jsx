@@ -5,14 +5,14 @@ import { reauthenticateWithCredential, EmailAuthProvider, updatePassword, signOu
 import { auth } from '../firebase';
 import { toast } from 'react-toastify';
 import nhaService from '../services/nhaService';
-import useAuth from '../useAuth';
 import spongecry from "../memeGifs/crysponge.gif"
 
 const DeleteAccount = () => {
 
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
-    const { user, isLoading } = useAuth()
+    // const { user, isLoading } = useAuth()
+    const user = auth.currentUser;
     const navigate = useNavigate()
     const [deleted, setDeleted] = useState(false);
    
@@ -61,7 +61,7 @@ const DeleteAccount = () => {
             {!deleted && (
                 <>
             
-            <h2 className="delete-heading">Deleted accounts cannot be recovered again!</h2>
+            <h2 className="delete-heading warning-flash">Deleted accounts cannot be recovered again!</h2>
             <form className="delete-form">
                 <input
                     type="password"
@@ -85,6 +85,7 @@ const DeleteAccount = () => {
                  type="submit"
                   onClick={handleDelete} 
                   className="login-btn"
+                  id='delete-acc-btn'
                   >Delete Account</button>
             </form>
             {error && <p className="error-msg">{error}</p>}
