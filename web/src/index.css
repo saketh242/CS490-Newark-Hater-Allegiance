@@ -37,6 +37,11 @@
   animation-iteration-count: infinite;
 }
 
+.rainbow-fast {
+  animation: rainbow 0.5s linear;
+  animation-iteration-count: infinite;
+}
+
 @keyframes rainbow {
   100%,0% {
     color: rgb(255,0,0);

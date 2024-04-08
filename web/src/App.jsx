@@ -36,7 +36,7 @@ const App = () => {
   const isLoading = useSelector((state) => state.user.isLoading);
 
   if (isLoading) {
-    return <div id='loading-page'><h1 className='rainbow'>Loading...</h1></div>;
+    return <div id='loading-page'><h1 className='rainbow-fast'>Loading...</h1></div>;
   }
 
   return !isLoading &&  (
