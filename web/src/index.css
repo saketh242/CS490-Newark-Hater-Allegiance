@@ -138,6 +138,18 @@
   margin:1rem;
 }
 
+/*LOADING PAGE*/
+#loading-page {
+  text-align: center;
+  background-color: #1A1C23;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
+
 /* Navbar Styling */
 
 .nav-name {

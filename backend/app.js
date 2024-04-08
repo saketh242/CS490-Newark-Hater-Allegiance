@@ -24,7 +24,7 @@ const limiter = rateLimit({
   message: "Rate limit exceeded, only 100 requests allowed per 15 minutes"
 });
 
-app.use(limiter);
+// app.use(limiter);
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path} - ${req.ip}`);
   next();
