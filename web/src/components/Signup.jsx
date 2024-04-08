@@ -6,11 +6,14 @@ import { auth } from '../firebase';
 import { toast } from 'react-toastify';
 import useAuth from "../useAuth";
 import nhaService from '../services/nhaService';
+import { useDispatch } from 'react-redux';
+import { setUser, setDbUser } from '../features/user/userSlice';
 
 const Signup = () => {
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = auth.currentUser;
+  const [user, setUser] = useState(auth.currentUser);
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
@@ -18,6 +21,13 @@ const Signup = () => {
   const [password2, setPassword2] = useState("")
   const [error, setError] = useState(null)
   const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    // If user is already logged in, navigate to the home page
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
 
   const handleCheckboxChange = () => {
@@ -67,12 +77,12 @@ const Signup = () => {
       await sendEmailVerification(auth.currentUser);
       console.log("Verification email sent");
       const user = userCredential.user;
+      setUser(user);
       const idToken = await user.getIdToken();
       await nhaService.postUser(firstName, lastName, email, idToken)
+      dispatch(setDbUser({ firstName, lastName }));
       const msg = () => toast(`Welcome ${firstName} ${lastName}, verify email to continue!`);
       msg()
-      navigate("/")
-
     } catch (e) {
       if (e.message === "Firebase: Error (auth/email-already-in-use).") {
         setError("Email address already registered!")
