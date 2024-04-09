@@ -65,13 +65,16 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
     };
   });
 
-  const [history, setHistoryData] = useState(null);
+  const [originalHistory, setOriginalHistory] = useState(null); 
+  const [history, setHistoryData] = useState(null); 
+
   const handleGetAllHistory = async () => {
     try {
-      setHistoryData(await nhaService.getAllHistory(user, dbUserFromRedux, ascend, sortField));
+      const fetchedHistory = await nhaService.getAllHistory(user, dbUserFromRedux, sortField);
+      setOriginalHistory(fetchedHistory); 
+      setHistoryData(fetchedHistory); 
       console.log("spingus bingus");
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
       //temporary --> fill with actual handling of failure to obtain history entries
     }
@@ -83,7 +86,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
       handleGetAllHistory();
       setTriggerHistory(false);
     }
-  }, [user, triggerHistory])
+  }, [user, triggerHistory]);
 
   useEffect(() => {
     setSortField("");
@@ -91,7 +94,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
     setFilterField("");
     setSelectedFilterItem("");
     setFilterOptions([]);
-  }, [showSidebar])
+  }, [showSidebar]);
 
   const [ascend, setAscend] = useState(-1);
 
@@ -99,39 +102,88 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
   const changeSort = (e) => {
     setSortField(e.target.value);
     setTriggerHistory(true);
-  }
+  };
 
   const [filterField, setFilterField] = useState("");
   const changeFilter = (e) => {
     setFilterField(e.target.value);
     changeFilterOptions(e.target.value);
-  }
+  };
 
   const [filterOptions, setFilterOptions] = useState([]);
   const changeFilterOptions = (filter) => {
     const objects = new Set();
     if (filter === "Date") {
-      history.forEach((element) => {
+      originalHistory.forEach((element) => {
         objects.add(dateConversion(element.createdAt));
-      })
-    }
-    else if (filter === "Source") {
-      history.forEach((element) => {
+      });
+    } else if (filter === "Source") {
+      originalHistory.forEach((element) => {
         objects.add(element.Source_language);
-      })
-    }
-    else if (filter === "Destination") {
-      history.forEach((element) => {
+      });
+    } else if (filter === "Destination") {
+      originalHistory.forEach((element) => {
         objects.add(element.Desired_language);
-      })
+      });
     }
     setFilterOptions(Array.from(objects));
-  }
+  };
 
   const [selectedFilterItem, setSelectedFilterItem] = useState("");
   const changeSelectedFilterItem = (e) => {
-    setSelectedFilterItem(e.target.value);
-  }
+    const selectedValue = e.target.value;
+
+    if (selectedValue === "") {
+      setHistoryData(originalHistory);
+    } else {
+      const filteredHistory = originalHistory.filter((item) => {
+        if (filterField === "Date") {
+          return dateConversion(item.createdAt) === selectedValue;
+        } else if (filterField === "Source") {
+          return item.Source_language === selectedValue;
+        } else if (filterField === "Destination") {
+          return item.Desired_language === selectedValue;
+        }
+        return true; 
+      });
+
+      setHistoryData(filteredHistory);
+    }
+
+    setSelectedFilterItem(selectedValue);
+  };
+
+  useEffect(() => {
+    if (history !== null && ascend !== 0) {
+      let sortedHistory = [...history];
+      if (sortField === "Date" || sortField === "") {
+        sortedHistory = sortedHistory.sort((a, b) => {
+          if (ascend === 1) {
+            return a.createdAt.localeCompare(b.createdAt);
+          } else {
+            return b.createdAt.localeCompare(a.createdAt);
+          }
+        });
+      } else if (sortField === "Source") {
+        sortedHistory = sortedHistory.sort((a, b) => {
+          if (ascend === 1) {
+            return a.Source_language.localeCompare(b.Source_language);
+          } else {
+            return b.Source_language.localeCompare(a.Source_language);
+          }
+        });
+      } else if(sortField === "Destination") {
+        sortedHistory = sortedHistory.sort((a, b) => {
+          if (ascend === 1) {
+            return a.Desired_language.localeCompare(b.Desired_language);
+          } else {
+            return b.Desired_language.localeCompare(a.Desired_language);
+          }
+        });
+      }
+      setHistoryData(sortedHistory);
+    }
+  }, [ascend]);
 
   if (history === null || showSidebar === false) return (<></>);
   return (
@@ -162,7 +214,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
               <div className="sortAndFilter">
                 {/* sort asc/desc */}
                 <button>
-                  <FontAwesomeIcon id="ascdsc" icon={ascend === 1 ? faArrowUp : faArrowDown} onClick={() => {setAscend(ascend * -1); setTriggerHistory(true);}} />
+                  <FontAwesomeIcon id="ascdsc" icon={ascend === 1 ? faArrowUp : faArrowDown} onClick={() => setAscend(ascend * -1)} />
                 </button>
 
                 {/* sort by */}
@@ -237,6 +289,6 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
       </Drawer>
     </>
   );
-}
+};
 
-export default History
+export default History;
