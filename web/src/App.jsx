@@ -34,13 +34,12 @@ const App = () => {
   const user = useSelector((state) => state.user.user);
   const dbUser = useSelector((state) => state.user.dbUser);
   const isLoading = useSelector((state) => state.user.isLoading);
-  /*
+  
   if (isLoading) {
-    setTimeout(2000);
     return <div>Loading...</div>;
   }
-  */
-  return (
+  
+  return !isLoading && (
     <>
       <Router>
         <div className="content">
