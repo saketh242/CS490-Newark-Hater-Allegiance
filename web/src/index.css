@@ -1992,6 +1992,14 @@ input[type="checkbox"]{
   padding:2rem;
 }
 
+.historyError{
+  display:flex;
+  justify-content: center;
+  padding: 1rem;
+  margin: 1rem;
+  text-align: center;
+}
+
 .link{
   text-decoration: none;
 }

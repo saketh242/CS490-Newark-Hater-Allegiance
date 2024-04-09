@@ -286,7 +286,7 @@ const Translate = () => {
       <div className="dropdown">
         <div className="dropdownContainer" id="leftDropdownContainer">
           <label htmlFor="originLanguage">Source Language:</label>
-          <select id="originLanguage" value={sourceLanguage} onChange={handleSourceLanguageChange}>
+          <select id="originLanguage" value={sourceLanguage} onChange={handleSourceLanguageChange} data-testid='source-language-dropdown'>
             <option value="">Select</option>
             {languages.map((language, index) => (
               <option key={index} value={language.value}>{language.label}</option>
@@ -331,7 +331,7 @@ const Translate = () => {
 
         <div className="dropdownContainer" id="rightDropdownContainer">
           <label htmlFor="desiredLanguage">Desired Language:</label>
-          <select id="desiredLanguage" value={desiredLanguage} onChange={handleDesiredLanguageChange}>
+          <select id="desiredLanguage" value={desiredLanguage} onChange={handleDesiredLanguageChange} data-testid='desired-language-dropdown'>
             <option value="">Select</option>
             {languages.map((language, index) => (
               <option key={index} value={language.value}>{language.label}</option>
@@ -341,7 +341,7 @@ const Translate = () => {
       </div>
 
       {translationError !== '' &&
-        <div className="translationError">
+        <div className="translationError" data-testid="translationErrorDiv">
           <FontAwesomeIcon icon={faCircleExclamation} id="errorIcon" size="2x" />
           <p>{translationError}</p>
         </div>}
