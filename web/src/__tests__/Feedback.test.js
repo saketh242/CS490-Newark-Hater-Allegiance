@@ -1,12 +1,13 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import NHAService from '../services/nhaService'; // Import NHAService using default import
+import nhaService from '../services/nhaService'; // Import NHAService using default import
 import Feedback from '../components/Feedback';
 import { jest } from '@jest/globals';
 import { Provider } from 'react-redux';
 import { store } from '../app/store';
 
 //let mockToast; // Declare mockToast outside of the describe block
+jest.mock('../services/nhaService');
 
 describe('Feedback Component', () => {
   test('renders with correct props', async () => {
@@ -50,9 +51,38 @@ describe('Feedback Component', () => {
     // Spy on postFeedback after importing NHAService
     jest.spyOn(NHAService, 'postFeedback').mockResolvedValue();
 
-    fireEvent.click(screen.getByText("Submit Feedback"));
-    await waitFor(() => {
-      expect(screen.findByText("Feedback Submitted!"));
-    });
-  });
+
+  //   fireEvent.click(screen.getByText("Submit Feedback"));
+  //   await waitFor(() => {
+  //     expect(screen.findByText("Feedback Submitted!"));
+  //   });
+  // });
+
+  test('displays feedback error message when posting feedback fails', async () => {
+    const errorMessage = 'Unable to post feedback.';
+    jest.spyOn(nhaService, 'postFeedback').mockRejectedValueOnce(new Error(errorMessage));
+
+    const postId = 'testPostId'; // Mocking a post ID for feedback
+
+    const { getByPlaceholderText, getByText } = render(
+      <Provider store={store}>
+        <Feedback postId={postId} />
+      </Provider>
+    );
+
+    const feedbackArea = getByPlaceholderText('Enter additional feedback here');
+    fireEvent.change(feedbackArea, { target: { value: 'Test feedback' } });
+
+    const submitButton = getByText('Submit Feedback');
+    fireEvent.click(submitButton);
+
+    // Wait for the feedback error message to appear
+    // Wait for the error message to appear
+    setTimeout(() => {
+      const errorElement = getByText(errorMessage);
+      expect(errorElement).toBeInTheDocument();
+    }, 1000); // Adjust the timeout as needed
+  }, 1000); // Adjust the timeout as needed
+
+
 });

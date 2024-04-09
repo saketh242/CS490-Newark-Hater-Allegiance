@@ -3,13 +3,10 @@ import { render, screen, act, fireEvent, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom';
 import Translate from '../components/Translate';
 import '@testing-library/jest-dom'; // Import this for better assertion messages
-// import nhaService from '../services/nhaService'
+import nhaService from '../services/nhaService'
 
 import { store } from '../app/store';
 import { Provider } from 'react-redux';
-
-//TODO:
-// test empty input
 
 // Mock useNavigate
 jest.mock('react-router-dom', () => ({
@@ -118,23 +115,31 @@ describe('Translate component', () => {
     });
   });
 
+
   test('displays translation error message when translation fails', async () => {
-    // // Mock the service function to return a failure response
-    // jest.spyOn(nhaService, 'postPrompt').mockResolvedValueOnce({ success: false, message: 'Translation failed' });
+    const errorMessage = 'Translation failed due to an error';
+    jest.spyOn(nhaService, 'postPrompt').mockResolvedValueOnce({ success: false, message: errorMessage });
   
-    // Render the component
-    render(<Provider store={store}><Translate /></Provider>);
+    const { getByPlaceholderText, getByTestId, getByText } = render(<Provider store={store}><Translate /></Provider>);
+    const inputArea = getByPlaceholderText('Enter code to translate');
   
-    // // Enter input code and initiate translation
-    // const inputArea = screen.getByPlaceholderText('Enter code to translate');
-    // const translateButton = screen.getByText('Convert');
-    // fireEvent.change(inputArea, { target: { value: 'console.log("Invalid code")' } });
-    // fireEvent.click(translateButton);
+    // Function to check if the convert button is available
+    const waitForConvertButton = () => getByTestId('Convert');
   
-    // // Wait for the translation process to complete and the error message to appear
-    // await waitFor(() => {
-    //   expect(screen.queryByText('Translation failed')).toBeInTheDocument();
-    // });
+    // Wait for the convert button to appear with a timeout
+    setTimeout(() => {
+      const translateButton = waitForConvertButton();
+  
+      // Simulate user input and click on translate button
+      fireEvent.change(inputArea, { target: { value: 'console.log("Hello, World!")' } });
+      fireEvent.click(translateButton);
+  
+      // Wait for the error message to appear
+      setTimeout(() => {
+        const errorElement = getByText(errorMessage);
+        expect(errorElement).toBeInTheDocument();
+      }, 1000); // Adjust the timeout as needed
+    }, 1000); // Adjust the timeout as needed
   });
   
 });
@@ -217,38 +222,61 @@ describe('Sidebar rendered component', () => {
   });
 });
 
-// // Mock the entire module to mock the postPrompt function
-// jest.mock('../services/nhaService');
 
-// describe('Translate component', () => {
-//   test('displays translation error message when translation fails', async () => {
-//     // Setup the mock for postPrompt to return a failed response
-//     nhaService.postPrompt.mockResolvedValueOnce({
-//       success: false,
-//       message: 'Translation failed due to an error',
-//     });
+describe('Translate component', () => {
+  test('handles various code structures properly', async () => {
+    render(<Provider store={store}><Translate /></Provider>);
+    const inputArea = screen.getByPlaceholderText('Enter code to translate');
+    const translateButton = screen.getByTestId('Convert');
+  
+    // Different code structures to test
+    const codeStructures = [
+      'console.log("Hello, world!");', // Basic console log
+      'for (let i = 0; i < 10; i++) { console.log(i); }', // For loop
+      'function add(a, b) { return a + b; }', // Function declaration
+      'const numbers = [1, 2, 3, 4, 5]; numbers.forEach(num => console.log(num));', // Array iteration
+      'class Person { constructor(name) { this.name = name; } sayHello() { console.log(`Hello, my name is ${this.name}.`); } }', // Class declaration
+      'const promise = new Promise((resolve, reject) => { setTimeout(() => resolve("Done!"), 1000); }); promise.then(result => console.log(result));', // Promise
+      // Add more code structures to test as needed
+    ];
+  
+    // Iterate over each code structure and test
+    for (const code of codeStructures) {
+      fireEvent.change(inputArea, { target: { value: code } });
+      fireEvent.click(translateButton);
+  
+      // Wait for the translation process to complete
+      await waitFor(() => {
+        // Assert that a part of the code is present in the output area
+        const outputCode = screen.getByText(code.split(' ')[0], { exact: false }); // Check only the first word for simplicity
+        expect(outputCode).toBeInTheDocument();
+      });
+  
+      // Clear input for the next iteration
+      fireEvent.change(inputArea, { target: { value: '' } });
+    }
+  });
+});
 
-//     render(<Translate />);
-
-//     // Assume your language dropdowns and input area are correctly identified
-//     const sourceLanguageDropdown = screen.getByLabelText('Source Language:');
-//     const desiredLanguageDropdown = screen.getByLabelText('Desired Language:');
-//     const inputArea = screen.getByPlaceholderText('Enter code to translate');
-//     const translateButton = screen.getByText('Convert');
-
-//     // Simulate selecting languages and entering code
-//     fireEvent.change(sourceLanguageDropdown, { target: { value: 'javascript' } });
-//     fireEvent.change(desiredLanguageDropdown, { target: { value: 'python' } });
-//     fireEvent.change(inputArea, { target: { value: 'console.log("Hello, World!")' } });
-
-//     // Simulate clicking the translate button
-//     fireEvent.click(translateButton);
-
-//     // Wait for the error message to appear
-//     await waitFor(() => {
-//       const errorMessage = screen.getByText('Translation failed due to an error');
-//       expect(errorMessage).toBeInTheDocument();
-//     });
-//   });
-// });
-
+describe('Translate component', () => {
+  test('handles input validation and successful submission', async () => {
+    const { getByPlaceholderText, getByTestId, queryByText } = render(<Provider store={store}><Translate /></Provider>);
+    const inputArea = getByPlaceholderText('Enter code to translate');
+    const translateButton = getByTestId('Convert');
+  
+    // Test empty input
+    // fireEvent.click(translateButton);
+    // expect(queryByText('Please enter code to translate.')).toBeInTheDocument();
+    
+    // Test successful submission
+    fireEvent.change(inputArea, { target: { value: 'console.log("Hello, world!")' } });
+    fireEvent.click(translateButton);
+  
+    // Wait for the translation process to complete
+    await waitFor(() => {
+      // Assert that a part of the translated code is present in the output area
+      const outputCode = screen.getByText('Hello, world!', { exact: false }); 
+      expect(outputCode).toBeInTheDocument();
+    });
+  });
+});

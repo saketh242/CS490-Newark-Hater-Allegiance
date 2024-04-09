@@ -24,8 +24,8 @@ const detectLanguage = async (code) => {
     if (!(response && response.choices && response.choices.length > 0)) {
         throw new Error("Unexpected response from OpenAI API");
     }
-    console.log(response.choices[0].message.content)
-    return response.choices[0].message.content;
+    
+    return response.choices[0].message.content.toLowerCase();
 };
 
 const postPrompt = async (req, res, next) => {
@@ -58,8 +58,14 @@ const postPrompt = async (req, res, next) => {
 
         const translatedCode = response.choices[0].message.content;
 
-        const filtered = translatedCode.replace(/```/g, '');
-        const code = filtered.split('\n').slice(1).join('\n').trim();
+        let code;
+
+        if (translatedCode.includes("```")) {
+            const filtered = translatedCode.replace(/```/g, '');
+            code = filtered.split('\n').slice(1).join('\n').trim();
+        } else {
+            code = translatedCode;
+        }
         return res.status(200).json({
             success: true,
             message: code,
