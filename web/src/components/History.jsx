@@ -66,20 +66,24 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
   });
 
   const [history, setHistoryData] = useState(null);
+  const [historyError, setHistoryError] = useState('');
+
   const handleGetAllHistory = async () => {
+    setHistoryError(''); //reset history error before getting
     try {
+      // throw new Error('Simulated error: getallhistory');
       setHistoryData(await nhaService.getAllHistory(user, dbUserFromRedux, ascend, sortField));
-      console.log("spingus bingus");
+      // console.log("spingus bingus");
     }
     catch (error) {
-      console.log(error);
-      //temporary --> fill with actual handling of failure to obtain history entries
+      // console.log(error);
+      setHistoryError('Unable to retrieve history at this time.');
     }
   };
 
   useEffect(() => {
     if (user !== null || triggerHistory) {
-      console.log("yeet");
+      // console.log("yeet");
       handleGetAllHistory();
       setTriggerHistory(false);
     }
@@ -133,7 +137,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
     setSelectedFilterItem(e.target.value);
   }
 
-  if (history === null || showSidebar === false) return (<></>);
+  if (showSidebar === false) return (<></>);
   return (
     <>
       <Drawer
@@ -150,93 +154,101 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
           </button>
         </div>
 
-        {history.length === 0 ? (
-          <div className="emptyHistory">
-            <img id="emptyPicture" src={emptybox} alt="History empty" style={{ width: '70%', height: '70%' }} />
-            <a href="https://www.freepik.com/icons/empty" target="_blank" rel="noopener noreferrer" className="link" id="emptyCredit">Icon by Ghozi Muhtarom</a>
-            <h1 id="emptyText">No past translations</h1>
+        {historyError !== '' || history == null ? (
+          <div className="historyError">
+            <h1 className="errorText">{historyError}</h1>
           </div>
         ) : (
           <>
-            <div className="historyOptions">
-              <div className="sortAndFilter">
-                {/* sort asc/desc */}
-                <button>
-                  <FontAwesomeIcon id="ascdsc" icon={ascend === 1 ? faArrowUp : faArrowDown} onClick={() => {setAscend(ascend * -1); setTriggerHistory(true);}} />
-                </button>
-
-                {/* sort by */}
-                <select id="sort" onChange={changeSort}>
-                  <option value=""> Sort By... </option>
-                  <option value="Date"> Date </option>
-                  <option value="Source"> Source Language </option>
-                  <option value="Destination"> Destination Language </option>
-                </select>
-
-                {/* filter by */}
-                <select id="filter" onChange={changeFilter}>
-                  <option value=""> Filter By... </option>
-                  <option value="Date"> Date </option>
-                  <option value="Source"> Source Language </option>
-                  <option value="Destination"> Destination Language </option>
-                </select>
+            {history.length === 0 ? (
+              <div className="emptyHistory">
+                <img id="emptyPicture" src={emptybox} alt="History empty" style={{ width: '70%', height: '70%' }} />
+                <a href="https://www.freepik.com/icons/empty" target="_blank" rel="noopener noreferrer" className="link" id="emptyCredit">Icon by Ghozi Muhtarom</a>
+                <h1 id="emptyText">No past translations</h1>
               </div>
-
-              {/* filter options */}
-              <select id="filterOptions" onChange={changeSelectedFilterItem}>
-                <option value=""> Select Filter... </option>
-                {filterOptions.map((item, index) => (
-                  <option value={item} key={index}> {filterOptions[index]} </option>
-                ))}
-              </select>
-
-              {/* clear all history */}
-              <button id="clearAll" className="ripple">Clear all history</button>
-            </div>
-
-            <div>
-              {history.map((historyLabel, i) => (
-                <div className="translationHistory" key={i}>
-                  <h4>
-                    {dateAndTimeConversion(history[i].createdAt)}
-                  </h4>
-
-                  <div className="codeHistory">
-
-                    <div className="entrySource">
-                      <h5>
-                        Source Code ({history[i].Source_language})
-                      </h5>
-                      <p>
-                        {history[i].original_code}
-                      </p>
-                    </div>
-
-                    <div className="entryDest">
-                      <h5>
-                        Converted Code ({history[i].Desired_language})
-                      </h5>
-                      <p>
-                        {history[i].converted_code}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="historyEntryOptions">
-                    {/* <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, history[i].original_code, history[i].converted_code)}> Translate again </button> */}
-                    <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage, history[i].original_code, history[i].converted_code, history[i].Source_language, history[i].Desired_language)}> Translate again </button>
-                    <button id="removeEntry" title="Remove translation">
-                      <FontAwesomeIcon id="trashIcon" icon={faTrashCan} size="2x" />
+            ) : (
+              <>
+                <div className="historyOptions">
+                  <div className="sortAndFilter">
+                    {/* sort asc/desc */}
+                    <button>
+                      <FontAwesomeIcon id="ascdsc" icon={ascend === 1 ? faArrowUp : faArrowDown} onClick={() => { setAscend(ascend * -1); setTriggerHistory(true); }} />
                     </button>
+
+                    {/* sort by */}
+                    <select id="sort" onChange={changeSort}>
+                      <option value=""> Sort By... </option>
+                      <option value="Date"> Date </option>
+                      <option value="Source"> Source Language </option>
+                      <option value="Destination"> Destination Language </option>
+                    </select>
+
+                    {/* filter by */}
+                    <select id="filter" onChange={changeFilter}>
+                      <option value=""> Filter By... </option>
+                      <option value="Date"> Date </option>
+                      <option value="Source"> Source Language </option>
+                      <option value="Destination"> Destination Language </option>
+                    </select>
                   </div>
+
+                  {/* filter options */}
+                  <select id="filterOptions" onChange={changeSelectedFilterItem}>
+                    <option value=""> Select Filter... </option>
+                    {filterOptions.map((item, index) => (
+                      <option value={item} key={index}> {filterOptions[index]} </option>
+                    ))}
+                  </select>
+
+                  {/* clear all history */}
+                  <button id="clearAll" className="ripple">Clear all history</button>
                 </div>
-              ))}
-            </div>
-          </>
-        )}
-      </Drawer>
-    </>
-  );
+
+                <div>
+                  {history.map((historyLabel, i) => (
+                    <div className="translationHistory" key={i}>
+                      <h4>
+                        {dateAndTimeConversion(history[i].createdAt)}
+                      </h4>
+
+                      <div className="codeHistory">
+
+                        <div className="entrySource">
+                          <h5>
+                            Source Code ({history[i].Source_language})
+                          </h5>
+                          <p>
+                            {history[i].original_code}
+                          </p>
+                        </div>
+
+                        <div className="entryDest">
+                          <h5>
+                            Converted Code ({history[i].Desired_language})
+                          </h5>
+                          <p>
+                            {history[i].converted_code}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="historyEntryOptions">
+                        {/* <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, history[i].original_code, history[i].converted_code)}> Translate again </button> */}
+                        <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage, history[i].original_code, history[i].converted_code, history[i].Source_language, history[i].Desired_language)}> Translate again </button>
+                        <button id="removeEntry" title="Remove translation">
+                          <FontAwesomeIcon id="trashIcon" icon={faTrashCan} size="2x" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                </>
+          )}
+              </>
+            )}
+          </Drawer>
+      </>
+      );
 }
 
-export default History
+      export default History
