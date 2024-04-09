@@ -43,13 +43,14 @@ describe('Help Component Tests', () => {
           </Router>
         </Provider>);
 
-      // Type in the search input
+
+
       const searchInput = screen.getByPlaceholderText('Type to search');
       fireEvent.change(searchInput, { target: { value: 'translation' } });
 
-      // Check if only relevant FAQs are displayed
       const filteredFAQs = screen.getAllByTestId('faq-item');
-      expect(filteredFAQs).toHaveLength(3); // Assuming two FAQs contain "translation" in the header
+      expect(filteredFAQs).toHaveLength(3); 
+
     });
 
     it('should display all FAQs if search input is empty', () => {
@@ -59,20 +60,21 @@ describe('Help Component Tests', () => {
             <Help />
           </Router>
         </Provider>
+
       );
 
-      // Type in the search input
       const searchInput = screen.getByPlaceholderText('Type to search');
       fireEvent.change(searchInput, { target: { value: '' } });
 
-      // Check if all FAQs are displayed
       const allFAQs = screen.getAllByTestId('faq-item');
-      expect(allFAQs).toHaveLength(5); // Assuming there are 5 FAQs in total
+      expect(allFAQs).toHaveLength(5); 
+
     });
   });
 
   describe('Searchable FAQ', () => {
     it('should filter FAQs based on search input', () => {
+
       render(
         <Provider store={store}>
           <Router>
@@ -81,13 +83,14 @@ describe('Help Component Tests', () => {
         </Provider>
       );
 
-      // Type in the search input
+
+  
       const searchInput = screen.getByPlaceholderText('Type to search');
       fireEvent.change(searchInput, { target: { value: 'translation' } });
 
-      // Check if only relevant FAQs are displayed
+  
       const filteredFAQs = screen.getAllByTestId('faq-item');
-      expect(filteredFAQs).toHaveLength(3); // Assuming two FAQs contain "translation" in the header
+      expect(filteredFAQs).toHaveLength(3); 
     });
 
     it('should display all FAQs if search input is empty', () => {
@@ -99,19 +102,14 @@ describe('Help Component Tests', () => {
         </Provider>
       );
 
-      // Type in the search input
       const searchInput = screen.getByPlaceholderText('Type to search');
       fireEvent.change(searchInput, { target: { value: '' } });
 
-      // Check if all FAQs are displayed
+
+      
       const allFAQs = screen.getAllByTestId('faq-item');
-      expect(allFAQs).toHaveLength(5); // Assuming there are 5 FAQs in total
+      expect(allFAQs).toHaveLength(5); 
     });
   });
 
 });
-
-
-
-
-
