@@ -64,6 +64,7 @@ const DeleteAccount = () => {
             <h2 className="delete-heading warning-flash">Deleted accounts cannot be recovered again!</h2>
             <form className="delete-form">
                 <input
+                    data-testid="password-id"
                     type="password"
                     className='password-change'
                     value={password}

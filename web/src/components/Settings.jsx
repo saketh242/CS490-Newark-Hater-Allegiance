@@ -200,6 +200,7 @@ const Settings = () => {
                   }}
                 />
                 <input
+                  data-testid="password-id-settings"
                   className='settings-email-input'
                   type="password"
                   value={password}
@@ -214,7 +215,7 @@ const Settings = () => {
                   }}
                 />
               </>)}
-            <button type="submit" className='login-btn' onClick={handleUpdateprofile}>Update Profile</button>
+            <button type="submit" data-testid="update-btn" className='login-btn' onClick={handleUpdateprofile}>Update Profile</button>
 
           </form>
 

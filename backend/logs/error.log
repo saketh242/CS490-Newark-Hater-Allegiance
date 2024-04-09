@@ -42,7 +42,7 @@
 {"level":"error","message":"Error: sortField is not defined, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T04:13:54.767Z"}
 {"level":"error","message":"Error: sortField is not defined, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T04:13:54.771Z"}
 {"level":"error","message":"Error: sortField is not defined, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T04:13:54.776Z"}
-{"level":"error","message":"Error: Input code does not match specified source language, Input: \"echo \\\"Hello!\\\"\", SourceLanguage: php, DesiredLanguage: c","timestamp":"2024-04-09T18:25:45.376Z"}
+:"error","message":"Error: Input code does not match specified source language, Input: \"echo \\\"Hello!\\\"\", SourceLanguage: php, DesiredLanguage: c","timestamp":"2024-04-09T18:25:45.376Z"}
 {"level":"error","message":"Error: Input code does not match specified source language, Input: \"echo \\\"Hello!\\\"\", SourceLanguage: php, DesiredLanguage: c","timestamp":"2024-04-09T18:28:24.916Z"}
 {"level":"error","message":"Error: Input code does not match specified source language, Input: \"echo \\\"Hello!\\\"\", SourceLanguage: php, DesiredLanguage: c","timestamp":"2024-04-09T18:28:59.427Z"}
 {"level":"error","message":"Error: Input code does not match specified source language, Input: \"echo \\\"Hello!\\\"\", SourceLanguage: php, DesiredLanguage: c","timestamp":"2024-04-09T18:30:52.578Z"}
@@ -70,3 +70,4 @@
 {"level":"error","message":"Error: error fetching user by uid, Cast to ObjectId failed for value \"nonExistentUserId\" (type string) at path \"_id\" for model \"User\", \n        Location: backend/controllers/feedbackControllers.js","timestamp":"2024-04-09T19:39:43.289Z"}
 {"level":"error","message":"Error: Input code does not match specified source language, Input: printf(\"Hello World!\"), SourceLanguage: java, DesiredLanguage: c","timestamp":"2024-04-09T19:39:44.850Z"}
 {"level":"error","message":"Error: Input code does not match specified source language, Input: language mismatch, SourceLanguage: cplusplus, DetectedLanguage: python, DesiredLanguage: java","timestamp":"2024-04-09T19:39:44.855Z"}
+
