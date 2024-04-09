@@ -72,76 +72,76 @@ describe('NHANav', () => {
     expect(screen.getByText('Translate')).toBeInTheDocument();
   });
 
-//   it('displays login/signup when not authenticated', () => {
-//     require('../useAuth').default.mockReturnValue({ user: null, isLoading: false });
-//     renderNHANav();
-//     expect(screen.getByText('Login')).toBeInTheDocument();
-//     expect(screen.getByText('Signup')).toBeInTheDocument();
-//   });
+  it('displays login/signup when not authenticated', () => {
+    require('../useAuth').default.mockReturnValue({ user: null, isLoading: false });
+    renderNHANav();
+    expect(screen.getByText('Login')).toBeInTheDocument();
+    expect(screen.getByText('Signup')).toBeInTheDocument();
+  });
 
-//   it('displays logout/settings when authenticated', () => {
-//     require('../useAuth').default.mockReturnValue({ user: { name: 'Jane Doe' }, isLoading: false });
-//     renderNHANav();
-//     expect(screen.getByText('Logout')).toBeInTheDocument();
-//     expect(screen.getByText('Settings')).toBeInTheDocument();
-//   });
-
-
-// });
-
-// // Tests for navigation
-// describe('Navigations', () => {
-//     test('navigates to the Help page after clicking the Help link', async () => {
-
-//         require('../useAuth').default.mockReturnValue({ user: null, isLoading: false });
-//         renderApp();
-
-//         const helpLink = screen.getByRole('link', { name: /help/i });
-//         userEvent.click(helpLink);
-
-//         const uniqueHelpText = await screen.findByText(/How can we help?/i);
-
-//         expect(uniqueHelpText).toBeInTheDocument();
-//     });
-
-//     test('navigates to the translate page after clicking the Translate link', async () => {
-
-//         require('../useAuth').default.mockReturnValue({ user: {name:"John Doe"}, isLoading: false });
-//         renderApp();
-
-//         const helpLink = screen.getByRole('link', { name: /translate/i });
-//         userEvent.click(helpLink);
-
-//         const uniqueHelpText = await screen.findByText(/Getting Started/i);
-
-//         expect(uniqueHelpText).toBeInTheDocument();
-//     });
-
-//     test('navigates to the settings page after clicking the Settings link', async () => {
-
-//         require('../useAuth').default.mockReturnValue({ user: {name:"John Doe"}, isLoading: false });
-//         renderApp();
-
-//         const helpLink = screen.getByRole('link', { name: /settings/i });
-//         userEvent.click(helpLink);
+  it('displays logout/settings when authenticated', () => {
+    require('../useAuth').default.mockReturnValue({ user: { name: 'Jane Doe' }, isLoading: false });
+    renderNHANav();
+    expect(screen.getByText('Logout')).toBeInTheDocument();
+    expect(screen.getByText('Settings')).toBeInTheDocument();
+  });
 
 
-//         expect(uniqueHelpText).toBeInTheDocument();
-//     });
+});
 
-//     test('navigates to the home page page after clicking the brand link', async () => {
+// Tests for navigation
+describe('Navigations', () => {
+    test('navigates to the Help page after clicking the Help link', async () => {
 
-//       require('../useAuth').default.mockReturnValue({ user: {name:"John Doe"}, isLoading: false });
-//       renderApp();
+        require('../useAuth').default.mockReturnValue({ user: null, isLoading: false });
+        renderApp();
 
-//       const brandLink = screen.getByRole('link', { name: /NHAGPT/i });
-//       userEvent.click(brandLink);
+        const helpLink = screen.getByRole('link', { name: /help/i });
+        userEvent.click(helpLink);
+
+        const uniqueHelpText = await screen.findByText(/How can we help?/i);
+
+        expect(uniqueHelpText).toBeInTheDocument();
+    });
+
+    test('navigates to the translate page after clicking the Translate link', async () => {
+
+        require('../useAuth').default.mockReturnValue({ user: {name:"John Doe"}, isLoading: false });
+        renderApp();
+
+        const helpLink = screen.getByRole('link', { name: /translate/i });
+        userEvent.click(helpLink);
+
+        const uniqueHelpText = await screen.findByText(/Getting Started/i);
+
+        expect(uniqueHelpText).toBeInTheDocument();
+    });
+
+    test('navigates to the settings page after clicking the Settings link', async () => {
+
+        require('../useAuth').default.mockReturnValue({ user: {name:"John Doe"}, isLoading: false });
+        renderApp();
+
+        const helpLink = screen.getByRole('link', { name: /settings/i });
+        userEvent.click(helpLink);
 
 
-//       const uniqueHelpText = await screen.findByText(/Easy code translation in seconds?/i);
+        expect(uniqueHelpText).toBeInTheDocument();
+    });
 
-//       expect(uniqueHelpText).toBeInTheDocument();
-//   });
+    test('navigates to the home page page after clicking the brand link', async () => {
+
+      require('../useAuth').default.mockReturnValue({ user: {name:"John Doe"}, isLoading: false });
+      renderApp();
+
+      const brandLink = screen.getByRole('link', { name: /NHAGPT/i });
+      userEvent.click(brandLink);
+
+
+      const uniqueHelpText = await screen.findByText(/Easy code translation in seconds?/i);
+
+      expect(uniqueHelpText).toBeInTheDocument();
+  });
 
 
 });
