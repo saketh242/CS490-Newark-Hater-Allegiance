@@ -100,6 +100,7 @@ const Signup = () => {
         <div className="signup-box">
           <div className="name-inputs">
             <input
+              data-testid="firstname-input"
               className="name-input-box"
               type="text"
               value={firstName}
@@ -114,6 +115,7 @@ const Signup = () => {
               }}
             />
             <input
+              data-testid="lastname-input"
               className="name-input-box"
               type="text"
               value={lastName}
@@ -129,6 +131,7 @@ const Signup = () => {
             />
           </div>
           <input
+            data-testid="email-input"
             className='signup-email-input'
             type="email"
             value={email}
@@ -143,6 +146,7 @@ const Signup = () => {
             }}
           />
           <input
+            data-testid="password-id"
             className='signup-password-input'
             type="password"
             value={password}
@@ -157,6 +161,7 @@ const Signup = () => {
             }}
           />
           <input
+            data-testid="password-id-2"
             className='signup-password-input'
             type="password"
             value={password2}

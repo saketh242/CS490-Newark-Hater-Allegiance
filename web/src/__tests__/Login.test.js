@@ -68,7 +68,6 @@ describe("Login component tests", ()=>{
       fireEvent.change(inputPassword, {target: {value: testPassword}})
       fireEvent.click(button);
 
-      // expecting invalid email message
       expect(await screen.findByText('Please fill all the fields'));
   })
 
