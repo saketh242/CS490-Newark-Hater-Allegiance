@@ -3,7 +3,7 @@ import { render, screen, act, fireEvent, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom';
 import Translate from '../components/Translate';
 import '@testing-library/jest-dom'; // Import this for better assertion messages
-// import nhaService from '../services/nhaService'
+import nhaService from '../services/nhaService'
 
 import { store } from '../app/store';
 import { Provider } from 'react-redux';
@@ -118,23 +118,31 @@ describe('Translate component', () => {
     });
   });
 
+
   test('displays translation error message when translation fails', async () => {
-    // // Mock the service function to return a failure response
-    // jest.spyOn(nhaService, 'postPrompt').mockResolvedValueOnce({ success: false, message: 'Translation failed' });
+    const errorMessage = 'Translation failed due to an error';
+    jest.spyOn(nhaService, 'postPrompt').mockResolvedValueOnce({ success: false, message: errorMessage });
   
-    // Render the component
-    render(<Provider store={store}><Translate /></Provider>);
+    const { getByPlaceholderText, getByTestId, getByText } = render(<Provider store={store}><Translate /></Provider>);
+    const inputArea = getByPlaceholderText('Enter code to translate');
   
-    // // Enter input code and initiate translation
-    // const inputArea = screen.getByPlaceholderText('Enter code to translate');
-    // const translateButton = screen.getByText('Convert');
-    // fireEvent.change(inputArea, { target: { value: 'console.log("Invalid code")' } });
-    // fireEvent.click(translateButton);
+    // Function to check if the convert button is available
+    const waitForConvertButton = () => getByTestId('Convert');
   
-    // // Wait for the translation process to complete and the error message to appear
-    // await waitFor(() => {
-    //   expect(screen.queryByText('Translation failed')).toBeInTheDocument();
-    // });
+    // Wait for the convert button to appear with a timeout
+    setTimeout(() => {
+      const translateButton = waitForConvertButton();
+  
+      // Simulate user input and click on translate button
+      fireEvent.change(inputArea, { target: { value: 'console.log("Hello, World!")' } });
+      fireEvent.click(translateButton);
+  
+      // Wait for the error message to appear
+      setTimeout(() => {
+        const errorElement = getByText(errorMessage);
+        expect(errorElement).toBeInTheDocument();
+      }, 1000); // Adjust the timeout as needed
+    }, 1000); // Adjust the timeout as needed
   });
   
 });
