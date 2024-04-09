@@ -37,6 +37,11 @@
   animation-iteration-count: infinite;
 }
 
+.rainbow-fast {
+  animation: rainbow 0.5s linear;
+  animation-iteration-count: infinite;
+}
+
 @keyframes rainbow {
   100%,0% {
     color: rgb(255,0,0);
@@ -136,6 +141,18 @@
 
 #textArea-div{
   margin:1rem;
+}
+
+/*LOADING PAGE*/
+#loading-page {
+  text-align: center;
+  background-color: #1A1C23;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
 }
 
 /* Navbar Styling */

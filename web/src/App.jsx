@@ -34,12 +34,12 @@ const App = () => {
   const user = useSelector((state) => state.user.user);
   const dbUser = useSelector((state) => state.user.dbUser);
   const isLoading = useSelector((state) => state.user.isLoading);
-
+  
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div id='loading-page'><h1 className='rainbow-fast'>Loading...</h1></div>;
   }
-
-  return !isLoading &&  (
+  
+  return !isLoading && (
     <>
       <Router>
         <div className="content">
@@ -49,7 +49,7 @@ const App = () => {
             <Route path="/login" element={user ? <Navigate to="/"/> : <Login />} />
             <Route path="/translate" element={user ? (user.emailVerified ? <Translate /> : <VerificationMessage/>): <Navigate to="/login"/>} />
             <Route path="/help" element={<Help />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/signup" element={user ? <Navigate to="/"/> : <Signup />} />
             <Route path="/settings" element={user ?  <Settings /> : <Navigate to="/login"/>}  />
             <Route path="/changePassword" element={user ? <ChangePassword /> : <Navigate to="/login"/>} />
             <Route path="/deleteAccount" element={user ? <DeleteAccount /> : <Navigate to="/login"/>} />
