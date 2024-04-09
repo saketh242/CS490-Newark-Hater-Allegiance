@@ -16,7 +16,6 @@ const rateLimit = require('express-rate-limit');
 const queue = require('express-queue');
 
 // express-rate-limit --> limits each IP to 100 requests per 15 mins :), 
-/*
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
   max: 100, 
@@ -26,7 +25,6 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
-*/
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path} - ${req.ip}`);
   next();
