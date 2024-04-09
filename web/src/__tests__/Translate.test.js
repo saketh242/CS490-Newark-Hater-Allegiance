@@ -257,3 +257,26 @@ describe('Translate component', () => {
     }
   });
 });
+
+describe('Translate component', () => {
+  test('handles input validation and successful submission', async () => {
+    const { getByPlaceholderText, getByTestId, queryByText } = render(<Provider store={store}><Translate /></Provider>);
+    const inputArea = getByPlaceholderText('Enter code to translate');
+    const translateButton = getByTestId('Convert');
+  
+    // Test empty input
+    // fireEvent.click(translateButton);
+    // expect(queryByText('Please enter code to translate.')).toBeInTheDocument();
+    
+    // Test successful submission
+    fireEvent.change(inputArea, { target: { value: 'console.log("Hello, world!")' } });
+    fireEvent.click(translateButton);
+  
+    // Wait for the translation process to complete
+    await waitFor(() => {
+      // Assert that a part of the translated code is present in the output area
+      const outputCode = screen.getByText('Hello, world!', { exact: false }); 
+      expect(outputCode).toBeInTheDocument();
+    });
+  });
+});

@@ -341,7 +341,7 @@ const Translate = () => {
       </div>
 
       {translationError !== '' &&
-        <div className="translationError">
+        <div className="translationError" data-testid="translationErrorDiv">
           <FontAwesomeIcon icon={faCircleExclamation} id="errorIcon" size="2x" />
           <p>{translationError}</p>
         </div>}
