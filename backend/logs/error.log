@@ -1,0 +1,12 @@
+{"level":"error","message":"Error: Input code does not match specified source language, Input: \"System.out.println(\\\"yeetus\\\");\", SourceLanguage: csharp, DesiredLanguage: python","timestamp":"2024-04-09T02:30:18.916Z"}
+{"level":"error","message":"Error: Input code does not match specified source language, Input: \"echo \\\"spingus bingus\\\"\", SourceLanguage: php, DesiredLanguage: cplusplus","timestamp":"2024-04-09T03:06:48.237Z"}
+{"level":"error","message":"Error: Invalid sort value: { undefined: undefined }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T03:57:14.022Z"}
+{"level":"error","message":"Error: Invalid sort value: { undefined: undefined }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T03:57:14.081Z"}
+{"level":"error","message":"Error: Invalid sort value: { undefined: undefined }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T03:57:14.083Z"}
+{"level":"error","message":"Error: Invalid sort value: { undefined: undefined }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T03:57:27.212Z"}
+{"level":"error","message":"Error: Invalid sort value: { undefined: undefined }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T03:57:27.214Z"}
+{"level":"error","message":"Error: Invalid sort value: { undefined: undefined }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T04:02:10.986Z"}
+{"level":"error","message":"Error: Invalid sort value: { undefined: undefined }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T04:02:11.045Z"}
+{"level":"error","message":"Error: Invalid sort value: { undefined: undefined }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T04:02:11.047Z"}
+{"level":"error","message":"Error: Invalid sort value: { createdAt: -1 }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T04:02:49.814Z"}
+{"level":"error","message":"Error: Invalid sort value: { createdAt: -1 }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T04:02:49.818Z"}

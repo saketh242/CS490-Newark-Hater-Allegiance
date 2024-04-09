@@ -37,9 +37,7 @@ const Translate = () => {
 
   const [loading, setLoading] = useState(false);
   const [userTriggeredChange, setUserTriggeredChange] = useState(false);
-  const [postId, setPostId] = useState("")
-
-  const [historyData, setHistoryData] = useState(null);
+  const [postId, setPostId] = useState("");
 
   //input code and output code states
   const [inputCode, setInputCode] = useState('');
@@ -124,13 +122,14 @@ const Translate = () => {
     setUserTriggeredChange(true);
   };
 
+  const [triggerHistory, setTriggerHistory] = useState(false);
   const handlePostHistory = async () => {
     try {
       if (translatedCode !== '' && userTriggeredChange) {
         // throw new Error('simulated error: Unable to save translation to history');
         const post = await nhaService.postHistory(user, dbUserFromRedux, inputCode, translatedCode, sourceLanguage, desiredLanguage);
         setPostId(post);
-        handleGetAllHistory();
+        setTriggerHistory(true);
         setUserTriggeredChange(false);
       }
     } catch (error) {
@@ -230,20 +229,6 @@ const Translate = () => {
     }
   };
 
-  const handleGetAllHistory = async () => {
-    try{
-      setHistoryData(await nhaService.getAllHistory(user, dbUserFromRedux));
-    }
-    catch (error) {
-      console.log(error);
-      //temporary --> fill with actual handling of failure to obtain history entries
-    }
-  };
-
-  useEffect(() => {
-    if (user !== null) handleGetAllHistory();
-  }, [user])
-
   const detectLanguage = () => {
     const textarea = document.querySelector('.inputArea');
     if (textarea) {
@@ -272,15 +257,15 @@ const Translate = () => {
     <div className="translateBody">
 
       <History
-        history={historyData}
+        setTriggerHistory={setTriggerHistory}
+        triggerHistory={triggerHistory}
+        user={user}
         showSidebar={showSidebar}
         toggleSidebar={toggleSidebar}
         setInputCode={setInputCode}
         setTranslatedCode={setTranslatedCode}
         setSourceLanguage={setSourceLanguage}
         setDesiredLanguage={setDesiredLanguage}
-        sourceLanguage={sourceLanguage}
-        desiredLanguage={desiredLanguage}
       />
 
       <div className="apiStatusMessage">
