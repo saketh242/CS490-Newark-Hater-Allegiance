@@ -22,12 +22,13 @@ const Signup = () => {
   const [error, setError] = useState(null)
   const [isChecked, setIsChecked] = useState(false);
 
-  useEffect(() => {
-    // If user is already logged in, navigate to the home page
-    if (user) {
-      navigate("/");
-    }
-  }, [user, navigate]);
+  // we dont need this i navigated in the route :)
+  // useEffect(() => {
+  //   // If user is already logged in, navigate to the home page
+  //   if (user) {
+  //     navigate("/");
+  //   }
+  // }, [user, navigate]);
 
 
   const handleCheckboxChange = () => {
