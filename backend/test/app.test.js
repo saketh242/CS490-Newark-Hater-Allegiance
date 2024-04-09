@@ -208,7 +208,7 @@ describe('API RESPONSES ', () => {
 
   it('GET: should return 200 OK for /history/getAllHistory', (done) => {
     request(app)
-      .get(`/history/getAllHistory?user_id=${user_id}&ascend=1&sortField=Date`)
+      .get(`/history/getAllHistory?user_id=${user_id}&sortField=Date`)
       .set('Authorization', `Bearer ${testToken}`)
       .expect(200)
       .end((err, res) => {

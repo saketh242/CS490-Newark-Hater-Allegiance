@@ -6,15 +6,14 @@ import { jest } from '@jest/globals';
 import { Provider } from 'react-redux';
 import { store } from '../app/store';
 
-//let mockToast; // Declare mockToast outside of the describe block
-jest.mock('../services/nhaService');
 
 describe('Feedback Component', () => {
   test('renders with correct props', async () => {
     const postId = "123";
     render(
-    <Provider store={store}>
-      <Feedback postId={postId} />
+
+    <Provider store={store}><Feedback postId={postId} />
+
     </Provider>);
     await waitFor(() => {
       expect(screen.getByText("Rate this translation! We'd love to hear your feedback!")).toBeInTheDocument();
@@ -28,9 +27,10 @@ describe('Feedback Component', () => {
   test('displays error message if not all fields are filled', async () => {
     render(
       <Provider store={store}>
-        <Feedback postId="123" />
-      </Provider>
-    );
+
+    <Feedback postId="123" />
+    </Provider>);
+
     fireEvent.click(screen.getByText("Submit Feedback"));
     await waitFor(() => {
       expect(screen.getByText(/please fill out all fields/i)).toBeInTheDocument();
@@ -40,15 +40,19 @@ describe('Feedback Component', () => {
   test('submits feedback when all fields are filled', async () => {
     const postId = "123";
     const { container } = render(
-      <Provider store={store}><Feedback postId={postId} /></Provider>
-      );
+
+      <Provider store={store}>
+        <Feedback postId={postId} />
+      </Provider>
+    );
+
     await waitFor(() => {
       fireEvent.change(screen.getByPlaceholderText("Enter additional feedback here"), { target: { value: 'it feedback' } })
     });
     fireEvent.click(container.getElementsByClassName('star')[0])
     fireEvent.click(container.getElementsByClassName('star')[4])
 
-    // Spy on postFeedback after importing NHAService
+    // Spy on  after importing NHAService
     jest.spyOn(NHAService, 'postFeedback').mockResolvedValue();
 
 
