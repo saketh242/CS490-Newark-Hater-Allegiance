@@ -69,6 +69,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
   const handleGetAllHistory = async () => {
     try {
       setHistoryData(await nhaService.getAllHistory(user, dbUserFromRedux, ascend, sortField));
+      setFilteredHistory(history);
       console.log("spingus bingus");
     }
     catch (error) {
@@ -82,6 +83,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
       console.log("yeet");
       handleGetAllHistory();
       setTriggerHistory(false);
+      setFilteredHistory(history);
     }
   }, [user, triggerHistory])
 
@@ -89,7 +91,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
     setSortField("");
     setAscend(-1);
     setFilterField("");
-    setSelectedFilterItem("");
+    setFilteredHistory(history);
     setFilterOptions([]);
   }, [showSidebar])
 
@@ -128,12 +130,34 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
     setFilterOptions(Array.from(objects));
   }
 
-  const [selectedFilterItem, setSelectedFilterItem] = useState("");
+  // const [selectedFilterItem, setSelectedFilterItem] = useState("");
+  const [filteredHistory, setFilteredHistory] = useState(null)
   const changeSelectedFilterItem = (e) => {
-    setSelectedFilterItem(e.target.value);
+    // setSelectedFilterItem(e.target.value);
+    const filterItem = e.target.value;
+    var newHist = [];
+    if (filterField === "Date") {
+      history.forEach((element) => {
+        const date = dateConversion(element.createdAt);
+        if (date === filterItem) newHist.push(element);
+      })
+    }
+    else if (filterField === "Source") {
+      history.forEach((element) => {
+        newHist.push(element.Source_language);
+      })
+    }
+    else if (filterField === "Destination") {
+      history.forEach((element) => {
+        newHist.push(element.Desired_language);
+      })
+    }
+    console.log(newHist);
+    setFilteredHistory(newHist);
+    
   }
 
-  if (history === null || showSidebar === false) return (<></>);
+  if (history === null || filteredHistory === null || showSidebar === false) return (<></>);
   return (
     <>
       <Drawer
@@ -195,29 +219,29 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
             </div>
 
             <div>
-              {history.map((historyLabel, i) => (
+              {filteredHistory.map((historyLabel, i) => (
                 <div className="translationHistory" key={i}>
                   <h4>
-                    {dateAndTimeConversion(history[i].createdAt)}
+                    {dateAndTimeConversion(filteredHistory[i].createdAt)}
                   </h4>
 
                   <div className="codeHistory">
 
                     <div className="entrySource">
                       <h5>
-                        Source Code ({history[i].Source_language})
+                        Source Code ({filteredHistory[i].Source_language})
                       </h5>
                       <p>
-                        {history[i].original_code}
+                        {filteredHistory[i].original_code}
                       </p>
                     </div>
 
                     <div className="entryDest">
                       <h5>
-                        Converted Code ({history[i].Desired_language})
+                        Converted Code ({filteredHistory[i].Desired_language})
                       </h5>
                       <p>
-                        {history[i].converted_code}
+                        {filteredHistory[i].converted_code}
                       </p>
                     </div>
                   </div>
