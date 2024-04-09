@@ -30,6 +30,16 @@ const dateAndTimeConversion = (date) => {
   return string;
 };
 
+const dateConversion = (date) => {
+  const dateObject = new Date(date);
+  const string = dateObject.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  return string;
+};
+
 const loadInputAndTranslatedCode = (setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage, inputCode, translatedCode, sourceLanguage, desiredLanguage) => {
   setInputCode(inputCode);
   setTranslatedCode(translatedCode);
@@ -76,7 +86,7 @@ const History = ({ history, showSidebar, toggleSidebar, setInputCode, setTransla
     const objects = new Set();
     if (filter === "Date") {
       history.forEach((element) => {
-        objects.add(dateAndTimeConversion(element.createdAt));
+        objects.add(dateConversion(element.createdAt));
       })
     }
     else if (filter === "Source") {
