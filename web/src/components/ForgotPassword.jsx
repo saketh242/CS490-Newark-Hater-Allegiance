@@ -35,6 +35,7 @@ const ForgotPassword = () => {
         <div className="forgot-div">
             <h3 className="forgot-head">Forgot password?</h3>
             <input
+                data-testid="email-id"
                 type="text"
                 placeholder="Enter email"
                 value={email}

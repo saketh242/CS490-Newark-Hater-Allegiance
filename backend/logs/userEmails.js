@@ -13,7 +13,7 @@ function sendUserIssuesEmail(username, useremail, usermessage) {
     from: 'nhagptupdates@gmail.com',
     to: 'nhagpt490@gmail.com',
     subject: `Contact Us Form - ${useremail} `,
-    text: `From: ${username}, ${useremail}: ${usermessage}`,
+    text: `From: ${username}, ${useremail}:\n\n${usermessage}`,
   };
 
   // Send email

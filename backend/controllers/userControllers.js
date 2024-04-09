@@ -60,6 +60,8 @@ const getUserId = async (req, res, next) => {
         if (!user) return res.status(404).json({ error: 'User not found' });
 
         res.send(user);
+
+        // create an user if he does not exist
     } catch (error) {
         console.error('Error fetching user by uid:', error);
         res.status(500).json({ error: 'An error occured while getting user ID' });
