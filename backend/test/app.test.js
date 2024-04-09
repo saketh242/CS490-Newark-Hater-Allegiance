@@ -208,7 +208,7 @@ describe('API RESPONSES ', () => {
 
   it('GET: should return 200 OK for /history/getAllHistory', (done) => {
     request(app)
-      .get(`/history/getAllHistory?user_id=${user_id}`)
+      .get(`/history/getAllHistory?user_id=${user_id}&ascend=1&sortField=Date`)
       .set('Authorization', `Bearer ${testToken}`)
       .expect(200)
       .end((err, res) => {
@@ -592,8 +592,8 @@ describe('API RESPONSES ', () => {
 
   it('POST: should return 400 for language mismatch, gibberish, or other language errors for /openAI/postTranslation', (done) => {
     const inputCode = {
-      inputCode: "the fitnessgram pacer test",
-      sourceLanguage: "python",
+      inputCode: "printf(\"Hello World!\")",
+      sourceLanguage: "java",
       desiredLanguage: "c",
     };
 

@@ -33,14 +33,8 @@ const Settings = () => {
   // this is a placeholder for knowing the current state of data
   const [userData, setUserData] = useState(dbUser);
   // const [receivedData, setReceivedData] = useState(false);
-  const [triggerEffect, setTriggerEffect] = useState(true);
+  // const [triggerEffect, setTriggerEffect] = useState(true);
 
-  console.log(user)
-  console.log(dbUser)
-  console.log(isLoading)
-  
-
- 
   const handleChangePassword = () => {
     navigate("/changePassword");
     return
@@ -50,7 +44,6 @@ const Settings = () => {
     navigate("/deleteAccount")
     return
   }
-
 
   const handleUpdateprofile = async (e) => {
     e.preventDefault()
@@ -79,7 +72,7 @@ const Settings = () => {
     try {
       const credential = EmailAuthProvider.credential(user.email, password);
       await reauthenticateWithCredential(firebaseUser, credential)
-      console.log("re authentication successful");
+      // console.log("re authentication successful");
 
     } catch(e) {
       setError("Invalid Password, try again!");
@@ -108,21 +101,21 @@ const Settings = () => {
         if (emailCheck){
           verifyBeforeUpdateEmail(firebaseUser, email)
             .then(()=>{
-              console.log("Verification Email sent!")
+              // console.log("Verification Email sent!")
               signOut(auth)
                 .then(()=>{
                   navigate("/login")
                   const msg = () => toast(`Email change initiated, check your inbox and profile updated :)`);
                   msg()
                 }).catch((e)=>{
-                  console.log("Error signing out!")
+                  // console.log("Error signing out!")
                   setError("Error signing out!")
                   return
                 })
               
                               
             }).catch((e)=>{
-              console.log("Error sending verification email")
+              // console.log("Error sending verification email")
               setError("An error occured when sending the email");
               return 
             })
@@ -133,12 +126,12 @@ const Settings = () => {
           }
         }
       }catch(e){
-        console.log(e);
+        // console.log(e);
         setError("An error occured updating email");
         return 
       }
     } catch(e){
-      console.log("Error updating profile");
+      // console.log("Error updating profile");
       setError("Error updating profile")
       return
     }
@@ -149,107 +142,7 @@ const Settings = () => {
 
     
   }
-  // useEffect(() => {
-  //   nhaService.getUser(user)
-  //     .then((data) => {
-  //       setUserData(data)
-  //       setFirstName(data.firstName)
-  //       setLastName(data.lastName)
-  //       setReceivedData(true);
-  //     }).catch((e) => {
-  //       console.log(e)
-  //     })
-  // }, [triggerEffect, user])
-
-  // const handleChangePassword = () => {
-  //   navigate("/changePassword");
-  //   return
-  // }
-
-  // const handleDeleteAccount = () => {
-  //   navigate("/deleteAccount");
-  //   return
-  // }
-
-  // const handleUpdateprofile = async (e) => {
-  //   e.preventDefault()
-  //   if (firstName == "" && lastName == "" && email == "") {
-  //     setError("You need to fill atleast one field!");
-  //     return
-  //   }
-  //   if (!isValidEmail(email)) {
-  //     setError("Enter a valid email!");
-  //     return
-  //   }
-
-  //   if (password === "") {
-  //     setError("Please enter your password before updating");
-  //     return
-  //   }
-  //   const emailCheck = email === user.email ? false : true
-  //   const fNameCheck = firstName === userData.firstName ? false : true
-  //   const lNameCheck = lastName === userData.lastName ? false : true
-
-  //   if (!emailCheck && !fNameCheck && !lNameCheck){
-  //     setError("Edit profile to update");
-  //     return
-  //   }
-
-  //   try {
-  //     // reauthenticating user 
-  //     const credential = EmailAuthProvider.credential(user.email, password);
-  //     await reauthenticateWithCredential(user, credential)
-  //     console.log("re authentication successful")
-  //   } catch (e) {
-  //     setError("Invalid Password, try again");
-  //     return
-  //   }
-
-
-  //   try {
-  //     await nhaService.updateUser(user, email, firstName, lastName, emailCheck, fNameCheck, lNameCheck);
-  //     await updateProfile(user, {
-  //       displayName: `${firstName}`
-  //     })
-  //    // dispatch(updateUserName(firstName));
-  //     setPassword("");
-  //       if (emailCheck) {
-  //         // if email changed
-  //         verifyBeforeUpdateEmail(user, email)
-  //           .then(async () => {
-  //             console.log("Verification email sent!")
-
-  //             signOut(auth).then(() => {
-  //               navigate("/login")
-  //               const msg = () => toast(`Email change initiated, check your inbox and profile updated :)`);
-  //               msg()
-  //             }).catch((e) => {
-  //               setError(e.message);
-  //               console.log(e)
-  //             })
-  //           }).catch((e) => {
-  //             console.log(e)
-  //             setError("An error occured when updating!")
-  //             return
-  //           })
-  //       } else {
-  //         const msg = () => toast(`Profile updated :)`);
-  //         msg()
-  //       }
-
-  //       // doing this to help users chnage names again
-  //       setUserData({
-  //         firstName: firstName,
-  //         lastName: lastName
-  //       })
-      
-  //   } catch (e) {
-  //     setError("Error updating profile")
-  //     console.log(e)
-  //     return
-  //   }
- //}
-
+  
   return (
         <div className='settings-div'>
           <div className='settings-head-div'>
@@ -307,6 +200,7 @@ const Settings = () => {
                   }}
                 />
                 <input
+                  data-testid="password-id-settings"
                   className='settings-email-input'
                   type="password"
                   value={password}
@@ -321,7 +215,7 @@ const Settings = () => {
                   }}
                 />
               </>)}
-            <button type="submit" className='login-btn' onClick={handleUpdateprofile}>Update Profile</button>
+            <button type="submit" data-testid="update-btn" className='login-btn' onClick={handleUpdateprofile}>Update Profile</button>
 
           </form>
 

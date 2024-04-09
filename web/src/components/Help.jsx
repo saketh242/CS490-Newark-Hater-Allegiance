@@ -1,6 +1,6 @@
-import React, { useState, Popup } from 'react'
-import { Link } from 'react-router-dom'
-import { Container } from 'react-bootstrap';
+import React, { useState } from 'react'
+// import { Link } from 'react-router-dom'
+// import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
@@ -26,7 +26,7 @@ const Help = () => {
   const handleContactEmail = async (e) => {
     e.preventDefault();
     setEmailError(''); //reset email error
-    if (name==='' || email==='' || message==='') {
+    if (name === '' || email === '' || message === '') {
       setEmailError("Please fill out all fields.");
       return;
     }
@@ -108,14 +108,9 @@ const Help = () => {
     setFilteredFaqs(filteredItems);
   }
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   e.target.reset()
-  // };
-
   return (
     <div className='standard'>
-      <h1 className="help-subtitle help-header">How can we help?</h1>
+      <h1 className="help-subtitle help-header" data-testid="help-header">How can we help?</h1>
 
       <div id='help-bar'>
         <div id='help-item' onClick={() => handleBox(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='3x' icon={faBook} /><h1 className='icon-txt' id={showBox === 1 ? 'help-active' : null}>Guides</h1></div>
@@ -130,10 +125,10 @@ const Help = () => {
         </div>
 
         {/*Box 1*/}
-        <div className='help-guides' id={showBox===1 ? 'focus': null}>
+        <div className='help-guides' id={showBox === 1 ? 'focus' : null}>
           <p id='guide-title'>Have a look at these quick and detailed guides!</p>
           {/*SIGNING UP GUIDE*/}
-          <div id='guide-item' onClick={()=>handleGuide(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><span id={openG1 ? 'help-active': null}>How to get started</span></div>
+          <div id='guide-item' onClick={() => handleGuide(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown} /><span id={openG1 ? 'help-active' : null}>How to get started</span></div>
           {openG1 ? <div id='guide-text'>
             <div className='box' id="guide-div">
               <p id="instructionHeader" className="sectionHeader">Getting started</p>
@@ -144,12 +139,12 @@ const Help = () => {
                 <li>Refresh the page and you should be let into the translator!</li>
               </ul>
               <div className='signup'>
-                <img className='signup-image guide-img' src={sample} alt="Sample Image"/>
+                <img className='signup-image guide-img' src={sample} alt="Sample Image" />
               </div>
             </div>
           </div> : null}
           {/*TRANSLATING GUIDE*/}
-          <div id='guide-item' onClick={()=>handleGuide(2)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><span id={openG2 ? 'help-active': null}>How to translate</span></div>
+          <div id='guide-item' onClick={() => handleGuide(2)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown} /><span id={openG2 ? 'help-active' : null}>How to translate</span></div>
           {openG2 ? <div id='guide-text'>
             <div className='box' id="guide-div">
               <p id="instructionHeader" className="sectionHeader">Translating</p>
@@ -161,12 +156,12 @@ const Help = () => {
               </ul>
               <div className='signup'>
 
-                <img className='signup-image guide-img' src={sample} alt="Sample Image"/>
+                <img className='signup-image guide-img' src={sample} alt="Sample Image" />
               </div>
             </div>
           </div> : null}
           {/*FEEDBACK GUIDE*/}
-          <div id='guide-item' onClick={()=>handleGuide(3)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><span id={openG3 ? 'help-active': null}>How to submit a feedback</span></div>
+          <div id='guide-item' onClick={() => handleGuide(3)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown} /><span id={openG3 ? 'help-active' : null}>How to submit a feedback</span></div>
           {openG3 ? <div id='guide-text'>
             <div className='box' id="guide-div">
 
@@ -178,24 +173,24 @@ const Help = () => {
                 <li>We also store ratings</li>
               </ul>
               <div className='signup'>
-                <img className='signup-image guide-img' src={feedback} alt="feedBack Image"/>
+                <img className='signup-image guide-img' src={feedback} alt="feedBack Image" />
               </div>
             </div>
           </div> : null}
           {/*PFP GUIDE*/}
-          <div id='guide-item' onClick={()=>handleGuide(4)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown}/><span id={openG4 ? 'help-active': null}>How to set a profile picture</span></div>
+          <div id='guide-item' onClick={() => handleGuide(4)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown} /><span id={openG4 ? 'help-active' : null}>How to set a profile picture</span></div>
           {openG4 ? <div id='guide-text'>
             <div className='box' id='guide-div'>
               <p id="instructionHeader" className="sectionHeader">Setting a profile picture</p>
-                <ul className='instructions'>
-                  <li>First, start by going to <a className='link' id='guide-link' href="https://gravatar.com/" target="_blank">Gravatar</a> and creating an account with THE SAME EMAIL you used to sign up for NHAGPT</li>
-                  <li>Then navigate the menu to upload a new profile picture to your account</li>
-                  <li>Save it, and the changes should reflect momentarily on our end</li>
-                </ul>
+              <ul className='instructions'>
+                <li>First, start by going to <a className='link' id='guide-link' href="https://gravatar.com/" target="_blank">Gravatar</a> and creating an account with THE SAME EMAIL you used to sign up for NHAGPT</li>
+                <li>Then navigate the menu to upload a new profile picture to your account</li>
+                <li>Save it, and the changes should reflect momentarily on our end</li>
+              </ul>
             </div>
             <div className='signup'>
-                <img className='signup-image guide-img' src={pfpImg} alt="Gravatar Profile Example"/>
-              </div>
+              <img className='signup-image guide-img' src={pfpImg} alt="Gravatar Profile Example" />
+            </div>
           </div> : null}
         </div>
 

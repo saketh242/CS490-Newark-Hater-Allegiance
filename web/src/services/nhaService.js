@@ -12,7 +12,8 @@ class NHAService {
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}users/postUser`, payload, { headers });
             return response.data;
         } catch (error) {
-            console.error('Error posting user: ', error);
+            // console.error('Error posting user: ', error);
+            return error.response.data;
         }
     }
 
@@ -74,14 +75,14 @@ class NHAService {
         }
     }
 
-    async getAllHistory(user, dbUser) {
+    async getAllHistory(user, dbUser, ascend, sortField) {
         try {
             const user_id = dbUser._id;
             const idToken = await user.getIdToken();
             const headers = {
                 Authorization: `Bearer ${idToken}`
             };
-            const params = { user_id: user_id };
+            const params = { user_id, ascend, sortField };
             const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}history/getAllHistory`, { headers, params });
             //console.log(response.data);
             return response.data;
@@ -144,7 +145,7 @@ class NHAService {
       
           // Check if JSON data contains components array --> contains api status
           if (!jsonData || !jsonData.components || !Array.isArray(jsonData.components)) {
-            console.error('Invalid JSON data format');
+            // console.error('Invalid JSON data format');
             return false;
           }
       
