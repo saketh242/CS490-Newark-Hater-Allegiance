@@ -3,7 +3,7 @@ const logger = require('../logs/logger');
 
 const getAllHistory = async (req, res, next) => {
     try {
-        const { user_id, ascend, sortField } = req.query;
+        const { user_id, sortField } = req.query;
         const fieldMapping = {
             "Date": "createdAt",
             "": "createdAt",
@@ -12,7 +12,7 @@ const getAllHistory = async (req, res, next) => {
           };
         const sortFieldInDB = fieldMapping[sortField];
         const sortObject = {};
-        sortObject[sortFieldInDB] = Number(ascend);
+        sortObject[sortFieldInDB] = -1;
         console.log(sortObject);
         if (!user_id) {
             return res.status(400).json({ error: 'Missing required field to get history' });

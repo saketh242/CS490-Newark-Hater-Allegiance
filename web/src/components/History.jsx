@@ -291,4 +291,6 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
   );
 };
 
+
 export default History;
+
