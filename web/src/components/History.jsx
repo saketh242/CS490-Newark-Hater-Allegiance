@@ -73,7 +73,8 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
     try {
       // throw new Error('Simulated error: getallhistory');
       setHistoryData(await nhaService.getAllHistory(user, dbUserFromRedux, ascend, sortField));
-      // console.log("spingus bingus");
+      setFilteredHistory(history);
+      console.log("spingus bingus");
     }
     catch (error) {
       // console.log(error);
@@ -86,6 +87,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
       // console.log("yeet");
       handleGetAllHistory();
       setTriggerHistory(false);
+      setFilteredHistory(history);
     }
   }, [user, triggerHistory])
 
@@ -93,7 +95,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
     setSortField("");
     setAscend(-1);
     setFilterField("");
-    setSelectedFilterItem("");
+    setFilteredHistory(history);
     setFilterOptions([]);
   }, [showSidebar])
 
@@ -132,12 +134,34 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
     setFilterOptions(Array.from(objects));
   }
 
-  const [selectedFilterItem, setSelectedFilterItem] = useState("");
+  // const [selectedFilterItem, setSelectedFilterItem] = useState("");
+  const [filteredHistory, setFilteredHistory] = useState(null)
   const changeSelectedFilterItem = (e) => {
-    setSelectedFilterItem(e.target.value);
+    // setSelectedFilterItem(e.target.value);
+    const filterItem = e.target.value;
+    var newHist = [];
+    if (filterField === "Date") {
+      history.forEach((element) => {
+        const date = dateConversion(element.createdAt);
+        if (date === filterItem) newHist.push(element);
+      })
+    }
+    else if (filterField === "Source") {
+      history.forEach((element) => {
+        newHist.push(element.Source_language);
+      })
+    }
+    else if (filterField === "Destination") {
+      history.forEach((element) => {
+        newHist.push(element.Desired_language);
+      })
+    }
+    console.log(newHist);
+    setFilteredHistory(newHist);
+    
   }
 
-  if (showSidebar === false) return (<></>);
+  if (history === null || filteredHistory === null || showSidebar === false) return (<></>);
   return (
     <>
       <Drawer
@@ -204,33 +228,33 @@ const History = ({ setTriggerHistory, triggerHistory, user, showSidebar, toggleS
                   <button id="clearAll" className="ripple">Clear all history</button>
                 </div>
 
-                <div>
-                  {history.map((historyLabel, i) => (
-                    <div className="translationHistory" key={i}>
-                      <h4>
-                        {dateAndTimeConversion(history[i].createdAt)}
-                      </h4>
+            <div>
+              {filteredHistory.map((historyLabel, i) => (
+                <div className="translationHistory" key={i}>
+                  <h4>
+                    {dateAndTimeConversion(filteredHistory[i].createdAt)}
+                  </h4>
 
                       <div className="codeHistory">
 
-                        <div className="entrySource">
-                          <h5>
-                            Source Code ({history[i].Source_language})
-                          </h5>
-                          <p>
-                            {history[i].original_code}
-                          </p>
-                        </div>
+                    <div className="entrySource">
+                      <h5>
+                        Source Code ({filteredHistory[i].Source_language})
+                      </h5>
+                      <p>
+                        {filteredHistory[i].original_code}
+                      </p>
+                    </div>
 
-                        <div className="entryDest">
-                          <h5>
-                            Converted Code ({history[i].Desired_language})
-                          </h5>
-                          <p>
-                            {history[i].converted_code}
-                          </p>
-                        </div>
-                      </div>
+                    <div className="entryDest">
+                      <h5>
+                        Converted Code ({filteredHistory[i].Desired_language})
+                      </h5>
+                      <p>
+                        {filteredHistory[i].converted_code}
+                      </p>
+                    </div>
+                  </div>
 
                       <div className="historyEntryOptions">
                         {/* <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, history[i].original_code, history[i].converted_code)}> Translate again </button> */}
