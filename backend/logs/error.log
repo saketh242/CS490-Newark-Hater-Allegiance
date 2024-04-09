@@ -42,3 +42,11 @@
 {"level":"error","message":"Error: sortField is not defined, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T04:13:54.767Z"}
 {"level":"error","message":"Error: sortField is not defined, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T04:13:54.771Z"}
 {"level":"error","message":"Error: sortField is not defined, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T04:13:54.776Z"}
+{"level":"error","message":"Error: Invalid sort value: { undefined: NaN }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T18:25:01.365Z"}
+{"level":"error","message":"Error: error fetching user by uid, Cast to ObjectId failed for value \"nonExistentUserId\" (type string) at path \"_id\" for model \"User\", \n        Location: backend/controllers/feedbackControllers.js","timestamp":"2024-04-09T18:25:01.740Z"}
+{"level":"error","message":"Error: Input code does not match specified source language, Input: the fitnessgram pacer test, SourceLanguage: python, DesiredLanguage: c","timestamp":"2024-04-09T18:25:03.971Z"}
+{"level":"error","message":"Error: Input code does not match specified source language, Input: language mismatch, SourceLanguage: cplusplus, DetectedLanguage: python, DesiredLanguage: java","timestamp":"2024-04-09T18:25:03.974Z"}
+{"level":"error","message":"Error: Invalid sort value: { undefined: NaN }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T18:26:37.326Z"}
+{"level":"error","message":"Error: error fetching user by uid, Cast to ObjectId failed for value \"nonExistentUserId\" (type string) at path \"_id\" for model \"User\", \n        Location: backend/controllers/feedbackControllers.js","timestamp":"2024-04-09T18:26:38.526Z"}
+{"level":"error","message":"Error: Input code does not match specified source language, Input: the fitnessgram pacer test, SourceLanguage: python, DesiredLanguage: c","timestamp":"2024-04-09T18:26:41.474Z"}
+{"level":"error","message":"Error: Input code does not match specified source language, Input: language mismatch, SourceLanguage: cplusplus, DetectedLanguage: python, DesiredLanguage: java","timestamp":"2024-04-09T18:26:41.477Z"}
