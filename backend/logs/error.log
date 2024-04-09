@@ -71,3 +71,11 @@
 {"level":"error","message":"Error: Input code does not match specified source language, Input: printf(\"Hello World!\"), SourceLanguage: java, DesiredLanguage: c","timestamp":"2024-04-09T19:39:44.850Z"}
 {"level":"error","message":"Error: Input code does not match specified source language, Input: language mismatch, SourceLanguage: cplusplus, DetectedLanguage: python, DesiredLanguage: java","timestamp":"2024-04-09T19:39:44.855Z"}
 
+{"level":"error","message":"Error: Invalid sort value: { undefined: 0 }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T21:30:28.106Z"}
+{"level":"error","message":"Error: Invalid sort value: { undefined: 0 }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T21:30:28.112Z"}
+{"level":"error","message":"Error: Invalid sort value: { undefined: 0 }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T21:30:41.345Z"}
+{"level":"error","message":"Error: Invalid sort value: { undefined: 0 }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T21:30:41.349Z"}
+{"level":"error","message":"Error: Invalid sort value: { createdAt: NaN }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T21:31:44.118Z"}
+{"level":"error","message":"Error: Invalid sort value: { createdAt: NaN }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T21:31:44.159Z"}
+{"level":"error","message":"Error: Invalid sort value: { createdAt: NaN }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T21:31:44.164Z"}
+{"level":"error","message":"Error: Invalid sort value: { createdAt: NaN }, Location: backend/controllers/historyControllers.js","timestamp":"2024-04-09T21:31:44.169Z"}
