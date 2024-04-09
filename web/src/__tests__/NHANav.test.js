@@ -72,9 +72,6 @@ describe('NHANav', () => {
     expect(screen.getByText('Translate')).toBeInTheDocument();
   });
 
-  
-
-
   it('displays login/signup when not authenticated', () => {
     require('../useAuth').default.mockReturnValue({ user: null, isLoading: false });
     renderNHANav();
