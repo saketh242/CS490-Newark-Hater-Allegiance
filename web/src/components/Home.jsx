@@ -51,7 +51,7 @@ const Home = () => {
         <h2 className='rainbow'>Designed and Developed by</h2>
         <div id="devsArea">
           <div className="dev">
-            <p>Saketh Puramsetti</p>
+            <p>Saketh <br/> Puramsetti</p>
             <Gravatar email={process.env.REACT_APP_SAKETH_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for Saketh'/>
           </div>
           <div className="dev">

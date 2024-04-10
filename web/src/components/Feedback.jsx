@@ -50,6 +50,7 @@ const Feedback = ({ postId }) => {
             } 
             catch (error) {
                 setFeedbackError('Unable to post feedback.');
+                //setFeedbackError(error.message);
             }
         }
     };
@@ -74,7 +75,7 @@ const Feedback = ({ postId }) => {
 
             <div id="feedbackErrorAndInput">
             {feedbackError !== '' &&
-                <div className="feedbackError">
+                <div className="feedbackError" data-testid="feedback-error">
                     <FontAwesomeIcon icon={faCircleExclamation} id="errorIcon" size="2x" />
                     <p>{feedbackError}</p>
                 </div>}
@@ -96,7 +97,12 @@ const Feedback = ({ postId }) => {
             {error && <Alert variant="danger">{error}</Alert>}
             <br />
             </div>
-            <button className={isSubmitted ? "greyedOutButton" : "feedbackButton"} onClick={submitted} disabled={isSubmitted}>
+            <button 
+                className={isSubmitted ? "greyedOutButton" : "feedbackButton"} 
+                onClick={submitted} 
+                disabled={isSubmitted}
+                data-testid="submit-feedback"
+                >
                 Submit Feedback
             </button>
         </div>
