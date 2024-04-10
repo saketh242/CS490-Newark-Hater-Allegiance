@@ -27,7 +27,7 @@ describe('Signup Component Tests', () => {
 
   test("Error message is invisible", async () => {
     const { container } = render(
-      <Provider>
+      <Provider store={store}>
         <Router>
         <Signup />
       </Router>
