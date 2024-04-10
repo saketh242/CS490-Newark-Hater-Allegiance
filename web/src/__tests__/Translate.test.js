@@ -229,15 +229,40 @@ describe('Translate component', () => {
     const inputArea = screen.getByPlaceholderText('Enter code to translate');
     const translateButton = screen.getByTestId('Convert');
   
-    // Different code structures to test
     const codeStructures = [
-      'console.log("Hello, world!");', // Basic console log
-      'for (let i = 0; i < 10; i++) { console.log(i); }', // For loop
-      'function add(a, b) { return a + b; }', // Function declaration
-      'const numbers = [1, 2, 3, 4, 5]; numbers.forEach(num => console.log(num));', // Array iteration
-      'class Person { constructor(name) { this.name = name; } sayHello() { console.log(`Hello, my name is ${this.name}.`); } }', // Class declaration
-      'const promise = new Promise((resolve, reject) => { setTimeout(() => resolve("Done!"), 1000); }); promise.then(result => console.log(result));', // Promise
-      // Add more code structures to test as needed
+      'cout << "Hello World!";', //C++
+      'for (let i = 0; i < 10; i++) { console.log(i); }', //JAVASCRIPT
+      'def my_function(): print("Hello from a function")',  //PYTHON
+      'int[] numbers = {1, 2, 3, 4, 5}; for(int i : numbers) System.out.println(i);', //JAVA
+      'class Person { constructor(name) { this.name = name; } sayHello() { console.log(`Hello, my name is ${this.name}.`); } }', //JAVASCRIPT
+      
+      `#include <stdio.h> 
+       int main() {
+        printf(%d, 2+2);
+        return 0;
+       }`, //C
+
+      `package main
+
+      import "fmt"
+      
+      func main() {
+      
+          var a = "initial"
+          fmt.Println(a)
+      
+          var b, c int = 1, 2
+          fmt.Println(b, c)
+      
+          var d = true
+          fmt.Println(d)
+      
+          var e int
+          fmt.Println(e)
+      
+          f := "apple"
+          fmt.Println(f)
+      }` //GO
     ];
   
     // Iterate over each code structure and test
@@ -248,7 +273,7 @@ describe('Translate component', () => {
       // Wait for the translation process to complete
       await waitFor(() => {
         // Assert that a part of the code is present in the output area
-        const outputCode = screen.getByText(code.split(' ')[0], { exact: false }); // Check only the first word for simplicity
+        const outputCode = screen.getByText(code.split(' ')[0], { exact: false });
         expect(outputCode).toBeInTheDocument();
       });
   
