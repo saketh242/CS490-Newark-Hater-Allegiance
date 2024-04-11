@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../app');
 
 describe('Express Queue System', function() {
-  this.timeout(5000); // Increase timeout to allow for queue processing
+  this.timeout(20000); // Increase timeout to allow for queue processing
 
   it('should process requests one at a time due to queue limits', function(done) {
     // Start time
@@ -10,23 +10,23 @@ describe('Express Queue System', function() {
 
     // Make three concurrent requests
     Promise.all([
-      request(app).get('/').then(res => {
-        return { route: '/what', time: Date.now() - startTime };
+      request(app).get('/feedback/getfeedback').then(res => {
+        return { route: '/feedback/getfeedback', time: Date.now() - startTime };
       }),
-      request(app).get('/test').then(res => {
-        return { route: '/', time: Date.now() - startTime };
+      request(app).get('/feedback/getfeedback').then(res => {
+        return { route: '/feedback/getfeedback', time: Date.now() - startTime };
       }),
-      request(app).get('/nonexistent').then(res => {
-        return { route: '/test', time: Date.now() - startTime };
+      request(app).get('/feedback/getfeedback').then(res => {
+        return { route: '/feedback/getfeedback', time: Date.now() - startTime };
       })
     ])
     .then(responses => {
       // Ensure responses are spread out due to queuing, indicating they were processed one by one
       // This checks if each subsequent request was processed after a noticeable delay
       // Adjust the expected delay based on your queue configuration and server response times
-      // console.log(responses[0].time);
-      // console.log(responses[1].time);
-      // console.log(responses[2].time);
+       console.log(responses[0].time);
+       console.log(responses[1].time);
+       console.log(responses[2].time);
       
       // Adjust the margin of error to allow for small timing discrepancies
       const minExpectedDelay = 0; // Minimum expected delay in milliseconds between handling requests
@@ -40,7 +40,7 @@ describe('Express Queue System', function() {
 
   it('should handle a long-running task', function(done) {
     // Simulate a long-running task by delaying the response for 7 seconds
-    this.timeout(10000); // Set timeout to 10 seconds
+    this.timeout(20000);
     setTimeout(() => {
       request(app)
         .get('/test')

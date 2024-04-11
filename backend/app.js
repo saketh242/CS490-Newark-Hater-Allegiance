@@ -54,12 +54,11 @@ mongoose.connect(process.env.DATABASE)
 
     // Handle termination signals and close MongoDB connection
     process.on('SIGINT', () => {
-      mongoose.connection.close(() => {
-        console.log('MongoDB connection closed through app termination');
-        server.close(() => {
-          console.log('Server closed');
-          process.exit(0);
-        });
+      mongoose.connection.close(); // No callback needed
+      console.log('MongoDB connection closed through app termination');
+      server.close(() => {
+        console.log('Server closed');
+        process.exit(0);
       });
     });
   })

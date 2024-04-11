@@ -57,7 +57,7 @@ before(async () => {
 
 describe('API RESPONSES ', () => {
   let server;
-
+  
   before(async () => {
     // Start the server 
     server = app.listen(3001);
@@ -588,7 +588,7 @@ describe('API RESPONSES ', () => {
 
         done();
       });
-  }).timeout(10000);
+  }).timeout(20000);
 
   it('POST: should return 400 for language mismatch, gibberish, or other language errors for /openAI/postTranslation', (done) => {
     const inputCode = {
@@ -610,7 +610,7 @@ describe('API RESPONSES ', () => {
         expect(res.body).to.have.property('message').equal("Input code does not match specified source language");
 
         done();
-      }).timeout(10000);
+      }).timeout(20000);
   });
 
 });

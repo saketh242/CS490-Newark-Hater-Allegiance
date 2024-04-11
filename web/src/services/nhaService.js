@@ -75,14 +75,14 @@ class NHAService {
         }
     }
 
-    async getAllHistory(user, dbUser, sortField) {
+    async getAllHistory(user, dbUser) {
         try {
             const user_id = dbUser._id;
             const idToken = await user.getIdToken();
             const headers = {
                 Authorization: `Bearer ${idToken}`
             };
-            const params = { user_id, sortField };
+            const params = { user_id };
             const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}history/getAllHistory`, { headers, params });
             //console.log(response.data);
             return response.data;
