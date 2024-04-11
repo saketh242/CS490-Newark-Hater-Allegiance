@@ -1,17 +1,21 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRobot, faBoltLightning, faUser, faCode} from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
 import Gravatar from 'react-gravatar'
+import { useSelector } from 'react-redux';
 
 import HomeReviews from './HomeReviews';
 
 const Home = () => {
+  const user = useSelector((state) => state.user.user);
   const navigate = useNavigate()
-  const handleSignup = () => {
-      navigate('/signup')
+  const handleHomeBtn = () => {
+    if (!user) navigate('/signup');
+    else navigate('/translate');
   }
+
   return (
     <div className='standard'>
       <div className='box'>
@@ -34,14 +38,14 @@ const Home = () => {
       <div className='box' id="getting-started-div">
         <p id="instructionHeader" className="sectionHeader">Getting Started</p>
         <ul className='instructions'>
-          <li>Copy code into the text area or upload a file</li>
-          <li>Enter the source and destination languages</li>
-          <li>Click "Convert", and that's it!</li>
-          <li>Download or copy the code to save it</li>
+          <li>You will need an account in order to start using our translator</li>
+          <li>After signing up, head over to the <Link to="/translate" className='link'>Translate</Link> page to begin translating!</li>
+          <li>After you convert, feel free to rate your translation and leave feedback</li>
+          <li>If you have any questions or concerns, please check out the <Link to="/help" className='link'>Help</Link> page!</li>
         </ul>
         <div className='signup'>
-          <img className='signup-image' src={sample} alt="Sample Image"/>
-          <br></br><button className='default-button' id='signup-button' onClick={handleSignup}>Signup today!</button>
+          <br/>{!user ? (<button className='default-button' id='signup-button' onClick={handleHomeBtn}>Signup today!</button>)
+          : (<button className='default-button' id='signup-button' onClick={handleHomeBtn}>Translate now!</button>)}
         </div>
       </div>
 
@@ -53,22 +57,40 @@ const Home = () => {
           <div className="dev">
             <p>Saketh <br/> Puramsetti</p>
             <Gravatar email={process.env.REACT_APP_SAKETH_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for Saketh'/>
+            <p>Project Manager</p>
           </div>
           <div className="dev">
             <p>Medina <br/>Dzhatdoyev</p>
             <Gravatar email={process.env.REACT_APP_MEDINA_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for Medina'/>
+            <p>Frontend Lead Developer</p>
           </div>
           <div className="dev">
             <p>Ausberto <br/>Colon Jr</p>
             <Gravatar email={process.env.REACT_APP_AJ_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for AJ'/>
+            <p>Flex Unit</p>
           </div>
           <div className="dev">
             <p>John <br/>Cena</p>
             <Gravatar email={process.env.REACT_APP_JOHN_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for John'/>
+            <p>Frontend Developer</p>
           </div>
           <div className="dev">
             <p>Karam <br/>Assaf</p>
             <Gravatar email={process.env.REACT_APP_KARAM_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for Karam'/>
+            <p>Backend Lead Developer</p>
+          </div>
+        </div>
+        <h2 className='rainbow'>Playtested by</h2>
+        <div id="devsArea">
+          <div className="dev">
+            <p>John <br/>Cena</p>
+            <Gravatar email={process.env.REACT_APP_JOHN_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for John'/>
+            <p>Quality Assurance</p>
+          </div>
+          <div className="dev">
+            <p>William <br/>McCoy</p>
+            <Gravatar email={process.env.REACT_APP_KOI_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for William'/>
+            <p>Security Analyst</p>
           </div>
         </div>
       </div>

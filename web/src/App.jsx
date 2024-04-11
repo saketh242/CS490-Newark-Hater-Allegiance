@@ -26,7 +26,7 @@ import ViewProfile from './components/ViewProfile';
 import { useSelector } from 'react-redux';
 import { setReviews, startFetchingReviews, stopFetchingReviews } from './features/reviews/reviewSlice';
 import useFetchReviews from './useFetchReviews';
-
+import ScrollToTop from './components/scrollToTop';
 
 const App = () => {
   useAuth();
@@ -43,6 +43,7 @@ const App = () => {
     <>
       <Router>
         <div className="content">
+        <ScrollToTop />
           <NHANav/>
           <Routes>
             <Route path="/" element={<Home />} />
