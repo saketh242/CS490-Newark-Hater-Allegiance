@@ -56,23 +56,9 @@ before(async () => {
 
 
 describe('API RESPONSES ', () => {
-  let server;
-  
-  before(async () => {
-    // Start the server 
-    server = app.listen(3001);
-  });
-
-  after((done) => {
-    console.log("closing server")
-    server.close(() => {
-      console.log("server closed successfully")
-      done();
-    });
-  });
 
   it('DELETE: should return 401 for unauthorized access for /users/deleteUser', (done) => {
-    request(server)
+    request(app)
       .delete('/users/deleteUser')
       .expect(401)
       .end((err, res) => {
@@ -85,7 +71,7 @@ describe('API RESPONSES ', () => {
   });
 
   it('DELETE: should return 200 for sucessful delete of user and their data for /users/deleteUser', (done) => {
-    request(server)
+    request(app)
       .delete('/users/deleteUser')
       .set('Authorization', `Bearer ${postUserToken}`)
       .expect(200)
@@ -97,7 +83,7 @@ describe('API RESPONSES ', () => {
   });
 
   it('DELETE: should return 404 for user not found for /users/deleteUser', (done) => {
-    request(server)
+    request(app)
       .delete('/users/deleteUser')
       .set('Authorization', `Bearer ${postUserToken}`)
       .expect(404)
@@ -114,7 +100,7 @@ describe('API RESPONSES ', () => {
       lastName: '1391',
       email: '@test.com',
     };
-    request(server)
+    request(app)
       .put('/users/updateUser')
       .send(invalidUser)
       .set('Authorization', `Bearer ${testToken}`)
@@ -135,7 +121,7 @@ describe('API RESPONSES ', () => {
       lastName: 'Assaf',
       email: 'karamassaf3@gmail.com',
     };
-    request(server)
+    request(app)
       .put('/users/updateUser')
       .send(invalidUser)
       .set('Authorization', `Bearer ${postUserToken}`)
@@ -159,7 +145,7 @@ describe('API RESPONSES ', () => {
       newFirstNameFlag: true,
       newLastNameFlag: true
     };
-    request(server)
+    request(app)
       .put('/users/updateUser')
       .send(updateUser)
       .set('Authorization', `Bearer ${testToken}`)
@@ -175,26 +161,26 @@ describe('API RESPONSES ', () => {
   });
 
   it('GET: should return 404 for an invalid route', (done) => {
-    request(server)
+    request(app)
       .get('/invalid-route')
       .expect(404, done);
   });
 
   it('GET: should return a specific response for /test', (done) => {
-    request(server)
+    request(app)
       .get('/test')
       .expect(200)
       .expect({ message: 'This is a test for auth' }, done);
   });
 
   it('GET: should return 200 OK for /', (done) => {
-    request(server)
+    request(app)
       .get('/')
       .expect(200, done);
   });
 
   it('GET: should return 401 for unauthorized access for /history', (done) => {
-    request(server)
+    request(app)
       .get('/history')
       .expect(401)
       .end((err, res) => {
@@ -207,7 +193,7 @@ describe('API RESPONSES ', () => {
   });
 
   it('GET: should return 200 OK for /history/getAllHistory', (done) => {
-    request(server)
+    request(app)
       .get(`/history/getAllHistory?user_id=${user_id}&sortField=Date`)
       .set('Authorization', `Bearer ${testToken}`)
       .expect(200)
@@ -235,7 +221,7 @@ describe('API RESPONSES ', () => {
   });
 
   it('GET: should return 400 for missing user id field /history/getAllHistory', (done) => {
-    request(server)
+    request(app)
       .get(`/history/getAllHistory`)
       .set('Authorization', `Bearer ${testToken}`)
       .expect(400)
@@ -249,7 +235,7 @@ describe('API RESPONSES ', () => {
   });
 
   it('GET: should return 200 OK for /feedback/getFeedback', (done) => {
-    request(server)
+    request(app)
       .get('/feedback/getFeedback')
       .expect(200)
       .end((err, res) => {
@@ -274,7 +260,7 @@ describe('API RESPONSES ', () => {
   });
 
   it('GET: should return 401 for unauthorized access for /users', (done) => {
-    request(server)
+    request(app)
       .get('/users')
       .expect(401)
       .end((err, res) => {
@@ -287,7 +273,7 @@ describe('API RESPONSES ', () => {
   });
 
   it('GET: should return the user for authorized access to /users', (done) => {
-    request(server)
+    request(app)
       .get('/users')
       .set('Authorization', `Bearer ${testToken}`)
       .expect(200)
@@ -304,7 +290,7 @@ describe('API RESPONSES ', () => {
   });
 
   it('GET: should return 404 for user not found for /users', (done) => {
-    request(server)
+    request(app)
       .get('/users')
       .set('Authorization', `Bearer ${postUserToken}`)
       .expect(404)
@@ -322,7 +308,7 @@ describe('API RESPONSES ', () => {
       email: 'karamassaf3@gmail.com',
     };
 
-    request(server)
+    request(app)
       .post('/users/postUser')
       .send(newUser)
       .set('Authorization', `Bearer ${postUserToken}`)
@@ -344,7 +330,7 @@ describe('API RESPONSES ', () => {
       email: 'ka534@njit.edu',
     };
 
-    request(server)
+    request(app)
       .post('/users/postUser')
       .send(existingUser)
       .set('Authorization', `Bearer ${testToken}`)
@@ -365,7 +351,7 @@ describe('API RESPONSES ', () => {
       lastName: '1391',
       email: '@test.com',
     };
-    request(server)
+    request(app)
       .post('/users/postUser')
       .send(invalidUser)
       .set('Authorization', `Bearer ${testToken}`)
@@ -389,7 +375,7 @@ describe('API RESPONSES ', () => {
       desiredLanguage: 'python',
     };
 
-    request(server)
+    request(app)
       .post('/history')
       .send(newHistoryEntry)
       .set('Authorization', `Bearer ${testToken}`)
@@ -414,7 +400,7 @@ describe('API RESPONSES ', () => {
       desiredLanguage: 'python',
     };
 
-    request(server)
+    request(app)
       .post('/history')
       .send(invalidHistoryEntry)
       .set('Authorization', `Bearer ${testToken}`)
@@ -438,7 +424,7 @@ describe('API RESPONSES ', () => {
       ratingText: 'Great translation and user experience!',
     };
 
-    request(server)
+    request(app)
       .post('/feedback')
       .send(feedbackData)
       .set('Authorization', `Bearer ${testToken}`)
@@ -461,7 +447,7 @@ describe('API RESPONSES ', () => {
       ratingText: 'Average translation and user experience.',
     };
 
-    request(server)
+    request(app)
       .post('/feedback')
       .send(invalidFeedbackData)
       .set('Authorization', `Bearer ${testToken}`)
@@ -485,7 +471,7 @@ describe('API RESPONSES ', () => {
       ratingText: 'Average translation and user experience.',
     };
 
-    request(server)
+    request(app)
       .post('/feedback')
       .send(invalidFeedbackData)
       .set('Authorization', `Bearer ${testToken}`)
@@ -508,7 +494,7 @@ describe('API RESPONSES ', () => {
       Urating: 4,
     };
 
-    request(server)
+    request(app)
       .post('/feedback')
       .send(invalidFeedbackData)
       .set('Authorization', `Bearer ${testToken}`)
@@ -532,7 +518,7 @@ describe('API RESPONSES ', () => {
       ratingText: 'Average translation and user experience.',
     };
 
-    request(server)
+    request(app)
       .post('/feedback')
       .send(invalidFeedbackData)
       .set('Authorization', `Bearer ${testToken}`)
@@ -554,7 +540,7 @@ describe('API RESPONSES ', () => {
       desiredLanguage: "c",
     };
   
-    request(server)
+    request(app)
       .post('/openAI/postTranslation')
       .send(inputCode)
       .expect(401)
@@ -575,7 +561,7 @@ describe('API RESPONSES ', () => {
       desiredLanguage: "c",
     };
 
-    request(server)
+    request(app)
       .post('/openAI/postTranslation')
       .send(inputCode)
       .set('Authorization', `Bearer ${testToken}`)
@@ -597,7 +583,7 @@ describe('API RESPONSES ', () => {
       desiredLanguage: "c",
     };
 
-    request(server)
+    request(app)
       .post('/openAI/postTranslation')
       .send(inputCode)
       .set('Authorization', `Bearer ${testToken}`)

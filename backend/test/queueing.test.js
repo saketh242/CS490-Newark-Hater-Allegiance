@@ -4,21 +4,6 @@ const app = require('../app');
 describe('Express Queue System', function() {
   this.timeout(20000); // Increase timeout to allow for queue processing
 
-  let server;
-  
-  before(async () => {
-    // Start the server 
-    server = app.listen(3001);
-  });
-
-  after((done) => {
-    console.log("closing server")
-    server.close(() => {
-      console.log("server closed successfully")
-      done();
-    });
-  });
-
   it('should process requests one at a time with increasing delay', function(done) {
     const start = Date.now();
     const delays = [3000, 2000, 1000]; // Delay times in milliseconds
