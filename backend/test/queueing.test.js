@@ -4,38 +4,54 @@ const app = require('../app');
 describe('Express Queue System', function() {
   this.timeout(20000); // Increase timeout to allow for queue processing
 
-  it('should process requests one at a time due to queue limits', function(done) {
-    // Start time
-    const startTime = Date.now();
+  let server;
+  
+  before(async () => {
+    // Start the server 
+    server = app.listen(3001);
+  });
 
-    // Make three concurrent requests
-    Promise.all([
-      request(app).get('/feedback/getfeedback').then(res => {
-        return { route: '/feedback/getfeedback', time: Date.now() - startTime };
-      }),
-      request(app).get('/feedback/getfeedback').then(res => {
-        return { route: '/feedback/getfeedback', time: Date.now() - startTime };
-      }),
-      request(app).get('/feedback/getfeedback').then(res => {
-        return { route: '/feedback/getfeedback', time: Date.now() - startTime };
-      })
-    ])
-    .then(responses => {
-      // Ensure responses are spread out due to queuing, indicating they were processed one by one
-      // This checks if each subsequent request was processed after a noticeable delay
-      // Adjust the expected delay based on your queue configuration and server response times
-       console.log(responses[0].time);
-       console.log(responses[1].time);
-       console.log(responses[2].time);
-      
-      // Adjust the margin of error to allow for small timing discrepancies
-      const minExpectedDelay = 0; // Minimum expected delay in milliseconds between handling requests
-      
-      expect(responses[1].time - responses[0].time).to.be.greaterThanOrEqual(minExpectedDelay);
-      expect(responses[2].time - responses[1].time).to.be.greaterThanOrEqual(minExpectedDelay);
+  after((done) => {
+    console.log("closing server")
+    server.close(() => {
+      console.log("server closed successfully")
+      done();
+    });
+  });
+
+  it('should process requests one at a time with increasing delay', function(done) {
+    const start = Date.now();
+    const delays = [3000, 2000, 1000]; // Delay times in milliseconds
+
+    // Make requests with increasing delay
+    Promise.all(delays.map((delay, index) => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          request(app)
+            .get('/feedback/getFeedback')
+            .expect(200)
+            .end((err, res) => {
+              if (err) return reject(err);
+              resolve(res);
+            });
+        }, delay);
+      });
+    }))
+    .then((responses) => {
+      const end = Date.now();
+      const durations = responses.map((res, index) => end - start - delays[index]);
+      console.log("Response Durations:", durations);
+      for (let i = 1; i < durations.length; i++) {
+        if (durations[i] < durations[i - 1]) {
+          done(new Error('Requests are not processed in order'));
+          return;
+        }
+      }
       done();
     })
-    .catch(done);
+    .catch((err) => {
+      done(err);
+    });
   });
 
   it('should handle a long-running task', function(done) {
