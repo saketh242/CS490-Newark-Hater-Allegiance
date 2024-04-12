@@ -67,6 +67,10 @@ const Translate = () => {
     fetchAPIStatus();
   }, []);
 
+  useEffect(() => {
+    setTriggerHistory(true);
+  }, []);
+
   const handleSourceLanguageChange = (e) => {
     setSourceLanguage(e.target.value);
   };
@@ -122,23 +126,27 @@ const Translate = () => {
     setUserTriggeredChange(true);
   };
 
-  const [triggerHistory, setTriggerHistory] = useState(true);
-  const handlePostHistory = async () => {
-    try {
-      if (translatedCode !== '' && userTriggeredChange) {
-        // throw new Error('simulated error: Unable to save translation to history');
-        const post = await nhaService.postHistory(user, dbUserFromRedux, inputCode, translatedCode, sourceLanguage, desiredLanguage);
-        setPostId(post);
-        setTriggerHistory(true);
-        setUserTriggeredChange(false);
-      }
-    } catch (error) {
-        setTranslationError("Unable to save translation to history.");
-    }
-  };
-
+  const [triggerHistory, setTriggerHistory] = useState(false);
+  
   useEffect(() => {
-    handlePostHistory();
+    const handlePostHistory = async () => {
+      try {
+        if (translatedCode !== '') {
+          // throw new Error('simulated error: Unable to save translation to history');
+          const post = await nhaService.postHistory(user, dbUserFromRedux, inputCode, translatedCode, sourceLanguage, desiredLanguage);
+          setPostId(post);
+          setTriggerHistory(true);
+          setUserTriggeredChange(false);
+        }
+      } catch (error) {
+          setTranslationError("Unable to save translation to history.");
+      }
+    };
+
+    if(userTriggeredChange) {
+      handlePostHistory();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userTriggeredChange]);
 
   //function to generate file for download
