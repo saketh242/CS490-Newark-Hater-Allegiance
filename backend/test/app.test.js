@@ -56,20 +56,6 @@ before(async () => {
 
 
 describe('API RESPONSES ', () => {
-  let server;
-
-  before(async () => {
-    // Start the server 
-    server = app.listen(3001);
-  });
-
-  after((done) => {
-    console.log("closing server")
-    server.close(() => {
-      console.log("server closed successfully")
-      done();
-    });
-  });
 
   it('DELETE: should return 401 for unauthorized access for /users/deleteUser', (done) => {
     request(app)
@@ -588,7 +574,7 @@ describe('API RESPONSES ', () => {
 
         done();
       });
-  }).timeout(10000);
+  }).timeout(20000);
 
   it('POST: should return 400 for language mismatch, gibberish, or other language errors for /openAI/postTranslation', (done) => {
     const inputCode = {
@@ -610,7 +596,7 @@ describe('API RESPONSES ', () => {
         expect(res.body).to.have.property('message').equal("Input code does not match specified source language");
 
         done();
-      }).timeout(10000);
+      }).timeout(20000);
   });
 
 });

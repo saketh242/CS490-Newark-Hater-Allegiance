@@ -122,7 +122,7 @@ const Translate = () => {
     setUserTriggeredChange(true);
   };
 
-  const [triggerHistory, setTriggerHistory] = useState(false);
+  const [triggerHistory, setTriggerHistory] = useState(true);
   const handlePostHistory = async () => {
     try {
       if (translatedCode !== '' && userTriggeredChange) {
@@ -259,6 +259,7 @@ const Translate = () => {
       <History
         setTriggerHistory={setTriggerHistory}
         triggerHistory={triggerHistory}
+        dbUserRedux={dbUserFromRedux}
         user={user}
         showSidebar={showSidebar}
         toggleSidebar={toggleSidebar}

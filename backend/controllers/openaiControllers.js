@@ -24,8 +24,9 @@ const detectLanguage = async (code) => {
     if (!(response && response.choices && response.choices.length > 0)) {
         throw new Error("Unexpected response from OpenAI API");
     }
-    
-    return response.choices[0].message.content.toLowerCase();
+    const content = response.choices[0].message.content.toLowerCase();
+    const detectedlang = content.replace(/[^a-z]/g, '');
+    return detectedlang;
 };
 
 const postPrompt = async (req, res, next) => {
