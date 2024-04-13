@@ -401,6 +401,61 @@
   padding: 2rem;
 }
 
+#ratingAverages {
+  display:flex;
+  flex-direction: column;
+  padding: 3rem;
+  justify-content: center;
+  align-items: center;
+  font-style: italic;
+}
+
+#overallAverageRating, #lesserRatings{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#translationAverageRating, #uxAverageRating, #totalRatingText, .specificRatingCategory {
+  padding: 1rem;
+}
+
+#totalRatingText {
+  font-size: 60px;
+}
+
+.specificRatingCategory{
+  font-size: 30px;
+}
+
+.ratingStarStandard {
+  color:#0ac6c0;
+}
+
+@media(width<=1020px){
+  #overallAverageRating{
+    flex-direction: column;
+  }
+}
+
+@media(width<=900px){
+  .specificRatingCategory{
+    font-size:20px;
+  }
+}
+
+@media(width<=700px){
+  #totalRatingText{font-size:45px;}
+  #lesserRatings{
+    flex-direction:column;
+  }
+}
+
+@media(width<=535px){
+  #totalRatingText{font-size:40px;}
+}
+
 .homeCarousel {
   margin:auto;
   height:100%;

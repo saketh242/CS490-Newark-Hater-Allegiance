@@ -111,6 +111,40 @@ const getFeedback = async (req, res, next) => {
     }
 };
 
+const getAverageRatings = async (req, res, next) => {
+    try {
+        const result = await FeedBack.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    averageTranslationRating: { $avg: "$TranslationRating" },
+                    averageUXRating: { $avg: "$UXRating" }
+                }
+            }
+        ]);
+
+        if (result.length === 0) {
+            res.status(404).json({error: "No feedbacks found."});
+        }
+
+        const { averageTranslationRating, averageUXRating } = result[0];
+        const totalFeedbackAverage = (averageTranslationRating + averageUXRating) / 2;
+        res.status(200).send(
+            {
+                totalFeedbackAverage,
+                averageTranslationRating,
+                averageUXRating
+            }
+        )
+
+    } catch (error) {
+        res.status(500).json({ error: 'Error calculating average rating' });
+        logger.error(`Error: error calculating average rating, ${error.message}, 
+        Location: backend/controllers/feedbackControllers.js`);
+    }
+};
 
 module.exports.getFeedback = getFeedback;
 module.exports.postFeedback = postFeedback;
+module.exports.getAverageRatings = getAverageRatings;
+
