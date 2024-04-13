@@ -419,13 +419,27 @@
 
 #overallAverageRating, #lesserRatings{
   display:flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
+  padding:1rem;
+}
+
+#lesserRatings{
+  flex-direction:row;
+}
+
+#overallAverageRating, #translationAverageRating, #uxAverageRating{
+  flex-direction:column;
 }
 
 #translationAverageRating, #uxAverageRating, #totalRatingText, .specificRatingCategory {
   padding: 1rem;
+}
+
+#translationAverageRating, #uxAverageRating{
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #totalRatingText {
@@ -461,6 +475,9 @@
 
 @media(width<=535px){
   #totalRatingText{font-size:40px;}
+  #overallStars{
+    font-size:smaller;
+  }
 }
 
 .homeCarousel {
