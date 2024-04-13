@@ -57,27 +57,27 @@ const Home = () => {
           <div className="dev">
             <p>Saketh <br/> Puramsetti</p>
             <Gravatar email={process.env.REACT_APP_SAKETH_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for Saketh'/>
-            <p>Project Manager</p>
+            <p className="role">Project Manager</p>
           </div>
           <div className="dev">
             <p>Medina <br/>Dzhatdoyev</p>
             <Gravatar email={process.env.REACT_APP_MEDINA_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for Medina'/>
-            <p>Frontend Lead Developer</p>
+            <p className="role">Frontend Lead Developer</p>
           </div>
           <div className="dev">
             <p>Ausberto <br/>Colon Jr</p>
             <Gravatar email={process.env.REACT_APP_AJ_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for AJ'/>
-            <p>Flex Unit</p>
+            <p className="role">Flex Unit</p>
           </div>
           <div className="dev">
             <p>John <br/>Cena</p>
             <Gravatar email={process.env.REACT_APP_JOHN_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for John'/>
-            <p>Frontend Developer</p>
+            <p className="role">Frontend Developer</p>
           </div>
           <div className="dev">
             <p>Karam <br/>Assaf</p>
             <Gravatar email={process.env.REACT_APP_KARAM_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for Karam'/>
-            <p>Backend Lead Developer</p>
+            <p className="role">Backend Lead Developer</p>
           </div>
         </div>
         <h2 className='rainbow'>Playtested by</h2>
@@ -85,12 +85,12 @@ const Home = () => {
           <div className="dev">
             <p>John <br/>Cena</p>
             <Gravatar email={process.env.REACT_APP_JOHN_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for John'/>
-            <p>Quality Assurance</p>
+            <p className="role">Quality Assurance</p>
           </div>
           <div className="dev">
             <p>William <br/>McCoy</p>
             <Gravatar email={process.env.REACT_APP_KOI_EMAIL} size={225} className='profileAvatar' id="devImage" default="mp" alt='Gravatar for William'/>
-            <p>Security Analyst</p>
+            <p className="role">Security Analyst</p>
           </div>
         </div>
       </div>

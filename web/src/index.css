@@ -283,6 +283,7 @@
   text-align: center;
   font-family: "Kanit", sans-serif;
   font-size: 2.3rem;
+  font-style:italic;
 }
 
 .box {
@@ -313,11 +314,16 @@
   text-align: center;
 }
 
+.role{
+  font-style: italic;
+  font-size:smaller;
+}
+
 .signup-image {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  height: 35rem;
+  height: auto;
   width: 64rem;
   border-radius: 5px;
   box-shadow: 0 20px 25px -5px #000, 0 8px 10px -6px #000;
@@ -404,7 +410,8 @@
 #ratingAverages {
   display:flex;
   flex-direction: column;
-  padding: 3rem;
+  padding: 1rem;
+  margin-bottom: 3rem;
   justify-content: center;
   align-items: center;
   font-style: italic;
@@ -503,6 +510,9 @@
   height: 50px !important;
 }
 
+#reviewUserDetails{
+  margin:0.5rem;
+}
 @media(width<=1390px){
   #devImage{
     width:10rem;
@@ -543,6 +553,9 @@
   }
   #devsArea{
     flex-direction: column;
+  }
+  .dev{
+    font-size:larger;
   }
 }
 
@@ -611,7 +624,7 @@
 
   .signup-image {
     width: 50rem;
-    height: 28rem;
+    height: auto;
   }
 }
 
@@ -694,9 +707,17 @@
     font-size: 1rem;
   }
 
+  #guide-div{
+    padding:1rem;
+  }
+
   .signup-image {
-    width: 27rem;
-    height: 20rem;
+    width: 40rem;
+    height: auto;
+  }
+
+  .instructions{
+    font-size:30px;
   }
 
   #review {
@@ -730,7 +751,7 @@
 
   .signup-image {
     width: 39rem;
-    height: 25rem;
+    height: auto;
   }
 }
 
@@ -746,8 +767,8 @@
   }
 
   .signup-image{
-    width: 22rem;
-    height: 18rem;
+    width: 25rem;
+    height: auto;
   }
 }
 
@@ -1637,6 +1658,10 @@ input[type="checkbox"]{
   --_p: 75%;
 }
 
+#question-list{
+  margin-top:1rem;
+}
+
 #question-list li {
   padding-bottom: 2rem;
   list-style-type: none;
@@ -1648,6 +1673,10 @@ input[type="checkbox"]{
 
 #question-list p {
   font-size: 1.5rem;
+}
+
+#guide-title{
+  margin-bottom:1rem;
 }
 
 #focus {
@@ -1688,6 +1717,9 @@ input[type="checkbox"]{
   border-radius: 10px;
 }
 
+#getting-started-div{
+  padding-bottom:0;
+}
 
 @media (width < 1280px) {
   .help {
@@ -1724,28 +1756,42 @@ input[type="checkbox"]{
 @media (width <= 640px) {
   .help {
     padding-top: 0rem;
+    padding: 2rem;
+    /* font-size: 1rem; */
+  }
+
+  #guide-div{
+    padding:0.5rem;
+  }
+
+  #instructionHeader, .instructions{
+    font-size:20px;
+  }
+
+  .signup-image{
+    width:25rem;
+    height:auto;
+  }
+
+  /* #help-bar {
+    font-size: 0.5rem;
+  } */
+
+  #help-item{
+    margin:1rem;
+  }
+
+  /* #search-bar {
+    transform: scale(0.6);
+  } */
+
+  #question-list h {
     font-size: 1rem;
   }
 
-  .help-header, .help-subtitle {
-    font-size: 1.5rem;
-  }
-
-  #help-bar {
-    font-size: 0.5rem;
-  }
-
-  #search-bar {
-    transform: scale(0.6);
-  }
-
-  #question-list h {
-    font-size: 1.5rem;
-  }
-
-  #question-list p {
+  /* #question-list p {
     font-size: 0.75rem;
-  }
+  } */
 }
 
 @media(width<=650px){
