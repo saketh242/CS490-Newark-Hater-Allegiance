@@ -8,11 +8,21 @@ import StarRating from './StarRating'
 
 const HomeReviews = () => {
   const { reviews, fetchingReviews } = useSelector((state) => state.reviews);
+  
+  const [overallRating, setOverallRating] = useState(0);
+  const [translateRating, setTranslateRating] = useState(0);
+  const [uxRating, setUxRating] = useState(0);
 
-  /*temporary rating values */
-  const overallRating = 4.5;
-  const translateRating = 3.8;
-  const uxRating = 4.8;
+  useEffect(() => {
+    const getRatings = async () => {
+      const ratings = await nhaService.getAverageRatings();
+      setOverallRating(ratings.totalFeedbackAverage);
+      setTranslateRating(ratings.averageTranslationRating);
+      setUxRating(ratings.averageUXRating);
+    }
+    getRatings();
+  }, []);
+
 
   return (
     <div>

@@ -128,14 +128,15 @@ const getAverageRatings = async (req, res, next) => {
         }
 
         const { averageTranslationRating, averageUXRating } = result[0];
-        const totalFeedbackAverage = (averageTranslationRating + averageUXRating) / 2;
-        res.status(200).send(
-            {
-                totalFeedbackAverage,
-                averageTranslationRating,
-                averageUXRating
-            }
-        )
+        const totalFeedbackAverage = ((averageTranslationRating + averageUXRating) / 2).toFixed(1);
+        const roundedTranslationRating = averageTranslationRating.toFixed(1); 
+        const roundedUXRating = averageUXRating.toFixed(1); 
+
+        res.status(200).send({
+            totalFeedbackAverage,
+            averageTranslationRating: roundedTranslationRating,
+            averageUXRating: roundedUXRating
+        });
 
     } catch (error) {
         res.status(500).json({ error: 'Error calculating average rating' });
