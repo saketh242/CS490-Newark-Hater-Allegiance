@@ -2,51 +2,51 @@ import React, { useState, useEffect } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import Gravatar from 'react-gravatar'
-import nhaService from '../services/nhaService';
+// import nhaService from '../services/nhaService';
 import { useSelector } from 'react-redux';
 import StarRating from './StarRating'
+import { selectTotalFeedbackAverage, selectAverageTranslationRating, selectAverageUXRating, selectFetchingRatings } from '../features/ratings/ratingsSlice'
+// import useAverageRatings from '../useAverageRatings'
 
 const HomeReviews = () => {
   const { reviews, fetchingReviews } = useSelector((state) => state.reviews);
-  
-  const [overallRating, setOverallRating] = useState(0);
-  const [translateRating, setTranslateRating] = useState(0);
-  const [uxRating, setUxRating] = useState(0);
 
-  useEffect(() => {
-    const getRatings = async () => {
-      const ratings = await nhaService.getAverageRatings();
-      setOverallRating(ratings.totalFeedbackAverage);
-      setTranslateRating(ratings.averageTranslationRating);
-      setUxRating(ratings.averageUXRating);
-    }
-    getRatings();
-  }, []);
-
+  const totalFeedbackAverage = useSelector(selectTotalFeedbackAverage);
+  const averageTranslationRating = useSelector(selectAverageTranslationRating);
+  const averageUXRating = useSelector(selectAverageUXRating);
+  const fetchingRatings = useSelector(selectFetchingRatings);
 
   return (
     <div>
       <div id="ratingAverages">
-        <div id="overallAverageRating">
-          <p id="totalRatingText" data-testid="totalRating">Total Rating: {overallRating} / 5</p>
-          <StarRating averageRating={overallRating} size={"3x"} className={"rainbow"} data-testid="overallStars"></StarRating>
-        </div>
-        <div id="lesserRatings">
-          <div id="translationAverageRating">
-            <p className="specificRatingCategory" data-testid="translationQuality">Translation Quality: {translateRating} / 5</p>
-            <StarRating averageRating={translateRating} size={"2x"} className={"ratingStarStandard"} data-testid="translationStars"></StarRating>
-          </div>
-          <div id="uxAverageRating">
-            <p className="specificRatingCategory" data-testid="userExperience">User Experience: {uxRating} / 5</p>
-            <StarRating averageRating={uxRating} size={"2x"} className={"ratingStarStandard"} data-testid="uxStars"></StarRating>
-          </div>
-        </div>
+        {(totalFeedbackAverage && averageTranslationRating && averageUXRating && !fetchingRatings) ? (
+          <>
+            <div id="overallAverageRating">
+              <p id="totalRatingText" data-testid="totalRating">Total Rating: {totalFeedbackAverage} / 5</p>
+              <StarRating averageRating={totalFeedbackAverage} size={"3x"} className={"rainbow"} data-testid="overallStars"></StarRating>
+            </div>
+            <div id="lesserRatings">
+              <div id="translationAverageRating">
+                <p className="specificRatingCategory" data-testid="translationQuality">Translation Quality: {averageTranslationRating} / 5</p>
+                <StarRating averageRating={averageTranslationRating} size={"2x"} className={"ratingStarStandard"} data-testid="translationStars"></StarRating>
+              </div>
+              <div id="uxAverageRating">
+                <p className="specificRatingCategory" data-testid="userExperience">User Experience: {averageUXRating} / 5</p>
+                <StarRating averageRating={averageUXRating} size={"2x"} className={"ratingStarStandard"} data-testid="uxStars"></StarRating>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <p>Fetching ratings</p>
+          </>
+        )}
       </div>
-      
+
       <div className='box reviews' id="reviewContainer">
         <p id="reviewHeader" className="sectionHeader">Some of our reviews</p>
         <div className="reviews-flexbox">
-          {(reviews && !fetchingReviews) ? (
+          {(reviews.length !== 0  && !fetchingReviews) ? (
             <Carousel className="homeCarousel" infiniteLoop showStatus={false} showThumbs={false}>
               {reviews.map((review, index) => (
                 <div className="review" key={index}>
