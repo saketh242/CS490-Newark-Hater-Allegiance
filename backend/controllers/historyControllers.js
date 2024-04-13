@@ -3,26 +3,45 @@ const logger = require('../logs/logger');
 
 const getAllHistory = async (req, res, next) => {
     try {
-        const { user_id, sortField } = req.query;
-        const fieldMapping = {
-            "Date": "createdAt",
-            "": "createdAt",
-            "Source": "Source_language",
-            "Destination": "Desired_language",
-          };
-        const sortFieldInDB = fieldMapping[sortField];
-        const sortObject = {};
-        sortObject[sortFieldInDB] = -1;
-        console.log(sortObject);
+        const { user_id } = req.query;
         if (!user_id) {
             return res.status(400).json({ error: 'Missing required field to get history' });
         }
         const histories = await History.find({ user: user_id })
             .select('_id Desired_language Source_language original_code converted_code createdAt')
-            .sort(sortObject);
+            .sort({ createdAt: -1 });
         res.status(200).send(histories);
     } catch (error) {
         // console.error("Error fetching all users:", error);
+        logger.error(`Error: ${error.message}, Location: backend/controllers/historyControllers.js`);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+const deleteHistory = async (req, res, next) => {
+    try {
+        const { user_id, history_id } = req.query;
+
+        if (!user_id) {
+            return res.status(400).json({ error: 'Missing userID to delete history' });
+        }
+
+        if (history_id) {
+            // deletes ONE record
+            const deletedHistory = await History.findByIdAndDelete(history_id);
+            if (!deletedHistory) {
+                return res.status(404).json({ error: 'History not found' });
+            }
+            res.status(200).json({ message: 'Record deleted successfully' });
+        } else {
+            // Delete ALL records
+            const deletedHistories = await History.deleteMany({ user: user_id });
+            if (!deletedHistories) {
+                return res.status(404).json({ error: 'Histories not found' });
+            }
+            res.status(200).json({ message: `Sucessfully cleared all history` });
+        }
+    } catch (error) {
         logger.error(`Error: ${error.message}, Location: backend/controllers/historyControllers.js`);
         res.status(500).json({ error: 'Internal Server Error' });
     }
@@ -56,3 +75,4 @@ const postHistory = async (req, res, next) => {
 
 module.exports.getAllHistory = getAllHistory
 module.exports.postHistory = postHistory
+module.exports.deleteHistory = deleteHistory
