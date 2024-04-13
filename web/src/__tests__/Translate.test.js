@@ -212,13 +212,14 @@ describe('Translate component', () => {
 
 describe('Sidebar rendered component', () => {
   it('triggers sidebar history when button is pressed', () => {
-    const { container } = render(
-      <Provider store={store}>
-        <Translate />
-      </Provider>
-    );
-    fireEvent.click(container.getElementsByClassName("historyButton")[0]);
-    expect(screen.findByText("Translation History"));
+      const { container } = render(
+        <Provider store={store}>
+          <Translate />
+        </Provider>
+      );
+
+      fireEvent.click(container.getElementsByClassName("historyButton")[0]);
+      expect(screen.findByText("Translation History"));
   });
 });
 

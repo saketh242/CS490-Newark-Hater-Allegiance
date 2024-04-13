@@ -141,4 +141,29 @@ describe('History component', () => {
       }
     });
   });
+
+
+  test('displays error message when history retrieval fails', () => {
+    act(async () => {
+          const errorMessage = 'Unable to retrieve history at this time.';
+    
+    render(
+      <Provider store={store}>
+        <History
+          showSidebar={true}
+          triggerHistory={true} // Simulate error by triggering history retrieval
+          setTriggerHistory={() => {}} // Set an empty function to prevent actual retrieval
+          setInputCode={mockSetInputCode}
+          setTranslatedCode={mockSetTranslatedCode}
+          setSourceLanguage={mockSetSourceLanguage}
+          setDesiredLanguage={mockSetDesiredLanguage}
+        />
+      </Provider>
+    );
+
+    // Check if the error message is displayed
+    const element = await screen.findByTestId("historyError");
+    expect(element).toBeInTheDocument();
+    });
+  });
 });

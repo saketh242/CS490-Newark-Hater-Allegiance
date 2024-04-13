@@ -185,7 +185,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
         </div>
 
         {historyError !== '' || history == null ? (
-          <div className="historyError">
+          <div className="historyError" data-testid="historyError">
             <h1 className="errorText">{historyError}</h1>
           </div>
         ) : (
