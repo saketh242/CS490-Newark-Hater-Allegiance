@@ -80,7 +80,8 @@ const getFeedback = async (req, res, next) => {
             {
                 $match: {
                     TranslationRating: 5,
-                    UXRating: 5
+                    UXRating: 5,
+                    $expr: { $lte: [{ $strLenCP: "$textMessage" }, 150] } // Filter by message length <= 100
                 }
             },
             {
