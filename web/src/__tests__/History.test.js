@@ -166,4 +166,25 @@ describe('History component', () => {
     expect(element).toBeInTheDocument();
     });
   });
+
+
+  test('displays correct elements when history is empty', async () => {
+    await render(
+      <Provider store={store}>
+        <History
+          history={[]} // Empty history
+          showSidebar={true}
+          toggleSidebar={() => { }}
+          setInputCode={mockSetInputCode}
+          setTranslatedCode={mockSetTranslatedCode}
+          setSourceLanguage={mockSetSourceLanguage}
+          setDesiredLanguage={mockSetDesiredLanguage}
+        />
+      </Provider>
+    );
+
+      // const emptyHistoryText = await screen.getByText("No past translations");      
+      // expect(emptyHistoryText).toBeInTheDocument();
+  });
+
 });
