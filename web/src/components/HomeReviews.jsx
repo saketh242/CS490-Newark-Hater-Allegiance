@@ -28,7 +28,7 @@ const HomeReviews = () => {
     <div>
       <div id="ratingAverages">
         <div id="overallAverageRating">
-          <h2 id="totalRatingText" data-testid="totalRating">Total Rating: {overallRating} / 5</h2>
+          <p id="totalRatingText" data-testid="totalRating">Total Rating: {overallRating} / 5</p>
           <StarRating averageRating={overallRating} size={"3x"} className={"rainbow"} data-testid="overallStars"></StarRating>
         </div>
         <div id="lesserRatings">
