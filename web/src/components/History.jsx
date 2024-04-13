@@ -265,7 +265,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
 
                       <div className="historyEntryOptions">
                         {/* <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, history[i].original_code, history[i].converted_code)}> Translate again </button> */}
-                        <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage, history[i].original_code, history[i].converted_code, history[i].Source_language, history[i].Desired_language)}> Translate again </button>
+                        <button data-testid="translateAgain" id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage, history[i].original_code, history[i].converted_code, history[i].Source_language, history[i].Desired_language)}> Translate again </button>
                         <button id="removeEntry" title="Remove translation">
                           <FontAwesomeIcon id="trashIcon" icon={faTrashCan} size="2x" />
                         </button>
