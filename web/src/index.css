@@ -436,6 +436,11 @@
   padding: 1rem;
 }
 
+#totalReviews {
+  font-size:25px;
+  margin-top:2.5rem;
+}
+
 #translationAverageRating, #uxAverageRating{
   display:flex;
   justify-content: center;
@@ -478,6 +483,9 @@
   #totalRatingText{font-size:40px;}
   #overallStars{
     font-size:smaller;
+  }
+  #ratingAverages{
+    padding:0;
   }
 }
 

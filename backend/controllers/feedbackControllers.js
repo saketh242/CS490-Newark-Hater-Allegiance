@@ -81,7 +81,7 @@ const getFeedback = async (req, res, next) => {
                 $match: {
                     TranslationRating: 5,
                     UXRating: 5,
-                    $expr: { $lte: [{ $strLenCP: "$textMessage" }, 150] } // Filter by message length <= 100
+                    $expr: { $lte: [{ $strLenCP: "$textMessage" }, 150] }
                 }
             },
             {
@@ -114,19 +114,20 @@ const getFeedback = async (req, res, next) => {
 
 const getAverageRatings = async (req, res, next) => {
     try {
+        const totalFeedbacks = await FeedBack.countDocuments();
+        if (totalFeedbacks === 0) {
+            res.status(404).json({error: "No feedbacks found."});
+        }
+
         const result = await FeedBack.aggregate([
             {
                 $group: {
                     _id: null,
                     averageTranslationRating: { $avg: "$TranslationRating" },
-                    averageUXRating: { $avg: "$UXRating" }
+                    averageUXRating: { $avg: "$UXRating" },
                 }
             }
         ]);
-
-        if (result.length === 0) {
-            res.status(404).json({error: "No feedbacks found."});
-        }
 
         const { averageTranslationRating, averageUXRating } = result[0];
         const totalFeedbackAverage = ((averageTranslationRating + averageUXRating) / 2).toFixed(1);
@@ -136,7 +137,8 @@ const getAverageRatings = async (req, res, next) => {
         res.status(200).send({
             totalFeedbackAverage,
             averageTranslationRating: roundedTranslationRating,
-            averageUXRating: roundedUXRating
+            averageUXRating: roundedUXRating,
+            count: totalFeedbacks
         });
 
     } catch (error) {

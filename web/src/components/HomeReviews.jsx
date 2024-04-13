@@ -5,7 +5,7 @@ import Gravatar from 'react-gravatar'
 // import nhaService from '../services/nhaService';
 import { useSelector } from 'react-redux';
 import StarRating from './StarRating'
-import { selectTotalFeedbackAverage, selectAverageTranslationRating, selectAverageUXRating, selectFetchingRatings } from '../features/ratings/ratingsSlice'
+import { selectTotalFeedbackAverage, selectAverageTranslationRating, selectAverageUXRating, selectFetchingRatings, selectCount } from '../features/ratings/ratingsSlice'
 // import useAverageRatings from '../useAverageRatings'
 
 const HomeReviews = () => {
@@ -15,6 +15,7 @@ const HomeReviews = () => {
   const averageTranslationRating = useSelector(selectAverageTranslationRating);
   const averageUXRating = useSelector(selectAverageUXRating);
   const fetchingRatings = useSelector(selectFetchingRatings);
+  const count = useSelector(selectCount);
 
   return (
     <div>
@@ -23,7 +24,8 @@ const HomeReviews = () => {
           <>
             <div id="overallAverageRating">
               <p id="totalRatingText" data-testid="totalRating">Total Rating: {totalFeedbackAverage} / 5</p>
-              <StarRating averageRating={totalFeedbackAverage} size={"3x"} className={"rainbow"} data-testid="overallStars"></StarRating>
+              <StarRating averageRating={totalFeedbackAverage} size={"4x"} className={"rainbow"} data-testid="overallStars"></StarRating>
+              <p id="totalReviews">based off of {count} reviews</p>
             </div>
             <div id="lesserRatings">
               <div id="translationAverageRating">
