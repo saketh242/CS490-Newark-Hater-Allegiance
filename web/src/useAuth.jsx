@@ -34,7 +34,7 @@ const useAuth = () => {
           dispatch(setUser(userData)); 
           dispatch(setDbUser(dbUserDetails)); 
         } catch (error) {
-          console.error("Failed to fetch user details:", error);
+          dispatch(setUser(userData));
           
         }
       } else {
