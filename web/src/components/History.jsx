@@ -220,7 +220,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
                       <option value="Source"> Source Language </option>
                       <option value="Destination"> Destination Language </option>
                     </select>
-                  </div>
+                  {/* </div> */}
 
                   {/* filter options */}
                   <select id="filterOptions" onChange={changeSelectedFilterItem} value={selectedItem}>
@@ -229,6 +229,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
                       <option value={item} key={index}> {filterOptions[index]} </option>
                     ))}
                   </select>
+                  </div>
 
                   {/* clear all history */}
                   <button id="clearAll" className="ripple">Clear all history</button>

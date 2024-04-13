@@ -2134,11 +2134,16 @@ input[type="checkbox"]{
   padding:1rem;
 }
 
+.sortAndFilter{
+  padding:0.5rem;
+}
+
 #clearAll{
   /* background-color: transparent; */
   border-radius: 1rem;
   border:none;
   padding: 0.5rem;
+  width:fit-content;
 }
 
 #clearAll:hover{
@@ -2221,8 +2226,9 @@ input[type="checkbox"]{
 
 .historyOptions{
   display:flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
+  align-items: center;
 }
 
 .historyTop{
