@@ -18,17 +18,17 @@ const HomeReviews = () => {
     <div>
       <div id="ratingAverages">
         <div id="overallAverageRating">
-          <h2 id="totalRatingText">Total Rating: {overallRating} / 5</h2>
-          <StarRating averageRating={overallRating} size={"3x"} className={"rainbow"}></StarRating>
+          <h2 id="totalRatingText" data-testid="totalRating">Total Rating: {overallRating} / 5</h2>
+          <StarRating averageRating={overallRating} size={"3x"} className={"rainbow"} data-testid="overallStars"></StarRating>
         </div>
         <div id="lesserRatings">
           <div id="translationAverageRating">
-            <p className="specificRatingCategory">Translation Quality: {translateRating} / 5</p>
-            <StarRating averageRating={translateRating} size={"2x"} className={"ratingStarStandard"}></StarRating>
+            <p className="specificRatingCategory" data-testid="translationQuality">Translation Quality: {translateRating} / 5</p>
+            <StarRating averageRating={translateRating} size={"2x"} className={"ratingStarStandard"} data-testid="translationStars"></StarRating>
           </div>
           <div id="uxAverageRating">
-            <p className="specificRatingCategory">User Experience: {uxRating} / 5</p>
-            <StarRating averageRating={uxRating} size={"2x"} className={"ratingStarStandard"}></StarRating>
+            <p className="specificRatingCategory" data-testid="userExperience">User Experience: {uxRating} / 5</p>
+            <StarRating averageRating={uxRating} size={"2x"} className={"ratingStarStandard"} data-testid="uxStars"></StarRating>
           </div>
         </div>
       </div>

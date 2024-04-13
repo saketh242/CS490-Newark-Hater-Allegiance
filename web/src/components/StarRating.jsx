@@ -16,18 +16,18 @@ const StarRating = ({ averageRating, size, className }) => {
     let stars = [];
     for (let i = 0; i < fullStars; i++) {
       stars.push(<span key={i} className="star filled">
-        <FontAwesomeIcon icon={solidStar} size={size} className={className}/>
+        <FontAwesomeIcon data-testid="filledStar" icon={solidStar} size={size} className={className}/>
       </span>);
     }
     if (hasHalfStar) {
     stars.push(<span key="half" className="star half">
-        <FontAwesomeIcon icon={faStarHalfStroke} size={size} className={className}/>
+        <FontAwesomeIcon data-testid="halfStar" icon={faStarHalfStroke} size={size} className={className}/>
     </span>);
 
     }
     for (let i = 0; i < emptyStars; i++) {
       stars.push(<span key={`empty${i}`} className="star">
-        <FontAwesomeIcon icon={emptyStar} size={size} className={className}/>
+        <FontAwesomeIcon data-testid="emptyStar" icon={emptyStar} size={size} className={className}/>
       </span>);
     }
     return stars;
