@@ -1,12 +1,13 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
 import NHANav from '../components/NHANav';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from '../app/store'; 
+import { act } from 'react-dom/test-utils';
+import { render, screen, waitFor } from '@testing-library/react';
 
-describe('NHANav component', () => {
-  test('Renders NHANav component', () => {
+test('Renders NHANav component', async () => {
+  act(async () => {
     render(
       <Provider store={store}>
         <Router>
@@ -15,9 +16,10 @@ describe('NHANav component', () => {
       </Provider>
     );
 
-    expect(screen.getByText('NHAGPT')).toBeInTheDocument();
-    expect(screen.getByText('Help')).toBeInTheDocument();
-    expect(screen.getByText('Translate')).toBeInTheDocument();
+    expect(await screen.findByText("NHAGPT")).toBeInTheDocument;
+    expect(await screen.findByText("Help")).toBeInTheDocument;
+    expect(await screen.findByText("Translate")).toBeInTheDocument;
 
   });
 });
+
