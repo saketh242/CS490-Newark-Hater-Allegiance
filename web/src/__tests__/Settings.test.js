@@ -18,23 +18,6 @@ describe('Settings Component Tests', () => {
       expect(screen.getByText(/Settings/i)).toBeInTheDocument();
     });
 
-  //   test('calls the handleDelete on delete button click', () => {
-  //     render(
-  //       <Provider store={store}>
-  //         <Router>
-  //           <Settings />
-  //         </Router>
-  //       </Provider>
-        
-  //     );
-  //     const handleDelete = jest.fn();
-  //     const deleteButton = screen.getByText("Delete Account");
-  //     act(async () => {
-  //       await fireEvent.click(deleteButton);
-  //     });
-  //     expect(handleDelete).toHaveBeenCalledTimes(1);
-  // });
-
   test('handleChangePassword is called when the button is clicked', async () => {
     const mockNavigate = jest.fn();
 
@@ -102,10 +85,51 @@ describe('Settings Component Tests', () => {
           await fireEvent.change(inputPassword, {target: {value:testPassword}})
           await fireEvent.click(button);
         });
-        expect(await screen.findByText('Enter password before updating'));
+        expect(await screen.findByText('Enter password to update profile'));
     });
   })
-  });
+  
+  test("Error message on empty first name", async () => {
+    render(
+      <Provider store={store}>
+        <Router>
+          <Settings/>
+      </Router>
+      </Provider>
+      )
+       act(async () => {
+        const inputFirst = await screen.findByTestId("firstNameInput");
+        const testFirstName = ""
+        const button = screen.getByTestId('update-btn');
+
+        await fireEvent.change(inputFirst, {target: {value:testFirstName}})
+        await fireEvent.click(button);
+
+        expect(await screen.findByText('Fields cannot be empty (¬_¬ )'));
+      });
+  })
+
+  test("Error message on empty last name", async () => {
+    render(
+      <Provider store={store}>
+        <Router>
+          <Settings/>
+      </Router>
+      </Provider>
+      )
+       act(async () => {
+        const inputLast = await screen.findByTestId("lastNameInput");
+        const testLastName = ""
+        const button = screen.getByTestId('update-btn');
+
+        await fireEvent.change(inputLast, {target: {value:testLastName}})
+        await fireEvent.click(button);
+
+        expect(await screen.findByText('Fields cannot be empty (¬_¬ )'));
+      });
+  })
+
+});
   
 
   

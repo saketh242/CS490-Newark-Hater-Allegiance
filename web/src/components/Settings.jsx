@@ -51,7 +51,7 @@ const Settings = () => {
     }
 
     if (password === ""){
-      setError("Enter password before to update profile");
+      setError("Enter password to update profile");
       return
     }
 
@@ -161,6 +161,7 @@ const Settings = () => {
                   setError(null)
                 }}
                 placeholder="First Name"
+                data-testid="firstNameInput"
                 style={{
                   borderColor: error ? 'red' : '#0ac6c0',
                   transition: 'border-color 0.3s ease',
@@ -175,6 +176,7 @@ const Settings = () => {
                   setError(null)
                 }}
                 placeholder="Last Name"
+                data-testid="lastNameInput"
                 style={{
                   borderColor: error ? 'red' : '#0ac6c0',
                   transition: 'border-color 0.3s ease',
