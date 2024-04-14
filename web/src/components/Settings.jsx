@@ -1,12 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { auth } from "../firebase";
 import { toast } from 'react-toastify';
-import { signInWithEmailAndPassword, EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification, signOut, updateEmail, verifyBeforeUpdateEmail, updateProfile } from "firebase/auth";
-// import { isValidEmail } from '../utils/fieldValidations';
+import { EmailAuthProvider, reauthenticateWithCredential, signOut, verifyBeforeUpdateEmail, updateProfile } from "firebase/auth";
 import nhaService from '../services/nhaService';
 import { useDispatch } from 'react-redux';
 import {setDbUser } from '../features/user/userSlice';
@@ -16,8 +15,7 @@ const Settings = () => {
 
   const user = useSelector((state) => state.user.user);
   const dbUser = useSelector((state) => state.user.dbUser);
-  const isLoading = useSelector((state) => state.user.isLoading);
-
+  // const isLoading = useSelector((state) => state.user.isLoading);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,12 +45,12 @@ const Settings = () => {
 
   const handleUpdateprofile = async (e) => {
     e.preventDefault()
-    if (firstName == "" || lastName == "" || email == ""){
+    if (firstName === "" || lastName === "" || email === ""){
       setError("Fields cannot be empty (¬_¬ )")
       return
     }
 
-    if (password == ""){
+    if (password === ""){
       setError("Enter password before to update profile");
       return
     }
