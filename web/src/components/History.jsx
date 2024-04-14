@@ -185,7 +185,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
         </div>
 
         {historyError !== '' || history == null ? (
-          <div className="historyError">
+          <div className="historyError" data-testid="historyError">
             <h1 className="errorText">{historyError}</h1>
           </div>
         ) : (
@@ -220,7 +220,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
                       <option value="Source"> Source Language </option>
                       <option value="Destination"> Destination Language </option>
                     </select>
-                  </div>
+                  {/* </div> */}
 
                   {/* filter options */}
                   <select id="filterOptions" onChange={changeSelectedFilterItem} value={selectedItem}>
@@ -229,6 +229,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
                       <option value={item} key={index}> {filterOptions[index]} </option>
                     ))}
                   </select>
+                  </div>
 
                   {/* clear all history */}
                   <button id="clearAll" className="ripple">Clear all history</button>
@@ -264,7 +265,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
 
                       <div className="historyEntryOptions">
                         {/* <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, history[i].original_code, history[i].converted_code)}> Translate again </button> */}
-                        <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage, history[i].original_code, history[i].converted_code, history[i].Source_language, history[i].Desired_language)}> Translate again </button>
+                        <button data-testid="translateAgain" id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage, history[i].original_code, history[i].converted_code, history[i].Source_language, history[i].Desired_language)}> Translate again </button>
                         <button id="removeEntry" title="Remove translation">
                           <FontAwesomeIcon id="trashIcon" icon={faTrashCan} size="2x" />
                         </button>

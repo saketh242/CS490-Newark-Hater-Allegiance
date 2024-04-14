@@ -20,9 +20,17 @@ describe('Settings Component Tests', () => {
     });
 
     test('calls the handleDelete on delete button click', () => {
-      const handleDelete = jest.fn();
-      const { getByText } = render(<button onClick={handleDelete}>Delete Account</button>);
-      fireEvent.click(getByTestId('update-btn'));
+      render(
+        <Provider store={store}>
+          <Router>
+            <Settings />
+          </Router>
+        </Provider>
+        
+      );
+      // const handleDelete = jest.fn();
+      const deleteButton = screen.getByText("Delete Account");
+      fireEvent.click(deleteButton);
       expect(handleSignup).toHaveBeenCalledTimes(1);
   });
 

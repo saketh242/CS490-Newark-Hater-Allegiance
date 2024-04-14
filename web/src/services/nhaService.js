@@ -192,6 +192,17 @@ class NHAService {
             return error.response.data;
         }
       }
+
+      async getAverageRatings() {
+        try{
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}feedback/getAverageRatings`);
+            return response.data;
+        }
+        catch (error) {
+            // console.error('Error with posting issue', error);
+            return error.response.data;
+        }
+      }
       
 }
 
