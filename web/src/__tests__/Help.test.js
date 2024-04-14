@@ -38,9 +38,7 @@ describe('Help Component Tests', () => {
     expect(screen.getByText(/How to submit a feedback/i)).toBeInTheDocument()
     expect(screen.getByText(/How to set a profile picture/i)).toBeInTheDocument()
   });
-});
 
-describe('Contact Us', () => {
   test('renders the Contact Us', () => {
     render(
       <Provider store={store}>
@@ -53,6 +51,20 @@ describe('Contact Us', () => {
     expect(screen.getByText(/Send us a message to get additional support!/i)).toBeInTheDocument()
   });
 
+  test('renders the FAQ', () => {
+    render(
+      <Provider store={store}>
+        <Router>
+          <Help />
+        </Router>
+      </Provider>
+    );
+
+    expect(screen.getByText("Is NHA GPT free to use?")).toBeInTheDocument()
+  });
+});
+
+describe('Contact Us', () => {
   test('Error message shows up on empty input in contact form', async () => {
     render(
       <Provider store={store}>
@@ -62,9 +74,9 @@ describe('Contact Us', () => {
       </Provider>
     );
 
-    const nameInput = screen.getByPlaceholderText('Your name');
-    const emailInput = screen.getByPlaceholderText('Email');
-    const messageInput = screen.getByPlaceholderText('Your message');
+    // const nameInput = screen.getByPlaceholderText('Your name');
+    // const emailInput = screen.getByPlaceholderText('Email');
+    // const messageInput = screen.getByPlaceholderText('Your message');
     const sendButton = screen.getByText('Send a message');
 
     //click without filling any fields
