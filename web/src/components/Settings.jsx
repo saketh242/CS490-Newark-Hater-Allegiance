@@ -6,7 +6,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { auth } from "../firebase";
 import { toast } from 'react-toastify';
 import { signInWithEmailAndPassword, EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification, signOut, updateEmail, verifyBeforeUpdateEmail, updateProfile } from "firebase/auth";
-import { isValidEmail } from '../utils/fieldValidations';
+// import { isValidEmail } from '../utils/fieldValidations';
 import nhaService from '../services/nhaService';
 import { useDispatch } from 'react-redux';
 import {setDbUser } from '../features/user/userSlice';
@@ -25,13 +25,13 @@ const Settings = () => {
 
   // getting currenlty signed in user
   // const user = auth.currentUser;
-  const [firstName, setFirstName] = useState(dbUser.firstName);
-  const [lastName, setLastName] = useState(dbUser.lastName);
-  const [email, setEmail] = useState(user.email);
+  const [firstName, setFirstName] = useState(dbUser? dbUser.firstName : "");
+  const [lastName, setLastName] = useState(dbUser? dbUser.lastName : "");
+  const [email, setEmail] = useState(user? user.email : "");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   // this is a placeholder for knowing the current state of data
-  const [userData, setUserData] = useState(dbUser);
+  const [userData, setUserData] = useState(dbUser || {});
   // const [receivedData, setReceivedData] = useState(false);
   // const [triggerEffect, setTriggerEffect] = useState(true);
 
@@ -226,7 +226,7 @@ const Settings = () => {
             </div>
             <div className='option-div hover-div' onClick={handleDeleteAccount}>
               <FontAwesomeIcon icon={faTrash} />
-              <p>Delete Account</p>
+              <p data-testid="deleteAccount">Delete Account</p>
             </div>
           </div>
 
