@@ -18,7 +18,7 @@ const DeleteAccount = () => {
    
     const handleDelete = async (e) => {
         e.preventDefault()
-        if (password == "") {
+        if (password === "") {
             setError("Please enter your password");
             return
         }
@@ -47,7 +47,7 @@ const DeleteAccount = () => {
 
         } catch (e) {
             // console.log(e.message)
-            if (e.message == "Firebase: Error (auth/invalid-credential).") {
+            if (e.message === "Firebase: Error (auth/invalid-credential).") {
                 setError("Wrong password, try again :(")
             } else {
                 setError("An error occurred try again")

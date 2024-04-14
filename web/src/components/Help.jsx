@@ -139,7 +139,7 @@ const Help = () => {
                 <li>Refresh the page and you should be let into the translator!</li>
               </ul>
               <div className='signup'>
-                <img className='signup-image guide-img' src={sample} alt="Sample Image" />
+                <img className='signup-image guide-img' src={sample} alt="signup" />
               </div>
             </div>
           </div> : null}
@@ -156,7 +156,7 @@ const Help = () => {
               </ul>
               <div className='signup'>
 
-                <img className='signup-image guide-img' src={sample} alt="Sample Image" />
+                <img className='signup-image guide-img' src={sample} alt="signup" />
               </div>
             </div>
           </div> : null}
@@ -173,7 +173,7 @@ const Help = () => {
                 <li>We also store ratings</li>
               </ul>
               <div className='signup'>
-                <img className='signup-image guide-img' src={feedback} alt="feedBack Image" />
+                <img className='signup-image guide-img' src={feedback} alt="feedback" />
               </div>
             </div>
           </div> : null}
