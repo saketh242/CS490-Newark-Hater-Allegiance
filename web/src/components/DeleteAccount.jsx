@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { isValidPassword } from '../utils/fieldValidations'
+// import { isValidPassword } from '../utils/fieldValidations'
 import { reauthenticateWithCredential, EmailAuthProvider, updatePassword, signOut, deleteUser } from 'firebase/auth';
 import { auth } from '../firebase';
 import { toast } from 'react-toastify';
@@ -39,18 +39,18 @@ const DeleteAccount = () => {
                     const msg = () => toast(`Account deleted successfully!`);
                     msg()
                     navigate("/");
-                    console.log("Account deleted and redirected successfully and redirected successfully")
+                    // console.log("Account deleted and redirected successfully and redirected successfully")
                 }).catch((error) => {
                     console.log(error)
                 });
             }, 3000)
 
         } catch (e) {
-            console.log(e.message)
+            // console.log(e.message)
             if (e.message == "Firebase: Error (auth/invalid-credential).") {
                 setError("Wrong password, try again :(")
             } else {
-                setError("An error occured try again")
+                setError("An error occurred try again")
             }
         }
     }
