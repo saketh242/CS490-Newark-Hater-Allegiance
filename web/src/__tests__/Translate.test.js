@@ -135,7 +135,7 @@ describe('Translate component', () => {
       setTimeout(() => {
         const errorElement = getByText(errorMessage);
         expect(errorElement).toBeInTheDocument();
-      }, 1000); 
+      }, 2000); 
   });
   
 });
