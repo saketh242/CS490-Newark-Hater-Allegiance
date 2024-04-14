@@ -8,6 +8,7 @@ let testToken;
 let postUserToken;
 let user_id = process.env.TESTING_USER_ID;
 let post_id = process.env.TESTING_POST_ID;
+let newPost;
 const apiKey = process.env.FIREBASE_API_KEY;
 const signInEndpoint = process.env.FIREBASE_SIGNIN_ENDPOINT;
 
@@ -94,6 +95,51 @@ describe('API RESPONSES ', () => {
       });
   }).timeout(20000);
 
+  it('DELETE: should return 401 for unauthorized access for /history/deleteHistory', (done) => {
+    request(app)
+      .delete('/history/deleteHistory')
+      .expect(401)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        expect(res.body).to.have.property('message').equal('Unauthorized: Missing Authorization Header');
+
+        done();
+      });
+  });
+
+  it('DELETE: should return 400 for missing user for /history/deleteHistory', (done) => {
+    const invalidHistoryDelete = {
+      history_id: "1192020193"
+    };
+    request(app)
+      .delete('/history/deleteHistory')
+      .send(invalidHistoryDelete)
+      .set('Authorization', `Bearer ${testToken}`)
+      .expect(400)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        expect(res.body).to.have.property('error').equal('Missing userID to delete history');
+
+        done();
+      });
+  });
+
+  it('DELETE: should return 200 for sucessful delete of all history for /history/deleteHistory', (done) => {
+    request(app)
+      .delete(`/history/deleteHistory?user_id=${user_id}`)
+      .set('Authorization', `Bearer ${testToken}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        expect(res.body).to.have.property('message').equal('Sucessfully cleared all history');
+
+        done();
+      });
+  });
+
   it('PUT: should return 400 for validation error /users/updateUser', (done) => {
     const invalidUser = {
       firstName: '',
@@ -136,7 +182,7 @@ describe('API RESPONSES ', () => {
       });
   });
 
-  it('PUT: should return 200 for sucessfull update for /users/updateUser', (done) => {
+  it('PUT: should return 200 for sucessful update for /users/updateUser', (done) => {
     const updateUser = {
       email: 'ka534@njit.edu',
       firstName: 'Karam',
@@ -187,34 +233,6 @@ describe('API RESPONSES ', () => {
         if (err) return done(err);
 
         expect(res.body).to.have.property('message').equal('Unauthorized: Missing Authorization Header');
-
-        done();
-      });
-  });
-
-  it('GET: should return 200 OK for /history/getAllHistory', (done) => {
-    request(app)
-      .get(`/history/getAllHistory?user_id=${user_id}`)
-      .set('Authorization', `Bearer ${testToken}`)
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-
-
-        const histories = res.body;
-
-
-        expect(histories).to.be.an('array');
-        expect(histories).to.have.lengthOf.at.least(1);
-
-        // Check properties of each history object
-        histories.forEach(history => {
-          expect(history).to.have.property('original_code').that.is.a('string');
-          expect(history).to.have.property('Source_language').that.is.a('string');
-          expect(history).to.have.property('Desired_language').that.is.a('string');
-          expect(history).to.have.property('converted_code').that.is.a('string');
-          expect(history).to.have.property('createdAt').that.is.a('string');
-        });
 
         done();
       });
@@ -383,9 +401,38 @@ describe('API RESPONSES ', () => {
       .end((err, res) => {
         if (err) return done(err);
 
-        console.log("THE ID OF THE NEW HISTORY: ", res.body)
+        newPost = res.body
+
         expect(res.body).to.be.a('string');
         expect(res.body).to.have.lengthOf.at.least(1);
+
+        done();
+      });
+  });
+
+  it('GET: should return 200 OK for /history/getAllHistory', (done) => {
+    request(app)
+      .get(`/history/getAllHistory?user_id=${user_id}`)
+      .set('Authorization', `Bearer ${testToken}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+
+        const histories = res.body;
+
+
+        expect(histories).to.be.an('array');
+        expect(histories).to.have.lengthOf.at.least(1);
+
+        // Check properties of each history object
+        histories.forEach(history => {
+          expect(history).to.have.property('original_code').that.is.a('string');
+          expect(history).to.have.property('Source_language').that.is.a('string');
+          expect(history).to.have.property('Desired_language').that.is.a('string');
+          expect(history).to.have.property('converted_code').that.is.a('string');
+          expect(history).to.have.property('createdAt').that.is.a('string');
+        });
 
         done();
       });
@@ -410,6 +457,20 @@ describe('API RESPONSES ', () => {
 
         // Making sure that the invalid fields throw error
         expect(res.body).to.have.property('error').that.includes('Missing required fields to post or invalid input');
+
+        done();
+      });
+  });
+
+  it('DELETE: should return 200 for sucessful delete of one history for /history/deleteHistory', (done) => {
+    request(app)
+      .delete(`/history/deleteHistory?user_id=${user_id}&history_id=${newPost}`)
+      .set('Authorization', `Bearer ${testToken}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        console.log(res.body)
+        expect(res.body).to.have.property('message').equal('Record deleted successfully');
 
         done();
       });

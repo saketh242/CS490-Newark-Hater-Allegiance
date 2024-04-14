@@ -20,6 +20,7 @@ const getAllHistory = async (req, res, next) => {
 
 const deleteHistory = async (req, res, next) => {
     try {
+        console.log(req.query)
         const { user_id, history_id } = req.query;
 
         if (!user_id) {
