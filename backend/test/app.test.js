@@ -289,14 +289,14 @@ describe('API RESPONSES ', () => {
       });
   });
 
-  it('GET: should return 404 for user not found for /users', (done) => {
+  it('GET: should return 200 empty user not found for /users', (done) => {
     request(app)
       .get('/users')
       .set('Authorization', `Bearer ${postUserToken}`)
-      .expect(404)
+      .expect(200)
       .end((err, res) => {
         if (err) return done(err);
-        expect(res.body).to.have.property('error').equal('User not found');
+        expect(res.body).to.deep.equal({});
         done();
       });
   });
