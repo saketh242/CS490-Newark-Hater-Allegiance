@@ -80,6 +80,8 @@ const Home = () => {
             <p className="role">Backend Lead Developer</p>
           </div>
         </div>
+        
+        {/*FUNNY PLAYTESTERS DIV*/}
         <h2 className='rainbow'>Playtested by</h2>
         <div id="devsArea">
           <div className="dev">
@@ -93,8 +95,8 @@ const Home = () => {
             <p className="role">Security Analyst</p>
           </div>
         </div>
-      </div>
       
+      </div>
     </div>
   )
 }
