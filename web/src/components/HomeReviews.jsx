@@ -2,11 +2,9 @@ import React from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import Gravatar from 'react-gravatar'
-// import nhaService from '../services/nhaService';
 import { useSelector } from 'react-redux';
 import StarRating from './StarRating'
 import { selectTotalFeedbackAverage, selectAverageTranslationRating, selectAverageUXRating, selectFetchingRatings, selectCount } from '../features/ratings/ratingsSlice'
-// import useAverageRatings from '../useAverageRatings'
 
 const HomeReviews = () => {
   const { reviews, fetchingReviews } = useSelector((state) => state.reviews);

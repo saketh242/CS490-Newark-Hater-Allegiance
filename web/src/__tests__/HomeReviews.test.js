@@ -11,7 +11,7 @@ import ratingsReducer from '../features/ratings/ratingsSlice';
 import userReducer from '../features/user/userSlice'; 
 
 // Mock data for the reviews slice
-const mockReviewsState = {
+const mockReviews = {
   reviews: [
     {
       id: 1,
@@ -22,8 +22,16 @@ const mockReviewsState = {
         email: 'john@example.com',
       },
     },
-  ],
-  fetchingReviews: false,
+    {
+      id: 2,
+      textMessage: 'Excellent experience!',
+      user: {
+        firstName: 'Jane',
+        lastName: 'Doe',
+        email: 'jane@example.com',
+      },
+    },
+  ]
 };
 
 // Mock data for the user slice
@@ -41,6 +49,26 @@ const mockUserState = {
   isLoading: false,
 };
 
+  // Mock the Redux store with empty reviews
+  const mockStoreEmptyReviews = configureStore({
+    reducer: {
+      user: userReducer,
+      reviews: reviewsReducer,
+      ratings: ratingsReducer,
+    },
+    preloadedState: {
+      user: mockUserState,
+      reviews: { reviews: [], fetchingReviews: false }, // Empty reviews array
+      ratings: {
+        totalFeedbackAverage: 4.5,
+        averageTranslationRating: 4,
+        averageUXRating: 4.2,
+        count: 100,
+        fetchingRatings: false,
+      },
+    },
+  });
+
 // Mock the Redux store
 const mockStore = configureStore({
   reducer: {
@@ -50,12 +78,32 @@ const mockStore = configureStore({
   },
   preloadedState: {
     user: mockUserState,
-    reviews: mockReviewsState,
+    reviews: mockReviews,
     ratings: {
       totalFeedbackAverage: 4.5,
       averageTranslationRating: 4,
       averageUXRating: 4.2,
       count: 100,
+      fetchingRatings: false,
+    },
+  },
+});
+
+// Mock store with loading ratings & reviews
+const mockStoreLoadingBoth = configureStore({
+  reducer: {
+    user: userReducer,
+    reviews: reviewsReducer,
+    ratings: ratingsReducer,
+  },
+  preloadedState: {
+    user: mockUserState,
+    reviews: { reviews: mockReviews, fetchingReviews: true },
+    ratings: {
+      totalFeedbackAverage: null,
+      averageTranslationRating: null,
+      averageUXRating: null,
+      count: null,
       fetchingRatings: false,
     },
   },
@@ -73,6 +121,16 @@ describe('Aggregated Feedback Results', () => {
     expect(screen.getByTestId('translationQuality')).toBeInTheDocument()
     expect(screen.getByTestId('userExperience')).toBeInTheDocument()
   });
+
+  test('displays loading messages when fetching ratings', () => {
+    render(
+      <Provider store={mockStoreLoadingBoth}>
+        <HomeReviews />
+      </Provider>
+    );
+
+    expect(screen.getByText(/Fetching ratings/i)).toBeInTheDocument();
+  });
 });
 
 describe('Carousel Reviews', () => {
@@ -88,10 +146,31 @@ describe('Carousel Reviews', () => {
 
   test('reviews load on home page', () => {
     render(
-      <Provider store={store}>
+      <Provider store={mockStore}>
         <HomeReviews />
       </Provider>
     );
     expect(screen.getByText(/Some of our reviews/i)).toBeInTheDocument();
+  });
+
+  test('displays loading message when fetching reviews', () => {
+    render(
+      <Provider store={mockStoreLoadingBoth}>
+        <HomeReviews />
+      </Provider>
+    );
+
+    expect(screen.getByText(/Loading reviews/i)).toBeInTheDocument();
+  });
+
+  test('displays message when there are no reviews', () => {
+    render(
+      <Provider store={mockStoreEmptyReviews}>
+        <HomeReviews />
+      </Provider>
+    );
+
+    expect(screen.getByText(/Some of our reviews/i)).toBeInTheDocument();
+    expect(screen.getByText(/Loading reviews/i)).toBeInTheDocument();
   });
 })
