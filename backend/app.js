@@ -24,6 +24,7 @@ const limiter = rateLimit({
   message: "Rate limit exceeded, only 100 requests allowed per 15 minutes"
 });
 
+app.use(cors());
 app.use(limiter);
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path} - ${req.ip}`);
@@ -31,7 +32,6 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-app.use(cors());
 app.use(mongoSanitize()); //sanitize all user input
 app.use(queue({ activeLimit: 1, queuedLimit: -1 }));
 

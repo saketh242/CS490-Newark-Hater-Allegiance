@@ -36,11 +36,17 @@ const App = () => {
   const user = useSelector((state) => state.user.user);
   const dbUser = useSelector((state) => state.user.dbUser);
   const isLoading = useSelector((state) => state.user.isLoading);
+  const { setShouldFetch } = useFetchReviews();
+
+  useEffect(() => {
+    if (!isLoading) {
+      setShouldFetch(true);
+    }
+  }, [isLoading, setShouldFetch]);
   
   if (isLoading) {
     return <div id='loading-page'><h1 className='rainbow-fast'>Loading...</h1></div>;
   }
-  
   return !isLoading && (
     <>
       <Router>

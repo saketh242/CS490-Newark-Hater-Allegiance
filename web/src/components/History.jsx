@@ -96,7 +96,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
     setSortOrder(-1);
     setFilterField("");
     setSelectedFilterItem("");
-    setFilterOptions([]);
+    setFilterOptions([]); 
   }, [showSidebar]);
 
   const changeFilterOptions = (filter) => {

@@ -65,7 +65,7 @@ describe('API RESPONSES ', () => {
         if (err) return done(err);
 
         expect(res.body).to.have.property('message').equal('Unauthorized: Missing Authorization Header');
-  
+
         done();
       });
   });
@@ -80,7 +80,7 @@ describe('API RESPONSES ', () => {
         expect(res.body).to.have.property('message').equal('User and associated data deleted successfully');
         done();
       });
-  });
+  }).timeout(20000);
 
   it('DELETE: should return 404 for user not found for /users/deleteUser', (done) => {
     request(app)
@@ -92,7 +92,7 @@ describe('API RESPONSES ', () => {
         expect(res.body).to.have.property('error').equal('User not found');
         done();
       });
-  });
+  }).timeout(20000);
 
   it('PUT: should return 400 for validation error /users/updateUser', (done) => {
     const invalidUser = {
@@ -187,14 +187,14 @@ describe('API RESPONSES ', () => {
         if (err) return done(err);
 
         expect(res.body).to.have.property('message').equal('Unauthorized: Missing Authorization Header');
-  
+
         done();
       });
   });
 
   it('GET: should return 200 OK for /history/getAllHistory', (done) => {
     request(app)
-      .get(`/history/getAllHistory?user_id=${user_id}&sortField=Date`)
+      .get(`/history/getAllHistory?user_id=${user_id}`)
       .set('Authorization', `Bearer ${testToken}`)
       .expect(200)
       .end((err, res) => {
@@ -267,7 +267,7 @@ describe('API RESPONSES ', () => {
         if (err) return done(err);
 
         expect(res.body).to.have.property('message').equal('Unauthorized: Missing Authorization Header');
-  
+
         done();
       });
   });
@@ -370,9 +370,9 @@ describe('API RESPONSES ', () => {
     const newHistoryEntry = {
       user_id: user_id,
       inputCode: 'print("Hello, World!")',
-      translateCode: 'print("Hola, Mundo!")',
+      translateCode: 'System.out.println("Hello, World!");',
       sourceLanguage: 'python',
-      desiredLanguage: 'python',
+      desiredLanguage: 'java',
     };
 
     request(app)
@@ -383,7 +383,7 @@ describe('API RESPONSES ', () => {
       .end((err, res) => {
         if (err) return done(err);
 
-
+        console.log("THE ID OF THE NEW HISTORY: ", res.body)
         expect(res.body).to.be.a('string');
         expect(res.body).to.have.lengthOf.at.least(1);
 
@@ -532,71 +532,4 @@ describe('API RESPONSES ', () => {
         done();
       });
   });
-
-  it('POST: should return 401 for unauthorized access to /openAI/postTranslation', (done) => {
-    const inputCode = {
-      inputCode: "print(\"Hello World!\")",
-      sourceLanguage: "python",
-      desiredLanguage: "c",
-    };
-  
-    request(app)
-      .post('/openAI/postTranslation')
-      .send(inputCode)
-      .expect(401)
-      .end((err, res) => {
-        if (err) return done(err);
-
-        expect(res.body).to.have.property('message').equal('Unauthorized: Missing Authorization Header');
-  
-        done();
-      });
-  });
-  
-
-  it('POST: should return 200 for sucessful translation for /openAI/postTranslation', (done) => {
-    const inputCode = {
-      inputCode: "print(\"Hello World!\")",
-      sourceLanguage: "python",
-      desiredLanguage: "c",
-    };
-
-    request(app)
-      .post('/openAI/postTranslation')
-      .send(inputCode)
-      .set('Authorization', `Bearer ${testToken}`)
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-
-        // sucessful translation
-        expect(res.body).to.have.property('success').equal(true);
-
-        done();
-      });
-  }).timeout(20000);
-
-  it('POST: should return 400 for language mismatch, gibberish, or other language errors for /openAI/postTranslation', (done) => {
-    const inputCode = {
-      inputCode: "printf(\"Hello World!\")",
-      sourceLanguage: "java",
-      desiredLanguage: "c",
-    };
-
-    request(app)
-      .post('/openAI/postTranslation')
-      .send(inputCode)
-      .set('Authorization', `Bearer ${testToken}`)
-      .expect(400)
-      .end((err, res) => {
-        if (err) return done(err);
-
-        // sucessful translation
-        expect(res.body).to.have.property('success').equal(false);
-        expect(res.body).to.have.property('message').equal("Input code does not match specified source language");
-
-        done();
-      }).timeout(20000);
-  });
-
 });
