@@ -10,6 +10,10 @@
   font-family: sans-serif;
 }
 
+.italics {
+  font-style: italic;
+}
+
 #auto-icon {
   color: #0ac6c0;
 }
@@ -1628,8 +1632,11 @@ input[type="checkbox"]{
   }
 }
 
+#faq-header {
+  font-weight: bold;
+}
 
-#help-item:hover, #guide-item:hover {
+#help-item:hover, #guide-item:hover, #faq-header:hover {
   color: #0ac6c0;
   cursor: pointer;
 }
@@ -1690,7 +1697,7 @@ input[type="checkbox"]{
 }
 
 #question-list p {
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 #guide-title{
@@ -1766,7 +1773,7 @@ input[type="checkbox"]{
   }
 
   #question-list p {
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
 
 }
