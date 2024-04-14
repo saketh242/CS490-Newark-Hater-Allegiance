@@ -7,6 +7,8 @@ import { faStar as emptyStar } from '@fortawesome/free-regular-svg-icons';
 
 
 const StarRating = ({ averageRating, size, className }) => {
+  if(averageRating === 0) return (<></>)
+  
   const totalStars = 5;
   const fullStars = Math.floor(averageRating);
   const hasHalfStar = averageRating - fullStars >= 0.5;
