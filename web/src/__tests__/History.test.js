@@ -145,14 +145,14 @@ describe('History component', () => {
 
   test('displays error message when history retrieval fails', () => {
     act(async () => {
-          const errorMessage = 'Unable to retrieve history at this time.';
+          // const errorMessage = 'Unable to retrieve history at this time.';
     
     render(
       <Provider store={store}>
         <History
           showSidebar={true}
-          triggerHistory={true} // Simulate error by triggering history retrieval
-          setTriggerHistory={() => {}} // Set an empty function to prevent actual retrieval
+          triggerHistory={true} 
+          setTriggerHistory={() => {}}
           setInputCode={mockSetInputCode}
           setTranslatedCode={mockSetTranslatedCode}
           setSourceLanguage={mockSetSourceLanguage}

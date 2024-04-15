@@ -136,7 +136,7 @@ describe('Navigations', () => {
       });
     });
 
-    test('navigates to the home page page after clicking the brand link', () => {
+    test('navigates to the home page after clicking the brand link', () => {
       act(async () => {
         require('../useAuth').default.mockReturnValue({ user: {name:"John Doe"}, isLoading: false });
         renderApp();
@@ -151,7 +151,35 @@ describe('Navigations', () => {
       });
   });
 
+  test('navigates to the home page after clicking the logout link', () => {
+    act(async () => {
+      require('../useAuth').default.mockReturnValue({ user: {name:"John Doe"}, isLoading: false });
+      renderApp();
 
+      const brandLink = await screen.findByText("Logout");
+      userEvent.click(brandLink);
+
+
+      const uniqueHelpText = await screen.findByText(/Easy code translation in seconds?/i);
+
+      expect(uniqueHelpText).toBeInTheDocument();
+    });
+  });
+
+  test('navigates to the profile page after clicking the profile link', () => {
+    act(async () => {
+      require('../useAuth').default.mockReturnValue({ user: {name:"John Doe"}, isLoading: false });
+      renderApp();
+
+      const brandLink = await screen.findByText("Hi John (👉ﾟヮﾟ)👉");
+      userEvent.click(brandLink);
+
+
+      const uniqueHelpText = await screen.findByText(/Profile Details?/i);
+
+      expect(uniqueHelpText).toBeInTheDocument();
+    });
+  });
 });
 
   
