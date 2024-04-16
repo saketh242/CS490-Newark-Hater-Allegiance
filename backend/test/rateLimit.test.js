@@ -6,9 +6,9 @@ describe('Rate Limiting', function() {
     this.timeout(20000); 
 
     // our app is setup in a way such that only 100 requests are allowed in 15 minutes
-    // 40 requests are already made in all the previous test so checking for 59 (200)
-    // and 60th request will be a 429
-    for (let i = 0; i < 60; i++) {
+    // 42 requests are already made in all the previous test so checking for 59 (200)
+    // and 58th request will be a 429
+    for (let i = 0; i < 59; i++) {
       await request(app)
         .get('/test') 
         .expect(200); 

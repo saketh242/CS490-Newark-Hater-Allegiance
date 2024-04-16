@@ -109,12 +109,8 @@ describe('API RESPONSES ', () => {
   });
 
   it('DELETE: should return 400 for missing user for /history/deleteHistory', (done) => {
-    const invalidHistoryDelete = {
-      history_id: "1192020193"
-    };
     request(app)
-      .delete('/history/deleteHistory')
-      .send(invalidHistoryDelete)
+      .delete(`/history/deleteHistory?history_id=111111111111111111111111`)
       .set('Authorization', `Bearer ${testToken}`)
       .expect(400)
       .end((err, res) => {
@@ -125,6 +121,21 @@ describe('API RESPONSES ', () => {
         done();
       });
   });
+
+  it('DELETE: should return 400 for ONE history not being found for /history/deleteHistory', (done) => {
+    request(app)
+      .delete(`/history/deleteHistory?user_id=${user_id}&history_id=111111111111111111111111`)
+      .set('Authorization', `Bearer ${testToken}`)
+      .expect(404)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        expect(res.body).to.have.property('error').equal('History not found');
+
+        done();
+      });
+  });
+
 
   it('DELETE: should return 200 for sucessful delete of all history for /history/deleteHistory', (done) => {
     request(app)
@@ -469,7 +480,6 @@ describe('API RESPONSES ', () => {
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
-        console.log(res.body)
         expect(res.body).to.have.property('message').equal('Record deleted successfully');
 
         done();
