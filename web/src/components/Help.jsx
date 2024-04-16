@@ -1,22 +1,23 @@
 import React, { useState } from 'react'
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 // import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
+import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCaretRight, faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
-
 import feedback from '../images/feedback.png'
 import pfpImg from '../images/gravatar.png'
+import historyImg from '../images/history.png'
 
 import nhaService from "../services/nhaService";
 import { toast } from 'react-toastify';
 
+import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons';
+
 const Help = () => {
   const [showBox, setShowBox] = useState(0);
-  const [openG1, setOpenG1] = useState(false);
-  const [openG2, setOpenG2] = useState(false);
-  const [openG3, setOpenG3] = useState(false);
-  const [openG4, setOpenG4] = useState(false);
+
+  const [openG, setOpenG] = useState([false, false, false, false, false])
+  const [openQ, setOpenQ] = useState([false, false, false, false, false])
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -57,42 +58,44 @@ const Help = () => {
   // let guides = [false, false, false]
 
   const handleGuide = (e) => {
-    switch (e) {
-      case 1: setOpenG1(!openG1); break;
-      case 2: setOpenG2(!openG2); break;
-      case 3: setOpenG3(!openG3); break;
-      case 4: setOpenG4(!openG4); break;
-    }
+    const update = [...openG];
+    update[e] = !update[e]
+    setOpenG(update)
   };
-
 
   const faqs = [
     {
       header: "Is NHA GPT free to use?",
       text: "Yes! Our online app is completely free to use! All you need is an account and you can start translating right away.",
-      id: 1
+      id: 0
     },
     {
       header: "Do you store translations?",
       text: "In order to provide you with the best support, NHA GPT stores all translations made by every user. This gives our support team more context with each feedback inquiry we receive.",
-      id: 2
+      id: 1
     },
     {
       header: "My translation came out with syntax errors, what gives?!",
       text: "Our translator is powered by OpenAI's GPT-3.5 api. If your translation came out wrong, please let us know so we can provide OpenAI with feedback to improve your experience!",
-      id: 3
+      id: 2
     },
     {
       header: "Why must I make a translation first before I can give feedback?",
       text: "We feel like it only makes sense for a user to provide feedback after using our tool rather than to provide feedback outside of using the tool.",
-      id: 4
+      id: 3
     },
     {
       header: "The translator says the API is down, what's going on?",
       text: "Because our translator is powered by OpenAI's GPT-3 api, if their system is down then so will our translator be. Unfortunately there is not much else we can do but wait.",
-      id: 5
+      id: 4
     }
   ]
+
+  const handleOpenQ = (e) => {
+    const update = [...openQ];
+    update[e] = !update[e]
+    setOpenQ(update)
+  };
 
   const [searchItem, setSearchItem] = useState('')
   const [filteredFaqs, setFilteredFaqs] = useState(faqs)
@@ -121,15 +124,15 @@ const Help = () => {
       <div className='help'>
         {/*Box 0*/}
         <div className='help-intro' id={showBox === 0 ? 'focus' : null}>
-          <span>Click on the <span onClick={() => handleBox(4)}>buttons</span> above to change this view! :3</span>
+          <span>Click on the <span onClick={() => handleBox(4)}>buttons</span> above to switch between menus! :3</span>
         </div>
 
         {/*Box 1*/}
         <div className='help-guides' id={showBox === 1 ? 'focus' : null}>
           <p id='guide-title'>Have a look at these quick and detailed guides!</p>
           {/*SIGNING UP GUIDE*/}
-          <div id='guide-item' onClick={() => handleGuide(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown} /><span id={openG1 ? 'help-active' : null}>How to get started</span></div>
-          {openG1 ? <div id='guide-text'>
+          <div id='guide-item' onClick={() => handleGuide(0)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={openG[0] ? faCaretDown : faCaretRight} /><span id={openG[0] ? 'help-active' : null}>How to get started</span></div>
+          {openG[0] ? <div id='guide-text'>
             <div className='box' id="guide-div">
               <p id="instructionHeader" className="sectionHeader">Getting started</p>
               <ul className='instructions'>
@@ -139,13 +142,13 @@ const Help = () => {
                 <li>Refresh the page and you should be let into the translator!</li>
               </ul>
               <div className='signup'>
-                <img className='signup-image guide-img' src={sample} alt="Sample Image" />
+                <img className='signup-image guide-img' src={sample} alt="signup" />
               </div>
             </div>
           </div> : null}
           {/*TRANSLATING GUIDE*/}
-          <div id='guide-item' onClick={() => handleGuide(2)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown} /><span id={openG2 ? 'help-active' : null}>How to translate</span></div>
-          {openG2 ? <div id='guide-text'>
+          <div id='guide-item' onClick={() => handleGuide(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={openG[1] ? faCaretDown : faCaretRight} /><span id={openG[1] ? 'help-active' : null}>How to translate</span></div>
+          {openG[1] ? <div id='guide-text'>
             <div className='box' id="guide-div">
               <p id="instructionHeader" className="sectionHeader">Translating</p>
               <ul className='instructions'>
@@ -156,13 +159,13 @@ const Help = () => {
               </ul>
               <div className='signup'>
 
-                <img className='signup-image guide-img' src={sample} alt="Sample Image" />
+                <img className='signup-image guide-img' src={sample} alt="signup" />
               </div>
             </div>
           </div> : null}
           {/*FEEDBACK GUIDE*/}
-          <div id='guide-item' onClick={() => handleGuide(3)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown} /><span id={openG3 ? 'help-active' : null}>How to submit a feedback</span></div>
-          {openG3 ? <div id='guide-text'>
+          <div id='guide-item' onClick={() => handleGuide(2)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={openG[2] ? faCaretDown : faCaretRight} /><span id={openG[2] ? 'help-active' : null}>How to submit a feedback</span></div>
+          {openG[2] ? <div id='guide-text'>
             <div className='box' id="guide-div">
 
               <p id="instructionHeader" className="sectionHeader">Submitting a Feedback</p>
@@ -173,13 +176,13 @@ const Help = () => {
                 <li>We also store ratings</li>
               </ul>
               <div className='signup'>
-                <img className='signup-image guide-img' src={feedback} alt="feedBack Image" />
+                <img className='signup-image guide-img' src={feedback} alt="feedback" />
               </div>
             </div>
           </div> : null}
           {/*PFP GUIDE*/}
-          <div id='guide-item' onClick={() => handleGuide(4)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={faCaretDown} /><span id={openG4 ? 'help-active' : null}>How to set a profile picture</span></div>
-          {openG4 ? <div id='guide-text'>
+          <div id='guide-item' onClick={() => handleGuide(3)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={openG[3] ? faCaretDown : faCaretRight} /><span id={openG[3] ? 'help-active' : null}>How to set a profile picture</span></div>
+          {openG[3] ? <div id='guide-text'>
             <div className='box' id='guide-div'>
               <p id="instructionHeader" className="sectionHeader">Setting a profile picture</p>
               <ul className='instructions'>
@@ -192,7 +195,25 @@ const Help = () => {
               <img className='signup-image guide-img' src={pfpImg} alt="Gravatar Profile Example" />
             </div>
           </div> : null}
-        </div>
+          {/*HISTORY GUIDE*/}
+          <div id='guide-item' onClick={() => handleGuide(4)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={openG[4] ? faCaretDown : faCaretRight} /><span id={openG[4] ? 'help-active' : null}>How to see your history</span></div>
+          {openG[4] ? <div id='guide-text'>
+            <div className='box' id='guide-div'>
+              <p id="instructionHeader" className="sectionHeader">Using the history bar</p>
+              <ul className='instructions'>
+                <li>While on the <Link to="/translate" className='link'>Translate</Link> page, look for this icon: <FontAwesomeIcon className='auto-icon' size="1x" icon={faHistory}/></li>
+                <li>Then a new history sidebar will appear on your right</li>
+                <li>Here you have 3 different dropdowns: Sort By, Filter By and Select Filter, as well as a vertical arrow to switch between ascending and descending order, and a "Clear all history" button</li>
+                <li>Sort By and Filter By yield 3 options: Date (chronological order), Source Language (language you input), and Destination Language (translated output)</li>
+                <li>Select Filter works in conjunction with Filter By. After you choose what to filter by, you can then select a specific filter to show only <span className='italics'>those</span> results</li>
+                <li>Example: A history page sorted by date, filtered by source language, with "Java" as the filter (only shows Java inputs)</li>
+              </ul>
+            </div>
+            <div className='signup'>
+              <img className='signup-image guide-img' id='history-img' src={historyImg} alt="History Bar Example" />
+            </div>
+          </div> : null}
+        </div> {/*END GUIDES DIV*/}
 
 
         {/*Box 2*/}
@@ -208,8 +229,8 @@ const Help = () => {
           </div>
           <ul id='question-list'>
             {filteredFaqs.map(faq => <li key={faq.id}>
-              <h1 data-testid='faq-item' className='help-header'>{faq.header}</h1>
-              <p>{faq.text}</p>
+              <FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={openQ[faq.id] ? faCaretDown : faCaretRight}/><span data-testid='faq-item' className='help-header' id='faq-header' onClick={() => handleOpenQ(faq.id)}>{faq.header}</span>
+              {openQ[faq.id] && <p>{faq.text}</p>}
             </li>)}
           </ul>
         </div>

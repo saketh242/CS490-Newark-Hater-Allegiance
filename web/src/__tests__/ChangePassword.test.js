@@ -1,31 +1,45 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import ChangePassword from '../components/ChangePassword'
 
-describe('ChangePassword Component Tests', () => {
-    test('renders the ChangePassword component', () => {
-      render(
-        <Router>
-          <ChangePassword />
-        </Router>
-      );
- 
-      expect(screen.getByText(/Change Password/i)).toBeInTheDocument()
+describe('ChangePassword Component', () => {
+  test('renders the ChangePassword component', () => {
+    render(
+      <Router>
+        <ChangePassword />
+      </Router>
+    );
+
+    expect(screen.getByText(/Change Password/i)).toBeInTheDocument()
+  });
+
+  test('calls the handleChangePassword on update password button click', () => {
+    const handleChangePassword = jest.fn();
+    const { getByText } = render(<button onClick={handleChangePassword}>Update Password</button>);
+    fireEvent.click(getByText(/Update Password/i));
+    expect(handleChangePassword).toHaveBeenCalledTimes(1);
+  });
+
+  test('displays error message when input fields are empty', async () => {
+    render(
+      <Router>
+        <ChangePassword />
+      </Router>
+    );
+
+    // Simulate clicking the "Update Password" button without filling in any input fields
+    const updatePasswordButton = screen.getByRole('button', { name: /Update Password/i });
+    fireEvent.click(updatePasswordButton);
+
+    await waitFor(() => {
+      expect(screen.getByText('Fields cannot be empty')).toBeVisible();
     });
-
-    test('calls the handleChangePassword on signup button click', () => {
-      const handleChangePassword = jest.fn();
-      const { getByText } = render(<button onClick={handleChangePassword}>Update Password</button>);
-      fireEvent.click(getByText(/Update Password/i));
-      expect(handleChangePassword).toHaveBeenCalledTimes(1);
   });
-  
+});
 
-    
-  });
-  
 
-  
+
+
 
 

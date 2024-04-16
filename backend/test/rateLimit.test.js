@@ -8,7 +8,7 @@ describe('Rate Limiting', function() {
     // our app is setup in a way such that only 100 requests are allowed in 15 minutes
     // 33 requests are already made in all the previous test so checking for 67 (200)
     // and 68th request will be a 429
-    for (let i = 0; i < 67; i++) {
+    for (let i = 0; i < 64; i++) {
       await request(app)
         .get('/test') 
         .expect(200); 

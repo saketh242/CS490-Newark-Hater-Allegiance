@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, act, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Translate from '../components/Translate';
-import '@testing-library/jest-dom'; // Import this for better assertion messages
+import '@testing-library/jest-dom'; 
 import nhaService from '../services/nhaService'
 
 import { store } from '../app/store';
@@ -11,7 +11,7 @@ import { Provider } from 'react-redux';
 // Mock useNavigate
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn(), // Mock useNavigate function
+  useNavigate: jest.fn(), 
 }));
 
 // Mock the clipboard API readText and writeText functions
@@ -37,10 +37,7 @@ describe('Translate component', () => {
       );
     });
 
-    // Assert that the input code area is rendered with the correct placeholder text
     expect(screen.getByText('Enter code here:')).toBeInTheDocument();
-
-    // Assert that the output code area is rendered with the correct heading
     expect(screen.getByText('Converted code:')).toBeInTheDocument();
   });
 });
@@ -54,29 +51,34 @@ describe('Translate component', () => {
     
   });
 
-  test('updates input code value when typing', () => {
+  test('updates input code value when typing', async () => {
     const { getByPlaceholderText } = render(<Provider store={store}><Translate /></Provider>);
     const inputArea = getByPlaceholderText('Enter code to translate');
 
-    fireEvent.change(inputArea, { target: { value: 'console.log("Hello, world!")' } });
-
+    await act(async () => {
+      fireEvent.change(inputArea, { target: { value: 'console.log("Hello, world!")' } });
+    });
     expect(inputArea.value).toBe('console.log("Hello, world!")');
   });
 
-  test('updates source language when selecting from dropdown', () => {
+  test('updates source language when selecting from dropdown', async () => {
     const { getByLabelText } = render(<Provider store={store}><Translate /></Provider>);
     const sourceLanguageDropdown = getByLabelText('Source Language:');
 
-    fireEvent.change(sourceLanguageDropdown, { target: { value: 'javascript' } });
+    await act(async() => {    
+      fireEvent.change(sourceLanguageDropdown, { target: { value: 'javascript' } });
+    });
 
     expect(sourceLanguageDropdown.value).toBe('javascript');
   });
 
-  test('updates desired language when selecting from dropdown', () => {
+  test('updates desired language when selecting from dropdown', async () => {
     const { getByLabelText } = render(<Provider store={store}><Translate /></Provider>);
     const desiredLanguageDropdown = getByLabelText('Desired Language:');
 
-    fireEvent.change(desiredLanguageDropdown, { target: { value: 'python' } });
+    await act(async() => {
+      fireEvent.change(desiredLanguageDropdown, { target: { value: 'python' } });
+    });
 
     expect(desiredLanguageDropdown.value).toBe('python');
   });
@@ -86,12 +88,13 @@ describe('Translate component', () => {
     const inputArea = screen.getByPlaceholderText('Enter code to translate');
     const translateButton = screen.getByTestId('Convert');
   
-    fireEvent.change(inputArea, { target: { value: 'console.log("Short code")' } });
-    fireEvent.click(translateButton);
+    await act(async () => {
+      fireEvent.change(inputArea, { target: { value: 'console.log("Short code")' } });
+      fireEvent.click(translateButton);
+    });
   
-    // Wait for the translation process to complete
     await waitFor(() => {
-      const outputCode = screen.getByText('Short code', { exact: false }); // Use { exact: false } to match partial text
+      const outputCode = screen.getByText('Short code', { exact: false });
       expect(outputCode).toBeInTheDocument();
     });
   });
@@ -101,15 +104,15 @@ describe('Translate component', () => {
     const inputArea = screen.getByPlaceholderText('Enter code to translate');
     const translateButton = screen.getByTestId('Convert');
   
-    // Generate long code (for example purposes, we'll use a simple repetition)
     const longCode = 'console.log("Long code".repeat(100))';
   
-    fireEvent.change(inputArea, { target: { value: longCode } });
+    await act(async() => {    
+      fireEvent.change(inputArea, { target: { value: longCode } });
+    });
+
     fireEvent.click(translateButton);
   
-    // Wait for the translation process to complete
     await waitFor(() => {
-      // Assert that a part of the long code is present in the output area
       const outputCode = screen.getByText('Long code', { exact: false });
       expect(outputCode).toBeInTheDocument();
     });
@@ -123,27 +126,19 @@ describe('Translate component', () => {
     const { getByPlaceholderText, getByTestId, getByText } = render(<Provider store={store}><Translate /></Provider>);
     const inputArea = getByPlaceholderText('Enter code to translate');
   
-    // Function to check if the convert button is available
-    const waitForConvertButton = () => getByTestId('Convert');
-  
-    // Wait for the convert button to appear with a timeout
-    setTimeout(() => {
-      const translateButton = waitForConvertButton();
-  
-      // Simulate user input and click on translate button
+    const translateButton = getByTestId('Convert');
+    await act(async() => {
       fireEvent.change(inputArea, { target: { value: 'console.log("Hello, World!")' } });
       fireEvent.click(translateButton);
+    });
   
-      // Wait for the error message to appear
       setTimeout(() => {
         const errorElement = getByText(errorMessage);
         expect(errorElement).toBeInTheDocument();
-      }, 1000); // Adjust the timeout as needed
-    }, 1000); // Adjust the timeout as needed
+      }, 2000); 
   });
   
 });
-
 
 const { sanitizeCode } = require('../utils/codeUtils');
 
@@ -180,18 +175,13 @@ describe('Translate component', () => {
     const { getByTitle } = render(<Provider store={store}><Translate /></Provider>);
     const copyButton = getByTitle('Copy code');
 
-    // Simulating a click on the copy button
     await act(async () => {
       fireEvent.click(copyButton);
     });
-
-    // Expecting the clipboard.writeText method to be called
     expect(navigator.clipboard.writeText).toHaveBeenCalled();
   });
-});
 
-describe('Translate component', () => {
-  it('triggers code download when the download button is clicked', () => {
+  it('triggers code download when the download button is clicked', async () => {
     // Mocking createObjectURL and revokeObjectURL
     const mockCreateObjectURL = jest.fn();
     const mockRevokeObjectURL = jest.fn();
@@ -201,24 +191,28 @@ describe('Translate component', () => {
     const { getByTitle } = render(<Provider store={store}><Translate /></Provider>);
     const downloadButton = getByTitle('Download code'); 
 
-    fireEvent.click(downloadButton);
+    await act(async() => {
+      fireEvent.click(downloadButton);
+    });
 
     // Expect createObjectURL to be called, indicating that a Blob was created for download
     expect(mockCreateObjectURL).toHaveBeenCalled();
-    // Optionally, check that revokeObjectURL was called to clean up the object URL
     expect(mockRevokeObjectURL).toHaveBeenCalled();
   });
 });
 
 describe('Sidebar rendered component', () => {
-  it('triggers sidebar history when button is pressed', () => {
-    const { container } = render(
-      <Provider store={store}>
-        <Translate />
-      </Provider>
-    );
-    fireEvent.click(container.getElementsByClassName("historyButton")[0]);
-    expect(screen.findByText("Translation History"));
+  it('triggers sidebar history when button is pressed', async () => {
+      const { container } = render(
+        <Provider store={store}>
+          <Translate />
+        </Provider>
+      );
+
+      await act(async() => {
+        fireEvent.click(container.getElementsByClassName("historyButton")[0]);
+      });
+      expect(screen.findByText("Translation History"));
   });
 });
 
@@ -229,48 +223,104 @@ describe('Translate component', () => {
     const inputArea = screen.getByPlaceholderText('Enter code to translate');
     const translateButton = screen.getByTestId('Convert');
   
-    // Different code structures to test
     const codeStructures = [
-      'console.log("Hello, world!");', // Basic console log
-      'for (let i = 0; i < 10; i++) { console.log(i); }', // For loop
-      'function add(a, b) { return a + b; }', // Function declaration
-      'const numbers = [1, 2, 3, 4, 5]; numbers.forEach(num => console.log(num));', // Array iteration
-      'class Person { constructor(name) { this.name = name; } sayHello() { console.log(`Hello, my name is ${this.name}.`); } }', // Class declaration
-      'const promise = new Promise((resolve, reject) => { setTimeout(() => resolve("Done!"), 1000); }); promise.then(result => console.log(result));', // Promise
-      // Add more code structures to test as needed
+      'cout << "Hello World!";', //C++
+      `using System;
+
+      class Program
+      {
+          static void Main(string[] args)
+          {
+              // Loop from 1 to 10
+              for (int i = 1; i <= 10; i++)
+              {
+                  Console.WriteLine("Iteration " + i);
+              }
+          }
+      }      
+      `, //C#
+      '$fruits = array("Apple", "Banana", "Orange", "Mango");', //PHP
+      'puts "Here is some ruby code"', //RUBY
+      'let message: string = "Hello, World!";', //TYPESCRIPT
+      'def my_function(): print("Hello from a function")',  //PYTHON
+      'int[] numbers = {1, 2, 3, 4, 5}; for(int i : numbers) System.out.println(i);', //JAVA
+      'class Person { constructor(name) { this.name = name; } sayHello() { console.log(`Hello, my name is ${this.name}.`); } }', //JAVASCRIPT
+      
+      `#include <stdio.h> 
+       int main() {
+        printf(%d, 2+2);
+        return 0;
+       }`, //C
+
+      `package main
+
+      import "fmt"
+      
+      func main() {
+      
+          var a = "initial"
+          fmt.Println(a)
+      
+          var b, c int = 1, 2
+          fmt.Println(b, c)
+      
+          var d = true
+          fmt.Println(d)
+      
+          var e int
+          fmt.Println(e)
+      
+          f := "apple"
+          fmt.Println(f)
+      }` //GO
     ];
   
     // Iterate over each code structure and test
     for (const code of codeStructures) {
-      fireEvent.change(inputArea, { target: { value: code } });
-      fireEvent.click(translateButton);
+      await act(async() => {
+        fireEvent.change(inputArea, { target: { value: code } });
+        fireEvent.click(translateButton);
+      });
   
-      // Wait for the translation process to complete
       await waitFor(() => {
-        // Assert that a part of the code is present in the output area
-        const outputCode = screen.getByText(code.split(' ')[0], { exact: false }); // Check only the first word for simplicity
+        const outputCode = screen.getByText(code.split(' ')[0], { exact: false });
         expect(outputCode).toBeInTheDocument();
       });
   
       // Clear input for the next iteration
-      fireEvent.change(inputArea, { target: { value: '' } });
+      await act(async() => {
+        fireEvent.change(inputArea, { target: { value: '' } });
+      });
     }
   });
-});
 
-describe('Translate component', () => {
+  test('Input language autodetection', async () => {
+    render(<Provider store={store}><Translate /></Provider>);
+  
+    const inputCode = 'function helloWorld() { console.log("Hello, world!"); }';
+    fireEvent.change(screen.getByPlaceholderText('Enter code to translate'), { target: { value: inputCode } });
+  
+    // Wait for the language autodetection to occur
+    await waitFor(() => {
+      // Assert that the source language dropdown has been updated with the detected language
+      expect(screen.getByTestId('source-language-dropdown')).toHaveValue('javascript');
+    });
+  });
+
   test('handles input validation and successful submission', async () => {
-    const { getByPlaceholderText, getByTestId, queryByText } = render(<Provider store={store}><Translate /></Provider>);
+    const { getByPlaceholderText, getByTestId, findByText } = render(<Provider store={store}><Translate /></Provider>);
     const inputArea = getByPlaceholderText('Enter code to translate');
     const translateButton = getByTestId('Convert');
   
     // Test empty input
     // fireEvent.click(translateButton);
-    // expect(queryByText('Please enter code to translate.')).toBeInTheDocument();
+    // expect('Input code cannot be empty').toBeInTheDocument();
     
     // Test successful submission
-    fireEvent.change(inputArea, { target: { value: 'console.log("Hello, world!")' } });
-    fireEvent.click(translateButton);
+    await act(async() => {
+      fireEvent.change(inputArea, { target: { value: 'console.log("Hello, world!")' } });
+      fireEvent.click(translateButton);
+    });
   
     // Wait for the translation process to complete
     await waitFor(() => {

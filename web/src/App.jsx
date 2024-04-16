@@ -15,34 +15,43 @@ import PageNotFound from "./components/PageNotFound"
 import ChangePassword from './components/ChangePassword';
 import "./index.css"
 import useAuth from './useAuth';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 // import axios from 'axios'
 import DeleteAccount from './components/DeleteAccount';
 import Settings from './components/Settings';
 import VerificationMessage from './components/VerificationMessage';
 import ForgotPassword from './components/ForgotPassword';
-import nhaService from './services/nhaService';
+// import nhaService from './services/nhaService';
 import ViewProfile from './components/ViewProfile';
 import { useSelector } from 'react-redux';
-import { setReviews, startFetchingReviews, stopFetchingReviews } from './features/reviews/reviewSlice';
+// import { setReviews, startFetchingReviews, stopFetchingReviews } from './features/reviews/reviewSlice';
 import useFetchReviews from './useFetchReviews';
-
+import useAverageRatings from './useAverageRatings';
+import ScrollToTop from './utils/scrollToTop';
 
 const App = () => {
   useAuth();
   useFetchReviews();
+  useAverageRatings();
   const user = useSelector((state) => state.user.user);
   const dbUser = useSelector((state) => state.user.dbUser);
   const isLoading = useSelector((state) => state.user.isLoading);
+  const { setShouldFetch } = useFetchReviews();
+
+  useEffect(() => {
+    if (!isLoading) {
+      setShouldFetch(true);
+    }
+  }, [isLoading, setShouldFetch]);
   
   if (isLoading) {
     return <div id='loading-page'><h1 className='rainbow-fast'>Loading...</h1></div>;
   }
-  
   return !isLoading && (
     <>
       <Router>
         <div className="content">
+        <ScrollToTop />
           <NHANav/>
           <Routes>
             <Route path="/" element={<Home />} />

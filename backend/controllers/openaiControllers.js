@@ -24,8 +24,9 @@ const detectLanguage = async (code) => {
     if (!(response && response.choices && response.choices.length > 0)) {
         throw new Error("Unexpected response from OpenAI API");
     }
-    
-    return response.choices[0].message.content.toLowerCase();
+    const content = response.choices[0].message.content.toLowerCase();
+    const detectedlang = content.replace(/[^a-z]/g, '');
+    return detectedlang;
 };
 
 const postPrompt = async (req, res, next) => {
@@ -85,6 +86,12 @@ const postPrompt = async (req, res, next) => {
         } else if (error.status === 503) {
             statusCode = 503;
             errorMessage = "OpenAI API temporarily unavailable. Please try again later.";
+        } else if (error.status === 401) {
+            statusCode = 401;
+            errorMessage = "API request unavailable, please contact system administrator.";
+        } else if (error.status === 403) {
+            statusCode = 403;
+            errorMessage = "Sorry! Our service is not available in your country.";
         }
 
         return res.status(statusCode).json({

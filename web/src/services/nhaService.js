@@ -75,14 +75,14 @@ class NHAService {
         }
     }
 
-    async getAllHistory(user, dbUser, sortField) {
+    async getAllHistory(user, dbUser) {
         try {
             const user_id = dbUser._id;
             const idToken = await user.getIdToken();
             const headers = {
                 Authorization: `Bearer ${idToken}`
             };
-            const params = { user_id, sortField };
+            const params = { user_id };
             const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}history/getAllHistory`, { headers, params });
             //console.log(response.data);
             return response.data;
@@ -138,6 +138,28 @@ class NHAService {
         }
     }
 
+    async deleteHistory(user, dbUser, history_id = null) {
+        try {
+            const user_id = dbUser._id;
+            const idToken = await user.getIdToken();
+            const headers = {
+                Authorization: `Bearer ${idToken}`
+            };
+            let url = `${process.env.REACT_APP_BACKEND_URL}history/deleteHistory?user_id=${user_id}`;
+            
+            if (history_id) {
+                url += `&history_id=${history_id}`;
+            }
+    
+            const response = await axios.delete(url, { headers });
+            return response.data;
+        } catch (error) {
+            // console.error('Error deleting history:', error);
+            return error.response.data;
+        }
+    }
+    
+
     async getOpenAIStatus() {
         try {
           const response = await axios.get('https://status.openai.com/api/v2/summary.json');
@@ -170,7 +192,19 @@ class NHAService {
             return error.response.data;
         }
       }
+
+      async getAverageRatings() {
+        try{
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}feedback/getAverageRatings`);
+            return response.data;
+        }
+        catch (error) {
+            // console.error('Error with posting issue', error);
+            return error.response.data;
+        }
+      }
       
 }
 
-export default new NHAService();
+const nhaServiceInstance = new NHAService();
+export default nhaServiceInstance;

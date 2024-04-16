@@ -19,7 +19,7 @@ describe('Home Component Tests', () => {
       expect(screen.getByText(/Easy code translation in seconds!/i)).toBeInTheDocument()
     });
 
-    test('calls the handleDelete on signup button click', () => {
+    test('calls the handleSignup on signup button click', () => {
       const handleSignup = jest.fn();
       const { getByText } = render(<button onClick={handleSignup}>Signup today!</button>);
       fireEvent.click(getByText(/Signup today!/i));
