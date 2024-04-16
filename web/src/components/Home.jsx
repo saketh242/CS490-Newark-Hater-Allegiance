@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRobot, faBoltLightning, faUser, faCode} from '@fortawesome/free-solid-svg-icons'
-import sample from '../images/sample.png'
+// import sample from '../images/sample.png'
 import Gravatar from 'react-gravatar'
 import { useSelector } from 'react-redux';
 
@@ -80,6 +80,8 @@ const Home = () => {
             <p className="role">Backend Lead Developer</p>
           </div>
         </div>
+        
+        {/*FUNNY PLAYTESTERS DIV*/}
         <h2 className='rainbow'>Playtested by</h2>
         <div id="devsArea">
           <div className="dev">
@@ -93,8 +95,8 @@ const Home = () => {
             <p className="role">Security Analyst</p>
           </div>
         </div>
-      </div>
       
+      </div>
     </div>
   )
 }

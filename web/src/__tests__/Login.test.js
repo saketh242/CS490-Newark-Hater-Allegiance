@@ -2,13 +2,10 @@ import {fireEvent, render, screen, waitFor} from "@testing-library/react"
 import Login from "../components/Login"
 import { MemoryRouter as Router } from 'react-router-dom';
 
-
-
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'), 
   useNavigate: jest.fn(), 
 }));
-
 
 describe("Login component tests", ()=>{
   test("Login component render test", async ()=>{
@@ -31,7 +28,7 @@ describe("Login component tests", ()=>{
   expect(element).not.toBeInTheDocument();
   })
 
-  test("Login invlaid email", async () => {
+  test("Login invalid email", async () => {
     render(
       <Router>
         <Login/>
@@ -49,7 +46,6 @@ describe("Login component tests", ()=>{
 
     // expecting invalid email message
     expect(await screen.findByText('Please enter a valid email!'));
-
   })
 
   test("Login with empty fields", async ()=> {

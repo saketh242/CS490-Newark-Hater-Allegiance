@@ -28,7 +28,7 @@ import { useSelector } from 'react-redux';
 // import { setReviews, startFetchingReviews, stopFetchingReviews } from './features/reviews/reviewSlice';
 import useFetchReviews from './useFetchReviews';
 import useAverageRatings from './useAverageRatings';
-import ScrollToTop from './components/scrollToTop';
+import ScrollToTop from './utils/scrollToTop';
 
 const App = () => {
   useAuth();

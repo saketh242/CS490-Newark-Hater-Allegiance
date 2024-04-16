@@ -18,9 +18,9 @@ describe('StarRating component', () => {
     const emptyStars = await screen.findAllByTestId('emptyStar');
 
     // Check if the correct number of stars are rendered
-    expect(filledStars.length).toBe(3); // Full stars should be 3
-    expect(halfStar).toBeInTheDocument(); // There should be a half star
-    expect(emptyStars.length).toBe(1); // Empty stars should be 1
+    expect(filledStars.length).toBe(3); 
+    expect(halfStar).toBeInTheDocument(); 
+    expect(emptyStars.length).toBe(1); 
   });
 
   test('renders stars with correct size and className', () => {
@@ -31,17 +31,47 @@ describe('StarRating component', () => {
     const allStars = screen.getAllByTestId(/(filledStar|halfStar|emptyStar)/);
   
     allStars.forEach(star => {
-      const icons = star.querySelectorAll('svg'); //find fontawesomeicon components
+      const icons = star.querySelectorAll('svg');
   
       icons.forEach(icon => {
         const iconSize = icon.getAttribute('data-icon');
         
-        // Assert that the iconSize matches the expected size prop value
         expect(iconSize).toBe(size);
       });
       
       expect(star).toHaveClass(className);
     });
   });
+
+  test('renders correct number of full stars', () => {
+    const { getAllByTestId } = render(<StarRating averageRating={3.5} />);
+    const filledStars = getAllByTestId('filledStar');
+    expect(filledStars).toHaveLength(3);
+  });
+
+  test('renders half star when averageRating has a decimal part of 0.5 or greater', () => {
+    const { getAllByTestId } = render(<StarRating averageRating={2.5} />);
+    const halfStars = getAllByTestId('halfStar');
+    expect(halfStars).toHaveLength(1);
+  });
+
+  test('renders correct number of empty stars', () => {
+    const { getAllByTestId } = render(<StarRating averageRating={4} />);
+    const emptyStars = getAllByTestId('emptyStar');
+    expect(emptyStars).toHaveLength(1);
+  });
+
+  test('renders nothing when averageRating is 0', () => {
+    const { container } = render(<StarRating averageRating={0} />);
+    expect(container.firstChild).toBeNull();
+  });
+
+
+  test('renders all filled stars when averageRating is 5', () => {
+    const { getAllByTestId } = render(<StarRating averageRating={5} />);
+    const filledStars = getAllByTestId('filledStar');
+    expect(filledStars).toHaveLength(5);
+  });
+  
   
 });

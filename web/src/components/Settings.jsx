@@ -1,12 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { faGear, faPenToSquare, faShieldHalved} from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react';
+
+
 import { useNavigate } from 'react-router-dom';
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { auth } from "../firebase";
 import { toast } from 'react-toastify';
-import { signInWithEmailAndPassword, EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification, signOut, updateEmail, verifyBeforeUpdateEmail, updateProfile } from "firebase/auth";
-import { isValidEmail } from '../utils/fieldValidations';
+import { EmailAuthProvider, reauthenticateWithCredential, signOut, verifyBeforeUpdateEmail, updateProfile } from "firebase/auth";
 import nhaService from '../services/nhaService';
 import { useDispatch } from 'react-redux';
 import {setDbUser } from '../features/user/userSlice';
@@ -16,8 +18,7 @@ const Settings = () => {
 
   const user = useSelector((state) => state.user.user);
   const dbUser = useSelector((state) => state.user.dbUser);
-  const isLoading = useSelector((state) => state.user.isLoading);
-
+  // const isLoading = useSelector((state) => state.user.isLoading);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -25,13 +26,13 @@ const Settings = () => {
 
   // getting currenlty signed in user
   // const user = auth.currentUser;
-  const [firstName, setFirstName] = useState(dbUser.firstName);
-  const [lastName, setLastName] = useState(dbUser.lastName);
-  const [email, setEmail] = useState(user.email);
+  const [firstName, setFirstName] = useState(dbUser? dbUser.firstName : "");
+  const [lastName, setLastName] = useState(dbUser? dbUser.lastName : "");
+  const [email, setEmail] = useState(user? user.email : "");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   // this is a placeholder for knowing the current state of data
-  const [userData, setUserData] = useState(dbUser);
+  const [userData, setUserData] = useState(dbUser || {});
   // const [receivedData, setReceivedData] = useState(false);
   // const [triggerEffect, setTriggerEffect] = useState(true);
 
@@ -52,13 +53,13 @@ const Settings = () => {
 
   const handleUpdateprofile = async (e) => {
     e.preventDefault()
-    if (firstName == "" || lastName == "" || email == ""){
+    if (firstName === "" || lastName === "" || email === ""){
       setError("Fields cannot be empty (¬_¬ )")
       return
     }
 
-    if (password == ""){
-      setError("Enter password before to update profile");
+    if (password === ""){
+      setError("Enter password to update profile");
       return
     }
 
@@ -168,6 +169,7 @@ const Settings = () => {
                   setError(null)
                 }}
                 placeholder="First Name"
+                data-testid="firstNameInput"
                 style={{
                   borderColor: error ? 'red' : '#0ac6c0',
                   transition: 'border-color 0.3s ease',
@@ -182,6 +184,7 @@ const Settings = () => {
                   setError(null)
                 }}
                 placeholder="Last Name"
+                data-testid="lastNameInput"
                 style={{
                   borderColor: error ? 'red' : '#0ac6c0',
                   transition: 'border-color 0.3s ease',
@@ -231,7 +234,7 @@ const Settings = () => {
             </div>
             <div className='option-div hover-div' onClick={handleDeleteAccount}>
               <FontAwesomeIcon icon={faTrash} />
-              <p>Delete Account</p>
+              <p data-testid="deleteAccount">Delete Account</p>
             </div>
             {user.emailVerified && 
             <div className='option-div hover-div' onClick={handle2FA}>

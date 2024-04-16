@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, act, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Translate from '../components/Translate';
-import '@testing-library/jest-dom'; // Import this for better assertion messages
+import '@testing-library/jest-dom'; 
 import nhaService from '../services/nhaService'
 
 import { store } from '../app/store';
@@ -11,7 +11,7 @@ import { Provider } from 'react-redux';
 // Mock useNavigate
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn(), // Mock useNavigate function
+  useNavigate: jest.fn(), 
 }));
 
 // Mock the clipboard API readText and writeText functions
@@ -37,10 +37,7 @@ describe('Translate component', () => {
       );
     });
 
-    // Assert that the input code area is rendered with the correct placeholder text
     expect(screen.getByText('Enter code here:')).toBeInTheDocument();
-
-    // Assert that the output code area is rendered with the correct heading
     expect(screen.getByText('Converted code:')).toBeInTheDocument();
   });
 });
@@ -96,7 +93,6 @@ describe('Translate component', () => {
       fireEvent.click(translateButton);
     });
   
-    // Wait for the translation process to complete
     await waitFor(() => {
       const outputCode = screen.getByText('Short code', { exact: false });
       expect(outputCode).toBeInTheDocument();
@@ -108,7 +104,6 @@ describe('Translate component', () => {
     const inputArea = screen.getByPlaceholderText('Enter code to translate');
     const translateButton = screen.getByTestId('Convert');
   
-    // Generate long code (for example purposes, we'll use a simple repetition)
     const longCode = 'console.log("Long code".repeat(100))';
   
     await act(async() => {    
@@ -117,9 +112,7 @@ describe('Translate component', () => {
 
     fireEvent.click(translateButton);
   
-    // Wait for the translation process to complete
     await waitFor(() => {
-      // Assert that a part of the long code is present in the output area
       const outputCode = screen.getByText('Long code', { exact: false });
       expect(outputCode).toBeInTheDocument();
     });
@@ -142,7 +135,7 @@ describe('Translate component', () => {
       setTimeout(() => {
         const errorElement = getByText(errorMessage);
         expect(errorElement).toBeInTheDocument();
-      }, 1000); 
+      }, 2000); 
   });
   
 });
@@ -187,9 +180,7 @@ describe('Translate component', () => {
     });
     expect(navigator.clipboard.writeText).toHaveBeenCalled();
   });
-});
 
-describe('Translate component', () => {
   it('triggers code download when the download button is clicked', async () => {
     // Mocking createObjectURL and revokeObjectURL
     const mockCreateObjectURL = jest.fn();
@@ -302,9 +293,20 @@ describe('Translate component', () => {
       });
     }
   });
-});
 
-describe('Translate component', () => {
+  test('Input language autodetection', async () => {
+    render(<Provider store={store}><Translate /></Provider>);
+  
+    const inputCode = 'function helloWorld() { console.log("Hello, world!"); }';
+    fireEvent.change(screen.getByPlaceholderText('Enter code to translate'), { target: { value: inputCode } });
+  
+    // Wait for the language autodetection to occur
+    await waitFor(() => {
+      // Assert that the source language dropdown has been updated with the detected language
+      expect(screen.getByTestId('source-language-dropdown')).toHaveValue('javascript');
+    });
+  });
+
   test('handles input validation and successful submission', async () => {
     const { getByPlaceholderText, getByTestId, findByText } = render(<Provider store={store}><Translate /></Provider>);
     const inputArea = getByPlaceholderText('Enter code to translate');
