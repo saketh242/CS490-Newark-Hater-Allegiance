@@ -7,6 +7,7 @@ import Gravatar from 'react-gravatar'
 import { useSelector } from 'react-redux';
 
 import HomeReviews from './HomeReviews';
+import LatestPatch from './LatestPatch';
 
 const Home = () => {
   const user = useSelector((state) => state.user.user);
@@ -50,6 +51,10 @@ const Home = () => {
       </div>
 
       <HomeReviews />
+
+      <div className='box' id='patch-notes'>
+        <LatestPatch />
+      </div>
 
       <div className='box' id="devCredits">
         <h2 className='rainbow'>Designed and Developed by</h2>

@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 // import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCaretRight, faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
+import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCaretRight, faCircleExclamation, faFileLines } from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
 import feedback from '../images/feedback.png'
 import pfpImg from '../images/gravatar.png'
 import historyImg from '../images/history.png'
+import LatestPatch from './LatestPatch';
 
 import nhaService from "../services/nhaService";
 import { toast } from 'react-toastify';
@@ -119,17 +120,18 @@ const Help = () => {
         <div id='help-item' onClick={() => handleBox(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='3x' icon={faBook} /><h1 className='icon-txt' id={showBox === 1 ? 'help-active' : null}>Guides</h1></div>
         <div id='help-item' onClick={() => handleBox(2)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='3x' icon={faQuestion} /><h1 className='icon-txt' id={showBox === 2 ? 'help-active' : null}>FAQ</h1></div>
         <div id='help-item' onClick={() => handleBox(3)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='3x' icon={faMugHot} /><h1 className='icon-txt' id={showBox === 3 ? 'help-active' : null}>Contact Us</h1></div>
+        <div id='help-item' onClick={() => handleBox(4)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='3x' icon={faFileLines} /><h1 className='icon-txt' id={showBox === 4 ? 'help-active' : null}>Patch Notes</h1></div>
       </div>
 
       <div className='help'>
         {/*Box 0*/}
-        <div className='help-intro' id={showBox === 0 ? 'focus' : null}>
-          <span>Click on the <span onClick={() => handleBox(4)}>buttons</span> above to switch between menus! :3</span>
+        <div id='help-intro' className={showBox === 0 ? 'unhide' : 'hide'}>
+          <span>Click on the <span onClick={() => handleBox(-1)}>buttons</span> above to switch between menus! :3</span>
         </div>
 
         {/*Box 1*/}
-        <div className='help-guides' id={showBox === 1 ? 'focus' : null}>
-          <p id='guide-title'>Have a look at these quick and detailed guides!</p>
+        <div id='help-guides' className={showBox === 1 ? 'unhide' : 'hide'}>
+          <h1 className='help-header'>Have a look at these quick and detailed guides!</h1>
           {/*SIGNING UP GUIDE*/}
           <div id='guide-item' onClick={() => handleGuide(0)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={openG[0] ? faCaretDown : faCaretRight} /><span id={openG[0] ? 'help-active' : null}>How to get started</span></div>
           {openG[0] ? <div id='guide-text'>
@@ -217,7 +219,7 @@ const Help = () => {
 
 
         {/*Box 2*/}
-        <div className='help-faq' id={showBox === 2 ? 'focus' : null}>
+        <div id='help-faq' className={showBox === 2 ? 'unhide' : 'hide'}>
           <div id='search-bar'>
             <FontAwesomeIcon id='auto-icon' className='search-icon' size='1x' icon={faMagnifyingGlass} />
             <input id='search-input' className='default-input help-search'
@@ -237,7 +239,7 @@ const Help = () => {
 
 
         {/*Box 3*/}
-        <div className='help-contact' id={showBox === 3 ? 'focus' : null}>
+        <div id='help-contact' className={showBox === 3 ? 'unhide' : 'hide'}>
           <div id="contact-header">
             <h1 className='help-header'>Send us a message to get additional support!</h1>
             <p>Our team will give you a response between 3-7 business days (excludes weekends and holidays)</p>
@@ -291,9 +293,13 @@ const Help = () => {
           </div>
         </div>
 
+        {/*Box 4*/}
+        <div id='help-patch-notes' className={showBox === 4 ? 'unhide' : 'hide'}>
+          <LatestPatch />
+        </div>
 
         {/*Box Egg*/}
-        <div className='help-egg' id={showBox === 4 ? 'focus' : null}>
+        <div id='help-egg' className={showBox === -1 ? 'unhide' : 'hide'}>
           <p>
             The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues.
             The 20 meter pacer test will begin in 30 seconds. Line up at the start.

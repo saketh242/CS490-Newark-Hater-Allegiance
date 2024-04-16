@@ -143,6 +143,26 @@
   }
 }
 
+.fiery-red {
+  animation: fiery-red 2.5s linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes fiery-red {
+  100%,0% {
+    color: rgb(255, 0, 0);
+  }
+  75% {
+    color: rgb(255, 123, 0);
+  }
+  50% {
+    color: rgb(255, 255, 0);
+  }
+  25% {
+    color: rgb(255, 123, 0);
+  }
+}
+
 #textArea-div{
   margin:1rem;
 }
@@ -1575,6 +1595,7 @@ input[type="checkbox"]{
 #contact-header{
   padding:0.5rem;
 }
+
 .help {
   padding: 1.5rem 5rem 1.5rem 5rem;
   font-size: 2rem;
@@ -1653,14 +1674,16 @@ input[type="checkbox"]{
   padding-right: 1rem;
 }
 
-.help-intro, .help-guides, .help-faq, .help-contact, .help-egg {
-  display: none;
-  visibility: hidden;
+#help-intro, #help-guides, #help-faq, #help-contact, #help-patch-notes, #help-egg {
   padding-top: 1rem;
 }
 
-#guide-item, #guide-text, .help-faq {
+#guide-item, #guide-text, #help-faq, #help-patch-notes {
   text-align: left;
+}
+
+#patch-notes-header {
+  text-align: center;
 }
 
 #guide-title {
@@ -1712,7 +1735,12 @@ input[type="checkbox"]{
   margin-bottom:1rem;
 }
 
-#focus {
+.hide {
+  display: none;
+  visibility: hidden;
+}
+
+.unhide {
   display: block;
   visibility: visible;
 }
