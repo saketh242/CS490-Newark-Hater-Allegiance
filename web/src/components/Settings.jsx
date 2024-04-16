@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGear, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faPenToSquare, faShieldHalved} from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
@@ -42,6 +42,11 @@ const Settings = () => {
 
   const handleDeleteAccount = () => {
     navigate("/deleteAccount")
+    return
+  }
+
+  const handle2FA = () => {
+    navigate("/enable2FA")
     return
   }
 
@@ -228,6 +233,12 @@ const Settings = () => {
               <FontAwesomeIcon icon={faTrash} />
               <p>Delete Account</p>
             </div>
+            {user.emailVerified && 
+            <div className='option-div hover-div' onClick={handle2FA}>
+              <FontAwesomeIcon icon={faShieldHalved} />
+              <p>Enable 2FA</p>
+            </div>}
+            
           </div>
 
           {error && <p className='error-msg error-settings'>{error}</p>}

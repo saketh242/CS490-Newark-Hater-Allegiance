@@ -13,6 +13,7 @@ import Footer from './components/Footer';
 import Signup from './components/Signup';
 import PageNotFound from "./components/PageNotFound"
 import ChangePassword from './components/ChangePassword';
+import Enable2FA from './components/Enable2FA';
 import "./index.css"
 import useAuth from './useAuth';
 // import { useDispatch } from 'react-redux';
@@ -64,6 +65,7 @@ const App = () => {
             <Route path="/deleteAccount" element={user ? <DeleteAccount /> : <Navigate to="/login"/>} />
             <Route path="/forgotPassword" element={!user ? <ForgotPassword/> : <Navigate to = "/"/>}/>
             <Route path="/viewProfile" element={user ? <ViewProfile/>: <Navigate to="/login"/>}/>
+            <Route path="/enable2FA" element={user ? (user.emailVerified ? <Enable2FA /> : <VerificationMessage/>): <Navigate to="/login"/>}/>
             <Route path="/*" element={<PageNotFound />} />
           </Routes>
         </div>

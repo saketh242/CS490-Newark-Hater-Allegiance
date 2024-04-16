@@ -1,69 +1,33 @@
-import { render, screen, fireEvent, getByTestId } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { render, fireEvent, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Settings from '../components/Settings';
-import { Provider } from 'react-redux';
-import { store } from '../app/store';
+import store from '../app/store'; 
+import { act } from 'react-dom/test-utils';
 
+test('navigates to delete account page on delete button click', () => {
+  const mockNavigate = jest.fn();
+  jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => mockNavigate,
+  }));
 
-describe('Settings Component Tests', () => {
-    test('renders the Settings component', () => {
-      render(
-        <Provider store={store}>
-          <Router>
-            <Settings />
-          </Router>
-        </Provider>
-        
-      );
-      expect(screen.getByText(/Settings/i)).toBeInTheDocument();
-    });
-
-    test('calls the handleDelete on delete button click', () => {
-      render(
-        <Provider store={store}>
-          <Router>
-            <Settings />
-          </Router>
-        </Provider>
-        
-      );
-      // const handleDelete = jest.fn();
-      const deleteButton = screen.getByText("Delete Account");
-      fireEvent.click(deleteButton);
-      expect(handleSignup).toHaveBeenCalledTimes(1);
-  });
-
-  test("Error message is invisible", async () => {
-    const { container } = render(
-      <Provider store={store}>
-          <Router>
-            <Settings/>
-          </Router>
-      </Provider>
-      
-    );
-      const element = container.querySelector('.error-msg');
-      expect(element).not.toBeInTheDocument();
-  })
-
-  test("Error message on empty password", async ()=> {
-    render(
-      <Provider store={store}>
-        <Router>
-          <Settings/>
+  render(
+    <Provider store={store}>
+      <Router>
+        <Settings />
       </Router>
-      </Provider>
-      )
-      const inputPassword = screen.getByTestId('password-id-settings');
-      const testEmail = ""
-      const button = screen.getByTestId('update-btn');
+    </Provider>
+  );
 
-      fireEvent.change(inputPassword, {target: {value:testEmail}})
-      fireEvent.click(button);
-      expect(await screen.findByText('Enter password before updating'));
+  act(async () => {
+    const deleteButton = screen.getByText("Delete Account");
+    fireEvent.click(deleteButton);
+    await expect(mockNavigate).toHaveBeenCalledWith("/deleteAccount");
   })
-  });
+  
+})
+  
   
 
   

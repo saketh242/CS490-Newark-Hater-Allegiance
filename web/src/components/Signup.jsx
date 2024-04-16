@@ -78,10 +78,10 @@ const Signup = () => {
       await sendEmailVerification(auth.currentUser);
       console.log("Verification email sent");
       const user = userCredential.user;
-      setUser(user);
+      dispatch(setDbUser({ firstName, lastName, email }));
       const idToken = await user.getIdToken();
       await nhaService.postUser(firstName, lastName, email, idToken)
-      dispatch(setDbUser({ firstName, lastName }));
+      
       const msg = () => toast(`Welcome ${firstName} ${lastName}, verify email to continue!`);
       msg()
     } catch (e) {
