@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from 'react-redux';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged,  multiFactor } from 'firebase/auth';
 import { auth } from './firebase'; 
 import nhaService from "./services/nhaService"; 
 import { setUser, setDbUser, setIsLoading } from './features/user/userSlice'; 
@@ -14,6 +14,7 @@ const useAuth = () => {
       dispatch(setIsLoading(true));
 
       if (firebaseUser) {
+
         // extracting only required data because firebase does not like unserilizable data
         const userData = {
           uid: firebaseUser.uid,
@@ -25,6 +26,7 @@ const useAuth = () => {
             creationTime: firebaseUser.metadata.creationTime,
             lastSignInTime: firebaseUser.metadata.lastSignInTime,
           },
+          
         };
 
         try {
