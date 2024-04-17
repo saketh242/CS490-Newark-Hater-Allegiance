@@ -13,9 +13,8 @@ const ViewProfile = () => {
 
   return user && dbUser && (
     <div className="profile-info-div">
-
       <h2 className='view-profile-head'>Profile Details</h2>
-
+      
       <div className='details-view-profile'>
         <div className="gravatarContainer">
           <Gravatar email={user.email} size={225} className='profileAvatar' id="profilePagePic" default="mp" />

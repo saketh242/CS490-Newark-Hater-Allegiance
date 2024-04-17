@@ -27,20 +27,9 @@ const Settings = () => {
   // const [receivedData, setReceivedData] = useState(false)
   // const [triggerEffect, setTriggerEffect] = useState(true)
 
-  const handleChangePassword = () => {
-    navigate("/changePassword")
-    return
-  }
-
-  const handleDeleteAccount = () => {
-    navigate("/deleteAccount")
-    return
-  }
-
-  const handle2FA = () => {
-    navigate("/enable2FA")
-    return
-  }
+  const handleChangePassword = () => {navigate("/changePassword") }
+  const handleDeleteAccount = () => {navigate("/deleteAccount")}
+  const handle2FA = () => {navigate("/enable2FA")}
 
   const handleUpdateprofile = async (e) => {
     e.preventDefault()
@@ -98,7 +87,6 @@ const Settings = () => {
                   setError("Error signing out!")
                   return
                 })
-
 
             }).catch((e) => {
               setError("An error occured when sending the email")
