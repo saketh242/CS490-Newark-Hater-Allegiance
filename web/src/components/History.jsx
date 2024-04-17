@@ -137,7 +137,6 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
   };
 
   useEffect(() => {
-    console.log(originalHistory)
     const sortByDate = (a, b) => {
       return sortOrder === 1 ? a.createdAt.localeCompare(b.createdAt) : b.createdAt.localeCompare(a.createdAt);
     };
@@ -182,6 +181,15 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
     setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}));
   }
 
+  const clearDropdowns = () => {
+    setSortField("");
+    setFilterField("");
+    setSortOrder(-1);
+    setSelectedFilterItem("");
+    setHistoryData(originalHistory);
+    setFilterOptions([]);
+  }
+
   if (showSidebar === false) return (<></>);
 
   return (
@@ -222,7 +230,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
                     </button>
 
                     {/* sort by */}
-                    <select id="sort" onChange={changeSort}>
+                    <select id="sort" onChange={changeSort} value={sortField}>
                       <option value=""> Sort By... </option>
                       <option value="Date"> Date </option>
                       <option value="Source"> Source Language </option>
@@ -230,7 +238,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
                     </select>
 
                     {/* filter by */}
-                    <select id="filter" onChange={changeFilter}>
+                    <select id="filter" onChange={changeFilter} value={filterField}>
                       <option value=""> Filter By... </option>
                       <option value="Date"> Date </option>
                       <option value="Source"> Source Language </option>
@@ -248,7 +256,10 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
                   </div>
 
                   {/* clear all history */}
-                  <button id="clearAll" className="ripple">Clear all history</button>
+                  <button id="clearAll" className="ripple" onClick={() => deleteFromHistory()}> Clear All History </button>
+
+                  {/* clear filter and sort options */}
+                  <button id="clearAll" className="ripple" onClick={() => clearDropdowns()}> Clear Dropdowns </button>
                 </div>
 
                 <div>
