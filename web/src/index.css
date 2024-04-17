@@ -10,17 +10,13 @@
   font-family: sans-serif;
 }
 
-.italics {
-  font-style: italic;
-}
+.italics {font-style: italic;}
 
-#auto-icon {
-  color: #0ac6c0;
-}
+#auto-icon, .settings-div-view:hover, .nha-navbar .nav-rl:hover, .forgot-password:hover, #clearAll:hover,
+.ratingStarStandard, #icon:hover, .starClicked
+{color: #0ac6c0;}
 
-.default-button {
-  border: none;
-}
+.default-button {border: none;}
 
 .default-textarea, .default-input {
   resize: none;
@@ -31,9 +27,7 @@
   border:1pt solid #0ac6c0;
 }
 
-.default-textarea:focus, .default-input:focus {
-  outline: none; 
-}
+.default-textarea:focus, .default-input:focus {outline: none;}
 
 /*SOMETHING COOL IDK*/
 .rainbow {
@@ -163,9 +157,7 @@
   }
 }
 
-#textArea-div{
-  margin:1rem;
-}
+#textArea-div{margin:1rem;}
 
 /*LOADING PAGE*/
 #loading-page {
@@ -181,13 +173,9 @@
 
 /* Navbar Styling */
 
-.nav-name {
-  display: inline-block;
-}
+.nav-name {display: inline-block;}
 
-.dropdown-nav:hover .dropdown-content {
-  display: block;
-}
+.dropdown-nav:hover .dropdown-content {display: block;}
 
 .dropdown-content {
   border-radius: 8px;
@@ -209,9 +197,7 @@
   border-radius: 8px;
 }
 
-.dropdown-content a:hover {
-  background-color: #31304d;
-}
+.dropdown-content a:hover {background-color: #31304d;}
 
 .nha-navbar{
   padding: 10px;
@@ -223,12 +209,7 @@
 .nav-icon {
   width: 2.5rem;
   height: 2.5rem;
-  /* padding-top: 0.5rem; */
   margin: 0;
-}
-
-#navPic {
-  border-radius: 50%;
 }
 
 .nha-navbar .nav-a {
@@ -249,10 +230,6 @@
 .nha-navbar a {
   text-decoration: none;
   color: #9CA6B5;
-}
-
-.nha-navbar .nav-rl:hover {
-  color: #0ac6c0;
 }
 
 .links-flexbox{
@@ -476,13 +453,7 @@
   font-weight:500;
 }
 
-.specificRatingCategory{
-  font-size: 30px;
-}
-
-.ratingStarStandard {
-  color:#0ac6c0;
-}
+.specificRatingCategory{font-size: 30px;}
 
 @media(width<=1020px){
   #overallAverageRating{
@@ -920,9 +891,7 @@ select, button {
   border:1pt solid #0ac6c0;
 }
 
-.inputArea {
-  font-size: 105%;
-}
+.inputArea {font-size: 105%;}
 
 .codeout{
   width: 32rem;
@@ -997,13 +966,7 @@ select, button {
   }
  }
 
-.upload{
-  padding: 1rem;
-}
-
-#icon:hover {
-  color:#0ac6c0;
-}
+.upload{padding: 1rem;}
 
 .conversionArrow {
   display: flex;
@@ -1082,17 +1045,17 @@ select, button {
 }
 
 ::-webkit-scrollbar {
-  width: 10px; /* Width of the scrollbar */
-  height: 10px; /* Height of the scrollbar */
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-thumb{
-  background-color: #0ac6c0; /* Color of the scrollbar thumb */
-  border-radius: 5px; /* Rounded corners */
+  background-color: #0ac6c0;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #23262F; /* Color of the scrollbar track */
+  background-color: #23262F;
 }
 
 @media (width <= 1330px){
@@ -1102,19 +1065,10 @@ select, button {
 }
 
 @media (width <= 900px){
-  .codeBlocks {
-      flex-direction: column;
-    }
+  .codeBlocks {flex-direction: column;}
   
-    /* Adjust margin to move the origin language dropdown to the left */
-    #leftDropdownContainer {
-      margin-right: 3rem;
-    }
-  
-    /* Adjust margin to move the desired language dropdown to the right */
-    #rightDropdownContainer {
-      margin-left: 3rem;
-    }
+    #leftDropdownContainer {margin-right: 3rem;}
+    #rightDropdownContainer {margin-left: 3rem;}
 
     .inputArea, .outputArea {
       height: 400px;
@@ -1124,9 +1078,7 @@ select, button {
   }
   
 @media (width <= 600px){
-  .codeBlocks {
-      flex-direction: column;
-    }
+  .codeBlocks {flex-direction: column;}
 
     .dropdown{
       display: flex;
@@ -1140,9 +1092,7 @@ select, button {
       margin: 0;
     }
 
-    #rightDropdownContainer {
-      margin-top: 2rem;
-    }
+    #rightDropdownContainer {margin-top: 2rem;}
 
     .inputArea, .outputArea {
       width: 300px;
@@ -1175,9 +1125,7 @@ select, button {
 }
 
 @media (width <= 900px) {
-  .footer-box h3 {
-    font-size: 1rem;
-  }
+  .footer-box h3 {font-size: 1rem;}
 }
 
 /* Login Component Styling */
@@ -1202,16 +1150,11 @@ select, button {
   align-items: center;
 }
 
-
 input[type="checkbox"]{
   height: 1rem;
   width: 1.5rem;
   background-color: #5469D4;
   margin-right: 1rem;
-}
-
-.forgot-password:hover {
-  color: #0ac6c0;
 }
 
 .loginTop{
@@ -1439,33 +1382,21 @@ input[type="checkbox"]{
   padding: 0.5rem
 }
 
-.starClicked {
-  color:#0ac6c0;
-}
+.star {color:#9CA6B5;}
 
-.star {
-  color:#9CA6B5;
-}
-
-.starHover {
-  color:#076966;
-
-}
+.starHover {color:#076966;}
 
 .feedback {
   text-align: center;
   margin-top: 1rem;
 }
 
-#rateHeader {
-  margin: 1.5rem;
-}
+#rateHeader {margin: 1.5rem;}
 
 .feedbackButton, .greyedOutButton {
   padding: 0.5rem 1rem;
   height: 5.5rem;
   width: 12rem;
-  /* margin-top: 1rem; */
   border-radius: 1rem;
   border: none;
   cursor: pointer;
@@ -1686,31 +1617,15 @@ input[type="checkbox"]{
   cursor: pointer;
 }
 
-.help-icon {
-  padding-right: 1rem;
-}
-
-#help-intro, #help-guides, #help-faq, #help-contact, #help-patch-notes, #help-egg {
-  padding-top: 1rem;
-}
-
-#guide-item, #guide-text, #help-faq, #help-patch-notes {
-  text-align: left;
-}
-
-#patch-notes-header {
-  text-align: center;
-}
-
-#guide-title {
-  text-align: center;
-}
+.help-icon {padding-right: 1rem;}
+#help-intro, #help-guides, #help-faq, #help-contact, #help-patch-notes, #help-egg {padding-top: 1rem;}
+#guide-item, #guide-text, #help-faq, #help-patch-notes {text-align: left;}
+#patch-notes-header, #guide-title {text-align: center;}
 
 .guide-img {
   --g: 4px;     /* the gap */
   --b: 5px;    /* border thickness*/
   --c: #0ac6c0; /* the color */
-  
   
   padding: calc(var(--g) + var(--b));
   --_c: #0000 0 25%, var(--c) 0 50%;
@@ -1730,26 +1645,18 @@ input[type="checkbox"]{
   --_p: 75%;
 }
 
-#question-list{
-  margin-top:1rem;
-}
+#question-list{margin-top:1rem;}
 
 #question-list li {
   padding-bottom: 2rem;
   list-style-type: none;
 }
 
-#question-list h {
-  font-size: 2.5rem;
-}
+#question-list h {font-size: 2.5rem;}
 
-#question-list p {
-  font-size: 2rem;
-}
+#question-list p {font-size: 2rem;}
 
-#guide-title{
-  margin-bottom:1rem;
-}
+#guide-title{margin-bottom:1rem;}
 
 .hide {
   display: none;
@@ -1804,81 +1711,35 @@ input[type="checkbox"]{
     font-size: 1.5rem;
   }
   
-  .help-header, .help-subtitle {
-    font-size: 2.5rem;
-  }
-
-  .search-icon {
-    font-size: 2rem;
-  }
-  
-  #help-bar {
-    font-size: 0.75rem;
-  }
-  
-  #search-bar {
-    transform: scale(0.8);
-  }
-
-  #question-list h {
-    font-size: 2rem;
-  }
-
-  #question-list p {
-    font-size: 1.5rem;
-  }
-
+  .help-header, .help-subtitle {font-size: 2.5rem;}
+  .search-icon {font-size: 2rem;}
+  #help-bar {font-size: 0.75rem;}
+  #search-bar {transform: scale(0.8);}
+  #question-list h {font-size: 2rem;}
+  #question-list p {font-size: 1.5rem;}
 }
 
 @media (width <= 640px) {
   .help {
     padding-top: 0rem;
     padding: 2rem;
-    /* font-size: 1rem; */
   }
 
-  #guide-div{
-    padding:0.5rem;
-  }
-
-  #instructionHeader, .instructions{
-    font-size:20px;
-  }
+  #guide-div{padding:0.5rem;}
+  #instructionHeader, .instructions{font-size:20px;}
 
   .signup-image{
     width:25rem;
     height:auto;
   }
 
-  /* #help-bar {
-    font-size: 0.5rem;
-  } */
-
-  #help-item{
-    margin:1rem;
-  }
-
-  /* #search-bar {
-    transform: scale(0.6);
-  } */
-
-  #question-list h {
-    font-size: 1rem;
-  }
-
-  /* #question-list p {
-    font-size: 0.75rem;
-  } */
+  #help-item{margin:1rem;}
+  #question-list h {font-size: 1rem;}
 }
 
 @media(width<=650px){
-  .emailError{
-    font-size: small;
-  }
-
-  #contact-form{
-    max-width:100%;
-  }
+  .emailError{font-size: small;}
+  #contact-form{max-width:100%;}
 
   #contact-button {
     padding: 1rem;
@@ -1932,7 +1793,6 @@ input[type="checkbox"]{
   box-shadow: 0 20px 25px -5px #000, 0 8px 10px -6px #000;
 }
 
-
 @media (width <= 900px) {
   .delete-heading{
     font-size: 1.4rem;
@@ -1940,9 +1800,7 @@ input[type="checkbox"]{
     text-align: center;
   }
 
-  .password-change {
-    font-size: 1rem;
-  }
+  .password-change {font-size: 1rem;}
 
   .meme2 {
     width: 75%;
@@ -1950,19 +1808,8 @@ input[type="checkbox"]{
   }
 }
 
-
-
-
-
-
-
-
-
 /* Settings.jsx component Styling */
-
-.error-settings {
-  padding-top: 0;
-}
+.error-settings {padding-top: 0;}
 
 .settings-div {
   display: flex;
@@ -2036,9 +1883,7 @@ input[type="checkbox"]{
   margin: 2rem;
 }
 
-.option-div p{
-  padding-left: 0.5rem;
-}
+.option-div p{padding-left: 0.5rem;}
 
 .options-div {
   display: flex;
@@ -2065,9 +1910,7 @@ input[type="checkbox"]{
     flex-direction: column;
   }
 
-  .name-input-box-settings {
-    width: 97%;
-  }
+  .name-input-box-settings {width: 97%;}
 
   .options-div {
     margin-top: 1rem;
@@ -2081,18 +1924,8 @@ input[type="checkbox"]{
     padding: 0.3rem;
   }
 
-  .settings-email-input{
-    font-size: 1rem;
-  }
-
-  .name-input-box-settings{
-    font-size: 1rem;
-  }
-
-  .settings-head-p {
-    font-size: 1.5rem;
-
-  }
+  .settings-email-input, .name-input-box-settings{font-size: 1rem;}
+  .settings-head-p {font-size: 1.5rem;}
 
   .settings-icon{
     width: 2rem;
@@ -2100,20 +1933,9 @@ input[type="checkbox"]{
     padding-top: 0.7rem;
   }
 
-  .error-msg {
-    font-size: 1.1rem;
-  }
-
-  .edit-profile{
-    font-size: 1.3rem;
-  }
-
-
-
+  .error-msg {font-size: 1.1rem;}
+  .edit-profile{font-size: 1.3rem;}
 }
-
-
-
 
 /* VerificationMessage.jsx styling */
 .verify-email-head{
@@ -2131,7 +1953,6 @@ input[type="checkbox"]{
   justify-content: center;
   align-items: center;
 }
-
 
 /* Forgot password component styling */
 .forgot-head {
@@ -2154,7 +1975,7 @@ input[type="checkbox"]{
   width: 30rem;
 }
 
-.forgot-div {
+.forgot-div, .emptyHistory {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2162,10 +1983,6 @@ input[type="checkbox"]{
 }
 
 .emptyHistory{
-  display:flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   margin:3rem;
   padding:2rem;
 }
@@ -2178,9 +1995,7 @@ input[type="checkbox"]{
   text-align: center;
 }
 
-.link{
-  text-decoration: none;
-}
+.link{text-decoration: none;}
 
 #gravatarNote, #gravatarLink{
   font-size: 14px;
@@ -2188,9 +2003,7 @@ input[type="checkbox"]{
   font-style: italic;
 }
 
-#gravatarNote{
-  margin-top:1rem;
-}
+#gravatarNote{margin-top:1rem;}
 
 #emptyCredit{
   color:#BDC3D0;
@@ -2207,25 +2020,15 @@ input[type="checkbox"]{
   text-decoration: underline;
 }
 
-#emptyText, #emptyPicture{
-  padding:1rem;
-}
+#emptyText, #emptyPicture{padding:1rem;}
 
-.sortAndFilter{
-  padding:0.5rem;
-}
+.sortAndFilter{padding:0.5rem;}
 
 #clearAll{
-  /* background-color: transparent; */
   border-radius: 1rem;
   border:none;
   padding: 0.5rem;
   width:fit-content;
-}
-
-#clearAll:hover{
-  /* background-color:#1A1C23; */
-  color:#0ac6c0;
 }
 
 /* Ripple effect for clearButton*/
@@ -2249,13 +2052,8 @@ input[type="checkbox"]{
   text-align: center
 }
 
-.historyOptions, .historyTop {
-  border-bottom-color: #076966;
-}
-
-.translationHistory{
-  border-bottom-color: #16181e8e;
-}
+.historyOptions, .historyTop {border-bottom-color: #076966;}
+.translationHistory{border-bottom-color: #16181e8e;}
 
 .historyTop{
   display:flex;
@@ -2271,13 +2069,9 @@ input[type="checkbox"]{
   max-width: 90%;
 }
 
-.entrySource, .entryDest{
-  padding:0.5rem;
-}
+.entrySource, .entryDest{padding:0.5rem;}
 
-.translationHistory:hover{
-  background-color:#1A1C23;
-}
+.translationHistory:hover{background-color:#1A1C23;}
 
 .translationHistory{
   display:flex;
@@ -2297,9 +2091,7 @@ input[type="checkbox"]{
   cursor: pointer;
 }
 
-.translationTitle, .historyOptions{
-  padding:1rem;
-}
+.translationTitle, .historyOptions{padding:1rem;}
 
 .historyOptions{
   display:flex;
@@ -2330,25 +2122,13 @@ input[type="checkbox"]{
 .historyOptions button {
   border: none;
   background: none;
-  /* color:#0ac6c0; */
   font-size: larger;
 }
 
-.historyOptions select:hover {
-  border-color: #BDC3D0;
-}
-
-.translationHistory {
-  text-align: center;
-}
-
-.translationHistory h5 {
-  text-decoration: underline;
-}
-
-.translationHistory h4 {
-  padding-top: 1rem;
-}
+.historyOptions select:hover {border-color: #BDC3D0;}
+.translationHistory {text-align: center;}
+.translationHistory h5 {text-decoration: underline;}
+.translationHistory h4 {padding-top: 1rem;}
 
 .translationHistory p {
   word-break: break-word;
@@ -2375,9 +2155,7 @@ input[type="checkbox"]{
   cursor:pointer;
 }
 
-#translateAgain:active {
-  background-color: #076966;
-}
+#translateAgain:active {background-color: #076966;}
 
 .historyEntryOptions {
   display:flex;
@@ -2388,13 +2166,9 @@ input[type="checkbox"]{
   margin:0.5rem;
 }
 
-#translateAgain, #removeEntry{
-  padding:0.5rem;
-}
+#translateAgain, #removeEntry{padding:0.5rem;}
 
-#removeEntry {
-  border-radius: 1rem;
-}
+#removeEntry {border-radius: 1rem;}
 
 #removeEntry{
   border-radius: 0.5px;
@@ -2432,20 +2206,15 @@ input[type="checkbox"]{
     align-items: center;
   }
 
-  #closeHistory{
-    display:none;
-  }
+  #closeHistory{display:none;}
 } 
 
 @media(width<=500px){
-  .translationTitle{
-    font-size: smaller;
-  }
+  .translationTitle{font-size: smaller;}
 }
 
 
 /* View profile page component Styling */
-
 .profile-info-div{
   color: #9CA6B5;
   display: flex;
@@ -2465,13 +2234,8 @@ input[type="checkbox"]{
   padding: 1.5rem;
 }
 
-.profileAvatar {
-  border-radius: 50%;
-}
-
-.gravatarContainer, .profile-info-text,  .profileSegment {
-  padding:1rem;
-}
+.profileAvatar, #navPic {border-radius: 50%;}
+.gravatarContainer, .profile-info-text,  .profileSegment {padding:1rem;}
 
 .gravatarContainer{
   width:205px;
@@ -2489,9 +2253,7 @@ input[type="checkbox"]{
   background-color: #101216be;
 }
 
-.profilePersonalInfo p, .profileAccountInfo p {
-  padding:0.75rem;
-}
+.profilePersonalInfo p, .profileAccountInfo p {padding:0.75rem;}
 
 .details-view-profile{
   display:flex;
@@ -2499,7 +2261,6 @@ input[type="checkbox"]{
   justify-content: center;
   align-items: center;
 }
-
 
 .settings-div-view{
   padding: 0.5rem;
@@ -2512,10 +2273,6 @@ input[type="checkbox"]{
   padding-top: 0.4rem;
   padding-left: 0.5rem;
   font-size: 1.5rem;
-}
-
-.settings-div-view:hover {
-  color: #0ac6c0;
 }
 
 /* Enable2FA component styling */
@@ -2602,17 +2359,11 @@ input[type="checkbox"]{
   align-items: center;
 }
 
-.popupContent{
-  padding:2rem;
-}
+.popupContent{padding:2rem;}
 
-#tfa-header{
-  padding:0.5rem;
-}
+#tfa-header{padding:0.5rem;}
 
-#verificationHeader {
-  font-size: larger;
-}
+#verificationHeader {font-size: larger;}
 
 .modal{
   padding: 0 1rem 0 1rem;
