@@ -287,6 +287,23 @@ describe('API RESPONSES ', () => {
         done();
       });
   });
+  
+  it('GET: should return 200 OK for /feedback/getAverageRatings', (done) => {
+    request(app)
+      .get('/feedback/getAverageRatings')
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.property('totalFeedbackAverage');
+        expect(res.body).to.have.property('averageTranslationRating');
+        expect(res.body).to.have.property('averageUXRating');
+        expect(res.body).to.have.property('count');
+
+        done();
+      });
+  });
 
   it('GET: should return 401 for unauthorized access for /users', (done) => {
     request(app)
