@@ -56,14 +56,8 @@ const getUserId = async (req, res, next) => {
     try {
         const { uid } = req;
         const user = await User.findOne({ uid });
-        res.send(user);
+        res.status(200).send(user);
 
-        // throwing an error here is showing an error on console, so i removed it
-        // now the test is failing we need to edit it
-        // this approach removes the error and also similar to firebase, we will not 
-        // the user know the details of an user with a specific uid
-
-       
     } catch (error) {
         console.error('Error fetching user by uid:', error);
         res.status(500).json({ error: 'An error occured while getting user ID' });
