@@ -32,6 +32,7 @@
     "react-slick": "^0.30.2",
     "react-syntax-highlighter": "^15.5.0",
     "react-toastify": "^10.0.4",
+    "react-verification-input": "^4.1.2",
     "reactjs-popup": "^2.0.6",
     "redux-mock-store": "^1.5.4",
     "web-vitals": "^2.1.4"

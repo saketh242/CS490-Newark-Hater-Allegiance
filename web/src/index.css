@@ -2438,8 +2438,7 @@ input[type="checkbox"]{
 }
 
 .profileAvatar {
-  border-radius: 50%; /* Makes it circular */
-  /* overflow: hidden; */
+  border-radius: 50%;
 }
 
 .gravatarContainer, .profile-info-text,  .profileSegment {
@@ -2534,3 +2533,69 @@ input[type="checkbox"]{
   margin: 1rem 0;
 }
 
+
+/* Verification code input */
+.character {
+  border: none;
+  font-size: 20px;
+  border-radius: 8px;
+  color: #BDC3D0;
+  background-color: #07080a;
+  box-shadow: 0 2px 0 #000;
+}
+
+.otp-container, #already-enabled{padding:2rem;}
+
+.close{
+  font-size:3rem;
+  padding:5px;
+}
+
+.close:hover{
+  color:#0ac6c0;
+  cursor:pointer;
+}
+
+.popup-content {
+  max-width:100%;
+  width:auto !important;
+  margin: auto;
+  background: #1A1C23 !important;
+  border-radius: 10px;
+  padding: 5px;
+  animation: rainbow-border 2.5s linear !important;
+  animation-iteration-count: infinite !important;
+}
+
+.popupContent, #verificationHeader, .popup-content {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.popupContent{
+  padding:2rem;
+}
+
+#tfa-header{
+  padding:0.5rem;
+}
+
+#verificationHeader {
+  font-size: larger;
+}
+
+.modal{
+  padding: 0 1rem 0 1rem;
+  color:#BDC3D0;
+}
+
+#otp-button {
+  display: inline-block;
+  padding: 0.5rem;
+  width: 100%; 
+  font-size: 1.5rem;
+  border-radius: 10px;
+  border: none;
+}
