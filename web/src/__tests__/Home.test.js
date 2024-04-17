@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Home from '../components/Home';
@@ -8,14 +8,15 @@ import { Provider } from 'react-redux';
 
 describe('Home Component Tests', () => {
     test('renders the Home component', () => {
-      render(
-        <Provider store={store}>
-          <Router>
-            <Home />
-          </Router>
-        </Provider>
-      );
- 
+      act( () => {
+        render(
+          <Provider store={store}>
+            <Router>
+              <Home />
+            </Router>
+          </Provider>
+        );
+      });
       expect(screen.getByText(/Easy code translation in seconds!/i)).toBeInTheDocument()
     });
 

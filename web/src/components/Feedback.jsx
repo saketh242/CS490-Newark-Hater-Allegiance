@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, lazy, Suspense } from 'react'
 import Alert from 'react-bootstrap/Alert'
-import StarGroup from "./StarGroup"
 import nhaService from '../services/nhaService'
 import { toast } from 'react-toastify'
 import { auth } from '../firebase'
@@ -9,6 +8,8 @@ import { useSelector } from 'react-redux'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
+
+const StarGroup = lazy( () => import('./StarGroup'))
 
 const Feedback = ({ postId }) => {
     const dbUserFromRedux = useSelector((state) => state.user.dbUser)
@@ -54,14 +55,14 @@ const Feedback = ({ postId }) => {
             <h1 id="rateHeader">Rate this translation! We'd love to hear your feedback!</h1>
             <div className="starGroups">
                 <div className="feedbackStarGroup">
-                    <StarGroup setRating={setTranslation} isSubmitted={isSubmitted} />
+                    <Suspense><StarGroup setRating={setTranslation} isSubmitted={isSubmitted} /></Suspense>
                     <br />
                     <p>Translation Quality</p>
                     <br />
                 </div>
 
                 <div className="feedbackStarGroup">
-                    <StarGroup setRating={setUserExperience} isSubmitted={isSubmitted} />
+                    <Suspense><StarGroup setRating={setUserExperience} isSubmitted={isSubmitted} /></Suspense>
                     <br />
                     <p>User Experience</p>
                 </div>

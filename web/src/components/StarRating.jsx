@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar as solidStar, faStarHalfStroke } from '@fortawesome/free-solid-svg-icons'
 import { faStar as emptyStar } from '@fortawesome/free-regular-svg-icons'
 
-
 const StarRating = ({ averageRating, size, className }) => {
   if(averageRating === 0) return (<></>)
   
@@ -33,11 +32,7 @@ const StarRating = ({ averageRating, size, className }) => {
     return stars
   }
 
-  return (
-    <div className="star-rating">
-      {renderStars()}
-    </div>
-  )
+  return (<div className="star-rating">{renderStars()}</div>)
 }
 
 export default StarRating

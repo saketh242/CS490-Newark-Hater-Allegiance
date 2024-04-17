@@ -12,9 +12,7 @@ const CodeOutput = ({ code, language }) => {
         }
 
     return (
-        <div className="codeOutput">
-            <SyntaxHighlighter language={language} style={customDracula}>{code}</SyntaxHighlighter>
-        </div>
+        <div className="codeOutput"><SyntaxHighlighter language={language} style={customDracula}>{code}</SyntaxHighlighter></div>
     )
 }
 

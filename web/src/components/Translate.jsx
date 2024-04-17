@@ -1,8 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, lazy, Suspense } from 'react'
 import { auth } from '../firebase'
-import Feedback from './Feedback'
-import CodeOutput from './CodeOutput'
-import History from './History'
 import { sanitizeCode } from '../utils/codeUtils'
 import nhaService from '../services/nhaService'
 
@@ -14,6 +11,10 @@ import { ThreeDots } from 'react-loader-spinner'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useSelector } from 'react-redux'
+
+const Feedback = lazy( () => import('./Feedback'))
+const CodeOutput = lazy( () => import('./CodeOutput'))
+const History = lazy( () => import('./History'))
 
 const Translate = () => {
 
@@ -231,6 +232,7 @@ const Translate = () => {
 
   return (
     <div className="translateBody">
+      <Suspense>
       <History
         setTriggerHistory={setTriggerHistory}
         triggerHistory={triggerHistory}
@@ -243,6 +245,7 @@ const Translate = () => {
         setSourceLanguage={setSourceLanguage}
         setDesiredLanguage={setDesiredLanguage}
       />
+      </Suspense>
 
       <div className="apiStatusMessage">
         <h1 className="apiStatus">
@@ -382,13 +385,13 @@ const Translate = () => {
               <span className="dot2">.</span>
               <span className="dot3">.</span>
             </p>}
-            <CodeOutput code={translatedCode} language={desiredLanguage} />
+            <Suspense><CodeOutput code={translatedCode} language={desiredLanguage} /></Suspense>
           </div>
         </div>
       </div>
 
       <div className="feedback">
-        {translationDone && <Feedback postId={postId} />}
+        {translationDone && <Suspense><Feedback postId={postId} /></Suspense>}
       </div>
     </div>
   )

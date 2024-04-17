@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import "react-responsive-carousel/lib/styles/carousel.min.css"
 import { Carousel } from 'react-responsive-carousel'
 import Gravatar from 'react-gravatar'
 import { useSelector } from 'react-redux'
-import StarRating from './StarRating'
 import { selectTotalFeedbackAverage, selectAverageTranslationRating, selectAverageUXRating, selectFetchingRatings, selectCount } from '../features/ratings/ratingsSlice'
+
+import Loading from './Loading'
+// import StarRating from './StarRating'
+const StarRating = lazy(() => import('./StarRating'))
 
 const HomeReviews = () => {
   const { reviews, fetchingReviews } = useSelector((state) => state.reviews)
@@ -22,23 +25,34 @@ const HomeReviews = () => {
           <>
             <div id="overallAverageRating">
               <p id="totalRatingText" data-testid="totalRating">Total Rating: {totalFeedbackAverage} / 5</p>
-              <StarRating averageRating={totalFeedbackAverage} size={"4x"} className={"rainbow"} data-testid="overallStars"></StarRating>
+              <Suspense>
+                <StarRating averageRating={totalFeedbackAverage} size={"4x"} className={"rainbow"} data-testid="overallStars"></StarRating>
+              </Suspense>
               <p id="totalReviews">based off of {count} reviews</p>
             </div>
             <div id="lesserRatings">
               <div id="translationAverageRating">
                 <p className="specificRatingCategory" data-testid="translationQuality">Translation Quality: {averageTranslationRating} / 5</p>
-                <StarRating averageRating={averageTranslationRating} size={"2x"} className={"ratingStarStandard"} data-testid="translationStars"></StarRating>
+                <Suspense>
+                  <StarRating averageRating={averageTranslationRating} size={"2x"} className={"ratingStarStandard"} data-testid="translationStars"></StarRating>
+                </Suspense>
               </div>
               <div id="uxAverageRating">
                 <p className="specificRatingCategory" data-testid="userExperience">User Experience: {averageUXRating} / 5</p>
-                <StarRating averageRating={averageUXRating} size={"2x"} className={"ratingStarStandard"} data-testid="uxStars"></StarRating>
+                <Suspense>
+                  <StarRating averageRating={averageUXRating} size={"2x"} className={"ratingStarStandard"} data-testid="uxStars"></StarRating>
+                </Suspense>
               </div>
             </div>
           </>
         ) : (
           <>
-            <p>Fetching ratings</p>
+            <p className="loadingText" style={{ textAlign: 'center', margin: '2rem', fontSize:'3rem'}}>
+              Fetching ratings
+              <span className="dot1">.</span>
+              <span className="dot2">.</span>
+              <span className="dot3">.</span>
+            </p>
           </>
         )}
       </div>
