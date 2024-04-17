@@ -1,9 +1,9 @@
 import React from 'react'
 
-const LatestPatch = () => {
+const Patch_0_4_1 = () => {
   return (
     <div>
-        <h1 className='help-header fiery-red' id='patch-notes-header'>What's New!</h1>
+        <h1 className='help-header'>v0.4.1</h1>
         <p>Added:</p>
         <ul className='instructions'>
             <li>New Help page</li>
@@ -23,4 +23,4 @@ const LatestPatch = () => {
   )
 }
 
-export default LatestPatch
+export default Patch_0_4_1

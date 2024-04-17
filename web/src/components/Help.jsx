@@ -1,17 +1,15 @@
 import React, { useState, lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCaretRight, faCircleExclamation, faFileLines, faHistory } from '@fortawesome/free-solid-svg-icons'
+import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCaretRight, faCircleExclamation, faFileLines, faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
 import feedback from '../images/feedback.png'
 import pfpImg from '../images/gravatar.png'
 import historyImg from '../images/history.png'
+import * as Patches from '../patchNotes' // REMEMBER TO UPDATE THE INDEX.JS FILE IN THE FOLDER
 
 import nhaService from "../services/nhaService"
 import { toast } from 'react-toastify'
-
-import Loading from './Loading'
-const LatestPatch = lazy( () => import('./LatestPatch'))
 
 const Help = () => {
   const [showBox, setShowBox] = useState(0)
@@ -273,7 +271,12 @@ const Help = () => {
         </div>
 
         {/*Box 4*/}
-        <div id='help-patch-notes' className={showBox === 4 ? 'unhide' : 'hide'}><Suspense fallback={<Loading/>}><LatestPatch /></Suspense></div>
+        <div id='help-patch-notes' className={showBox === 4 ? 'unhide' : 'hide'}>
+          {/*DO NOT USE LATESTPATCH*/}
+          <h1 className='help-header fiery-red'>Latest Patch</h1>
+          <Patches.Patch_0_4_2 />
+          <Patches.Patch_0_4_1 />
+        </div>
 
         {/*Box Egg*/}
         <div id='help-egg' className={showBox === -1 ? 'unhide' : 'hide'}>
