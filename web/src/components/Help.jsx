@@ -142,7 +142,7 @@ const Help = () => {
                 <li>Refresh the page and you should be let into the translator!</li>
               </ul>
               <div className='signup'>
-                <img className='signup-image guide-img' src={sample} alt="signup" />
+                <img className='signup-image guide-img' src={sample} alt="signup" loading="lazy" />
               </div>
             </div>
           </div> : null}
@@ -159,7 +159,7 @@ const Help = () => {
               </ul>
               <div className='signup'>
 
-                <img className='signup-image guide-img' src={sample} alt="signup" />
+                <img className='signup-image guide-img' src={sample} alt="signup" loading="lazy"/>
               </div>
             </div>
           </div> : null}
@@ -176,7 +176,7 @@ const Help = () => {
                 <li>We also store ratings</li>
               </ul>
               <div className='signup'>
-                <img className='signup-image guide-img' src={feedback} alt="feedback" />
+                <img className='signup-image guide-img' src={feedback} alt="feedback" loading="lazy" />
               </div>
             </div>
           </div> : null}
@@ -192,7 +192,7 @@ const Help = () => {
               </ul>
             </div>
             <div className='signup'>
-              <img className='signup-image guide-img' src={pfpImg} alt="Gravatar Profile Example" />
+              <img className='signup-image guide-img' src={pfpImg} alt="Gravatar Profile Example" loading="lazy"/>
             </div>
           </div> : null}
           {/*HISTORY GUIDE*/}
@@ -210,7 +210,7 @@ const Help = () => {
               </ul>
             </div>
             <div className='signup'>
-              <img className='signup-image guide-img' id='history-img' src={historyImg} alt="History Bar Example" />
+              <img className='signup-image guide-img' id='history-img' src={historyImg} alt="History Bar Example" loading="lazy"/>
             </div>
           </div> : null}
         </div> {/*END GUIDES DIV*/}
