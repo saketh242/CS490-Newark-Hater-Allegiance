@@ -1751,10 +1751,6 @@ input[type="checkbox"]{
   margin-bottom:1rem;
 }
 
-#guide-title{
-  margin-bottom:1rem;
-}
-
 .hide {
   display: none;
   visibility: hidden;
