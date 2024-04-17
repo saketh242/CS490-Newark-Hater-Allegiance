@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 
 const HomeReviews = lazy( () => import('./HomeReviews'))
 const Developers = lazy( () => import('./Developers'))
+const LatestPatch = lazy( () => import('./LatestPatch'))
 
 const Home = () => {
   const user = useSelector((state) => state.user.user)
@@ -50,6 +51,7 @@ const Home = () => {
 
       <Suspense><HomeReviews /></Suspense>
       <Suspense><Developers /></Suspense>
+      <div className='box' id='patch-notes'><Suspense><LatestPatch /></Suspense></div>
     </div>
   )
 }

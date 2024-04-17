@@ -162,6 +162,30 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortOrder, sortField])
 
+  const deleteFromHistory = async (i = null) => {
+    if (i === null) {
+      await nhaService.deleteHistory(user, dbUserRedux)
+      setOriginalHistory([])
+      setHistoryData([])
+      return;
+    }
+
+    var deleteId = history[i]._id;
+    await nhaService.deleteHistory(user, dbUserRedux, deleteId)
+    
+    setOriginalHistory(originalHistory.filter((yeet) => {return yeet._id !==  deleteId}))
+    setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}))
+  }
+
+  const clearDropdowns = () => {
+    setSortField("");
+    setFilterField("");
+    setSortOrder(-1);
+    setSelectedFilterItem("");
+    setHistoryData(originalHistory);
+    setFilterOptions([]);
+  }
+
   if (showSidebar === false) return (<></>)
   return (
     <>
@@ -183,7 +207,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
           </div>
         ) : (
           <>
-            {history.length === 0 ? (
+            {history.length === 0 && originalHistory.length === 0 ? (
               <div className="emptyHistory">
                 <img id="emptyPicture" src={emptybox} alt="History empty" style={{ width: '70%', height: '70%' }} loading="lazy" />
                 <a href="https://www.freepik.com/icons/empty" target="_blank" rel="noopener noreferrer" className="link" id="emptyCredit">Icon by Ghozi Muhtarom</a>
@@ -199,20 +223,22 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
                     </button>
 
                     {/* sort by */}
-                    <select id="sort" onChange={changeSort}>
+                    <select id="sort" onChange={changeSort} value={sortField}>
                       <option value=""> Sort By... </option>
                       <option value="Date"> Date </option>
                       <option value="Source"> Source Language </option>
                       <option value="Destination"> Destination Language </option>
                     </select>
 
-                    <select id="filter" onChange={changeFilter}>
+                    {/* filter by */}
+                    <select id="filter" onChange={changeFilter} value={filterField}>
                       <option value=""> Filter By... </option>
                       <option value="Date"> Date </option>
                       <option value="Source"> Source Language </option>
                       <option value="Destination"> Destination Language </option>
                     </select>
 
+                    {/* filter options */}
                     <select id="filterOptions" onChange={changeSelectedFilterItem} value={selectedItem}>
                       <option value=""> Select Filter... </option>
                       {filterOptions.map((item, index) => (
@@ -221,7 +247,11 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
                     </select>
                   </div>
 
-                  <button id="clearAll" className="ripple">Clear all history</button>
+                  {/* clear all history */}
+                  <button id="clearAll" className="ripple" onClick={() => deleteFromHistory()}> Clear All History </button>
+
+                  {/* clear filter and sort options */}
+                  <button id="clearAll" className="ripple" onClick={() => clearDropdowns()}> Clear Dropdowns </button>
                 </div>
 
                 <div>
@@ -242,8 +272,10 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
                       </div>
 
                       <div className="historyEntryOptions">
-                        <button data-testid="translateAgain" id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage, history[i].original_code, history[i].converted_code, history[i].Source_language, history[i].Desired_language)}>Translate again</button>
-                        <button id="removeEntry" title="Remove translation"><FontAwesomeIcon id="trashIcon" icon={faTrashCan} size="2x" /></button>
+                        <button data-testid="translateAgain" id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage, history[i].original_code, history[i].converted_code, history[i].Source_language, history[i].Desired_language)}> Translate again </button>
+                        <button id="removeEntry" title="Remove translation">
+                          <FontAwesomeIcon id="trashIcon" icon={faTrashCan} size="2x" onClick={() => deleteFromHistory(i)} />
+                        </button>
                       </div>
                     </div>
                   ))}

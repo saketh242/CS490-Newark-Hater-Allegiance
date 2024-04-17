@@ -1,23 +1,45 @@
-import { useState } from "react"
-import Popup from 'reactjs-popup'
+import React, { useState, useMemo } from 'react';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import VerificationInput from "react-verification-input";
+import { toast } from 'react-toastify';
 
-const ControlledCodePopup = ({ open, setOpen}) => {
-  const [code, setCode] = useState("");
-
-  const closeModal = () => setOpen(false);
+const ControlledCodePopup = () => {
+  const [open, setOpen] = useState(false);
+  const [code, setCode] = useState('');
 
   const handleSubmit = () => {
-    closeModal();
+    toast("Success!")
+    closeModal()
   }
 
+  const closeModal = () => setOpen(false);
   return (
     <div>
-      <Popup open={open} onClose={closeModal} >
+      <button type="button" className="button" onClick={() => setOpen(o => !o)}>
+        Login
+      </button>
+      <Popup open={open} closeOnDocumentClick onClose={closeModal}>
         <div className="modal">
-          <a className="close" onClick={closeModal}> &times; </a>
-          <p>Enter Verification Code</p>
-          <input type="text" value={code} onChange={(e) => setCode(e.target.value)}/>
-          <button onClick={handleSubmit}>Submit Code</button>
+          <a className="close" onClick={closeModal}>
+            &times;
+          </a>
+          <div className="popupContent">
+          <div id="verificationHeader">
+            <h1 id="tfa-header">Two-Factor authentication</h1>
+            <p>Enter the code that was sent to</p>
+            <p>xxx-xxx-xxxx</p>
+          </div>
+          <VerificationInput validChars='0-9' onChange={(code) => setCode(code)}
+            classNames={{
+              container: "otp-container",
+              character: "character",
+              characterInactive: "character--inactive",
+              characterSelected: "character--selected",
+              characterFilled: "character--filled",
+            }} />
+          <button className="default-button" id="otp-button" onClick={handleSubmit}>Done</button>
+          </div>
         </div>
       </Popup>
     </div>
