@@ -1,19 +1,19 @@
-import React from 'react';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from 'react-responsive-carousel';
+import React from 'react'
+import "react-responsive-carousel/lib/styles/carousel.min.css"
+import { Carousel } from 'react-responsive-carousel'
 import Gravatar from 'react-gravatar'
-import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux'
 import StarRating from './StarRating'
 import { selectTotalFeedbackAverage, selectAverageTranslationRating, selectAverageUXRating, selectFetchingRatings, selectCount } from '../features/ratings/ratingsSlice'
 
 const HomeReviews = () => {
-  const { reviews, fetchingReviews } = useSelector((state) => state.reviews);
+  const { reviews, fetchingReviews } = useSelector((state) => state.reviews)
 
-  const totalFeedbackAverage = useSelector(selectTotalFeedbackAverage);
-  const averageTranslationRating = useSelector(selectAverageTranslationRating);
-  const averageUXRating = useSelector(selectAverageUXRating);
-  const fetchingRatings = useSelector(selectFetchingRatings);
-  const count = useSelector(selectCount);
+  const totalFeedbackAverage = useSelector(selectTotalFeedbackAverage)
+  const averageTranslationRating = useSelector(selectAverageTranslationRating)
+  const averageUXRating = useSelector(selectAverageUXRating)
+  const fetchingRatings = useSelector(selectFetchingRatings)
+  const count = useSelector(selectCount)
 
   return (
     <div>
@@ -46,17 +46,15 @@ const HomeReviews = () => {
       <div className='box reviews' id="reviewContainer">
         <p id="reviewHeader" className="sectionHeader">Some of our reviews</p>
         <div className="reviews-flexbox">
-          {(reviews.length !== 0  && !fetchingReviews) ? (
+          {(reviews.length !== 0 && !fetchingReviews) ? (
             <Carousel className="homeCarousel" infiniteLoop showStatus={false} showThumbs={false}>
               {reviews.map((review, index) => (
                 <div className="review" key={index}>
                   <p>{`⭐⭐⭐⭐⭐`}</p>
                   <p>{`${review.textMessage}`}</p>
                   <div id="reviewUserDetails">
-
                     <Gravatar id="homereviewerIcon" alt="Gravatar for reviewer" size={500} default="mp" email={review.user.email} />
                     <p>{`${review.user.firstName} ${review.user.lastName}`}</p>
-
                   </div>
                 </div>
               ))}
@@ -72,7 +70,7 @@ const HomeReviews = () => {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default HomeReviews;
+export default HomeReviews

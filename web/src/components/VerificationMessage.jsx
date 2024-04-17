@@ -1,16 +1,13 @@
-import { auth } from "../firebase";
-import { sendEmailVerification } from "firebase/auth";
-import { toast } from 'react-toastify';
-
+import { auth } from "../firebase"
+import { sendEmailVerification } from "firebase/auth"
+import { toast } from 'react-toastify'
 
 const VerificationMessage = () => {
-
-  const user = auth.currentUser;
+  const user = auth.currentUser
 
   const handleSendVerification = async () => {
-    await sendEmailVerification(auth.currentUser);
-    const msg = () => toast(`Verification email sent`);
-    msg()
+    await sendEmailVerification(auth.currentUser)
+    toast(`Verification email sent`)
   }
 
   return (

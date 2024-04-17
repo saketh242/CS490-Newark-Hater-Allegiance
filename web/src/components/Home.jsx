@@ -1,22 +1,18 @@
 import { React, lazy, Suspense} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRobot, faBoltLightning, faUser, faCode} from '@fortawesome/free-solid-svg-icons'
-// import sample from '../images/sample.png'
-// import Gravatar from 'react-gravatar'
 import { useSelector } from 'react-redux';
 
-// import HomeReviews from './HomeReviews';
-// import Developers from './Developers'
 const HomeReviews = lazy( () => import('./HomeReviews'))
 const Developers = lazy( () => import('./Developers'))
 
 const Home = () => {
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.user)
   const navigate = useNavigate()
   const handleHomeBtn = () => {
-    if (!user) navigate('/signup');
-    else navigate('/translate');
+    if (!user) navigate('/signup')
+    else navigate('/translate')
   }
 
   return (

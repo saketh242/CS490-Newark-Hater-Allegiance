@@ -1,42 +1,27 @@
-import { useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { createUserWithEmailAndPassword, setPersistence, browserSessionPersistence, sendEmailVerification, updateProfile } from 'firebase/auth';
-import { isValidEmail, isValidPassword, isValidName } from "../utils/fieldValidations";
-import { auth } from '../firebase';
-import { toast } from 'react-toastify';
-import useAuth from "../useAuth";
-import nhaService from '../services/nhaService';
-import { useDispatch } from 'react-redux';
-import { setUser, setDbUser } from '../features/user/userSlice';
+import { useState } from "react"
+import { Link } from "react-router-dom"
+import { createUserWithEmailAndPassword, setPersistence, browserSessionPersistence, sendEmailVerification, updateProfile } from 'firebase/auth'
+import { isValidEmail, isValidPassword, isValidName } from "../utils/fieldValidations"
+import { auth } from '../firebase'
+import { toast } from 'react-toastify'
+import nhaService from '../services/nhaService'
+import { useDispatch } from 'react-redux'
+import { setDbUser } from '../features/user/userSlice'
 
 const Signup = () => {
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [user, setUser] = useState(auth.currentUser);
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [password2, setPassword2] = useState("")
   const [error, setError] = useState(null)
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(false)
 
-  // we dont need this i navigated in the route :)
-  // useEffect(() => {
-  //   // If user is already logged in, navigate to the home page
-  //   if (user) {
-  //     navigate("/");
-  //   }
-  // }, [user, navigate]);
-
-
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  }
+  const handleCheckboxChange = () => { setIsChecked(!isChecked) }
 
   const handleSignup = async (e) => {
-
     e.preventDefault();
 
     if (firstName === "" || lastName === "" || email === "" || password === "" || password2 === "") {
@@ -54,7 +39,7 @@ const Signup = () => {
       return
     }
 
-    else if (password != password2) {
+    else if (password !== password2) {
       setError("Passwords are different!")
       return
     }
@@ -65,25 +50,17 @@ const Signup = () => {
     }
 
     try {
-      // setting persistence here
-      if (!isChecked) {
-        await setPersistence(auth, browserSessionPersistence);
-      }
+      if (!isChecked) await setPersistence(auth, browserSessionPersistence)
 
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-      updateProfile(userCredential.user, {
-        displayName: `${firstName} ${lastName}`
-      })
-      // Send verification email to the new email address
-      await sendEmailVerification(auth.currentUser);
-      console.log("Verification email sent");
-      const user = userCredential.user;
-      dispatch(setDbUser({ firstName, lastName, email }));
-      const idToken = await user.getIdToken();
+      updateProfile(userCredential.user, { displayName: `${firstName} ${lastName}` })
+      await sendEmailVerification(auth.currentUser)
+      const user = userCredential.user
+      dispatch(setDbUser({ firstName, lastName, email }))
+      const idToken = await user.getIdToken()
       await nhaService.postUser(firstName, lastName, email, idToken)
-      
-      const msg = () => toast(`Welcome ${firstName} ${lastName}, verify email to continue!`);
-      msg()
+
+      toast(`Welcome ${firstName} ${lastName}, verify email to continue!`)
     } catch (e) {
       if (e.message === "Firebase: Error (auth/email-already-in-use).") {
         setError("Email address already registered!")
@@ -175,7 +152,7 @@ const Signup = () => {
               transition: 'border-color 0.3s ease',
             }}
           />
-          <p className='check-box-p'>Remember Me? <input
+          <p className='check-box-p'>Remember Me?<input
             type="checkbox"
             id="myCheckbox"
             checked={isChecked}
@@ -184,13 +161,9 @@ const Signup = () => {
           <button type="submit" className='login-btn' onClick={handleSignup}>Signup</button>
           <div className='signup-msg'>
             <p>Already have an account?</p>
-            <Link to="/login">
-              Login
-            </Link>
+            <Link to="/login">Login</Link>
           </div>
-
         </div>
-
       </form>
       {error && <p className="error-msg">{error}</p>}
     </div>

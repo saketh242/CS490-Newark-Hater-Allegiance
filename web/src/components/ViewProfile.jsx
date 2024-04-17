@@ -1,21 +1,15 @@
-import useAuth from '../useAuth';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
-import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux'
 
 const ViewProfile = () => {
 
-  const user = useSelector((state) => state.user.user);
-  const dbUser = useSelector((state) => state.user.dbUser);
-  const isLoading = useSelector((state) => state.user.isLoading);
+  const user = useSelector((state) => state.user.user)
+  const dbUser = useSelector((state) => state.user.dbUser)
   const navigate = useNavigate()
-
-  const redirectSettings = () => {
-    navigate("/settings");
-  }
-
+  const redirectSettings = () => navigate("/settings")
 
   return user && dbUser && (
     <div className="profile-info-div">
@@ -26,12 +20,7 @@ const ViewProfile = () => {
         <div className="gravatarContainer">
           <Gravatar email={user.email} size={225} className='profileAvatar' id="profilePagePic" default="mp" />
         </div>
-        {/* <p id="gravatarNote">
-          To add or update your profile picture, please create a <a href="https://gravatar.com/" target="_blank" rel="noopener noreferrer" id="gravatarLink" className="link">gravatar</a> account using the same email as your NHAGPT account.
-        </p> */}
-        <Link to="/help" className='link' id="gravatarNote">
-          Help: How to set a profile picture
-        </Link>
+        <Link to="/help" className='link' id="gravatarNote">Help: How to set a profile picture</Link>
         <div className="profile-info-text">
           <div className="profileSegment">
             <h3>Personal Information</h3>

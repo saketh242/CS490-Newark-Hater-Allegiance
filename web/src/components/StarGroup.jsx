@@ -4,26 +4,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const StarGroup = ({ setRating, isSubmitted }) => {
-  const [clickedId, setClickedId] = useState(-1);
-  
+  const [clickedId, setClickedId] = useState(-1)
+
   useEffect(() => {
-    if (isSubmitted) {
-      setClickedId(-1)
-    }
+    if (isSubmitted) setClickedId(-1)
   }, [isSubmitted])
 
   const handleClick = (id) => {
-    const rating = id + 1;
-    setClickedId(id);
-    setRating(rating);
-  };
+    const rating = id + 1
+    setClickedId(id)
+    setRating(rating)
+  }
 
-  const [hoverId, setHoverId] = useState(-1);
-
-  const setHover = (id) => {
-    setHoverId(id);
-  };
-
+  const [hoverId, setHoverId] = useState(-1)
+  const setHover = (id) => {setHoverId(id)}
   const buttons = ["One", "Two", "Three", "Four", "Five"];
 
   return (
@@ -38,8 +32,8 @@ const StarGroup = ({ setRating, isSubmitted }) => {
             i <= clickedId
               ? "starClicked"
               : i <= hoverId
-              ? "starHover"
-              : "star"
+                ? "starHover"
+                : "star"
           }
           name={buttonLabel}
         >
@@ -52,6 +46,6 @@ const StarGroup = ({ setRating, isSubmitted }) => {
 
 StarGroup.propTypes = {
   setRating: PropTypes.func.isRequired,
-};
+}
 
-export default StarGroup;
+export default StarGroup

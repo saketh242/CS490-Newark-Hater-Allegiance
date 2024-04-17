@@ -1,5 +1,5 @@
-import { useState, useEffect, useSyncExternalStore, useRef } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   signInWithEmailAndPassword,
   setPersistence,
@@ -8,126 +8,108 @@ import {
   PhoneAuthProvider,
   PhoneMultiFactorGenerator,
   RecaptchaVerifier
-} from 'firebase/auth';
-import { auth } from "../firebase";
-import { toast } from 'react-toastify';
-
-import { isValidEmail, isValidPassword } from '../utils/fieldValidations';
-
-import nhaService from '../services/nhaService';
+} from 'firebase/auth'
+import { auth } from "../firebase"
+import { isValidEmail } from '../utils/fieldValidations'
 
 const Login = () => {
 
-  const recaptchaVerifierRef = useRef(null);
+  const recaptchaVerifierRef = useRef(null)
   useEffect(() => {
     // Initialize the RecaptchaVerifier instance
     if (!recaptchaVerifierRef.current) {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible'
-      }, auth);
+      }, auth)
       recaptchaVerifierRef.current.render().then(function (widgetId) {
-        window.recaptchaWidgetId = widgetId;
+        window.recaptchaWidgetId = widgetId
       });
     }
   }, []);
 
-  const [verificationCode, setVerificationCode] = useState("");
-  const [mfaCase, setMfaCase] = useState(false);
-  const [verificationId, setVerificationId] = useState(null);
-  const [resolver, setResolver] = useState(null);
+  const [verificationCode, setVerificationCode] = useState("")
+  const [mfaCase, setMfaCase] = useState(false)
+  const [verificationId, setVerificationId] = useState(null)
+  const [resolver, setResolver] = useState(null)
 
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState(null)
+  const [isChecked, setIsChecked] = useState(false)
 
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  }
-
-  const handleForgot = () => {
-    navigate("/forgotPassword");
-  }
+  const handleCheckboxChange = () => { setIsChecked(!isChecked) }
+  const handleForgot = () => { navigate("/forgotPassword") }
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!email || !password) {
-      setError("Please fill all the fields");
-      return;
+      setError("Please fill all the fields")
+      return
     }
     if (!isValidEmail(email)) {
-      setError("Please enter a valid email!");
-      return;
+      setError("Please enter a valid email!")
+      return
     }
 
     try {
-      if (!isChecked) {
-        await setPersistence(auth, browserSessionPersistence);
-      }
+      if (!isChecked) await setPersistence(auth, browserSessionPersistence)
 
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log(`Welcome ${userCredential.user.displayName}`);
-      navigate("/");
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      console.log(`Welcome ${userCredential.user.displayName}`)
+      navigate("/")
     } catch (err) {
-      console.error(err.code);
-      handleAuthErrors(err);
+      console.error(err.code)
+      handleAuthErrors(err)
     }
   };
 
   const handleAuthErrors = async (err) => {
     switch (err.code) {
       case "auth/invalid-login-credentials":
-        setError("Invalid Credentials");
-        break;
+        setError("Invalid Credentials")
+        break
       case "auth/multi-factor-auth-required":
-        handleMultiFactorAuth(err);
-        break;
+        handleMultiFactorAuth(err)
+        break
       default:
-        setError("Login failed. Try again");
-    }
-  };
-
-  const handle2FALogin = async () => {
-    try {
-      const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
-      const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
-      await resolver.resolveSignIn(multiFactorAssertion);
-      navigate("/");
-    } catch (e) {
-      if (window.recaptchaVerifier) window.recaptchaVerifier.reset();
-
-
-      if (e.code === "auth/invalid-verification-code") {
-        setError("Invalid Code! Try entering it again.");
-      } else if (e.code === "auth/code-expired") {
-        setError("Code Expired. Please request a new code or reload the page.");
-
-      } else {
-        setError("Error validating code! Try Again!");
-      }
-      console.error("Error during 2FA:", e);
+        setError("Login failed. Try again")
     }
   }
 
+  const handle2FALogin = async () => {
+    try {
+      const cred = PhoneAuthProvider.credential(verificationId, verificationCode)
+      const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred)
+      await resolver.resolveSignIn(multiFactorAssertion)
+      navigate("/")
+    } catch (e) {
+      if (window.recaptchaVerifier) window.recaptchaVerifier.reset()
+
+
+      if (e.code === "auth/invalid-verification-code") setError("Invalid Code! Try entering it again.")
+      else if (e.code === "auth/code-expired") setError("Code Expired. Please request a new code or reload the page.")
+      else setError("Error validating code! Try Again!")
+      console.error("Error during 2FA:", e)
+    }
+  }
 
   const handleMultiFactorAuth = async (err) => {
     const resolverVar = getMultiFactorResolver(auth, err);
-    // removing the if check because sms is the only 2fa we have right now
     const phoneAuthProvider = new PhoneAuthProvider(auth);
     try {
       const verificationIdVar = await phoneAuthProvider.verifyPhoneNumber({
         multiFactorHint: resolverVar.hints[0],
         session: resolverVar.session
-      }, recaptchaVerifierRef.current);
-      setResolver(resolverVar);
-      setVerificationId(verificationIdVar);
-      setMfaCase(true);
+      }, recaptchaVerifierRef.current)
+      setResolver(resolverVar)
+      setVerificationId(verificationIdVar)
+      setMfaCase(true)
 
     } catch (error) {
-      console.error("2FA error:", error);
-      setError("Failed to complete multi-factor authentication.");
+      console.error("2FA error:", error)
+      setError("Failed to complete multi-factor authentication.")
     }
 
   };
@@ -135,8 +117,6 @@ const Login = () => {
   return (
     <div className='login-content'>
       <div id="recaptcha-container-id"></div>
-
-
       {!mfaCase ?
         (
           <>
@@ -150,8 +130,8 @@ const Login = () => {
                   type="email"
                   value={email}
                   onChange={(e) => {
-                    setEmail(e.target.value);
-                    setError(null);
+                    setEmail(e.target.value)
+                    setError(null)
                   }}
                   placeholder="Email"
                   autoComplete='off'
@@ -162,8 +142,8 @@ const Login = () => {
                   type="password"
                   value={password}
                   onChange={(e) => {
-                    setPassword(e.target.value);
-                    setError(null);
+                    setPassword(e.target.value)
+                    setError(null)
                   }}
                   placeholder="Password"
                   autoComplete='off'
@@ -190,8 +170,8 @@ const Login = () => {
               type="text"
               value={verificationCode}
               onChange={(e) => {
-                setVerificationCode(e.target.value);
-                setError(null);
+                setVerificationCode(e.target.value)
+                setError(null)
               }}
               placeholder="123456"
               autoComplete='off'
@@ -202,10 +182,7 @@ const Login = () => {
           </>
         )}
     </div>
-   
+  )
+}
 
-    
-
-)}
-
-export default Login;
+export default Login

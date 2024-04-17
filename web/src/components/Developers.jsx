@@ -33,7 +33,6 @@ const Developers = () => {
           </div>
         </div>
         
-        {/*FUNNY PLAYTESTERS DIV*/}
         {/* <h2 className='rainbow'>Playtested by</h2>
         <div id="devsArea">
           <div className="dev">

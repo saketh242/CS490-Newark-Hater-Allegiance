@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-// import { Container } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCaretRight, faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCaretRight, faCircleExclamation, faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
 import feedback from '../images/feedback.png'
 import pfpImg from '../images/gravatar.png'
@@ -10,8 +9,6 @@ import historyImg from '../images/history.png'
 
 import nhaService from "../services/nhaService";
 import { toast } from 'react-toastify';
-
-import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons';
 
 const Help = () => {
   const [showBox, setShowBox] = useState(0);
@@ -26,39 +23,32 @@ const Help = () => {
 
   const handleContactEmail = async (e) => {
     e.preventDefault();
-    setEmailError(''); //reset email error
+    setEmailError('')
     if (name === '' || email === '' || message === '') {
-      setEmailError("Please fill out all fields.");
-      return;
+      setEmailError("Please fill out all fields.")
+      return
     }
     else {
       try {
         const res = await nhaService.emailDev(name, email, message);
-        toast(`Message sent, thank you!`);
-
-        // clear form after submission
-        setName('');
-        setEmail('');
-        setMessage('');
-        document.getElementById("contact-name").value = "";
-        document.getElementById("contact-email").value = "";
-        document.getElementById("contact-text").value = "";
+        toast(`Message sent, thank you!`)
+        setName('')
+        setEmail('')
+        setMessage('')
+        document.getElementById("contact-name").value = ""
+        document.getElementById("contact-email").value = ""
+        document.getElementById("contact-text").value = ""
       }
       catch (error) {
-        setEmailError('Error submitting contact-us form.');
+        setEmailError('Error submitting contact-us form.')
       }
-
     }
   }
 
-  const handleBox = (e) => {
-    setShowBox(e);
-  }
-
-  // let guides = [false, false, false]
+  const handleBox = (e) => { setShowBox(e) }
 
   const handleGuide = (e) => {
-    const update = [...openG];
+    const update = [...openG]
     update[e] = !update[e]
     setOpenG(update)
   };
@@ -92,7 +82,7 @@ const Help = () => {
   ]
 
   const handleOpenQ = (e) => {
-    const update = [...openQ];
+    const update = [...openQ]
     update[e] = !update[e]
     setOpenQ(update)
   };
@@ -101,7 +91,7 @@ const Help = () => {
   const [filteredFaqs, setFilteredFaqs] = useState(faqs)
 
   const handleInputChange = (e) => {
-    const searchTerm = e.target.value;
+    const searchTerm = e.target.value
     setSearchItem(searchTerm)
 
     const filteredItems = faqs.filter((faq) =>
@@ -252,7 +242,6 @@ const Help = () => {
             <div>
               <input className='default-input rainbow-border'
                 id='contact-name' type='text'
-                // placeholder='Your name'
                 name='name'
                 required
                 placeholder={"Your name"}
@@ -291,7 +280,6 @@ const Help = () => {
           </div>
         </div>
 
-
         {/*Box Egg*/}
         <div className='help-egg' id={showBox === 4 ? 'focus' : null}>
           <p>
@@ -304,7 +292,6 @@ const Help = () => {
             The test will begin on the word start. On your mark, get ready, start.
           </p>
         </div>
-
       </div>
     </div>
   )
