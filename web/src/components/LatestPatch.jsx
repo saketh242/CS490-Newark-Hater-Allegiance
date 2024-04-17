@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const LatestPatch = () => {
   return (
@@ -20,7 +20,7 @@ const LatestPatch = () => {
             <li>Getting started section reworked on home page (old one moved to help page)</li>
         </ul>
     </div>
-  );
+  )
 }
 
-export default LatestPatch;
+export default LatestPatch

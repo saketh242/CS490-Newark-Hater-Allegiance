@@ -18,7 +18,7 @@ const sideBarStyle = {
 }
 
 const formatDate = (date, includeTime = true) => {
-  const dateObject = new Date(date);
+  const dateObject = new Date(date)
   const options = {
     year: 'numeric',
     month: 'long',
@@ -26,7 +26,7 @@ const formatDate = (date, includeTime = true) => {
     hour: includeTime ? 'numeric' : undefined,
     minute: includeTime ? 'numeric' : undefined,
     timeZoneName: includeTime ? 'short' : undefined
-  };
+  }
   return dateObject.toLocaleDateString('en-US', options)
 }
 
@@ -57,7 +57,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
     setSelectedFilterItem("")
     setFilterField(e.target.value)
     changeFilterOptions(e.target.value)
-  };
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -84,8 +84,8 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
     }
 
     if (triggerHistory) {
-      handleGetAllHistory();
-      setTriggerHistory(false);
+      handleGetAllHistory()
+      setTriggerHistory(false)
     }
   }, [user, dbUserRedux, triggerHistory, setTriggerHistory])
 
@@ -107,9 +107,9 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
       } else if (filter === "Destination") {
         objects.add(element.Desired_language)
       }
-    });
+    })
     setFilterOptions(Array.from(objects))
-  };
+  }
 
   const changeSelectedFilterItem = (e) => {
     const selectedValue = e.target.value
@@ -125,7 +125,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
         } else if (filterField === "Destination") {
           return item.Desired_language === selectedValue
         }
-        return true;
+        return true
       })
       setHistoryData(filteredHistory)
     }
@@ -156,7 +156,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
         sortedHistory.sort(sortByDestination)
       }
 
-      setHistoryData(sortedHistory);
+      setHistoryData(sortedHistory)
     }
     // the line below is because react wants history to be in the dependency array, but that causes infinite re-renders as we set history data above
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -167,10 +167,10 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
       await nhaService.deleteHistory(user, dbUserRedux)
       setOriginalHistory([])
       setHistoryData([])
-      return;
+      return
     }
 
-    var deleteId = history[i]._id;
+    var deleteId = history[i]._id
     await nhaService.deleteHistory(user, dbUserRedux, deleteId)
     
     setOriginalHistory(originalHistory.filter((yeet) => {return yeet._id !==  deleteId}))
@@ -178,12 +178,12 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
   }
 
   const clearDropdowns = () => {
-    setSortField("");
-    setFilterField("");
-    setSortOrder(-1);
-    setSelectedFilterItem("");
-    setHistoryData(originalHistory);
-    setFilterOptions([]);
+    setSortField("")
+    setFilterField("")
+    setSortOrder(-1)
+    setSelectedFilterItem("")
+    setHistoryData(originalHistory)
+    setFilterOptions([])
   }
 
   if (showSidebar === false) return (<></>)

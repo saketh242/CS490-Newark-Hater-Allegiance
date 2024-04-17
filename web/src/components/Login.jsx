@@ -23,9 +23,9 @@ const Login = () => {
       }, auth)
       recaptchaVerifierRef.current.render().then(function (widgetId) {
         window.recaptchaWidgetId = widgetId
-      });
+      })
     }
-  }, []);
+  }, [])
 
   const [verificationCode, setVerificationCode] = useState("")
   const [mfaCase, setMfaCase] = useState(false)
@@ -63,7 +63,7 @@ const Login = () => {
       console.error(err.code)
       handleAuthErrors(err)
     }
-  };
+  }
 
   const handleAuthErrors = async (err) => {
     switch (err.code) {
@@ -96,8 +96,8 @@ const Login = () => {
   }
 
   const handleMultiFactorAuth = async (err) => {
-    const resolverVar = getMultiFactorResolver(auth, err);
-    const phoneAuthProvider = new PhoneAuthProvider(auth);
+    const resolverVar = getMultiFactorResolver(auth, err)
+    const phoneAuthProvider = new PhoneAuthProvider(auth)
     try {
       const verificationIdVar = await phoneAuthProvider.verifyPhoneNumber({
         multiFactorHint: resolverVar.hints[0],
@@ -112,7 +112,7 @@ const Login = () => {
       setError("Failed to complete multi-factor authentication.")
     }
 
-  };
+  }
 
   return (
     <div className='login-content'>

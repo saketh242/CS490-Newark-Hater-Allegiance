@@ -1,34 +1,34 @@
-import { useState, useEffect, useRef } from "react";
-import { multiFactor, RecaptchaVerifier, PhoneAuthProvider, reauthenticateWithCredential, EmailAuthProvider, PhoneMultiFactorGenerator } from "firebase/auth";
-import { auth } from "../firebase";
+import { useState, useEffect, useRef } from "react"
+import { multiFactor, RecaptchaVerifier, PhoneAuthProvider, reauthenticateWithCredential, EmailAuthProvider, PhoneMultiFactorGenerator } from "firebase/auth"
+import { auth } from "../firebase"
 
 const Enable2FA = () => {
 
-  const recaptchaVerifierRef = useRef(null);
+  const recaptchaVerifierRef = useRef(null)
   useEffect(() => {
     // Initialize the RecaptchaVerifier instance
     if (!recaptchaVerifierRef.current) {
       recaptchaVerifierRef.current = new RecaptchaVerifier('container-recaptcha', {
         'size': 'invisible'
-      }, auth);
+      }, auth)
       recaptchaVerifierRef.current.render().then(function (widgetId) {
-        window.recaptchaWidgetId = widgetId;
-      });
+        window.recaptchaWidgetId = widgetId
+      })
     }
-  }, []);
+  }, [])
 
   const [verificationId, setVerificationId] = useState(null)
   const [phoneNumber, setPhoneNumber] = useState("")
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState("")
   const [recaptchaSolved, setRecaptchaSolved] = useState(false)
   const [error, setError] = useState(null)
   const [password, setPassword] = useState("")
   const user = auth.currentUser
   const enrolledFactors = multiFactor(user).enrolledFactors
 
-  let has2FA;
+  let has2FA
   if (enrolledFactors) {
-    has2FA = enrolledFactors.length > 0;
+    has2FA = enrolledFactors.length > 0
   }
 
   //toast(`Email change initiated, check your inbox and profile updated :)`)
@@ -65,7 +65,7 @@ const Enable2FA = () => {
 
     } catch (e) {
       setError("Error in handle2FA")
-      console.log(e);
+      console.log(e)
       return
     }
   }

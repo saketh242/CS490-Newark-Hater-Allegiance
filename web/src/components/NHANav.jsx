@@ -18,7 +18,7 @@ function NHANav() {
       toast(`Logged out successfully`)
     }).catch((error) => {
       console.log(error)
-    });
+    })
   }
 
   return (

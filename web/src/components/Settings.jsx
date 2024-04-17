@@ -12,20 +12,20 @@ import { setDbUser } from '../features/user/userSlice'
 
 const Settings = () => {
 
-  const user = useSelector((state) => state.user.user);
-  const dbUser = useSelector((state) => state.user.dbUser);
+  const user = useSelector((state) => state.user.user)
+  const dbUser = useSelector((state) => state.user.dbUser)
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const [firstName, setFirstName] = useState(dbUser ? dbUser.firstName : "")
   const [lastName, setLastName] = useState(dbUser ? dbUser.lastName : "")
   const [email, setEmail] = useState(user ? user.email : "")
   const [password, setPassword] = useState("")
   const [error, setError] = useState(null)
-  const [userData, setUserData] = useState(dbUser || {});
-  // const [receivedData, setReceivedData] = useState(false);
-  // const [triggerEffect, setTriggerEffect] = useState(true);
+  const [userData, setUserData] = useState(dbUser || {})
+  // const [receivedData, setReceivedData] = useState(false)
+  // const [triggerEffect, setTriggerEffect] = useState(true)
 
   const handleChangePassword = () => {
     navigate("/changePassword")
@@ -63,11 +63,10 @@ const Settings = () => {
       return
     }
 
-    // field validation done
-    // now reauthenticating the user
-    const firebaseUser = auth.currentUser;
+    // field validation done, now reauthenticating the user
+    const firebaseUser = auth.currentUser
     try {
-      const credential = EmailAuthProvider.credential(user.email, password);
+      const credential = EmailAuthProvider.credential(user.email, password)
       await reauthenticateWithCredential(firebaseUser, credential)
     } catch (e) {
       setError("Invalid Password, try again!")

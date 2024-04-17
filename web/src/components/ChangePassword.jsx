@@ -6,16 +6,16 @@ import { auth } from '../firebase'
 import { toast } from 'react-toastify'
 
 const ChangePassword = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
-    const [currentPassword, setCurrentPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [newPassword2, setNewPassword2] = useState("");
-    const [error, setError] = useState(null);
-    const user = auth.currentUser;
+    const [currentPassword, setCurrentPassword] = useState("")
+    const [newPassword, setNewPassword] = useState("")
+    const [newPassword2, setNewPassword2] = useState("")
+    const [error, setError] = useState(null)
+    const user = auth.currentUser
 
     const handleChangePassword = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         if (currentPassword === "" || newPassword === "" || newPassword2 === ""){
             setError("Fields cannot be empty")
             return 
@@ -38,16 +38,16 @@ const ChangePassword = () => {
         }
 
         try {
-            const credential = EmailAuthProvider.credential(user.email, currentPassword);
+            const credential = EmailAuthProvider.credential(user.email, currentPassword)
             await reauthenticateWithCredential(user, credential)
-            await updatePassword(user, newPassword);
+            await updatePassword(user, newPassword)
             
             signOut(auth).then(() => {
                 toast(`Password changed successfully, login again`)
-                navigate("/login");
+                navigate("/login")
             }).catch((error) => {
               setError('Error updating password.')
-            });
+            })
             
         } catch(e) {
             if (e.message == "Firebase: Error (auth/invalid-credential)."){
@@ -102,7 +102,7 @@ const ChangePassword = () => {
                     value={newPassword2}
                     onChange={(e) => {
                         setNewPassword2(e.target.value)
-                        setError(null);
+                        setError(null)
                     }}
                     placeholder='Retype New Password'
                     autoComplete='off'

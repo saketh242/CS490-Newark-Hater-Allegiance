@@ -2,7 +2,7 @@ import { React, lazy, Suspense} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRobot, faBoltLightning, faUser, faCode} from '@fortawesome/free-solid-svg-icons'
-import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux'
 
 const HomeReviews = lazy( () => import('./HomeReviews'))
 const Developers = lazy( () => import('./Developers'))
@@ -50,8 +50,8 @@ const Home = () => {
       </div>
 
       <Suspense><HomeReviews /></Suspense>
-      <Suspense><Developers /></Suspense>
       <div className='box' id='patch-notes'><Suspense><LatestPatch /></Suspense></div>
+      <Suspense><Developers /></Suspense>
     </div>
   )
 }

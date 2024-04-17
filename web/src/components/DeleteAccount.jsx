@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { reauthenticateWithCredential, EmailAuthProvider, signOut, deleteUser } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom'
+import { reauthenticateWithCredential, EmailAuthProvider, signOut, deleteUser } from 'firebase/auth'
 import { auth } from '../firebase'
 import { toast } from 'react-toastify'
 import nhaService from '../services/nhaService'
@@ -9,7 +9,7 @@ import spongecry from "../memeGifs/crysponge.gif"
 const DeleteAccount = () => {
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
-    const user = auth.currentUser;
+    const user = auth.currentUser
     const navigate = useNavigate()
     const [deleted, setDeleted] = useState(false)
 
@@ -21,16 +21,16 @@ const DeleteAccount = () => {
         }
 
         try {
-            const credential = EmailAuthProvider.credential(user.email, password);
+            const credential = EmailAuthProvider.credential(user.email, password)
             await reauthenticateWithCredential(user, credential)
-            setDeleted(true);
+            setDeleted(true)
             setTimeout(async () => {
-                await nhaService.deleteUser(user);
-                await deleteUser(user);
+                await nhaService.deleteUser(user)
+                await deleteUser(user)
                 console.log("User deleted!")
                 signOut(auth).then(() => {
                     toast(`Account deleted successfully!`)
-                    navigate("/");
+                    navigate("/")
                 }).catch((error) => {
                     console.log(error)
                 })

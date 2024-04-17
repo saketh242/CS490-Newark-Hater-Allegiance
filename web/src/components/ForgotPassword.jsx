@@ -27,7 +27,7 @@ const ForgotPassword = () => {
             .catch((error) => {
                 setError(error.message)
             })
-    };
+    }
 
     return (
         <div className="forgot-div">

@@ -1,37 +1,38 @@
-import React, { useState } from 'react'
+import React, { useState, lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCaretRight, faCircleExclamation, faFileLines, faHistory } from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
 import feedback from '../images/feedback.png'
 import pfpImg from '../images/gravatar.png'
 import historyImg from '../images/history.png'
-import LatestPatch from './LatestPatch';
 
-import nhaService from "../services/nhaService";
-import { toast } from 'react-toastify';
+import nhaService from "../services/nhaService"
+import { toast } from 'react-toastify'
+
+import Loading from './Loading'
+const LatestPatch = lazy( () => import('./LatestPatch'))
 
 const Help = () => {
-  const [showBox, setShowBox] = useState(0);
+  const [showBox, setShowBox] = useState(0)
 
   const [openG, setOpenG] = useState([false, false, false, false, false])
   const [openQ, setOpenQ] = useState([false, false, false, false, false])
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [emailError, setEmailError] = useState('');
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
+  const [emailError, setEmailError] = useState('')
 
   const handleContactEmail = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     setEmailError('')
     if (name === '' || email === '' || message === '') {
       setEmailError("Please fill out all fields.")
       return
-    }
-    else {
+    } else {
       try {
-        const res = await nhaService.emailDev(name, email, message);
+        const res = await nhaService.emailDev(name, email, message)
         toast(`Message sent, thank you!`)
         setName('')
         setEmail('')
@@ -40,9 +41,7 @@ const Help = () => {
         document.getElementById("contact-email").value = ""
         document.getElementById("contact-text").value = ""
       }
-      catch (error) {
-        setEmailError('Error submitting contact-us form.')
-      }
+      catch (error) {setEmailError('Error submitting contact-us form.')}
     }
   }
 
@@ -52,7 +51,7 @@ const Help = () => {
     const update = [...openG]
     update[e] = !update[e]
     setOpenG(update)
-  };
+  }
 
   const faqs = [
     {
@@ -86,7 +85,7 @@ const Help = () => {
     const update = [...openQ]
     update[e] = !update[e]
     setOpenQ(update)
-  };
+  }
 
   const [searchItem, setSearchItem] = useState('')
   const [filteredFaqs, setFilteredFaqs] = useState(faqs)
@@ -97,9 +96,9 @@ const Help = () => {
 
     const filteredItems = faqs.filter((faq) =>
       faq.header.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    )
 
-    setFilteredFaqs(filteredItems);
+    setFilteredFaqs(filteredItems)
   }
 
   return (
@@ -207,7 +206,6 @@ const Help = () => {
           </div> : null}
         </div> {/*END GUIDES DIV*/}
 
-
         {/*Box 2*/}
         <div id='help-faq' className={showBox === 2 ? 'unhide' : 'hide'}>
           <div id='search-bar'>
@@ -226,7 +224,6 @@ const Help = () => {
             </li>)}
           </ul>
         </div>
-
 
         {/*Box 3*/}
         <div id='help-contact' className={showBox === 3 ? 'unhide' : 'hide'}>
@@ -247,11 +244,7 @@ const Help = () => {
                 name='name'
                 required
                 placeholder={"Your name"}
-                onChange={
-                  (e) => {
-                    setName(e.target.value);
-                  }
-                }
+                onChange={(e) => {setName(e.target.value)}}
               />
             </div>
             <div>
@@ -261,10 +254,7 @@ const Help = () => {
                 placeholder='Email'
                 name='email'
                 required
-                onChange={
-                  (e) => {
-                    setEmail(e.target.value)
-                  }
+                onChange={(e) => {setEmail(e.target.value)}
                 } />
             </div>
             <div id="textArea-div">
@@ -283,7 +273,7 @@ const Help = () => {
         </div>
 
         {/*Box 4*/}
-        <div id='help-patch-notes' className={showBox === 4 ? 'unhide' : 'hide'}><LatestPatch /></div>
+        <div id='help-patch-notes' className={showBox === 4 ? 'unhide' : 'hide'}><Suspense fallback={<Loading/>}><LatestPatch /></Suspense></div>
 
         {/*Box Egg*/}
         <div id='help-egg' className={showBox === -1 ? 'unhide' : 'hide'}>

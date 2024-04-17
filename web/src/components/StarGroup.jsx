@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
 
 const StarGroup = ({ setRating, isSubmitted }) => {
   const [clickedId, setClickedId] = useState(-1)
@@ -18,7 +18,7 @@ const StarGroup = ({ setRating, isSubmitted }) => {
 
   const [hoverId, setHoverId] = useState(-1)
   const setHover = (id) => {setHoverId(id)}
-  const buttons = ["One", "Two", "Three", "Four", "Five"];
+  const buttons = ["One", "Two", "Three", "Four", "Five"]
 
   return (
     <>
@@ -41,8 +41,8 @@ const StarGroup = ({ setRating, isSubmitted }) => {
         </button>
       ))}
     </>
-  );
-};
+  )
+}
 
 StarGroup.propTypes = {
   setRating: PropTypes.func.isRequired,
