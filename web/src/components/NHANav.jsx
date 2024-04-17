@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { toast } from 'react-toastify';
 import { auth } from '../firebase';
 import { FaUserCircle } from "react-icons/fa";

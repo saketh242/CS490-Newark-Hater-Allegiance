@@ -70,7 +70,7 @@ const App = () => {
         <Suspense><NHANav /></Suspense>
           <Routes>
             <Route path="/" element={<Suspense fallback={<Loading />}><Home /></Suspense>} />
-            <Route path="/login" element={user ? <Navigate to="/"/> : <Suspense fallback={<div><p>Loading...</p></div>}><Login /></Suspense>} />
+            <Route path="/login" element={user ? <Navigate to="/"/> : <Suspense fallback={<Loading />}><Login /></Suspense>} />
             <Route path="/translate" element={user ? (user.emailVerified ? <Suspense fallback={<Loading />}><Translate /></Suspense> : <Suspense><VerificationMessage /></Suspense>): <Navigate to="/login"/>} />
             <Route path="/help" element={<Suspense fallback={<Loading />}><Help /></Suspense>} />
             <Route path="/signup" element={user ? <Navigate to="/"/> : <Suspense fallback={<Loading />}><Signup /></Suspense>} />
