@@ -85,7 +85,7 @@ const Enable2FA = () => {
       <div id="container-recaptcha"></div>
       {
         has2FA ? 
-        <div id="already-enabled">
+        <div>
             <h2 className="h2-2fa">2Factor Authentication was already enabled on your account</h2>
         </div>
         :
