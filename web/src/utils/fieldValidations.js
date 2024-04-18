@@ -27,3 +27,15 @@ export const isValidPassword = (password) => {
 
 }
 
+export const isValidPhoneNumber = (phoneNumber) => {
+    const regex = /^\+\d{11}$/;
+    return regex.test(phoneNumber);
+}
+
+export const isValidSixDigitCode = (code) => {
+    const regex = /^\d{6}$/;
+    return regex.test(code);
+}
+
+
+

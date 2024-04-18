@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const Feedback = require("../models/Feedback");
 const History = require("../models/History");
+const admin = require("../config/firebase")
 
 const validateUserInput = (firstName, lastName, email, uid) => {
     const nameRegex = /^[a-zA-Z\s]+$/;
@@ -91,4 +92,23 @@ const updateUser = async (req, res, next) => {
     }
 };
 
-module.exports = { getUserId, insertUser, updateUser, deleteUser };
+const disable2FA = async (req, res, next) => {
+    try {
+        const { uid } = req;
+        const userRecord = await admin.auth().updateUser(uid, {
+            multiFactor: {
+                enrolledFactors: null
+            }
+        });
+
+        console.log(userRecord);
+        res.send({ status: 'success', message: '2FA disabled successfully'});
+
+    } catch (error){
+        console.log(error);
+        res.status(500).send({ status: 'error', message: error.message });
+    }
+}
+
+
+module.exports = { getUserId, insertUser, updateUser, deleteUser, disable2FA};

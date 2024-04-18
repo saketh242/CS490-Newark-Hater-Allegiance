@@ -66,7 +66,6 @@ const Login = () => {
       if (!isChecked) {
         await setPersistence(auth, browserSessionPersistence);
       }
-
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log(`Welcome ${userCredential.user.displayName}`);
       navigate("/");
