@@ -2627,3 +2627,78 @@ input[type="checkbox"]{
   border-radius: 10px;
   border: none;
 }
+
+
+/* Enable2FA component styling */
+.div-2fa{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+} 
+
+
+.buttons-2fa{
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+  align-items: center;
+  color:#9CA6B5;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.h2-2fa {
+  color:#9CA6B5;
+  font-size: 1.8rem;
+  font-weight: 400;
+  padding: 2rem;
+}
+
+.enable-2fa-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.phoneNumber-input {
+  background-color: #23262F;
+  padding: 0.5rem;
+  color:#9CA6B5;
+  font-size: 1.3rem;
+  width: 20rem;
+  border: 1pt solid #9CA6B5;
+  border-radius: 5px;
+  margin: 1rem 0;
+}
+
+.code-input {
+  background-color: #23262F;
+  padding: 0.5rem;
+  color:#9CA6B5;
+  font-size: 1.3rem;
+  width: 20rem;
+  border: 1pt solid #9CA6B5;
+  border-radius: 5px;
+  margin: 1rem 0;
+}
+
+.content-2fa{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-2fa{
+  width: 50%;
+}
+
+.disable-2fa-btn:hover{
+  color: #1A1C23;
+  background-color: red;
+}
+
+
+
