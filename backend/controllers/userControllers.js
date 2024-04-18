@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const Feedback = require("../models/Feedback");
 const History = require("../models/History");
+const admin = require("../config/firebase")
 
 const validateUserInput = (firstName, lastName, email, uid) => {
     const nameRegex = /^[a-zA-Z\s]+$/;
@@ -109,4 +110,5 @@ const disable2FA = async (req, res, next) => {
     }
 }
 
-module.exports = { getUserId, insertUser, updateUser, deleteUser, disable2FA };
+
+module.exports = { getUserId, insertUser, updateUser, deleteUser, disable2FA};

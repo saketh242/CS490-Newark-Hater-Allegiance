@@ -2518,49 +2518,6 @@ input[type="checkbox"]{
   color: #0ac6c0;
 }
 
-/* Enable2FA component styling */
-.div-2fa{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-}
-
-.h2-2fa {
-  color:#9CA6B5;
-  font-size: 2rem;
-  font-weight: 500;
-}
-
-.enable-2fa-user {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.phoneNumber-input {
-  background-color: #23262F;
-  padding: 0.5rem;
-  color:#9CA6B5;
-  font-size: 1.3rem;
-  width: 20rem;
-  border: 1pt solid #9CA6B5;
-  border-radius: 5px;
-  margin: 1rem 0;
-}
-
-.code-input {
-  background-color: #23262F;
-  padding: 0.5rem;
-  color:#9CA6B5;
-  font-size: 1.3rem;
-  width: 20rem;
-  border: 1pt solid #9CA6B5;
-  border-radius: 5px;
-  margin: 1rem 0;
-}
-
 /* Verification code input */
 .character {
   border: none;
@@ -2643,7 +2600,7 @@ input[type="checkbox"]{
   padding: 0;
   align-items: center;
   color:#9CA6B5;
-  width: 70%;
+  width: 80%;
   margin: 0 auto;
 }
 
@@ -2651,7 +2608,13 @@ input[type="checkbox"]{
   color:#9CA6B5;
   font-size: 1.8rem;
   font-weight: 400;
-  padding: 2rem;
+  padding: 2rem 2rem 1rem 2rem;
+}
+
+.p-2fa {
+  color:#9CA6B5;
+  font-size: 1.4rem;
+  font-weight: 400; 
 }
 
 .enable-2fa-user {
@@ -2661,16 +2624,17 @@ input[type="checkbox"]{
   justify-content: center;
 }
 
-.phoneNumber-input {
+.password-input-2fa, .phoneNumber-input {
   background-color: #23262F;
   padding: 0.5rem;
   color:#9CA6B5;
   font-size: 1.3rem;
-  width: 20rem;
+  width: 85%;
   border: 1pt solid #9CA6B5;
   border-radius: 5px;
   margin: 1rem 0;
 }
+
 
 .code-input {
   background-color: #23262F;
@@ -2698,6 +2662,12 @@ input[type="checkbox"]{
   color: #1A1C23;
   background-color: red;
 }
+
+.edit-phoneNumber-input{
+  width: 45%;
+}
+
+
 
 
 
