@@ -1,0 +1,20 @@
+import React from 'react'
+
+const Patch_x_x_x = () => {
+  return (
+    <div>
+        <h1 className='help-header'>vx.x.x</h1>
+        <p>Added:</p>
+        <ul className='instructions'>
+            <li>Stuff</li>
+        </ul>
+        <br/>
+        <p>Updated:</p>
+        <ul className='instructions'>
+            <li>Stuff</li>
+        </ul>
+    </div>
+  )
+}
+
+export default Patch_x_x_x
