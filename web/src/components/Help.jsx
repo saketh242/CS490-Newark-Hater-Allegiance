@@ -1,68 +1,68 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-// import { Container } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { Container } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCaretRight, faCircleExclamation, faFileLines } from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
 import feedback from '../images/feedback.png'
 import pfpImg from '../images/gravatar.png'
 import historyImg from '../images/history.png'
-import LatestPatch from './LatestPatch';
+import * as Patches from '../patchNotes' // REMEMBER TO UPDATE THE INDEX.JS FILE IN THE FOLDER
 
-import nhaService from "../services/nhaService";
-import { toast } from 'react-toastify';
+import nhaService from "../services/nhaService"
+import { toast } from 'react-toastify'
 
-import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
 
 const Help = () => {
-  const [showBox, setShowBox] = useState(0);
+  const [showBox, setShowBox] = useState(0)
 
   const [openG, setOpenG] = useState([false, false, false, false, false])
   const [openQ, setOpenQ] = useState([false, false, false, false, false])
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [emailError, setEmailError] = useState('');
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
+  const [emailError, setEmailError] = useState('')
 
   const handleContactEmail = async (e) => {
-    e.preventDefault();
-    setEmailError(''); //reset email error
+    e.preventDefault()
+    setEmailError('') //reset email error
     if (name === '' || email === '' || message === '') {
-      setEmailError("Please fill out all fields.");
-      return;
+      setEmailError("Please fill out all fields.")
+      return
     }
     else {
       try {
-        const res = await nhaService.emailDev(name, email, message);
-        toast(`Message sent, thank you!`);
+        const res = await nhaService.emailDev(name, email, message)
+        toast(`Message sent, thank you!`)
 
         // clear form after submission
-        setName('');
-        setEmail('');
-        setMessage('');
-        document.getElementById("contact-name").value = "";
-        document.getElementById("contact-email").value = "";
-        document.getElementById("contact-text").value = "";
+        setName('')
+        setEmail('')
+        setMessage('')
+        document.getElementById("contact-name").value = ""
+        document.getElementById("contact-email").value = ""
+        document.getElementById("contact-text").value = ""
       }
       catch (error) {
-        setEmailError('Error submitting contact-us form.');
+        setEmailError('Error submitting contact-us form.')
       }
 
     }
   }
 
   const handleBox = (e) => {
-    setShowBox(e);
+    setShowBox(e)
   }
 
   // let guides = [false, false, false]
 
   const handleGuide = (e) => {
-    const update = [...openG];
+    const update = [...openG]
     update[e] = !update[e]
     setOpenG(update)
-  };
+  }
 
   const faqs = [
     {
@@ -93,23 +93,23 @@ const Help = () => {
   ]
 
   const handleOpenQ = (e) => {
-    const update = [...openQ];
+    const update = [...openQ]
     update[e] = !update[e]
     setOpenQ(update)
-  };
+  }
 
   const [searchItem, setSearchItem] = useState('')
   const [filteredFaqs, setFilteredFaqs] = useState(faqs)
 
   const handleInputChange = (e) => {
-    const searchTerm = e.target.value;
+    const searchTerm = e.target.value
     setSearchItem(searchTerm)
 
     const filteredItems = faqs.filter((faq) =>
       faq.header.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    )
 
-    setFilteredFaqs(filteredItems);
+    setFilteredFaqs(filteredItems)
   }
 
   return (
@@ -260,7 +260,7 @@ const Help = () => {
                 placeholder={"Your name"}
                 onChange={
                   (e) => {
-                    setName(e.target.value);
+                    setName(e.target.value)
                   }
                 }
               />
@@ -295,7 +295,10 @@ const Help = () => {
 
         {/*Box 4*/}
         <div id='help-patch-notes' className={showBox === 4 ? 'unhide' : 'hide'}>
-          <LatestPatch />
+          {/*DO NOT USE LATESTPATCH*/}
+          <h1 className='help-header fiery-red'>Latest Patch</h1>
+          <Patches.Patch_0_4_2 />
+          <Patches.Patch_0_4_1 />
         </div>
 
         {/*Box Egg*/}
