@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCaretDown, faCaretRight } from '@fortawesome/free-solid-svg-icons'
 
-const Patch_x_x_x = () => {
+const Patch_0_0_0 = () => {
+  const [open, setOpen] = useState(false)
+
+  const handleOpen = () => {
+    setOpen(!open)
+  }
+
   return (
     <div>
-        <h1 className='help-header'>vx.x.x</h1>
+      <FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={open ? faCaretDown : faCaretRight} />
+      <span className='help-header bold hover' onClick={handleOpen}>v0.0.0</span>
+      {open ? <div>
         <p>Added:</p>
         <ul className='instructions'>
             <li>Stuff</li>
@@ -13,8 +23,9 @@ const Patch_x_x_x = () => {
         <ul className='instructions'>
             <li>Stuff</li>
         </ul>
-    </div>
+      </div> : null}
+  </div>
   )
 }
 
-export default Patch_x_x_x
+export default Patch_0_0_0
