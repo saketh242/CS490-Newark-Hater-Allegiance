@@ -10,8 +10,17 @@
   font-family: sans-serif;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 .italics {
   font-style: italic;
+}
+
+.hover:hover {
+  cursor: pointer;
+  color: #0ac6c0;
 }
 
 #auto-icon {
