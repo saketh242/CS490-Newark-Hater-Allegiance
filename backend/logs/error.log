@@ -247,3 +247,6 @@
 {"level":"error","message":"Error: error fetching user by uid, Cast to ObjectId failed for value \"nonExistentUserId\" (type string) at path \"_id\" for model \"User\", \n        Location: backend/controllers/feedbackControllers.js","timestamp":"2024-04-16T18:58:46.902Z"}
 {"level":"error","message":"Error: Input code does not match specified source language, Input: language mismatch, SourceLanguage: cplusplus, DetectedLanguage: python, DesiredLanguage: java","timestamp":"2024-04-16T18:58:46.967Z"}
 {"level":"error","message":"Error: Input code does not match specified source language, Input: printf(\"Hello World!\"), SourceLanguage: java, DesiredLanguage: c","timestamp":"2024-04-16T18:58:48.849Z"}
+{"level":"error","message":"Error: Input code does not match specified source language, Input: \"System.out.println(\\\"yeet\\\");\", SourceLanguage: csharp, DesiredLanguage: java","timestamp":"2024-04-20T20:00:51.968Z"}
+{"level":"error","message":"Error: Input code does not match specified source language, Input: \"echo \\\"spingus bingus\\\"\", SourceLanguage: php, DesiredLanguage: cplusplus","timestamp":"2024-04-20T20:11:59.454Z"}
+{"level":"error","message":"Error: Input code does not match specified source language, Input: \"echo \\\"spingus bingus\\\"\", SourceLanguage: ruby, DesiredLanguage: cplusplus","timestamp":"2024-04-20T20:12:09.534Z"}

@@ -5,7 +5,11 @@ import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import emptybox from '../images/emptybox.png';
-import nhaService from '../services/nhaService';
+//import nhaService from '../services/nhaService';
+import { selectHistory } from '../features/histories/historiesSlice';
+// import { useSelector, useDispatch } from 'react-redux';
+import useHistoryManagement from '../useHistoryManagement'
+import { useSelector } from 'react-redux';
 
 const sideBarStyle = {
   backgroundColor: "#23262F",
@@ -39,9 +43,10 @@ const loadInputAndTranslatedCode = (setInputCode, setTranslatedCode, setSourceLa
 }
 
 const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSidebar, toggleSidebar, setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage }) => {
-
+  const { reduxHandleDeleteHistory, reduxHandleGetAllHistory } = useHistoryManagement();
+  const originalHistory = useSelector(selectHistory);
   const [width, setWidth] = useState(window.innerWidth);
-  const [originalHistory, setOriginalHistory] = useState(null);
+  // const [originalHistory, setOriginalHistory] = useState(null);
   const [history, setHistoryData] = useState(null);
   const [historyError, setHistoryError] = useState('');
   const [sortOrder, setSortOrder] = useState(-1);
@@ -49,6 +54,11 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
   const [filterField, setFilterField] = useState("");
   const [filterOptions, setFilterOptions] = useState([]);
   const [selectedItem, setSelectedFilterItem] = useState("");
+
+  useEffect(() => {
+    console.log(originalHistory);
+    setHistoryData(originalHistory);
+  }, [originalHistory]);
 
   const changeSort = (e) => {
     setSortField(e.target.value);
@@ -77,19 +87,35 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
       setHistoryError(''); //reset history error before getting
       try {
         // throw new Error("Simulated history error");
-        const fetchedHistory = await nhaService.getAllHistory(user, dbUserRedux);
-        setOriginalHistory(fetchedHistory);
-        setHistoryData(fetchedHistory);
+        
+        // const fetchedHistory = await nhaService.getAllHistory(user, dbUserRedux);
+        // setOriginalHistory(fetchedHistory);
+        // setHistoryData(fetchedHistory);
+        
+        reduxHandleGetAllHistory(user, dbUserRedux);
+        setHistoryData(originalHistory);
+
+        // const fetchedHistory = useSelector(selectHistory);
+        // setOriginalHistory(fetchedHistory);
+        // setHistoryData(fetchedHistory);
+
+        // reduxHandleGetAllHistory(user, dbUserRedux);
+        // setHistoryData(originalHistory);
       } catch (error) {
-        setHistoryError('Unable to retrieve history at this time.');
+        // setHistoryError('Unable to retrieve history at this time.');
+        setHistoryError(error);
       }
     };
 
     if (triggerHistory) {
       handleGetAllHistory();
+      // const state = useSelector(selectHistory);
+      // setOriginalHistory(state);
+      // setHistoryData(state);
       setTriggerHistory(false);
     }
-  }, [user, dbUserRedux, triggerHistory, setTriggerHistory]);
+  }, [user, dbUserRedux, triggerHistory, 
+      setTriggerHistory, reduxHandleGetAllHistory, originalHistory]);
 
   useEffect(() => {
     setSortField("");
@@ -168,16 +194,31 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
 
   const deleteFromHistory = async (i = null) => {
     if (i === null) {
-      await nhaService.deleteHistory(user, dbUserRedux);
-      setOriginalHistory([]);
-      setHistoryData([]);
+      // await nhaService.deleteHistory(user, dbUserRedux);
+      // setOriginalHistory([]);
+      // setHistoryData([]);
+      // return;
+
+      reduxHandleDeleteHistory(user, dbUserRedux);
+      setHistoryData(originalHistory);
       return;
     }
 
-    var deleteId = history[i]._id;
-    await nhaService.deleteHistory(user, dbUserRedux, deleteId);
-    
-    setOriginalHistory(originalHistory.filter((yeet) => {return yeet._id !==  deleteId}));
+      const deleteId = history[i]._id;
+      reduxHandleDeleteHistory(user, dbUserRedux, deleteId);
+
+    // var deleteId = history[i]._id;
+    // await nhaService.deleteHistory(user, dbUserRedux, deleteId);
+    // setOriginalHistory(originalHistory.filter((yeet) => {return yeet._id !==  deleteId}));
+    // setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}));
+
+    // var deleteId = history[i]._id;
+    // dispatch(deleteHistory({ user, dbUserRedux, deleteId }));
+    // setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}));
+
+
+    // setOriginalHistory(useSelector(selectHistory));
+    originalHistory = originalHistory.filter((yeet) => {return yeet._id !==  deleteId});
     setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}));
   }
 

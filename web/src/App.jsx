@@ -28,12 +28,14 @@ import { useSelector } from 'react-redux';
 // import { setReviews, startFetchingReviews, stopFetchingReviews } from './features/reviews/reviewSlice';
 import useFetchReviews from './useFetchReviews';
 import useAverageRatings from './useAverageRatings';
+import useHistoryManagement from '../src/useHistoryManagement';
 import ScrollToTop from './utils/scrollToTop';
 
 const App = () => {
   useAuth();
   useFetchReviews();
   useAverageRatings();
+  useHistoryManagement();
   const user = useSelector((state) => state.user.user);
   const dbUser = useSelector((state) => state.user.dbUser);
   const isLoading = useSelector((state) => state.user.isLoading);
