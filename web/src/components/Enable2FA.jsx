@@ -59,7 +59,7 @@ const Enable2FA = () => {
       // signout user
       signOut(auth).then(() => {
         navigate("/login")
-        const msg = () => toast(`2FA enabled login again :)`);
+        const msg = () => toast(`2FA enabled, please login again`);
         msg();
       }).catch((error) => {
         console.log(error)
@@ -73,7 +73,6 @@ const Enable2FA = () => {
         setError('Error verifying code!')
         return
       }
-
     }
   }
 
@@ -130,7 +129,7 @@ const Enable2FA = () => {
         msg()
         // now logout
         signOut(auth).then(() => {
-          console.log("Signed out successfully")
+          // console.log("Signed out successfully")
           navigate("/login")
         }).catch((error) => {
           console.log(error)
