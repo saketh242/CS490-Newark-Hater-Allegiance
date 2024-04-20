@@ -1907,6 +1907,7 @@ input[type="checkbox"]{
 .delete-heading {
   font-family: "Kanit", sans-serif;
   margin: 1.5rem;
+  padding:1rem;
   color: rgb(200, 0, 0);
   font-size: 2rem;
 }
@@ -2201,7 +2202,7 @@ input[type="checkbox"]{
 }
 
 .link{
-  text-decoration: none;
+  color:#5469D4;
 }
 
 #gravatarNote, #gravatarLink{
@@ -2588,7 +2589,10 @@ input[type="checkbox"]{
   align-items: center;
 }
 
-.popupContent{padding:3rem;}
+.popupContent{
+  padding:3rem;
+  overflow:hidden;
+}
 
 #loginVerify {
   background-color: #23262F;
@@ -2618,6 +2622,15 @@ input[type="checkbox"]{
   border: none;
 }
 
+@media (width<=755px){
+  #tfa-header{
+    font-size: 2rem;
+  }
+  #verificationHeader p {
+    font-size:1rem;
+  }
+}
+
 /* Enable2FA component styling */
 .div-2fa{
   display: flex;
@@ -2639,14 +2652,15 @@ input[type="checkbox"]{
 
 .h2-2fa {
   color:#9CA6B5;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 400;
-  padding: 2rem 2rem 1rem 2rem;
+  padding: 2rem;
 }
 
 .p-2fa {
   color:#9CA6B5;
   font-size: 1.4rem;
+  margin-bottom:1rem;
   font-weight: 400; 
 }
 
