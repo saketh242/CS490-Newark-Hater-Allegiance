@@ -1248,9 +1248,11 @@ input[type="checkbox"]{
 .help-subtitle {
   text-align: center;
   margin-top: 4rem;
+  font-size: 3rem;
 }
 
-.help-header, .help-subtitle {font-size: 3rem;}
+.help-header, .help-subtitle, .help-header2 {font-size: 3rem;}
+.help-header {line-height: 1;}
 
 #help-bar {
   margin-top: 3rem;
@@ -1299,7 +1301,8 @@ input[type="checkbox"]{
 
 #faq-header {font-weight: bold;}
 
-#help-item:hover, #guide-item:hover, #faq-header:hover, #ascdsc, #xIcon:hover, #trashIcon:hover, .hover-div:hover, .close:hover 
+#help-item:hover, #guide-item:hover, #faq-header:hover, #ascdsc, #xIcon:hover, 
+#trashIcon:hover, .hover-div:hover, .close:hover 
 {
   color: #0ac6c0;
   cursor: pointer;
@@ -1390,12 +1393,12 @@ input[type="checkbox"]{
 #getting-started-div{padding-bottom:0;}
 
 @media (width < 1280px) {
-  .help {padding-top: 1rem;}
-  .help-header, .help-subtitle {font-size: 2.5rem;}
   #help-bar {font-size: 0.75rem;}
   #search-bar {transform: scale(0.8);}
   #question-list h, .search-icon {font-size: 2rem;}
   #question-list p, .help {font-size: 1.5rem;}
+  .help {padding-top: 1rem;}
+  .help-header, .help-header2, .help-subtitle {font-size: 2.5rem;}
 }
 
 @media (width <= 640px) {
@@ -1406,14 +1409,14 @@ input[type="checkbox"]{
 
   #guide-div{padding:0.5rem;}
   #instructionHeader, .instructions{font-size:20px;}
+  .help-header, .help-header2, .help-subtitle {font-size: 2rem;}
+  #help-item{margin:1rem;}
+  #question-list h {font-size: 1rem;}
 
   .signup-image{
     width:25rem;
     height:auto;
   }
-
-  #help-item{margin:1rem;}
-  #question-list h {font-size: 1rem;}
 }
 
 @media(width<=650px){
@@ -1424,6 +1427,15 @@ input[type="checkbox"]{
     padding: 1rem;
     font-size: 100%;
     border-radius: 10px;
+  }
+  
+  #help-bar {flex-wrap: wrap;}
+  
+  #help-bar div {
+    display: flex;
+    flex-basis: calc(50% - 100px);
+    box-sizing: border-box;
+    padding: 1rem;
   }
 }
 
@@ -1522,14 +1534,6 @@ input[type="checkbox"]{
   padding-top: 2rem;
   text-align: left;
 }
-
-/* .names-box {
-  padding-top: 1.5rem;
-  width:100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-} */
 
 .button-div-settings {
   display: flex;

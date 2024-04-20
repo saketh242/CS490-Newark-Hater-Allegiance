@@ -1,7 +1,8 @@
 import React, { useState, lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCaretRight, faCircleExclamation, faFileLines, faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
+import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCaretRight, 
+  faCircleExclamation, faFileLines, faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
 import feedback from '../images/feedback.png'
 import pfpImg from '../images/gravatar.png'
@@ -10,6 +11,8 @@ import * as Patches from '../patchNotes' // REMEMBER TO UPDATE THE INDEX.JS FILE
 
 import nhaService from "../services/nhaService"
 import { toast } from 'react-toastify'
+
+import { isValidEmail, isValidName } from '../utils/fieldValidations'
 
 const Help = () => {
   const [showBox, setShowBox] = useState(0)
@@ -28,7 +31,16 @@ const Help = () => {
     if (name === '' || email === '' || message === '') {
       setEmailError("Please fill out all fields.")
       return
-    } else {
+    }
+    if (!isValidEmail(email)){
+      setEmailError("Please enter a valid email!")
+      return
+    }
+    if (!isValidName(name)){
+      setEmailError("Please enter a valid name!")
+      return
+    }
+    else {
       try {
         const res = await nhaService.emailDev(name, email, message)
         toast(`Message sent, thank you!`)
@@ -101,7 +113,7 @@ const Help = () => {
 
   return (
     <div className='standard'>
-      <h1 className="help-subtitle help-header" data-testid="help-header">How can we help?</h1>
+      <h1 className="help-subtitle" data-testid="help-header">How can we help?</h1>
 
       <div id='help-bar'>
         <div id='help-item' onClick={() => handleBox(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='3x' icon={faBook} /><h1 className='icon-txt' id={showBox === 1 ? 'help-active' : null}>Guides</h1></div>
@@ -119,6 +131,7 @@ const Help = () => {
         {/*Box 1*/}
         <div id='help-guides' className={showBox === 1 ? 'unhide' : 'hide'}>
           <h1 className='help-header'>Have a look at these quick and detailed guides!</h1>
+          <br/>
           {/*SIGNING UP GUIDE*/}
           <div id='guide-item' onClick={() => handleGuide(0)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={openG[0] ? faCaretDown : faCaretRight} /><span id={openG[0] ? 'help-active' : null}>How to get started</span></div>
           {openG[0] ? <div id='guide-text'>
@@ -231,18 +244,26 @@ const Help = () => {
           </div>
 
           <div id='contact-form'>
-            {emailError !== '' &&
+            {emailError && emailError !== '' &&
               <div className="emailError">
                 <FontAwesomeIcon icon={faCircleExclamation} id="errorIcon" size="2x" />
                 <p>{emailError}</p>
               </div>}
             <div>
               <input className='default-input rainbow-border'
-                id='contact-name' type='text'
+                id='contact-name'
+                type='text'
                 name='name'
                 required
                 placeholder={"Your name"}
-                onChange={(e) => {setName(e.target.value)}}
+
+                onChange={
+                  (e) => {
+                    setName(e.target.value)
+                    setEmailError(null)
+                  }
+                }
+
               />
             </div>
             <div>
@@ -252,8 +273,14 @@ const Help = () => {
                 placeholder='Email'
                 name='email'
                 required
-                onChange={(e) => {setEmail(e.target.value)}
+
+                onChange={
+                  (e) => {
+                    setEmail(e.target.value)
+                    setEmailError(null)
+                  }
                 } />
+
             </div>
             <div id="textArea-div">
               <textarea className='default-textarea rainbow-border'
@@ -261,7 +288,12 @@ const Help = () => {
                 placeholder='Your message'
                 name='message'
                 required
-                onChange={(e) => { setMessage(e.target.value) }}
+                onChange={
+                  (e) => {
+                     setMessage(e.target.value) 
+                     setEmailError(null)
+                    }
+                  }
               />
             </div>
             <div>
@@ -273,8 +305,10 @@ const Help = () => {
         {/*Box 4*/}
         <div id='help-patch-notes' className={showBox === 4 ? 'unhide' : 'hide'}>
           {/*DO NOT USE LATESTPATCH*/}
-          <h1 className='help-header fiery-red'>Latest Patch</h1>
+          <h1 className='help-header2 fiery-red'>Latest Patch</h1>
           <Patches.Patch_0_4_2 />
+          <br />
+          <h1 className='help-header2'>Older Patches</h1>
           <Patches.Patch_0_4_1 />
         </div>
 

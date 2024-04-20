@@ -24,7 +24,6 @@ const Home = () => {
         <p className='subtitle'>Easy code translation in seconds!</p>
       </div>
 
-
       <div className='box features'>
         <p className="sectionHeader">Key features</p>
         <div className="features-flexbox">
@@ -52,6 +51,11 @@ const Home = () => {
       <Suspense><HomeReviews /></Suspense>
       <div className='box' id='patch-notes'><Suspense><LatestPatch /></Suspense></div>
       <Suspense><Developers /></Suspense>
+
+      <div className='box' id='patch-notes'>
+        <h1 className='help-header2 fiery-red' id='patch-notes-header'>What's New!</h1>
+        <LatestPatch />
+      </div>
     </div>
   )
 }
