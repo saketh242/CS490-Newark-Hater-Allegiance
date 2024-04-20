@@ -1970,7 +1970,9 @@ input[type="checkbox"]{
 /* Settings.jsx component Styling */
 
 .error-settings {
-  padding-top: 0;
+  color: red;
+  font-size: 1.3rem;
+  padding: 1rem 1rem 0 1rem;
 }
 
 .settings-div {
@@ -1999,14 +2001,25 @@ input[type="checkbox"]{
 .edit-profile {
   font-size: 1.7rem;
   padding-top: 2rem;
+  text-align: left;
 }
 
-.names-box {
+/* .names-box {
   padding-top: 1.5rem;
   width:100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+} */
+
+.button-div-settings {
+  display: flex;
+  justify-content: left;
+}
+
+.settings-side-heading {
+  text-align: left;
+  font-size: 1.7rem;
 }
 
 .settings-form {
@@ -2042,7 +2055,7 @@ input[type="checkbox"]{
   align-items: center;
   font-size: 1.7rem;
   padding: 1 rem 1rem 2rem 1rem;
-  margin: 2rem;
+  margin: 1.3rem 1rem 1rem 1rem;
 }
 
 .option-div p{
@@ -2053,7 +2066,7 @@ input[type="checkbox"]{
   display: flex;
   justify-content: center;
   text-align: center;
-  padding-top: 0.7rem;
+  padding-top: 0;
 }
 
 

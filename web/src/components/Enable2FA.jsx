@@ -139,7 +139,8 @@ const Enable2FA = () => {
       }
 
     } catch (e) {
-      setError(e.message || 'An error occurred disabling 2FA, try again');
+      console.log(e);
+      setError('An error occurred disabling 2FA, try again');
       return
     }
 
