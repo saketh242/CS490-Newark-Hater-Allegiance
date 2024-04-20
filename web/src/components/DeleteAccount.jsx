@@ -60,26 +60,20 @@ const DeleteAccount = () => {
         try {
             const credential = EmailAuthProvider.credential(user.email, password);
             await reauthenticateWithCredential(user, credential)
-            console.log("re authentication successful")
             try {
                 
-                await nhaService.deleteUser(user);
-                console.log("User deleted from database");
-                await deleteUser(user);
-                console.log("User Deleted from firebase");
+                await nhaService.deleteUser(user) //delete user from db
+                await deleteUser(user) //delete user from firebase
                 await signOut(auth);
-                console.log("signed out");
                 navigate("/login")
                 const msg = () => toast(`Account deleted successfully!`);
                 msg()
             
             } catch (e) {
-                console.log("Error Deleting user", e);
                 setError("Error deleting account, try again");
                 return
             }
         } catch (err) {
-            console.log(err)
             handleAuthErrors(err);
         }
     }
@@ -91,11 +85,8 @@ const DeleteAccount = () => {
             await resolver.resolveSignIn(multiFactorAssertion);
             // now we can delete the account
             await nhaService.deleteUser(user);
-            console.log("User deleted from database");
             await deleteUser(user);
-            console.log("User Deleted from firebase");
             await signOut(auth);
-            console.log("signed out");
             navigate("/login")
             const msg = () => toast(`Account deleted successfully!`);
             msg()
@@ -111,7 +102,7 @@ const DeleteAccount = () => {
             } else {
                 setError("Error validating code! Try Again!");
             }
-            console.error("Error during 2FA:", e);
+            setError("Error during 2FA, please contact us for help.");
         }
     }
 
@@ -143,7 +134,6 @@ const DeleteAccount = () => {
             setMfaCase(true);
 
         } catch (error) {
-            console.error("2FA error:", error);
             setError("Failed to complete multi-factor authentication.");
         }
 

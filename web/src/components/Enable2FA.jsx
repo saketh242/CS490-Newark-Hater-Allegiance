@@ -62,9 +62,7 @@ const Enable2FA = () => {
         navigate("/login")
         const msg = () => toast(`2FA enabled, login again :)`);
         msg();
-      }).catch((error) => {
-        console.log(error)
-      });
+      }).catch((error) => {});
 
     } catch (e) {
       if (e.code == 'auth/invalid-verification-code') {
@@ -93,7 +91,6 @@ const Enable2FA = () => {
     try {
       const credential = EmailAuthProvider.credential(user.email, password);
       await reauthenticateWithCredential(user, credential)
-      console.log("re authentication successful");
 
       // now handling the 2fa
 
@@ -110,7 +107,6 @@ const Enable2FA = () => {
       setCodeSent(true);
     } catch (e) {
       setError("Error in handle2FA");
-      console.log(e);
       return;
     }
 
@@ -120,10 +116,8 @@ const Enable2FA = () => {
 
     try {
       const firebaseUser = auth.currentUser;
-      console.log(firebaseUser)
 
       const result = await nhaService.disable2FA(firebaseUser);
-      console.log(result)
 
       if (result.status) {
         // 2fa disabled successfully
@@ -131,11 +125,8 @@ const Enable2FA = () => {
         msg()
         // now logout
         signOut(auth).then(() => {
-          console.log("Signed out successfully")
           navigate("/login")
-        }).catch((error) => {
-          console.log(error)
-        });
+        }).catch((error) => {});
       } else {
         throw new Error(result.error || 'Failed to disable 2FA');
       }

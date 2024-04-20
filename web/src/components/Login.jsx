@@ -70,10 +70,8 @@ const Login = () => {
         await setPersistence(auth, browserSessionPersistence);
       }
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log(`Welcome ${userCredential.user.displayName}`);
       navigate("/");
     } catch (err) {
-      console.error(err.code);
       handleAuthErrors(err);
     }
   };
@@ -109,7 +107,7 @@ const Login = () => {
       } else {
         setError("Error validating code! Try Again!");
       }
-      console.error("Error during 2FA:", e);
+      setError("Error during 2FA, please contact us for help.");
     }
   }
 
@@ -128,7 +126,6 @@ const Login = () => {
       setMfaCase(true);
 
     } catch (error) {
-      console.error("2FA error:", error);
       setError("Failed to complete multi-factor authentication.");
     }
 
