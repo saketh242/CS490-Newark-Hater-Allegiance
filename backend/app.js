@@ -36,7 +36,7 @@ app.use(mongoSanitize()); //sanitize all user input
 app.use(queue({ activeLimit: 1, queuedLimit: -1 }));
 
 // Schedule the cron job to run at midnight when app running
-cron.schedule('0 0 0 * *', async () => {
+cron.schedule('0 0 * * *', async () => {
   console.log("Sending email");
   sendErrorLogEmail();
 }, {
