@@ -49,13 +49,11 @@ const Home = () => {
       </div>
 
       <Suspense><HomeReviews /></Suspense>
-      <div className='box' id='patch-notes'><Suspense><LatestPatch /></Suspense></div>
-      <Suspense><Developers /></Suspense>
-
       <div className='box' id='patch-notes'>
         <h1 className='help-header2 fiery-red' id='patch-notes-header'>What's New!</h1>
-        <LatestPatch />
+        <div className='box' id='patch-notes'><Suspense><LatestPatch /></Suspense></div>
       </div>
+      <Suspense><Developers /></Suspense>
     </div>
   )
 }
