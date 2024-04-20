@@ -16,6 +16,7 @@ import {
 import { auth } from '../firebase';
 import { toast } from 'react-toastify';
 import nhaService from '../services/nhaService';
+import VerificationInput from 'react-verification-input';
 
 
 const DeleteAccount = () => {
@@ -197,20 +198,22 @@ const DeleteAccount = () => {
         </>): (
             <>
             
-            <h2 className='heading-2fa-login'>Enter verification Code</h2>
-            <input
-              className='email-input'
-              type="text"
-              value={verificationCode}
-              onChange={(e) => {
-                setVerificationCode(e.target.value);
-                setError(null);
-              }}
-              placeholder="123456"
-              autoComplete='off'
-              style={{ borderColor: error ? 'red' : '#0ac6c0', transition: 'border-color 0.3s ease' }}
-            />
-            <button className="login-btn" onClick={handle2FALogin}>Submit Code</button>
+            <div className="popupContent" id="loginVerify">
+              <div id="verificationHeader">
+                <h1 id="tfa-header">Two-Factor authentication</h1>
+                <p>Must authenticate to delete account.</p>
+                <p>Enter the code that was sent to your phone number.</p>
+              </div>
+              <VerificationInput validChars='0-9' onChange={(code) => setVerificationCode(code)}
+                classNames={{
+                  container: "otp-container",
+                  character: "character",
+                  characterInactive: "character--inactive",
+                  characterSelected: "character--selected",
+                  characterFilled: "character--filled",
+                }} />
+              <button className="default-button login-btn" onClick={handle2FALogin}>Submit Code</button>
+            </div>
             </>
         )}
             

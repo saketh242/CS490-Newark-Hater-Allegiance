@@ -7,6 +7,7 @@ import { faDeleteLeft, faUserPen } from '@fortawesome/free-solid-svg-icons'
 import nhaService from "../services/nhaService";
 import { toast } from 'react-toastify';
 import { isValidPhoneNumber, isValidSixDigitCode } from "../utils/fieldValidations";
+import VerificationInput from "react-verification-input";
 
 const Enable2FA = () => {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ const Enable2FA = () => {
       // signout user
       signOut(auth).then(() => {
         navigate("/login")
-        const msg = () => toast(`2FA enabled, please login again`);
+        const msg = () => toast(`2FA enabled, login again :)`);
         msg();
       }).catch((error) => {
         console.log(error)
@@ -73,6 +74,7 @@ const Enable2FA = () => {
         setError('Error verifying code!')
         return
       }
+
     }
   }
 
@@ -129,7 +131,7 @@ const Enable2FA = () => {
         msg()
         // now logout
         signOut(auth).then(() => {
-          // console.log("Signed out successfully")
+          console.log("Signed out successfully")
           navigate("/login")
         }).catch((error) => {
           console.log(error)
@@ -139,8 +141,7 @@ const Enable2FA = () => {
       }
 
     } catch (e) {
-      console.log(e);
-      setError('An error occurred disabling 2FA, try again');
+      setError(e.message || 'An error occurred disabling 2FA, try again');
       return
     }
 
@@ -222,7 +223,7 @@ const Enable2FA = () => {
 
               <>
 
-                <input
+                {/* <input
                   data-testid="code-id"
                   className='code-input'
                   type="text"
@@ -236,10 +237,22 @@ const Enable2FA = () => {
                     borderColor: error ? 'red' : '#0ac6c0',
                     transition: 'border-color 0.3s ease',
                   }}
-                />
-
-                <button className="login-btn" onClick={handleVerifyCode}>Verify Code</button>
-
+                /> */}
+                            <div className="popupContent" id="loginVerify">
+              <div id="verificationHeader">
+                <h1 id="tfa-header">Two-Factor authentication</h1>
+                <p>Enter the code that was sent to your phone number.</p>
+              </div>
+              <VerificationInput validChars='0-9' onChange={(code) => setCode(code)}
+                classNames={{
+                  container: "otp-container",
+                  character: "character",
+                  characterInactive: "character--inactive",
+                  characterSelected: "character--selected",
+                  characterFilled: "character--filled",
+                }} />
+              <button className="default-button login-btn" onClick={handleVerifyCode}>Submit Code</button>
+            </div>
               </>}
 
             {error && <p className="error-msg">{error}</p>}
