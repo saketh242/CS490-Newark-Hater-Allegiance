@@ -25,7 +25,7 @@ const limiter = rateLimit({
 });
 
 
-//app.use(limiter);
+app.use(limiter);
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path} - ${req.ip}`);
   next();
