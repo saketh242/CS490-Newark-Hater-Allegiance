@@ -13,12 +13,9 @@ function NHANav() {
   const navigate = useNavigate()
   const handleLogout = () => {
     signOut(auth).then(() => {
-      navigate("/")
       navigate("/login")
       toast(`Logged out successfully`)
-    }).catch((error) => {
-      console.log(error)
-    })
+    }).catch((error) => {console.log(error)})
   }
 
   return (

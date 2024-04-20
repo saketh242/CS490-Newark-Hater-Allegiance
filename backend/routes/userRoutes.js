@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const User = require("../models/User")
 
-const {getUserId, insertUser, updateUser, deleteUser} = require("../controllers/userControllers")
+const {getUserId, insertUser, updateUser, deleteUser, disable2FA, edit2FA} = require("../controllers/userControllers")
 
 
 
@@ -14,6 +14,8 @@ router.get("/", getUserId)
 router.put("/updateUser", updateUser)
 
 router.delete("/deleteUser", deleteUser)
+
+router.put("/disable2FA", disable2FA)
 
 
 module.exports = router

@@ -15,6 +15,13 @@
 .ratingStarStandard, #icon:hover, .starClicked, .link:hover, #emptyCredit:hover
 {color: #0ac6c0;}
 
+.bold {font-weight: bold;}
+
+.hover:hover {
+  cursor: pointer;
+  color: #0ac6c0;
+}
+
 .default-button, #signup-button, #translationButton, .buttonsContainer button, .feedbackButton, .greyedOutButton, 
 .historyOptions button, #search-input, #otp-button
 {border: none;}
@@ -1431,6 +1438,7 @@ input[type="checkbox"]{
 .delete-heading {
   font-family: "Kanit", sans-serif;
   margin: 1.5rem;
+  padding:1rem;
   color: rgb(200, 0, 0);
   font-size: 2rem;
 }
@@ -1479,7 +1487,12 @@ input[type="checkbox"]{
 }
 
 /* Settings.jsx component Styling */
-.error-settings {padding-top: 0;}
+
+.error-settings {
+  color: red;
+  font-size: 1.3rem;
+  padding: 1rem 1rem 0 1rem;
+}
 
 .settings-div {
   display: flex;
@@ -1507,14 +1520,25 @@ input[type="checkbox"]{
 .edit-profile {
   font-size: 1.7rem;
   padding-top: 2rem;
+  text-align: left;
 }
 
-.names-box {
+/* .names-box {
   padding-top: 1.5rem;
   width:100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+} */
+
+.button-div-settings {
+  display: flex;
+  justify-content: left;
+}
+
+.settings-side-heading {
+  text-align: left;
+  font-size: 1.7rem;
 }
 
 .settings-form {
@@ -1550,7 +1574,7 @@ input[type="checkbox"]{
   align-items: center;
   font-size: 1.7rem;
   padding: 1 rem 1rem 2rem 1rem;
-  margin: 2rem;
+  margin: 1.3rem 1rem 1rem 1rem;
 }
 
 .option-div p{padding-left: 0.5rem;}
@@ -1559,7 +1583,7 @@ input[type="checkbox"]{
   display: flex;
   justify-content: center;
   text-align: center;
-  padding-top: 0.7rem;
+  padding-top: 0;
 }
 
 @media (width <= 900px) {
@@ -1659,10 +1683,7 @@ input[type="checkbox"]{
   text-align: center;
 }
 
-.link{
-  text-decoration: none;
-  color:#076966;
-}
+.link{color:#5469D4;}
 
 #gravatarNote, #gravatarLink{
   font-size: 14px;
@@ -1923,60 +1944,29 @@ input[type="checkbox"]{
   font-size: 1.5rem;
 }
 
-/* Enable2FA component styling */
-.div-2fa{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-}
-
-.h2-2fa {
-  color:#9CA6B5;
-  font-size: 2rem;
-  font-weight: 500;
-}
-
-.enable-2fa-user {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.phoneNumber-input {
-  background-color: #23262F;
-  padding: 0.5rem;
-  color:#9CA6B5;
-  font-size: 1.3rem;
-  width: 20rem;
-  border: 1pt solid #9CA6B5;
-  border-radius: 5px;
-  margin: 1rem 0;
-}
-
-.code-input {
-  background-color: #23262F;
-  padding: 0.5rem;
-  color:#9CA6B5;
-  font-size: 1.3rem;
-  width: 20rem;
-  border: 1pt solid #9CA6B5;
-  border-radius: 5px;
-  margin: 1rem 0;
+.settings-div-view:hover {
+  color: #0ac6c0;
 }
 
 /* Verification code input */
 .character {
   border: none;
-  font-size: 20px;
+  font-size: 30px;
   border-radius: 8px;
-  color: #BDC3D0;
-  background-color: #07080a;
-  box-shadow: 0 2px 0 #000;
+  color: #23262F;
+  background-color: #9CA6B5;
+  box-shadow: 0 2px 0 #1A1C23;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.otp-container, #already-enabled{padding:2rem;}
+.otp-container, #already-enabled, #verifyError{padding:2rem;}
+.otp-container{
+  margin: 1rem 1rem 0 1rem;
+  width:400px;
+  height:60px;
+}
 
 .close{
   font-size:3rem;
@@ -2001,11 +1991,26 @@ input[type="checkbox"]{
   align-items: center;
 }
 
-.popupContent{padding:2rem;}
-#tfa-header{padding:0.5rem;}
-#verificationHeader {font-size: larger;}
+.popupContent{
+  padding:3rem;
+  overflow:hidden;
+}
 
-.modal{
+#loginVerify {
+  background-color: #23262F;
+  box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.5);
+  border-radius:1rem;
+  border-top:solid 5px #0ac6c0;
+}
+
+#tfa-header{
+  padding:0.5rem;
+  font-size:3rem;
+}
+
+#verificationHeader p {font-size: 1.5rem;}
+
+#verificationHeader, .modal{
   padding: 0 1rem 0 1rem;
   color:#BDC3D0;
 }
@@ -2016,4 +2021,96 @@ input[type="checkbox"]{
   width: 100%; 
   font-size: 1.5rem;
   border-radius: 10px;
+  border: none;
+}
+
+@media (width<=755px){
+  #tfa-header{
+    font-size: 2rem;
+  }
+  #verificationHeader p {
+    font-size:1rem;
+  }
+}
+
+/* Enable2FA component styling */
+.div-2fa{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+} 
+
+
+.buttons-2fa{
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+  align-items: center;
+  color:#9CA6B5;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.h2-2fa {
+  color:#9CA6B5;
+  font-size: 2rem;
+  font-weight: 400;
+  padding: 2rem;
+}
+
+.p-2fa {
+  color:#9CA6B5;
+  font-size: 1.4rem;
+  margin-bottom:1rem;
+  font-weight: 400; 
+}
+
+.enable-2fa-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-input-2fa, .phoneNumber-input {
+  background-color: #23262F;
+  padding: 0.5rem;
+  color:#9CA6B5;
+  font-size: 1.3rem;
+  width: 85%;
+  border: 1pt solid #9CA6B5;
+  border-radius: 5px;
+  margin: 1rem 0;
+}
+
+.code-input {
+  background-color: #23262F;
+  padding: 0.5rem;
+  color:#9CA6B5;
+  font-size: 1.3rem;
+  width: 20rem;
+  border: 1pt solid #9CA6B5;
+  border-radius: 5px;
+  margin: 1rem 0;
+}
+
+.content-2fa{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-2fa{
+  width: 50%;
+}
+
+.disable-2fa-btn:hover{
+  color: #1A1C23;
+  background-color: red;
+}
+
+.edit-phoneNumber-input{
+  width: 45%;
 }

@@ -203,6 +203,20 @@ class NHAService {
             return error.response.data;
         }
       }
+
+      async disable2FA(user){
+        try {
+            const idToken = await user.getIdToken()
+            const headers = {
+                Authorization: `Bearer ${idToken}`
+            };
+
+            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}users/disable2FA`,{}, { headers } );
+            return response.data
+        } catch (e) {
+            return e.response.data
+        }
+      }
       
 }
 
