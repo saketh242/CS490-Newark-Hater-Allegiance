@@ -25,7 +25,10 @@ const DeleteAccount = () => {
         // Initialize the RecaptchaVerifier instance
         if (!recaptchaVerifierRef.current) {
             recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
-                'size': 'invisible'
+                'size': 'invisible',
+                'expired-callback': function() {
+                    recaptchaVerifierRef.current.reset();
+                  }
             }, auth);
             recaptchaVerifierRef.current.render().then(function (widgetId) {
                 window.recaptchaWidgetId = widgetId;
@@ -69,7 +72,6 @@ const DeleteAccount = () => {
                 const msg = () => toast(`Account deleted successfully!`);
                 msg()
             
-
             } catch (e) {
                 console.log("Error Deleting user", e);
                 setError("Error deleting account, try again");

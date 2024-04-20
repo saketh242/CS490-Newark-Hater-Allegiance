@@ -1,20 +1,47 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faGear, faPenToSquare, faShieldHalved} from '@fortawesome/free-solid-svg-icons'
-import { useEffect, useState } from 'react';
-
+import { faGear, faPenToSquare, faShieldHalved } from '@fortawesome/free-solid-svg-icons'
+import { useState, useEffect, useRef } from 'react'
 
 import { useNavigate } from 'react-router-dom';
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { auth } from "../firebase";
 import { toast } from 'react-toastify';
-import { EmailAuthProvider, reauthenticateWithCredential, signOut, verifyBeforeUpdateEmail, updateProfile } from "firebase/auth";
+import {
+  multiFactor,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  signOut,
+  verifyBeforeUpdateEmail,
+  PhoneAuthProvider,
+  RecaptchaVerifier,
+  getMultiFactorResolver,
+  PhoneMultiFactorGenerator,
+} from "firebase/auth";
+
 import nhaService from '../services/nhaService';
 import { useDispatch } from 'react-redux';
-import {setDbUser } from '../features/user/userSlice';
+import { setDbUser } from '../features/user/userSlice';
 import { useSelector } from 'react-redux';
+import { isValidEmail, isValidName } from '../utils/fieldValidations';
 
 const Settings = () => {
+
+  const recaptchaVerifierRef = useRef(null);
+  useEffect(() => {
+    // Initialize the RecaptchaVerifier instance
+    if (!recaptchaVerifierRef.current) {
+      recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
+        'size': 'invisible',
+        'expired-callback': function () {
+          recaptchaVerifierRef.current.reset();
+        }
+      }, auth);
+      recaptchaVerifierRef.current.render().then(function (widgetId) {
+        window.recaptchaWidgetId = widgetId;
+      });
+    }
+  }, []);
 
   const user = useSelector((state) => state.user.user);
   const dbUser = useSelector((state) => state.user.dbUser);
@@ -26,13 +53,26 @@ const Settings = () => {
 
   // getting currenlty signed in user
   // const user = auth.currentUser;
-  const [firstName, setFirstName] = useState(dbUser? dbUser.firstName : "");
-  const [lastName, setLastName] = useState(dbUser? dbUser.lastName : "");
-  const [email, setEmail] = useState(user? user.email : "");
+
+  const [mfaCase, setMfaCase] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
+  const [verificationId, setVerificationId] = useState(null);
+  const [resolver, setResolver] = useState(null);
+
+  const [firstName, setFirstName] = useState(dbUser ? dbUser.firstName : "");
+  const [lastName, setLastName] = useState(dbUser ? dbUser.lastName : "");
+  const [email, setEmail] = useState(user ? user.email : "");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   // this is a placeholder for knowing the current state of data
   const [userData, setUserData] = useState(dbUser || {});
+
+  const firebaseUser = auth.currentUser;
+  const enrolledFactors = multiFactor(firebaseUser).enrolledFactors;
+  let has2FA;
+  if (enrolledFactors) {
+    has2FA = enrolledFactors.length > 0;
+  }
   // const [receivedData, setReceivedData] = useState(false);
   // const [triggerEffect, setTriggerEffect] = useState(true);
 
@@ -51,204 +91,306 @@ const Settings = () => {
     return
   }
 
-  const handleUpdateprofile = async (e) => {
+  const handleChangeEmail = async (e) => {
+
     e.preventDefault()
-    if (firstName === "" || lastName === "" || email === ""){
-      setError("Fields cannot be empty (¬_¬ )")
+
+    if (email === "") {
+      setError("Email cannot be empty (¬_¬ )")
       return
     }
 
-    if (password === ""){
+    if (password === "") {
       setError("Enter password to update profile");
       return
     }
 
-    const emailCheck = email === user.email ? false : true;
-    const fNameCheck = firstName === userData.firstName ? false : true
-    const lNameCheck = lastName === userData.lastName ? false : true
-
-    if (!emailCheck && !fNameCheck && !lNameCheck){
-          setError("Edit profile to update");
-          return
-    }
-
-    // field validation done
-    // now reauthenticating the user
-    const firebaseUser = auth.currentUser;
-    try {
-      const credential = EmailAuthProvider.credential(user.email, password);
-      await reauthenticateWithCredential(firebaseUser, credential)
-      // console.log("re authentication successful");
-
-    } catch(e) {
-      setError("Invalid Password, try again!");
-      return;
-    }
-
-    // Now re authentication is over,  now trying to edit profile :), please work
-    try {
-      
-      // using a firebaseUser because, the user object I have right now is not a exact firebaase object
-      // redux only likes serilizable data so i need to get only the data we need
-
-      await nhaService.updateUser(firebaseUser, email, firstName, lastName, emailCheck, fNameCheck, lNameCheck);
-      await updateProfile(firebaseUser, {
-              displayName: `${firstName}`
-      })
-      // now updating the dbUser in redux
-      const obj = {firstName: firstName, lastName: lastName, email: email, _id:dbUser._id};
-      dispatch(setDbUser(obj))
-      setUserData(obj)
-      setPassword("");
-
-      // now changing emails in firebase, please work 🙏
-
-      try {
-        if (emailCheck){
-          verifyBeforeUpdateEmail(firebaseUser, email)
-            .then(()=>{
-              // console.log("Verification Email sent!")
-              signOut(auth)
-                .then(()=>{
-                  navigate("/login")
-                  const msg = () => toast(`Email change initiated, check your inbox and profile updated :)`);
-                  msg()
-                }).catch((e)=>{
-                  // console.log("Error signing out!")
-                  setError("Error signing out!")
-                  return
-                })
-              
-                              
-            }).catch((e)=>{
-              // console.log("Error sending verification email")
-              setError("An error occured when sending the email");
-              return 
-            })
-        }else {
-          if (fNameCheck || lNameCheck){
-            const msg = () => toast(`Profile updated :)`);
-            msg()
-          }
-        }
-      }catch(e){
-        // console.log(e);
-        setError("An error occured updating email");
-        return 
-      }
-    } catch(e){
-      // console.log("Error updating profile");
-      setError("Error updating profile")
+    if (!isValidEmail(email)) {
+      setError("Enter a valid email!")
       return
     }
 
-
-
-
-
-    
-  }
-  
-  return (
-        <div className='settings-div'>
-          <div className='settings-head-div'>
-            <FontAwesomeIcon size='4x' icon={faGear} className='settings-icon' />
-            <p className='settings-head-p'>Settings</p>
-          </div>
-
-          <p className='edit-profile'>Edit Profile</p>
-
-          <form className='settings-form'>
-            <div className="names-box">
-              <input
-                className="name-input-box-settings"
-                type="text"
-                value={firstName}
-                onChange={(e) => {
-                  setFirstName(e.target.value)
-                  setError(null)
-                }}
-                placeholder="First Name"
-                data-testid="firstNameInput"
-                style={{
-                  borderColor: error ? 'red' : '#0ac6c0',
-                  transition: 'border-color 0.3s ease',
-                }}
-              />
-              <input
-                className="name-input-box-settings"
-                type="text"
-                value={lastName}
-                onChange={(e) => {
-                  setLastName(e.target.value)
-                  setError(null)
-                }}
-                placeholder="Last Name"
-                data-testid="lastNameInput"
-                style={{
-                  borderColor: error ? 'red' : '#0ac6c0',
-                  transition: 'border-color 0.3s ease',
-                }}
-              />
-            </div>
-            {user && (
-              <>
-                <input
-                  className='settings-email-input'
-                  type="email"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value)
-                    setError(null)
-                  }}
-                  placeholder="Email"
-                  style={{
-                    borderColor: error ? 'red' : '#0ac6c0',
-                    transition: 'border-color 0.3s ease',
-                  }}
-                />
-                <input
-                  data-testid="password-id-settings"
-                  className='settings-email-input'
-                  type="password"
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value)
-                    setError(null)
-                  }}
-                  placeholder='Enter password before updating'
-                  style={{
-                    borderColor: error ? 'red' : '#0ac6c0',
-                    transition: 'border-color 0.3s ease',
-                  }}
-                />
-              </>)}
-            <button type="submit" data-testid="update-btn" className='login-btn' onClick={handleUpdateprofile}>Update Profile</button>
-
-          </form>
-
-          <div className="options-div">
-            <div className='option-div hover-div' onClick={handleChangePassword}>
-              <FontAwesomeIcon icon={faPenToSquare} />
-              <p>Change Password</p>
-            </div>
-            <div className='option-div hover-div' onClick={handleDeleteAccount}>
-              <FontAwesomeIcon icon={faTrash} />
-              <p data-testid="deleteAccount">Delete Account</p>
-            </div>
-            {user.emailVerified && 
-            <div className='option-div hover-div' onClick={handle2FA}>
-              <FontAwesomeIcon icon={faShieldHalved} />
-              <p>Enable 2FA</p>
-            </div>}
-            
-          </div>
-
-          {error && <p className='error-msg error-settings'>{error}</p>}
-
-
-        </div>
-      )
+    const emailCheck = email === user.email ? false : true;
+    if (!emailCheck) {
+      setError("Edit email to update!");
+      return
     }
+
+    // now reauthenticating the user and changing email :)
+    try {
+      const firebaseUser = auth.currentUser;
+      const credential = EmailAuthProvider.credential(user.email, password);
+      await reauthenticateWithCredential(firebaseUser, credential)
+
+      // reauthentication done now changing emails
+      try {
+        await nhaService.updateUser(firebaseUser, email, firstName, lastName, true, false, false);
+        await verifyBeforeUpdateEmail(firebaseUser, email)
+        await signOut(auth)
+        navigate("/login")
+        const msg = () => toast(`Email change initiated, check your inbox and profile updated :)`);
+        msg()
+      } catch (err) {
+        setError("An error occured when changing the email, try again");
+        return
+
+      }
+    } catch (e) {
+      handleAuthErrors(e)
+    }
+  }
+
+  const handleAuthErrors = async (err) => {
+    switch (err.code) {
+      case "auth/invalid-login-credentials":
+        setError("Invalid Credentials");
+        break;
+      case "auth/multi-factor-auth-required":
+        handleMultiFactorAuth(err);
+        break;
+      default:
+        setError("Reauthentication failed. Try again");
+    }
+  }
+
+  const handleMultiFactorAuth = async (err) => {
+    const resolverVar = getMultiFactorResolver(auth, err);
+    // removing the if check because sms is the only 2fa we have right now
+    const phoneAuthProvider = new PhoneAuthProvider(auth);
+    try {
+      const verificationIdVar = await phoneAuthProvider.verifyPhoneNumber({
+        multiFactorHint: resolverVar.hints[0],
+        session: resolverVar.session
+      }, recaptchaVerifierRef.current);
+      setResolver(resolverVar);
+      setVerificationId(verificationIdVar);
+      setMfaCase(true);
+
+    } catch (error) {
+      console.error("2FA error:", error);
+      setError("Failed to complete multi-factor authentication.");
+    }
+
+  };
+
+  const handleChangeName = async (e) => {
+    e.preventDefault();
+    try {
+      if (firstName === "" || lastName === "") {
+        setError("Fields cannot be empty (¬_¬ )")
+        return
+      }
+
+      if (!isValidName(firstName) || !isValidName(lastName)) {
+        setError("Enter a valid name!");
+        return
+      }
+
+      const fNameCheck = firstName === userData.firstName ? false : true
+      const lNameCheck = lastName === userData.lastName ? false : true
+
+      if (!fNameCheck && !lNameCheck) {
+        setError("Edit name to update!");
+        return
+      }
+
+      // updating name in redux
+      const obj = { firstName: firstName, lastName: lastName, email: email, _id: dbUser._id };
+      dispatch(setDbUser(obj))
+      setUserData(obj)
+
+      await nhaService.updateUser(firebaseUser, email, firstName, lastName, false, true, true);
+      const msg = () => toast(`Name updated :)`);
+      msg()
+    } catch (e) {
+      setError("Error updating name, try again :(");
+      return
+    }
+  }
+
+
+  const handle2FALogin = async () => {
+    try {
+        const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
+        const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
+        await resolver.resolveSignIn(multiFactorAssertion);
+        // now we can change the email
+        try {
+          await nhaService.updateUser(firebaseUser, email, firstName, lastName, true, false, false);
+          await verifyBeforeUpdateEmail(firebaseUser, email)
+          await signOut(auth)
+          navigate("/login")
+          const msg = () => toast(`Email change initiated, check your inbox and profile updated :)`);
+          msg()
+      } catch (err) {
+          setError("An error occured when changing the email, try again");
+          return
+
+      }
+
+
+    } catch (e) {
+        if (window.recaptchaVerifier) window.recaptchaVerifier.reset();
+
+        if (e.code === "auth/invalid-verification-code") {
+            setError("Invalid Code! Try entering it again.");
+        } else if (e.code === "auth/code-expired") {
+            setError("Code Expired. Please request a new code or reload the page.");
+
+        } else {
+            setError("Error validating code! Try Again!");
+        }
+        console.error("Error during 2FA:", e);
+    }
+}
+
+  return (
+    <div className='settings-div'>
+      <div id="recaptcha-container-id"></div>
+      
+
+      {
+        !mfaCase ?
+          (
+            <>
+            <div className='settings-head-div'>
+        <FontAwesomeIcon size='4x' icon={faGear} className='settings-icon' />
+        <p className='settings-head-p'>Settings</p>
+      </div>
+
+              <form className='settings-form'>
+                <div className='name-changes-div'>
+
+                  <p className='edit-profile'>Change Name:</p>
+
+                  <input
+                    className="settings-email-input"
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => {
+                      setFirstName(e.target.value)
+                      setError(null)
+                    }}
+                    placeholder="First Name"
+                    data-testid="firstNameInput"
+                    style={{
+                      borderColor: error ? 'red' : '#0ac6c0',
+                      transition: 'border-color 0.3s ease',
+                    }}
+                  />
+                  <input
+                    className="settings-email-input"
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => {
+                      setLastName(e.target.value)
+                      setError(null)
+                    }}
+                    placeholder="Last Name"
+                    data-testid="lastNameInput"
+                    style={{
+                      borderColor: error ? 'red' : '#0ac6c0',
+                      transition: 'border-color 0.3s ease',
+                    }}
+                  />
+
+                  <div className='button-div-settings'>
+                    <button className='login-btn' onClick={handleChangeName}>Update Name</button>
+                  </div>
+
+                </div>
+
+
+
+                {user && (
+                  <div>
+                    <p className='edit-profile'>Change Email:</p>
+                    <input
+                      className='settings-email-input'
+                      type="email"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value)
+                        setError(null)
+                      }}
+                      placeholder="Email"
+                      style={{
+                        borderColor: error ? 'red' : '#0ac6c0',
+                        transition: 'border-color 0.3s ease',
+                      }}
+                    />
+                    <input
+                      data-testid="password-id-settings"
+                      className='settings-email-input'
+                      type="password"
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value)
+                        setError(null)
+                      }}
+                      placeholder='Enter password before updating email'
+                      style={{
+                        borderColor: error ? 'red' : '#0ac6c0',
+                        transition: 'border-color 0.3s ease',
+                      }}
+                    />
+                    <div className='button-div-settings'>
+                      <button type="submit" data-testid="update-btn" className='login-btn' onClick={handleChangeEmail}>Update Email</button>
+                    </div>
+
+                  </div>)}
+
+                {error && <p className='error-msg error-settings'>{error}</p>}
+
+
+              </form>
+
+              <div className="options-div">
+                <div className='option-div hover-div' onClick={handleChangePassword}>
+                  <FontAwesomeIcon icon={faPenToSquare} />
+                  <p>Change Password</p>
+                </div>
+                <div className='option-div hover-div' onClick={handleDeleteAccount}>
+                  <FontAwesomeIcon icon={faTrash} />
+                  <p data-testid="deleteAccount">Delete Account</p>
+                </div>
+                {user.emailVerified &&
+                  <div className='option-div hover-div' onClick={handle2FA}>
+                    <FontAwesomeIcon icon={faShieldHalved} />
+                    <p>{has2FA ? "Disable" : "Enable"} 2FA</p>
+                  </div>}
+
+              </div>
+
+            </>
+          ) :
+          (
+            <>
+              <h2 className='heading-2fa-login'>Enter verification Code</h2>
+                            <input
+                                className='email-input'
+                                type="text"
+                                value={verificationCode}
+                                onChange={(e) => {
+                                    setVerificationCode(e.target.value);
+                                    setError(null);
+                                }}
+                                placeholder="123456"
+                                autoComplete='off'
+                                style={{ borderColor: error ? 'red' : '#0ac6c0', transition: 'border-color 0.3s ease' }}
+                            />
+                            <button className="login-btn" onClick={handle2FALogin}>Submit Code</button>
+            </>
+          )
+      }
+
+
+
+
+
+
+    </div>
+  )
+}
 
 export default Settings
