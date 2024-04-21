@@ -53,6 +53,7 @@ const Home = () => {
       <HomeReviews />
 
       <div className='box' id='patch-notes'>
+        <h1 className='help-header2 fiery-red' id='patch-notes-header'>What's New!</h1>
         <LatestPatch />
       </div>
 

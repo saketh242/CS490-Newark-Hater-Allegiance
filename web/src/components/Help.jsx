@@ -114,7 +114,7 @@ const Help = () => {
 
   return (
     <div className='standard'>
-      <h1 className="help-subtitle help-header" data-testid="help-header">How can we help?</h1>
+      <h1 className="help-subtitle" data-testid="help-header">How can we help?</h1>
 
       <div id='help-bar'>
         <div id='help-item' onClick={() => handleBox(1)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='3x' icon={faBook} /><h1 className='icon-txt' id={showBox === 1 ? 'help-active' : null}>Guides</h1></div>
@@ -132,6 +132,7 @@ const Help = () => {
         {/*Box 1*/}
         <div id='help-guides' className={showBox === 1 ? 'unhide' : 'hide'}>
           <h1 className='help-header'>Have a look at these quick and detailed guides!</h1>
+          <br/>
           {/*SIGNING UP GUIDE*/}
           <div id='guide-item' onClick={() => handleGuide(0)}><FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={openG[0] ? faCaretDown : faCaretRight} /><span id={openG[0] ? 'help-active' : null}>How to get started</span></div>
           {openG[0] ? <div id='guide-text'>
@@ -253,16 +254,12 @@ const Help = () => {
               </div>}
             <div>
               <input className='default-input rainbow-border'
-                id='contact-name' type='text'
-                // placeholder='Your name'
+                id='contact-name'
+                type='text'
                 name='name'
                 required
                 placeholder={"Your name"}
-                onChange={
-                  (e) => {
-                    setName(e.target.value)
-                  }
-                }
+                onChange={(e) => { setName(e.target.value) }}
               />
             </div>
             <div>
@@ -272,11 +269,8 @@ const Help = () => {
                 placeholder='Email'
                 name='email'
                 required
-                onChange={
-                  (e) => {
-                    setEmail(e.target.value)
-                  }
-                } />
+                onChange={(e) => { setEmail(e.target.value) }}
+              />
             </div>
             <div id="textArea-div">
               <textarea className='default-textarea rainbow-border'
@@ -296,8 +290,10 @@ const Help = () => {
         {/*Box 4*/}
         <div id='help-patch-notes' className={showBox === 4 ? 'unhide' : 'hide'}>
           {/*DO NOT USE LATESTPATCH*/}
-          <h1 className='help-header fiery-red'>Latest Patch</h1>
+          <h1 className='help-header2 fiery-red'>Latest Patch</h1>
           <Patches.Patch_0_4_2 />
+          <br />
+          <h1 className='help-header2'>Older Patches</h1>
           <Patches.Patch_0_4_1 />
         </div>
 

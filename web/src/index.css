@@ -1630,10 +1630,15 @@ input[type="checkbox"]{
 .help-subtitle {
   text-align: center;
   margin-top: 4rem;
+  font-size: 3rem;
 }
 
-.help-header, .help-subtitle {
+.help-header, .help-header2 {
   font-size: 3rem;
+}
+
+.help-header {
+  line-height: 1;
 }
 
 #help-bar {
@@ -1813,7 +1818,7 @@ input[type="checkbox"]{
     font-size: 1.5rem;
   }
   
-  .help-header, .help-subtitle {
+  .help-header, .help-header2, .help-subtitle {
     font-size: 2.5rem;
   }
 
@@ -1844,6 +1849,10 @@ input[type="checkbox"]{
     padding-top: 0rem;
     padding: 2rem;
     /* font-size: 1rem; */
+  }
+
+  .help-header, .help-header2, .help-subtitle {
+    font-size: 2rem;
   }
 
   #guide-div{
@@ -1894,6 +1903,18 @@ input[type="checkbox"]{
     font-size: 100%;
     border-radius: 10px;
   }
+  
+  #help-bar {
+    flex-wrap: wrap;
+  }
+  
+  #help-bar div {
+    display: flex;
+    flex-basis: calc(50% - 100px);
+    box-sizing: border-box;
+    padding: 1rem;
+  }
+
 }
 
 /* Delete Account Component Styling */
