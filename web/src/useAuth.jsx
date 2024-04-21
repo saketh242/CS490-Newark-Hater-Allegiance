@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { onAuthStateChanged,  multiFactor } from 'firebase/auth';
 import { auth } from './firebase'; 
 import nhaService from "./services/nhaService"; 
-import { setUser, setDbUser, setIsLoading } from './features/user/userSlice'; 
+import { setUser, setDbUser, setIsLoading, setHistory } from './features/user/userSlice'; 
 
 const useAuth = () => {
   let authFlag = true;
@@ -32,9 +32,12 @@ const useAuth = () => {
         try {
         
           const dbUserDetails = await nhaService.getUser(firebaseUser);
+          const history = await nhaService.getAllHistory(userData, dbUserDetails);
+          console.log(history);
           // setting data in redux
           dispatch(setUser(userData)); 
           dispatch(setDbUser(dbUserDetails)); 
+          dispatch(setHistory(history));
         } catch (error) {
           dispatch(setUser(userData));
           

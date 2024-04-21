@@ -21,7 +21,7 @@ export const historiesSlice = createSlice({
   },
 });
 
-export const { setHistory } = historiesSlice.actions;
+export const { setHistory, deleteHistory, clearHistory } = historiesSlice.actions;
 export const selectHistory = state => state.histories.history;
 
 export default historiesSlice.reducer;

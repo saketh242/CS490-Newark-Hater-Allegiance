@@ -1,5 +1,5 @@
 // App.js
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -33,9 +33,8 @@ import ScrollToTop from './utils/scrollToTop';
 
 const App = () => {
   useAuth();
-  useFetchReviews();
   useAverageRatings();
-  useHistoryManagement();
+  const { setFetch } = useHistoryManagement();
   const user = useSelector((state) => state.user.user);
   const dbUser = useSelector((state) => state.user.dbUser);
   const isLoading = useSelector((state) => state.user.isLoading);
@@ -45,7 +44,7 @@ const App = () => {
     if (!isLoading) {
       setShouldFetch(true);
     }
-  }, [isLoading, setShouldFetch]);
+  }, [isLoading, setShouldFetch, setFetch]);
   
   if (isLoading) {
     return <div id='loading-page'><h1 className='rainbow-fast'>Loading...</h1></div>;

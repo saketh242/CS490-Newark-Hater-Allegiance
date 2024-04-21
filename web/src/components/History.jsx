@@ -5,9 +5,6 @@ import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import emptybox from '../images/emptybox.png';
-//import nhaService from '../services/nhaService';
-import { selectHistory } from '../features/histories/historiesSlice';
-// import { useSelector, useDispatch } from 'react-redux';
 import useHistoryManagement from '../useHistoryManagement'
 import { useSelector } from 'react-redux';
 
@@ -44,21 +41,15 @@ const loadInputAndTranslatedCode = (setInputCode, setTranslatedCode, setSourceLa
 
 const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSidebar, toggleSidebar, setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage }) => {
   const { reduxHandleDeleteHistory, reduxHandleGetAllHistory } = useHistoryManagement();
-  const originalHistory = useSelector(selectHistory);
-  const [width, setWidth] = useState(window.innerWidth);
-  // const [originalHistory, setOriginalHistory] = useState(null);
+  const originalHistory = useSelector((state) => state.user.history);
   const [history, setHistoryData] = useState(null);
+  const [width, setWidth] = useState(window.innerWidth);
   const [historyError, setHistoryError] = useState('');
   const [sortOrder, setSortOrder] = useState(-1);
   const [sortField, setSortField] = useState("");
   const [filterField, setFilterField] = useState("");
   const [filterOptions, setFilterOptions] = useState([]);
   const [selectedItem, setSelectedFilterItem] = useState("");
-
-  useEffect(() => {
-    console.log(originalHistory);
-    setHistoryData(originalHistory);
-  }, [originalHistory]);
 
   const changeSort = (e) => {
     setSortField(e.target.value);
@@ -94,24 +85,13 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
         
         reduxHandleGetAllHistory(user, dbUserRedux);
         setHistoryData(originalHistory);
-
-        // const fetchedHistory = useSelector(selectHistory);
-        // setOriginalHistory(fetchedHistory);
-        // setHistoryData(fetchedHistory);
-
-        // reduxHandleGetAllHistory(user, dbUserRedux);
-        // setHistoryData(originalHistory);
       } catch (error) {
-        // setHistoryError('Unable to retrieve history at this time.');
-        setHistoryError(error);
+        setHistoryError('Unable to retrieve history at this time.');
       }
     };
 
     if (triggerHistory) {
       handleGetAllHistory();
-      // const state = useSelector(selectHistory);
-      // setOriginalHistory(state);
-      // setHistoryData(state);
       setTriggerHistory(false);
     }
   }, [user, dbUserRedux, triggerHistory, 
@@ -123,6 +103,8 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
     setFilterField("");
     setSelectedFilterItem("");
     setFilterOptions([]);
+    setHistoryData(originalHistory);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showSidebar]);
 
   const changeFilterOptions = (filter) => {
@@ -136,6 +118,8 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
         objects.add(element.Desired_language);
       }
     });
+    if (objects.size === 0)
+      setHistoryData(originalHistory);
     setFilterOptions(Array.from(objects));
   };
 
@@ -155,7 +139,6 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
         }
         return true;
       });
-
       setHistoryData(filteredHistory);
     }
 
@@ -200,26 +183,18 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
       // return;
 
       reduxHandleDeleteHistory(user, dbUserRedux);
-      setHistoryData(originalHistory);
+      setHistoryData([]);
       return;
     }
 
       const deleteId = history[i]._id;
       reduxHandleDeleteHistory(user, dbUserRedux, deleteId);
+      setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}));
 
     // var deleteId = history[i]._id;
     // await nhaService.deleteHistory(user, dbUserRedux, deleteId);
     // setOriginalHistory(originalHistory.filter((yeet) => {return yeet._id !==  deleteId}));
     // setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}));
-
-    // var deleteId = history[i]._id;
-    // dispatch(deleteHistory({ user, dbUserRedux, deleteId }));
-    // setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}));
-
-
-    // setOriginalHistory(useSelector(selectHistory));
-    originalHistory = originalHistory.filter((yeet) => {return yeet._id !==  deleteId});
-    setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}));
   }
 
   const clearDropdowns = () => {
