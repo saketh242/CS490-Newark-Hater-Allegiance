@@ -10,11 +10,11 @@ import {
     getMultiFactorResolver,
     PhoneMultiFactorGenerator,
 } from 'firebase/auth'
-
 import { auth } from '../firebase'
 import { toast } from 'react-toastify'
 import nhaService from '../services/nhaService'
 import VerificationInput from 'react-verification-input'
+import { isValidSixDigitCode } from '../utils/fieldValidations'
 
 const DeleteAccount = () => {
     const recaptchaVerifierRef = useRef(null)
@@ -23,10 +23,11 @@ const DeleteAccount = () => {
         if (!recaptchaVerifierRef.current) {
             recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
                 'size': 'invisible',
+                callback: (response) => console.log('captcha solved!', response),
                 'expired-callback': function () {
-                    recaptchaVerifierRef.current.reset()
+                    setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
                 }
-            }, auth)
+            }, auth);
             recaptchaVerifierRef.current.render().then(function (widgetId) {
                 window.recaptchaWidgetId = widgetId
             })
@@ -35,15 +36,15 @@ const DeleteAccount = () => {
 
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
-    const [verificationCode, setVerificationCode] = useState("");
+    const [verificationCode, setVerificationCode] = useState("")
 
     const [mfaCase, setMfaCase] = useState(false);
-    const [verificationId, setVerificationId] = useState(null);
-    const [resolver, setResolver] = useState(null);
+    const [verificationId, setVerificationId] = useState(null)
+    const [resolver, setResolver] = useState(null)
 
-    const user = auth.currentUser;
+    const user = auth.currentUser
     const navigate = useNavigate()
-    const [deleted, setDeleted] = useState(false);
+    const [deleted, setDeleted] = useState(false)
 
     const handleDelete = async (e) => {
         e.preventDefault()
@@ -66,10 +67,19 @@ const DeleteAccount = () => {
                 setError("Error deleting account, try again")
                 return
             }
-        } catch (err) {handleAuthErrors(err)}
+        } catch (err) { handleAuthErrors(err) }
     }
 
     const handle2FALogin = async () => {
+        if (verificationCode == "") {
+            setError("Enter verification code!");
+            return
+        }
+
+        if (!isValidSixDigitCode(verificationCode)) {
+            setError("Enter a valid code!")
+            return
+        }
         try {
             const cred = PhoneAuthProvider.credential(verificationId, verificationCode)
             const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred)
@@ -77,13 +87,14 @@ const DeleteAccount = () => {
             // now we can delete the account
             await nhaService.deleteUser(user)
             await deleteUser(user);
+
             await signOut(auth);
             navigate("/login")
             const msg = () => toast(`Account deleted successfully!`)
             msg()
 
         } catch (e) {
-            if (window.recaptchaVerifier) window.recaptchaVerifier.reset()
+            if (window.recaptchaVerifier) setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
 
             if (e.code === "auth/invalid-verification-code") {
                 setError("Invalid Code! Try entering it again.")
@@ -97,7 +108,7 @@ const DeleteAccount = () => {
     const handleAuthErrors = async (err) => {
         switch (err.code) {
             case "auth/invalid-login-credentials":
-                setError("Invalid Credentials")
+                setError("Incorrect Password, try again!")
                 break
             case "auth/multi-factor-auth-required":
                 handleMultiFactorAuth(err)

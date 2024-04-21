@@ -12,7 +12,9 @@ import {
 import { auth } from "../firebase"
 import { toast } from 'react-toastify'
 
-import { isValidEmail } from '../utils/fieldValidations'
+import { isValidEmail, isValidPassword } from '../utils/fieldValidations'
+import { isValidSixDigitCode } from '../utils/fieldValidations'
+
 import VerificationInput from "react-verification-input"
 
 const Login = () => {
@@ -22,8 +24,9 @@ const Login = () => {
     if (!recaptchaVerifierRef.current) {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible',
+        callback: (response) => console.log('captcha solved!', response),
         'expired-callback': function () {
-          recaptchaVerifierRef.current.reset()
+          recaptchaVerifierRef.current.reset();
         }
       }, auth)
       recaptchaVerifierRef.current.render().then(function (widgetId) {
@@ -43,8 +46,8 @@ const Login = () => {
   const [error, setError] = useState(null)
   const [isChecked, setIsChecked] = useState(false)
 
-  const handleCheckboxChange = () => {setIsChecked(!isChecked)}
-  const handleForgot = () => {navigate("/forgotPassword")}
+  const handleCheckboxChange = () => { setIsChecked(!isChecked) }
+  const handleForgot = () => { navigate("/forgotPassword") }
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -64,7 +67,7 @@ const Login = () => {
       }
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
       navigate("/")
-    } catch (err) {handleAuthErrors(err)}
+    } catch (err) { handleAuthErrors(err) }
   }
 
   const handleAuthErrors = async (err) => {
@@ -81,6 +84,15 @@ const Login = () => {
   };
 
   const handle2FALogin = async () => {
+    if (verificationCode === "") {
+      setError("Enter verification code!")
+      return
+    }
+
+    if (!isValidSixDigitCode(verificationCode)) {
+      setError("Enter a valid code!")
+      return
+    }
     try {
       const cred = PhoneAuthProvider.credential(verificationId, verificationCode)
       const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred)
@@ -88,13 +100,13 @@ const Login = () => {
       toast("Success!")
       navigate("/")
     } catch (e) {
-      if (window.recaptchaVerifier) window.recaptchaVerifier.reset()
+      if (window.recaptchaVerifier) setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
 
       if (e.code === "auth/invalid-verification-code") {
         setError("Invalid Code! Try entering it again.")
       } else if (e.code === "auth/code-expired") {
         setError("Code Expired. Please request a new code or reload the page.")
-      } else {setError("Error validating code! Try Again!")}
+      } else { setError("Error validating code! Try Again!") }
       setError("Error during 2FA", e)
     }
   }
@@ -111,7 +123,7 @@ const Login = () => {
       setResolver(resolverVar)
       setVerificationId(verificationIdVar)
       setMfaCase(true)
-    } catch (error) {setError("Failed to complete multi-factor authentication.")}
+    } catch (error) { setError("Failed to complete multi-factor authentication.") }
   }
 
   return (

@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear, faPenToSquare, faShieldHalved } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect, useRef } from 'react'
-
 import { useNavigate } from 'react-router-dom'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
-import { auth } from "../firebase";
+import { auth } from "../firebase"
 import { toast } from 'react-toastify'
 import {
   multiFactor,
@@ -23,6 +22,7 @@ import { useDispatch } from 'react-redux'
 import { setDbUser } from '../features/user/userSlice'
 import { useSelector } from 'react-redux'
 import { isValidEmail, isValidName } from '../utils/fieldValidations'
+import VerificationInput from 'react-verification-input'
 
 const Settings = () => {
   const recaptchaVerifierRef = useRef(null)
@@ -32,7 +32,7 @@ const Settings = () => {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible',
         'expired-callback': function () {
-          recaptchaVerifierRef.current.reset()
+          setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
         }
       }, auth)
       recaptchaVerifierRef.current.render().then(function (widgetId) {
@@ -64,13 +64,13 @@ const Settings = () => {
   const enrolledFactors = multiFactor(firebaseUser).enrolledFactors
   let has2FA
   if (enrolledFactors) has2FA = enrolledFactors.length > 0
-  
+
   // const [receivedData, setReceivedData] = useState(false);
   // const [triggerEffect, setTriggerEffect] = useState(true);
 
-  const handleChangePassword = () => {navigate("/changePassword")}
-  const handleDeleteAccount = () => {navigate("/deleteAccount")}
-  const handle2FA = () => {navigate("/enable2FA")}
+  const handleChangePassword = () => { navigate("/changePassword") }
+  const handleDeleteAccount = () => { navigate("/deleteAccount") }
+  const handle2FA = () => { navigate("/enable2FA") }
 
   const handleChangeEmail = async (e) => {
     e.preventDefault()
@@ -114,7 +114,7 @@ const Settings = () => {
         setError("An error occured when changing the email, try again")
         return
       }
-    } catch (e) {handleAuthErrors(e)}
+    } catch (e) { handleAuthErrors(e) }
   }
 
   const handleAuthErrors = async (err) => {
@@ -202,7 +202,7 @@ const Settings = () => {
       }
 
     } catch (e) {
-      if (window.recaptchaVerifier) window.recaptchaVerifier.reset()
+      if (window.recaptchaVerifier) setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
 
       if (e.code === "auth/invalid-verification-code") {
         setError("Invalid Code! Try entering it again.")
@@ -211,28 +211,23 @@ const Settings = () => {
       } else {
         setError("Error validating code! Try Again!")
       }
-      setError("Error during 2FA", e)
     }
   }
 
   return (
-    <div className='settings-div'>
+    <div className='settings-div' style={mfaCase ? { alignItems: 'center' } : {}}>
       <div id="recaptcha-container-id"></div>
-
+      <div className='settings-head-div' style={mfaCase ? { paddingBottom: "2rem" } : {}}>
+        <FontAwesomeIcon size='4x' icon={faGear} className='settings-icon' />
+        <p className='settings-head-p'>Settings</p>
+      </div>
       {
         !mfaCase ?
           (
             <>
-              <div className='settings-head-div'>
-                <FontAwesomeIcon size='4x' icon={faGear} className='settings-icon' />
-                <p className='settings-head-p'>Settings</p>
-              </div>
-
               <form className='settings-form'>
                 <div className='name-changes-div'>
-
                   <p className='edit-profile'>Change Name:</p>
-
                   <input
                     className="settings-email-input"
                     type="text"
@@ -326,20 +321,21 @@ const Settings = () => {
             </>
           ) : (
             <>
-              <h2 className='heading-2fa-login'>Enter verification Code</h2>
-              <input
-                className='email-input'
-                type="text"
-                value={verificationCode}
-                onChange={(e) => {
-                  setVerificationCode(e.target.value);
-                  setError(null);
-                }}
-                placeholder="123456"
-                autoComplete='off'
-                style={{ borderColor: error ? 'red' : '#0ac6c0', transition: 'border-color 0.3s ease' }}
-              />
-              <button className="login-btn" onClick={handle2FALogin}>Submit Code</button>
+              <div className="popupContent" id="loginVerify">
+                <div id="verificationHeader">
+                  <h1 id="tfa-header">Two-Factor authentication</h1>
+                  <p>Enter the code that was sent to your phone number.</p>
+                </div>
+                <VerificationInput validChars='0-9' onChange={(code) => setVerificationCode(code)}
+                  classNames={{
+                    container: "otp-container",
+                    character: "character",
+                    characterInactive: "character--inactive",
+                    characterSelected: "character--selected",
+                    characterFilled: "character--filled",
+                  }} />
+                <button className="default-button login-btn" onClick={handle2FALogin}>Submit Code</button>
+              </div>
             </>
           )
       }
