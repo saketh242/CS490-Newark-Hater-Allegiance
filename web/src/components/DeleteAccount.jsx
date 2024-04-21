@@ -17,26 +17,24 @@ import { auth } from '../firebase';
 import { toast } from 'react-toastify';
 import nhaService from '../services/nhaService';
 import VerificationInput from 'react-verification-input';
-
+import { isValidSixDigitCode } from '../utils/fieldValidations';
 
 const DeleteAccount = () => {
 
     const recaptchaVerifierRef = useRef(null);
     useEffect(() => {
-        // Initialize the RecaptchaVerifier instance
+
         if (!recaptchaVerifierRef.current) {
-            recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
-                'size': 'invisible',
-                callback: (response) => console.log('captcha solved!', response),
-                'expired-callback': function() {
-                    recaptchaVerifierRef.current.reset();
-                  }
-            }, auth);
-            recaptchaVerifierRef.current.render().then(function (widgetId) {
-                window.recaptchaWidgetId = widgetId;
-            });
+          recaptchaVerifierRef.current = new RecaptchaVerifier('container-recaptcha', {
+            'size': 'invisible',
+            callback: (response) => console.log('captcha solved!', response),
+          }, auth);
+          recaptchaVerifierRef.current.render().then(function (widgetId) {
+            window.recaptchaWidgetId = widgetId;
+          });
         }
-    }, []);
+      }, []);
+      
 
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
@@ -80,6 +78,15 @@ const DeleteAccount = () => {
     }
 
     const handle2FALogin = async () => {
+        if (verificationCode == ""){
+            setError("Enter verification code!");
+            return
+        }
+
+        if (!isValidSixDigitCode(verificationCode)){
+            setError("Enter a valid code!")
+            return
+        }
         try {
             const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
             const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
@@ -93,8 +100,9 @@ const DeleteAccount = () => {
             msg()
 
         } catch (e) {
-            if (window.recaptchaVerifier) window.recaptchaVerifier.reset();
-
+            if (window.recaptchaVerifier){
+                setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
+            } 
             if (e.code === "auth/invalid-verification-code") {
                 setError("Invalid Code! Try entering it again.");
             } else if (e.code === "auth/code-expired") {
@@ -111,7 +119,7 @@ const DeleteAccount = () => {
     const handleAuthErrors = async (err) => {
         switch (err.code) {
             case "auth/invalid-login-credentials":
-                setError("Invalid Credentials");
+                setError("Incorrect Password, try again!");
                 break;
             case "auth/multi-factor-auth-required":
                 handleMultiFactorAuth(err);

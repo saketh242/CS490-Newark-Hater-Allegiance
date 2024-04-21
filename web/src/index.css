@@ -1970,6 +1970,13 @@ input[type="checkbox"]{
 
 /* Settings.jsx component Styling */
 
+.settings-verify-fix{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .error-settings {
   color: red;
   font-size: 1.3rem;
