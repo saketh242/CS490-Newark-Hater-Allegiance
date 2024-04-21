@@ -24,7 +24,7 @@ const ChangePassword = () => {
         if (!recaptchaVerifierRef.current) {
           recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
             'size': 'invisible',
-            'callback': (response) => console.log('reCAPTCHA solved!', response),
+            'callback': () => console.log('reCAPTCHA solved!'),
             'expired-callback': function() {
               recaptchaVerifierRef.current.render().then(function(widgetId) {
                 window.recaptchaWidgetId = widgetId
@@ -35,9 +35,7 @@ const ChangePassword = () => {
           
           recaptchaVerifierRef.current.render().then(function(widgetId) {
             window.recaptchaWidgetId = widgetId
-          }).catch(function(error) {
-            console.error('Error rendering reCAPTCHA:', error)
-          })
+          }).catch(function(error) {})
         }
         return () => {}
       }, [])
@@ -94,7 +92,7 @@ const ChangePassword = () => {
                     const msg = () => toast(`Password changed successfully, login again`)
                     msg()
                     navigate("/login")
-                }).catch((error) => { console.log(error) })
+                }).catch((error) => { })
             } catch (e) {
                 setError("Error changing password, try again!")
                 return
@@ -154,7 +152,7 @@ const ChangePassword = () => {
                     const msg = () => toast(`Password changed successfully, login again`)
                     msg()
                     navigate("/login")
-                }).catch((error) => { console.log(error) })
+                }).catch((error) => {})
             } catch (e) {
                 setError("Error changing password, try again!")
                 return

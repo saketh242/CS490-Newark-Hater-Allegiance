@@ -66,7 +66,6 @@ const Signup = () => {
         setError("Email address already registered!")
         return
       }
-      console.log(e.message)
     }
   }
   return (

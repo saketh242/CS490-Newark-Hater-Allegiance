@@ -25,7 +25,7 @@ const Enable2FA = () => {
     if (!recaptchaVerifierRef.current) {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible',
-        'callback': (response) => console.log('reCAPTCHA solved!', response),
+        'callback': () => console.log('reCAPTCHA solved!'),
         'expired-callback': function() {
           console.log('reCAPTCHA token expired')
           recaptchaVerifierRef.current.render().then(function(widgetId) {

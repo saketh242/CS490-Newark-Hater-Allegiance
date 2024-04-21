@@ -15,7 +15,7 @@ function NHANav() {
     signOut(auth).then(() => {
       navigate("/login")
       toast(`Logged out successfully`)
-    }).catch((error) => {console.log(error)})
+    }).catch((error) => {})
   }
 
   return (

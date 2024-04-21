@@ -143,7 +143,6 @@ const Settings = () => {
       setVerificationId(verificationIdVar)
       setMfaCase(true)
     } catch (error) {
-      console.error("2FA error:", error)
       setError("Failed to complete multi-factor authentication.")
     }
   }
