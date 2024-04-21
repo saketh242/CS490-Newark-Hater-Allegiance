@@ -13,6 +13,7 @@ import nhaService from "../services/nhaService"
 import { toast } from 'react-toastify'
 
 import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
+import { isValidEmail, isValidName } from '../utils/fieldValidations'
 
 const Help = () => {
   const [showBox, setShowBox] = useState(0)
@@ -30,6 +31,15 @@ const Help = () => {
     setEmailError('') //reset email error
     if (name === '' || email === '' || message === '') {
       setEmailError("Please fill out all fields.")
+      return
+    }
+    if (!isValidEmail(email)){
+      setEmailError("Please enter a valid email!")
+      return
+    }
+
+    if (!isValidName(name)){
+      setEmailError("Please enter a valid name!")
       return
     }
     else {
@@ -246,7 +256,7 @@ const Help = () => {
           </div>
 
           <div id='contact-form'>
-            {emailError !== '' &&
+            {emailError && emailError !== '' &&
               <div className="emailError">
                 <FontAwesomeIcon icon={faCircleExclamation} id="errorIcon" size="2x" />
                 <p>{emailError}</p>
@@ -261,6 +271,7 @@ const Help = () => {
                 onChange={
                   (e) => {
                     setName(e.target.value)
+                    setEmailError(null)
                   }
                 }
               />
@@ -275,6 +286,7 @@ const Help = () => {
                 onChange={
                   (e) => {
                     setEmail(e.target.value)
+                    setEmailError(null)
                   }
                 } />
             </div>
@@ -284,7 +296,12 @@ const Help = () => {
                 placeholder='Your message'
                 name='message'
                 required
-                onChange={(e) => { setMessage(e.target.value) }}
+                onChange={
+                  (e) => {
+                     setMessage(e.target.value) 
+                     setEmailError(null)
+                    }
+                  }
               />
             </div>
             <div>
