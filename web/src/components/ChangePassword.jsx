@@ -21,23 +21,28 @@ const ChangePassword = () => {
 
     const recaptchaVerifierRef = useRef(null)
     useEffect(() => {
-        // Initialize the RecaptchaVerifier instance
         if (!recaptchaVerifierRef.current) {
-            recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
-                'size': 'invisible',
-                callback: (response) => console.log('captcha solved!', response),
-                'expired-callback': function () {
-                    setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
-                }
-            }, auth)
-            recaptchaVerifierRef.current.render().then(function (widgetId) {
+          recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
+            'size': 'invisible',
+            'callback': (response) => console.log('reCAPTCHA solved!', response),
+            'expired-callback': function() {
+              recaptchaVerifierRef.current.render().then(function(widgetId) {
                 window.recaptchaWidgetId = widgetId
-            })
+              })
+            },
+            'timeout': 60000 
+          }, auth)
+          
+          recaptchaVerifierRef.current.render().then(function(widgetId) {
+            window.recaptchaWidgetId = widgetId
+          }).catch(function(error) {
+            console.error('Error rendering reCAPTCHA:', error)
+          })
         }
-    }, [])
+        return () => {}
+      }, [])
 
     const navigate = useNavigate()
-
     const [currentPassword, setCurrentPassword] = useState("")
     const [newPassword, setNewPassword] = useState("")
     const [newPassword2, setNewPassword2] = useState("")
@@ -51,7 +56,6 @@ const ChangePassword = () => {
     const user = auth.currentUser
 
     const handleChangePassword = async (e) => {
-
         e.preventDefault()
 
         if (currentPassword === "" || newPassword === "" || newPassword2 === "") {
@@ -95,10 +99,7 @@ const ChangePassword = () => {
                 setError("Error changing password, try again!")
                 return
             }
-
-        } catch (e) {
-            handleAuthErrors(e)
-        }
+        } catch (e) {handleAuthErrors(e)}
     }
 
     const handleAuthErrors = async (err) => {
