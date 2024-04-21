@@ -4,7 +4,8 @@ import 'react-modern-drawer/dist/index.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUp, faArrowDown, faX, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import emptybox from '../images/emptybox.png'
-import nhaService from '../services/nhaService'
+import useHistoryManagement from '../useHistoryManagement'
+import { useSelector } from 'react-redux'
 
 const sideBarStyle = {
   backgroundColor: "#23262F",
@@ -37,11 +38,12 @@ const loadInputAndTranslatedCode = (setInputCode, setTranslatedCode, setSourceLa
   setDesiredLanguage(desiredLanguage)
 }
 
-const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSidebar, toggleSidebar, setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage }) => {
-
-  const [width, setWidth] = useState(window.innerWidth)
-  const [originalHistory, setOriginalHistory] = useState(null)
+const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSidebar, 
+  toggleSidebar, setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage }) => {
+  const { reduxHandleDeleteHistory, reduxHandleGetAllHistory } = useHistoryManagement()
+  const originalHistory = useSelector((state) => state.user.history)
   const [history, setHistoryData] = useState(null)
+  const [width, setWidth] = useState(window.innerWidth)
   const [historyError, setHistoryError] = useState('')
   const [sortOrder, setSortOrder] = useState(-1)
   const [sortField, setSortField] = useState("")
@@ -49,9 +51,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
   const [filterOptions, setFilterOptions] = useState([])
   const [selectedItem, setSelectedFilterItem] = useState("")
 
-  const changeSort = (e) => {
-    setSortField(e.target.value)
-  }
+  const changeSort = (e) => {setSortField(e.target.value)}
 
   const changeFilter = (e) => {
     setSelectedFilterItem("")
@@ -75,19 +75,16 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
     const handleGetAllHistory = async () => {
       setHistoryError('')
       try {
-        const fetchedHistory = await nhaService.getAllHistory(user, dbUserRedux)
-        setOriginalHistory(fetchedHistory)
-        setHistoryData(fetchedHistory)
-      } catch (error) {
-        setHistoryError('Unable to retrieve history at this time.')
-      }
+        reduxHandleGetAllHistory(user, dbUserRedux)
+        setHistoryData(originalHistory)
+      } catch (error) {setHistoryError('Unable to retrieve history at this time.')}
     }
 
     if (triggerHistory) {
       handleGetAllHistory()
       setTriggerHistory(false)
     }
-  }, [user, dbUserRedux, triggerHistory, setTriggerHistory])
+  }, [user, dbUserRedux, triggerHistory, setTriggerHistory, reduxHandleGetAllHistory, originalHistory])
 
   useEffect(() => {
     setSortField("")
@@ -95,6 +92,8 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
     setFilterField("")
     setSelectedFilterItem("")
     setFilterOptions([])
+    setHistoryData(originalHistory)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showSidebar])
 
   const changeFilterOptions = (filter) => {
@@ -108,6 +107,8 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
         objects.add(element.Desired_language)
       }
     })
+    if (objects.size === 0)
+      setHistoryData(originalHistory)
     setFilterOptions(Array.from(objects))
   }
 
@@ -164,18 +165,21 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
 
   const deleteFromHistory = async (i = null) => {
     if (i === null) {
-      await nhaService.deleteHistory(user, dbUserRedux)
-      setOriginalHistory([])
+      reduxHandleDeleteHistory(user, dbUserRedux)
       setHistoryData([])
       return
     }
-
-    var deleteId = history[i]._id
-    await nhaService.deleteHistory(user, dbUserRedux, deleteId)
-    
-    setOriginalHistory(originalHistory.filter((yeet) => {return yeet._id !==  deleteId}))
-    setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}))
+      const deleteId = history[i]._id
+      reduxHandleDeleteHistory(user, dbUserRedux, deleteId)
+      setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}))
   }
+
+  useEffect(() => {
+    changeFilterOptions(filterField)
+    try {filterOptions.find(selectedItem)}
+    catch (error) {setSelectedFilterItem("")}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [originalHistory])
 
   const clearDropdowns = () => {
     setSortField("")

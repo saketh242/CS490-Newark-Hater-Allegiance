@@ -8,6 +8,7 @@ import useAuth from './useAuth'
 import { useSelector } from 'react-redux'
 import useFetchReviews from './useFetchReviews'
 import useAverageRatings from './useAverageRatings'
+import useHistoryManagement from './useHistoryManagement'
 import ScrollToTop from './utils/scrollToTop'
 
 import Loading from './components/Loading'
@@ -31,10 +32,12 @@ const App = () => {
   useAuth()
   useFetchReviews()
   useAverageRatings()
+  const { setFetch } = useHistoryManagement()
+
   const user = useSelector((state) => state.user.user)
   const isLoading = useSelector((state) => state.user.isLoading)
   const { setShouldFetch } = useFetchReviews()
-  useEffect(() => {if (!isLoading) setShouldFetch(true)}, [isLoading, setShouldFetch])
+  useEffect(() => {if (!isLoading) setShouldFetch(true)}, [isLoading, setShouldFetch, setFetch])
 
   return (
     <>

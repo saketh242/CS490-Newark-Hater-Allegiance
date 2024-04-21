@@ -48,22 +48,17 @@ const Translate = () => {
         const response = await nhaService.getOpenAIStatus()
         if (!response) throw error
         setApiReady(response)
-      } catch (error) {
-        setErrorAPI('Error fetching API status')
-      } finally {
-        setLoadingAPI(false)
-      }
+      } catch (error) {setErrorAPI('Error fetching API status')} 
+        finally {setLoadingAPI(false)}
     }
-
     fetchAPIStatus()
   }, [])
 
   useEffect(() => {setTriggerHistory(true)}, [])
-
   const handleSourceLanguageChange = (e) => {setSourceLanguage(e.target.value)}
   const handleDesiredLanguageChange = (e) => {setDesiredLanguage(e.target.value)}
-
   const [translationError, setTranslationError] = useState('')
+
   const translateCode = async () => {
     if (sourceLanguage === "" && desiredLanguage === "") {
       setTranslationError("Please select the source and desired languages")
