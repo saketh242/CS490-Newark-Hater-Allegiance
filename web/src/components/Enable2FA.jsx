@@ -16,7 +16,8 @@ const Enable2FA = () => {
 
     if (!recaptchaVerifierRef.current) {
       recaptchaVerifierRef.current = new RecaptchaVerifier('container-recaptcha', {
-        'size': 'invisible'
+        'size': 'invisible',
+        callback: (response) => console.log('captcha solved!', response),
       }, auth);
       recaptchaVerifierRef.current.render().then(function (widgetId) {
         window.recaptchaWidgetId = widgetId;

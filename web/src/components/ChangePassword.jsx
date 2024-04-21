@@ -26,6 +26,7 @@ const ChangePassword = () => {
         if (!recaptchaVerifierRef.current) {
             recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
                 'size': 'invisible',
+                callback: (response) => console.log('captcha solved!', response),
                 'expired-callback': function () {
                     recaptchaVerifierRef.current.reset();
                 }

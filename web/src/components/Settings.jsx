@@ -33,8 +33,9 @@ const Settings = () => {
     if (!recaptchaVerifierRef.current) {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible',
+        callback: (response) => console.log('captcha solved!', response),
         'expired-callback': function () {
-          recaptchaVerifierRef.current.reset();
+          setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
         }
       }, auth);
       recaptchaVerifierRef.current.render().then(function (widgetId) {
@@ -230,7 +231,7 @@ const Settings = () => {
 
 
     } catch (e) {
-        if (window.recaptchaVerifier) window.recaptchaVerifier.reset();
+      setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
 
         if (e.code === "auth/invalid-verification-code") {
             setError("Invalid Code! Try entering it again.");
