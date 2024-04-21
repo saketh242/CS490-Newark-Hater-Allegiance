@@ -23,17 +23,20 @@ const DeleteAccount = () => {
 
     const recaptchaVerifierRef = useRef(null);
     useEffect(() => {
-
+        // Initialize the RecaptchaVerifier instance
         if (!recaptchaVerifierRef.current) {
-          recaptchaVerifierRef.current = new RecaptchaVerifier('container-recaptcha', {
-            'size': 'invisible',
-            callback: (response) => console.log('captcha solved!', response),
-          }, auth);
-          recaptchaVerifierRef.current.render().then(function (widgetId) {
-            window.recaptchaWidgetId = widgetId;
-          });
+            recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
+                'size': 'invisible',
+                callback: (response) => console.log('captcha solved!', response),
+                'expired-callback': function () {
+                    setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
+                }
+            }, auth);
+            recaptchaVerifierRef.current.render().then(function (widgetId) {
+                window.recaptchaWidgetId = widgetId;
+            });
         }
-      }, []);
+    }, []);
       
 
     const [password, setPassword] = useState("")
@@ -94,6 +97,7 @@ const DeleteAccount = () => {
             // now we can delete the account
             await nhaService.deleteUser(user);
             await deleteUser(user);
+
             await signOut(auth);
             navigate("/login")
             const msg = () => toast(`Account deleted successfully!`);
