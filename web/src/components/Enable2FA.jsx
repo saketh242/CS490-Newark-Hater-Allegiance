@@ -37,11 +37,11 @@ const Enable2FA = () => {
         'timeout': 60000 
       }, auth);
       
-      recaptchaVerifierRef.current.render().then(function(widgetId) {
-        window.recaptchaWidgetId = widgetId;
-      }).catch(function(error) {
-        console.error('Error rendering reCAPTCHA:', error);
-      });
+      // recaptchaVerifierRef.current.render().then(function(widgetId) {
+      //   window.recaptchaWidgetId = widgetId;
+      // }).catch(function(error) {
+      //   console.error('Error rendering reCAPTCHA:', error);
+      // });
     }
 
     
