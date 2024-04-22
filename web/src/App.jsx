@@ -40,6 +40,9 @@ const App = () => {
   const isLoading = useSelector((state) => state.user.isLoading);
   const { setShouldFetch } = useFetchReviews();
 
+
+  
+
   useEffect(() => {
     if (!isLoading) {
       setShouldFetch(true);
@@ -51,6 +54,7 @@ const App = () => {
   }
   return !isLoading && (
     <>
+    <div id="recaptcha-container-id"></div>
       <Router>
         <div className="content">
         <ScrollToTop />

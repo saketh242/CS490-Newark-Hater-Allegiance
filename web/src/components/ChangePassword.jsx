@@ -211,7 +211,6 @@ const ChangePassword = () => {
     return (
         <div className='change-password-div'>
             <p className='change-password-heading'>Change Password</p>
-            <div id="recaptcha-container-id"></div>
 
 
             {

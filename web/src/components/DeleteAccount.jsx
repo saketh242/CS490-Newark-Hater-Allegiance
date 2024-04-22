@@ -173,9 +173,6 @@ const DeleteAccount = () => {
         <div className="delete-account-div">
         <h2 className="delete-heading warning-flash">Deleted accounts cannot be recovered again!</h2>
 
-            <div id="recaptcha-container-id"></div>
-
-
         {!mfaCase ? 
         (<>
 

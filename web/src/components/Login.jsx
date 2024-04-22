@@ -34,11 +34,12 @@ const Login = () => {
         'timeout': 60000 
       }, auth);
       
-      recaptchaVerifierRef.current.render().then(function(widgetId) {
-        window.recaptchaWidgetId = widgetId;
-      }).catch(function(error) {
-        console.error('Error rendering reCAPTCHA:', error);
-      });
+      // recaptchaVerifierRef.current.render().then(function(widgetId) {
+      //   window.recaptchaWidgetId = widgetId;
+      // }).catch(function(error) {
+      //   console.error('Error rendering reCAPTCHA:', error);
+      //   //window.location.reload()
+      // });
     }
 
     
@@ -115,7 +116,7 @@ const Login = () => {
       const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
       const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
       await resolver.resolveSignIn(multiFactorAssertion);
-      toast("Success!")
+      
       navigate("/")
     } catch (e) {
       if (window.recaptchaVerifier){
@@ -129,7 +130,7 @@ const Login = () => {
       } else {
         setError("Error validating code! Try Again!");
       }
-      setError("Error during 2FA, please contact us for help.");
+      //setError("Error during 2FA, please contact us for help.");
     }
   }
 
@@ -155,7 +156,6 @@ const Login = () => {
 
   return (
     <div className='login-content'>
-      <div id="recaptcha-container-id"></div>
 
       {!mfaCase ?
         (

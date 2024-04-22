@@ -268,7 +268,6 @@ const Enable2FA = () => {
 
   return (
     <div className="div-2fa">
-      <div id="recaptcha-container-id"></div>
       {
         has2FA ?
           <div>

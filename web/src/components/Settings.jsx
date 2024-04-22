@@ -31,18 +31,29 @@ const Settings = () => {
 
   const recaptchaVerifierRef = useRef(null);
   useEffect(() => {
-    // Initialize the RecaptchaVerifier instance
     if (!recaptchaVerifierRef.current) {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible',
-        'expired-callback': function () {
-          setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
-        }
+        'callback': (response) => console.log('reCAPTCHA solved!', response),
+        'expired-callback': function() {
+          console.log('reCAPTCHA token expired');
+          recaptchaVerifierRef.current.render().then(function(widgetId) {
+            window.recaptchaWidgetId = widgetId;
+          });
+        },
+        'timeout': 60000 
       }, auth);
-      recaptchaVerifierRef.current.render().then(function (widgetId) {
-        window.recaptchaWidgetId = widgetId;
-      });
+      
+      // recaptchaVerifierRef.current.render().then(function(widgetId) {
+      //   window.recaptchaWidgetId = widgetId;
+      // }).catch(function(error) {
+      //   console.error('Error rendering reCAPTCHA:', error);
+      // });
     }
+
+    
+    return () => {
+    };
   }, []);
 
   const user = useSelector((state) => state.user.user);
@@ -250,7 +261,6 @@ const Settings = () => {
 
   return (
     <div className='settings-div' style={mfaCase ? {alignItems:'center'}: {}}>
-      <div id="recaptcha-container-id"></div>
       <div className='settings-head-div' style={ mfaCase ? {paddingBottom:"2rem"} : {}}>
         <FontAwesomeIcon size='4x' icon={faGear} className='settings-icon' />
         <p className='settings-head-p'>Settings</p>
