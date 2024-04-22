@@ -1,8 +1,7 @@
-import React, { useState, lazy, Suspense } from 'react'
+import React, { useState} from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCaretRight, 
-  faCircleExclamation, faFileLines, faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
+import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCaretRight, faCircleExclamation, faFileLines, faHistory } from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
 import feedback from '../images/feedback.png'
 import pfpImg from '../images/gravatar.png'

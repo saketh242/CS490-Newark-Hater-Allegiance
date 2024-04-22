@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from 'react-router-dom'
-
 import {
   multiFactor,
   RecaptchaVerifier,
@@ -13,7 +12,6 @@ import {
 } from "firebase/auth"
 
 import { auth } from "../firebase"
-import nhaService from "../services/nhaService"
 import { toast } from 'react-toastify'
 import { isValidPhoneNumber, isValidSixDigitCode } from "../utils/fieldValidations"
 import VerificationInput from "react-verification-input"
@@ -79,7 +77,7 @@ const Enable2FA = () => {
       }).catch((error) => { })
 
     } catch (e) {
-      if (e.code == 'auth/invalid-verification-code') {
+      if (e.code === 'auth/invalid-verification-code') {
         setError("Incorrect code! (¬_¬ )")
         return
       } else {
@@ -114,14 +112,11 @@ const Enable2FA = () => {
       setResolver(resolverVar)
       setVerificationId(verificationIdVar)
       setMfaCase(true)
-
-    } catch (error) {
-      setError("Failed to complete multi-factor authentication.")
-    }
+    } catch (error) {setError("Failed to complete multi-factor authentication.")}
   }
 
   const handle2FALogin = async () => {
-    if (verificationCode == "") {
+    if (verificationCode === "") {
       setError("Enter verification code!")
       return
     }
@@ -136,16 +131,15 @@ const Enable2FA = () => {
       await resolver.resolveSignIn(multiFactorAssertion);
 
       // now try to unenroll the user
-      const firebaseUser = auth.currentUser;
       const enrolledFactors = multiFactor(user).enrolledFactors
       if (has2FA) {
-        const multiFactorUser = multiFactor(auth.currentUser);
+        const multiFactorUser = multiFactor(auth.currentUser)
         return multiFactorUser.unenroll(enrolledFactors[0])
           .then(() => {
             signOut(auth).then(() => {
-              const msg = () => toast(`2FA Disabled :), Login again`);
+              const msg = () => toast(`2FA Disabled :), Login again`)
               msg()
-              navigate("/login");
+              navigate("/login")
             }).catch((error) => {
               setError("Error signing out, try again!")
               return
@@ -170,7 +164,7 @@ const Enable2FA = () => {
   }
 
   const handle2FA = async () => {
-    if (password == "" || phoneNumber == "") {
+    if (password === "" || phoneNumber === "") {
       setError("Please enter password and phone number")
       return
     }
@@ -203,7 +197,7 @@ const Enable2FA = () => {
       }
 
     } catch (e) {
-      if (e.code == "auth/invalid-login-credentials") {
+      if (e.code === "auth/invalid-login-credentials") {
         setError("Incorrect password!")
         return
       } else {
@@ -215,7 +209,7 @@ const Enable2FA = () => {
   const handleDisable2FA = async (e) => {
     e.preventDefault()
 
-    if (password == "") {
+    if (password === "") {
       setError("Enter password!")
       return
     }
@@ -231,7 +225,7 @@ const Enable2FA = () => {
 
   const handleChangePhoneNumber = async () => {
     // chnage phone number logic here
-    if (phoneNumber == "") {
+    if (phoneNumber === "") {
       setError("Enter a phone number!");
       return
     }

@@ -5,8 +5,6 @@ import Gravatar from 'react-gravatar'
 import { useSelector } from 'react-redux'
 import { selectTotalFeedbackAverage, selectAverageTranslationRating, selectAverageUXRating, selectFetchingRatings, selectCount } from '../features/ratings/ratingsSlice'
 
-import Loading from './Loading'
-// import StarRating from './StarRating'
 const StarRating = lazy(() => import('./StarRating'))
 
 const HomeReviews = () => {

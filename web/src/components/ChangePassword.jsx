@@ -71,12 +71,12 @@ const ChangePassword = () => {
             return
         }
 
-        else if (currentPassword == newPassword) {
+        else if (currentPassword === newPassword) {
             setError("New password cannot be the old password!")
             return
         }
 
-        else if (newPassword != newPassword2) {
+        else if (newPassword !== newPassword2) {
             setError("Both passwords has to be the same")
             return
         }
@@ -130,7 +130,7 @@ const ChangePassword = () => {
     }
 
     const handle2FALogin = async () => {
-        if (verificationCode == ""){
+        if (verificationCode === ""){
             setError("Enter verification code!")
             return
         }
