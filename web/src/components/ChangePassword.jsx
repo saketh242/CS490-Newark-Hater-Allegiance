@@ -118,7 +118,6 @@ const ChangePassword = () => {
             console.log(e);
             handleAuthErrors(e)
         }
-
     }
 
     const handleAuthErrors = async (err) => {
