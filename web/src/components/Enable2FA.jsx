@@ -1,6 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
-import { multiFactor, RecaptchaVerifier, PhoneAuthProvider, reauthenticateWithCredential, EmailAuthProvider, PhoneMultiFactorGenerator, signOut } from "firebase/auth";
+
+import {
+  multiFactor,
+  RecaptchaVerifier,
+  PhoneAuthProvider,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+  PhoneMultiFactorGenerator,
+  getMultiFactorResolver,
+  signOut
+} from "firebase/auth";
+
 import { auth } from "../firebase";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDeleteLeft, faUserPen } from '@fortawesome/free-solid-svg-icons'
@@ -16,7 +27,8 @@ const Enable2FA = () => {
 
     if (!recaptchaVerifierRef.current) {
       recaptchaVerifierRef.current = new RecaptchaVerifier('container-recaptcha', {
-        'size': 'invisible'
+        'size': 'invisible',
+        callback: (response) => console.log('captcha solved!', response),
       }, auth);
       recaptchaVerifierRef.current.render().then(function (widgetId) {
         window.recaptchaWidgetId = widgetId;
@@ -24,10 +36,10 @@ const Enable2FA = () => {
     }
   }, []);
 
+  const [verificationCode, setVerificationCode] = useState("");
   const [verificationId, setVerificationId] = useState(null);
-
-  const [deletePage, setDeletePage] = useState(null);
-  const [editPage, setEditPage] = useState(null);
+  const [resolver, setResolver] = useState(null);
+  const [mfaCase, setMfaCase] = useState(false);
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [code, setCode] = useState("");
@@ -43,9 +55,6 @@ const Enable2FA = () => {
   if (enrolledFactors) {
     has2FA = enrolledFactors.length > 0;
   }
-  //  const msg = () => toast(`Email change initiated, check your inbox and profile updated :)`);
-  //  msg()
-
   const handleVerifyCode = async () => {
     if (!isValidSixDigitCode(code)) {
       setError("Enter a valid code!");
@@ -62,7 +71,7 @@ const Enable2FA = () => {
         navigate("/login")
         const msg = () => toast(`2FA enabled, login again :)`);
         msg();
-      }).catch((error) => {});
+      }).catch((error) => { });
 
     } catch (e) {
       if (e.code == 'auth/invalid-verification-code') {
@@ -75,6 +84,102 @@ const Enable2FA = () => {
 
     }
   }
+
+  const handleAuthErrors = async (err) => {
+    switch (err.code) {
+      case "auth/invalid-login-credentials":
+        setError("Incorrect Password, try again!");
+        break;
+      case "auth/multi-factor-auth-required":
+        handleMultiFactorAuth(err);
+        break;
+      default:
+        setError("Reauthentication failed. Try again");
+    }
+  }
+
+
+  const handleMultiFactorAuth = async (err) => {
+    const resolverVar = getMultiFactorResolver(auth, err);
+    // removing the if check because sms is the only 2fa we have right now
+    const phoneAuthProvider = new PhoneAuthProvider(auth);
+    try {
+      const verificationIdVar = await phoneAuthProvider.verifyPhoneNumber({
+        multiFactorHint: resolverVar.hints[0],
+        session: resolverVar.session
+      }, recaptchaVerifierRef.current);
+      setResolver(resolverVar);
+      setVerificationId(verificationIdVar);
+      setMfaCase(true);
+
+    } catch (error) {
+      console.error("2FA error:", error);
+      setError("Failed to complete multi-factor authentication.");
+    }
+
+  }
+
+  const handle2FALogin = async () => {
+    if (verificationCode == "") {
+      setError("Enter verification code!")
+      return;
+    }
+
+    if (!isValidSixDigitCode(verificationCode)){
+      setError("Enter a valid code!")
+      return
+  }
+    try {
+      const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
+      const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
+      await resolver.resolveSignIn(multiFactorAssertion);
+
+      // now try to unenroll the user
+
+      const firebaseUser = auth.currentUser;
+      const enrolledFactors = multiFactor(user).enrolledFactors
+      if (has2FA) {
+      const multiFactorUser = multiFactor(auth.currentUser);
+      return multiFactorUser.unenroll(enrolledFactors[0])
+        .then(() => {
+          console.log("2FA unenrolled successfully!")
+          signOut(auth).then(() => {
+            const msg = () => toast(`2FA Disabled :), Login again`);
+            msg()
+            navigate("/login");
+            console.log("2FA disabled and redirected successfully")
+          }).catch((error) => {
+            console.log(error)
+            setError("Error signing out, try again!")
+            return
+          });
+        }).catch(() => {
+            console.log("Error disabling 2FA")
+            setError("Error disabling 2FA, try again :(")
+            return
+        })
+
+    }
+
+
+    } catch (e) {
+      if (window.recaptchaVerifier) {
+        setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
+      }
+
+      if (e.code === "auth/invalid-verification-code") {
+        setError("Invalid Code! Try entering it again.");
+      } else if (e.code === "auth/code-expired") {
+        setError("Code Expired. Please request a new code or reload the page.");
+
+      } else {
+        setError("Error validating code! Try Again!");
+      }
+      console.error("Error during 2FA:", e);
+    }
+  }
+
+
 
   const handle2FA = async () => {
 
@@ -112,30 +217,27 @@ const Enable2FA = () => {
 
   }
 
-  const handleDisable2FA = async () => {
 
-    try {
-      const firebaseUser = auth.currentUser;
 
-      const result = await nhaService.disable2FA(firebaseUser);
+  const handleDisable2FA = async (e) => {
+    e.preventDefault()
 
-      if (result.status) {
-        // 2fa disabled successfully
-        const msg = () => toast(`2FA disabled :)`);
-        msg()
-        // now logout
-        signOut(auth).then(() => {
-          navigate("/login")
-        }).catch((error) => {});
-      } else {
-        throw new Error(result.error || 'Failed to disable 2FA');
-      }
-
-    } catch (e) {
-      setError(e.message || 'An error occurred disabling 2FA, try again');
+    if (password == "") {
+      setError("Enter password!")
       return
     }
+    // reauthenticating the user
 
+    try {
+      const credential = EmailAuthProvider.credential(user.email, password);
+      await reauthenticateWithCredential(user, credential)
+      console.log("re authentication successful")
+    } catch (e) {
+
+      // this will throw an error everytime because, en user has mfa and is trying to reauthenticate
+      console.log(e);
+      handleAuthErrors(e)
+    }
   }
 
   const handleChangePhoneNumber = async () => {
@@ -160,14 +262,65 @@ const Enable2FA = () => {
             <h2 className="h2-2fa">2Factor Authentication was already enabled on your account</h2>
             <div className="buttons-2fa">
 
-                <div className="content-2fa">
-                <p className="p-2fa">We recommend using 2FA, click the button below to disable it</p>
+              {!mfaCase ?
 
-                  <button onClick={handleDisable2FA} className="login-btn disable-2fa-btn">Disable 2FA</button>
-                  {error && <p className="error-msg">{error}</p>}
-                </div>
-             
+                (
+                  <>
+                    <div className="content-2fa">
+                      <p className="p-2fa">We recommend using 2FA, enter password and click the button to disable it</p>
+                      <input
+                        type="password"
+                        className='password-change'
+                        value={password}
+                        onChange={(e) => {
+                          setPassword(e.target.value)
+                          setError(null)
+                        }}
+                        placeholder='Password'
+                        autoComplete='off'
+                        required
+                        style={{
+                          borderColor: error ? 'red' : '#0ac6c0',
+                          transition: 'border-color 0.3s ease',
+                        }}
+                      />
+
+                      <button onClick={handleDisable2FA} className="login-btn disable-2fa-btn">Disable 2FA</button>
+                      {error && <p className="error-msg">{error}</p>}
+                    </div>
+
+                  </>
+                )
+
+                : (
+                  <>
+
+                    <div className="popupContent" id="loginVerify">
+                      <div id="verificationHeader">
+                        <h1 id="tfa-header">Two-Factor authentication</h1>
+                        <p>Enter the code that was sent to your phone number.</p>
+                      </div>
+                      <VerificationInput validChars='0-9' onChange={(code) => setVerificationCode(code)}
+                        classNames={{
+                          container: "otp-container",
+                          character: "character",
+                          characterInactive: "character--inactive",
+                          characterSelected: "character--selected",
+                          characterFilled: "character--filled",
+                        }} />
+                      <button className="default-button login-btn" onClick={handle2FALogin}>Submit Code</button>
+                    </div>
+
+
+                  </>
+                )}
+
+
+
+
             </div>
+            {error && <p className="error-msg" style={{textAlign:"center"}}>{error}</p>}
+
 
 
 
@@ -229,21 +382,21 @@ const Enable2FA = () => {
                     transition: 'border-color 0.3s ease',
                   }}
                 /> */}
-                            <div className="popupContent" id="loginVerify">
-              <div id="verificationHeader">
-                <h1 id="tfa-header">Two-Factor authentication</h1>
-                <p>Enter the code that was sent to your phone number.</p>
-              </div>
-              <VerificationInput validChars='0-9' onChange={(code) => setCode(code)}
-                classNames={{
-                  container: "otp-container",
-                  character: "character",
-                  characterInactive: "character--inactive",
-                  characterSelected: "character--selected",
-                  characterFilled: "character--filled",
-                }} />
-              <button className="default-button login-btn" onClick={handleVerifyCode}>Submit Code</button>
-            </div>
+                <div className="popupContent" id="loginVerify">
+                  <div id="verificationHeader">
+                    <h1 id="tfa-header">Two-Factor authentication</h1>
+                    <p>Enter the code that was sent to your phone number.</p>
+                  </div>
+                  <VerificationInput validChars='0-9' onChange={(code) => setCode(code)}
+                    classNames={{
+                      container: "otp-container",
+                      character: "character",
+                      characterInactive: "character--inactive",
+                      characterSelected: "character--selected",
+                      characterFilled: "character--filled",
+                    }} />
+                  <button className="default-button login-btn" onClick={handleVerifyCode}>Submit Code</button>
+                </div>
               </>}
 
             {error && <p className="error-msg">{error}</p>}
