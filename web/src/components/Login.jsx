@@ -21,20 +21,30 @@ import VerificationInput from "react-verification-input";
 const Login = () => {
   const recaptchaVerifierRef = useRef(null);
   useEffect(() => {
-    // Initialize the RecaptchaVerifier instance
     if (!recaptchaVerifierRef.current) {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible',
-        callback: (response) => console.log('captcha solved!', response),
+        'callback': (response) => console.log('reCAPTCHA solved!', response),
         'expired-callback': function() {
-          recaptchaVerifierRef.current.reset();
-        }
+          console.log('reCAPTCHA token expired');
+          recaptchaVerifierRef.current.render().then(function(widgetId) {
+            window.recaptchaWidgetId = widgetId;
+          });
+        },
+        'timeout': 60000 
       }, auth);
-      recaptchaVerifierRef.current.render().then(function (widgetId) {
+      
+      recaptchaVerifierRef.current.render().then(function(widgetId) {
         window.recaptchaWidgetId = widgetId;
+      }).catch(function(error) {
+        console.error('Error rendering reCAPTCHA:', error);
       });
     }
-  }, []);
+
+    
+    return () => {
+    };
+  }, []); 
 
   const [verificationCode, setVerificationCode] = useState("");
   const [mfaCase, setMfaCase] = useState(false);
