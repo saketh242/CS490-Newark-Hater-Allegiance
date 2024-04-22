@@ -10,8 +10,17 @@
   font-family: sans-serif;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 .italics {
   font-style: italic;
+}
+
+.hover:hover {
+  cursor: pointer;
+  color: #0ac6c0;
 }
 
 #auto-icon {
@@ -1621,10 +1630,15 @@ input[type="checkbox"]{
 .help-subtitle {
   text-align: center;
   margin-top: 4rem;
+  font-size: 3rem;
 }
 
-.help-header, .help-subtitle {
+.help-header, .help-header2 {
   font-size: 3rem;
+}
+
+.help-header {
+  line-height: 1;
 }
 
 #help-bar {
@@ -1804,7 +1818,7 @@ input[type="checkbox"]{
     font-size: 1.5rem;
   }
   
-  .help-header, .help-subtitle {
+  .help-header, .help-header2, .help-subtitle {
     font-size: 2.5rem;
   }
 
@@ -1835,6 +1849,10 @@ input[type="checkbox"]{
     padding-top: 0rem;
     padding: 2rem;
     /* font-size: 1rem; */
+  }
+
+  .help-header, .help-header2, .help-subtitle {
+    font-size: 2rem;
   }
 
   #guide-div{
@@ -1885,6 +1903,18 @@ input[type="checkbox"]{
     font-size: 100%;
     border-radius: 10px;
   }
+  
+  #help-bar {
+    flex-wrap: wrap;
+  }
+  
+  #help-bar div {
+    display: flex;
+    flex-basis: calc(50% - 100px);
+    box-sizing: border-box;
+    padding: 1rem;
+  }
+
 }
 
 /* Delete Account Component Styling */
@@ -1898,6 +1928,7 @@ input[type="checkbox"]{
 .delete-heading {
   font-family: "Kanit", sans-serif;
   margin: 1.5rem;
+  padding:1rem;
   color: rgb(200, 0, 0);
   font-size: 2rem;
 }
@@ -1961,7 +1992,9 @@ input[type="checkbox"]{
 /* Settings.jsx component Styling */
 
 .error-settings {
-  padding-top: 0;
+  color: red;
+  font-size: 1.3rem;
+  padding: 1rem 1rem 0 1rem;
 }
 
 .settings-div {
@@ -1990,14 +2023,25 @@ input[type="checkbox"]{
 .edit-profile {
   font-size: 1.7rem;
   padding-top: 2rem;
+  text-align: left;
 }
 
-.names-box {
+/* .names-box {
   padding-top: 1.5rem;
   width:100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+} */
+
+.button-div-settings {
+  display: flex;
+  justify-content: left;
+}
+
+.settings-side-heading {
+  text-align: left;
+  font-size: 1.7rem;
 }
 
 .settings-form {
@@ -2033,7 +2077,7 @@ input[type="checkbox"]{
   align-items: center;
   font-size: 1.7rem;
   padding: 1 rem 1rem 2rem 1rem;
-  margin: 2rem;
+  margin: 1.3rem 1rem 1rem 1rem;
 }
 
 .option-div p{
@@ -2044,7 +2088,7 @@ input[type="checkbox"]{
   display: flex;
   justify-content: center;
   text-align: center;
-  padding-top: 0.7rem;
+  padding-top: 0;
 }
 
 
@@ -2179,7 +2223,7 @@ input[type="checkbox"]{
 }
 
 .link{
-  text-decoration: none;
+  color:#5469D4;
 }
 
 #gravatarNote, #gravatarLink{
@@ -2521,14 +2565,22 @@ input[type="checkbox"]{
 /* Verification code input */
 .character {
   border: none;
-  font-size: 20px;
+  font-size: 30px;
   border-radius: 8px;
-  color: #BDC3D0;
-  background-color: #07080a;
-  box-shadow: 0 2px 0 #000;
+  color: #23262F;
+  background-color: #9CA6B5;
+  box-shadow: 0 2px 0 #1A1C23;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.otp-container, #already-enabled{padding:2rem;}
+.otp-container, #already-enabled, #verifyError{padding:2rem;}
+.otp-container{
+  margin: 1rem 1rem 0 1rem;
+  width:400px;
+  height:60px;
+}
 
 .close{
   font-size:3rem;
@@ -2559,18 +2611,25 @@ input[type="checkbox"]{
 }
 
 .popupContent{
-  padding:2rem;
+  padding:3rem;
+  overflow:hidden;
+}
+
+#loginVerify {
+  background-color: #23262F;
+  box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.5);
+  border-radius:1rem;
+  border-top:solid 5px #0ac6c0;
 }
 
 #tfa-header{
   padding:0.5rem;
+  font-size:3rem;
 }
 
-#verificationHeader {
-  font-size: larger;
-}
+#verificationHeader p {font-size: 1.5rem;}
 
-.modal{
+#verificationHeader, .modal{
   padding: 0 1rem 0 1rem;
   color:#BDC3D0;
 }
@@ -2584,6 +2643,14 @@ input[type="checkbox"]{
   border: none;
 }
 
+@media (width<=755px){
+  #tfa-header{
+    font-size: 2rem;
+  }
+  #verificationHeader p {
+    font-size:1rem;
+  }
+}
 
 /* Enable2FA component styling */
 .div-2fa{
@@ -2606,14 +2673,15 @@ input[type="checkbox"]{
 
 .h2-2fa {
   color:#9CA6B5;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 400;
-  padding: 2rem 2rem 1rem 2rem;
+  padding: 2rem;
 }
 
 .p-2fa {
   color:#9CA6B5;
   font-size: 1.4rem;
+  margin-bottom:1rem;
   font-weight: 400; 
 }
 

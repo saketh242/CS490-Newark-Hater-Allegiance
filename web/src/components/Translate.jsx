@@ -67,10 +67,6 @@ const Translate = () => {
     fetchAPIStatus();
   }, []);
 
-  useEffect(() => {
-    setTriggerHistory(true);
-  }, []);
-
   const handleSourceLanguageChange = (e) => {
     setSourceLanguage(e.target.value);
   };

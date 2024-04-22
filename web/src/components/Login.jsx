@@ -15,15 +15,18 @@ import { toast } from 'react-toastify';
 import { isValidEmail, isValidPassword } from '../utils/fieldValidations';
 
 import nhaService from '../services/nhaService';
+import VerificationInput from "react-verification-input";
 
 const Login = () => {
-
   const recaptchaVerifierRef = useRef(null);
   useEffect(() => {
     // Initialize the RecaptchaVerifier instance
     if (!recaptchaVerifierRef.current) {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
-        'size': 'invisible'
+        'size': 'invisible',
+        'expired-callback': function() {
+          recaptchaVerifierRef.current.reset();
+        }
       }, auth);
       recaptchaVerifierRef.current.render().then(function (widgetId) {
         window.recaptchaWidgetId = widgetId;
@@ -67,10 +70,8 @@ const Login = () => {
         await setPersistence(auth, browserSessionPersistence);
       }
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log(`Welcome ${userCredential.user.displayName}`);
       navigate("/");
     } catch (err) {
-      console.error(err.code);
       handleAuthErrors(err);
     }
   };
@@ -93,10 +94,10 @@ const Login = () => {
       const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
       const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
       await resolver.resolveSignIn(multiFactorAssertion);
-      navigate("/");
+      toast("Success!")
+      navigate("/")
     } catch (e) {
       if (window.recaptchaVerifier) window.recaptchaVerifier.reset();
-
 
       if (e.code === "auth/invalid-verification-code") {
         setError("Invalid Code! Try entering it again.");
@@ -106,7 +107,7 @@ const Login = () => {
       } else {
         setError("Error validating code! Try Again!");
       }
-      console.error("Error during 2FA:", e);
+      setError("Error during 2FA, please contact us for help.");
     }
   }
 
@@ -125,7 +126,6 @@ const Login = () => {
       setMfaCase(true);
 
     } catch (error) {
-      console.error("2FA error:", error);
       setError("Failed to complete multi-factor authentication.");
     }
 
@@ -134,7 +134,6 @@ const Login = () => {
   return (
     <div className='login-content'>
       <div id="recaptcha-container-id"></div>
-
 
       {!mfaCase ?
         (
@@ -183,7 +182,7 @@ const Login = () => {
           </>
         ) : (
           <>
-            <h2 className='heading-2fa-login'>Enter verification Code</h2>
+            {/* <h2 className='heading-2fa-login'>Enter verification Code</h2>
             <input
               className='email-input'
               type="text"
@@ -195,16 +194,31 @@ const Login = () => {
               placeholder="123456"
               autoComplete='off'
               style={{ borderColor: error ? 'red' : '#0ac6c0', transition: 'border-color 0.3s ease' }}
-            />
-            <button className="login-btn" onClick={handle2FALogin}>Submit Code</button>
-            {error && <p className='error-msg'>{error}</p>}
+            /> */}
+            <div className="popupContent" id="loginVerify">
+              <div id="verificationHeader">
+                <h1 id="tfa-header">Two-Factor authentication</h1>
+                <p>Enter the code that was sent to your phone number.</p>
+              </div>
+              <VerificationInput validChars='0-9' onChange={(code) => setVerificationCode(code)}
+                classNames={{
+                  container: "otp-container",
+                  character: "character",
+                  characterInactive: "character--inactive",
+                  characterSelected: "character--selected",
+                  characterFilled: "character--filled",
+                }} />
+              <button className="default-button login-btn" onClick={handle2FALogin}>Submit Code</button>
+            </div>
+            {error && <p className='error-msg' id="verifyError">{error}</p>}
           </>
         )}
     </div>
-   
 
-    
 
-)}
+
+
+  )
+}
 
 export default Login;

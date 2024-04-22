@@ -77,12 +77,6 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
     const handleGetAllHistory = async () => {
       setHistoryError(''); //reset history error before getting
       try {
-        // throw new Error("Simulated history error");
-        
-        // const fetchedHistory = await nhaService.getAllHistory(user, dbUserRedux);
-        // setOriginalHistory(fetchedHistory);
-        // setHistoryData(fetchedHistory);
-        
         reduxHandleGetAllHistory(user, dbUserRedux);
         setHistoryData(originalHistory);
       } catch (error) {
@@ -177,11 +171,6 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
 
   const deleteFromHistory = async (i = null) => {
     if (i === null) {
-      // await nhaService.deleteHistory(user, dbUserRedux);
-      // setOriginalHistory([]);
-      // setHistoryData([]);
-      // return;
-
       reduxHandleDeleteHistory(user, dbUserRedux);
       setHistoryData([]);
       return;
@@ -190,12 +179,18 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
       const deleteId = history[i]._id;
       reduxHandleDeleteHistory(user, dbUserRedux, deleteId);
       setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}));
-
-    // var deleteId = history[i]._id;
-    // await nhaService.deleteHistory(user, dbUserRedux, deleteId);
-    // setOriginalHistory(originalHistory.filter((yeet) => {return yeet._id !==  deleteId}));
-    // setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}));
   }
+
+  useEffect(() => {
+    changeFilterOptions(filterField);
+    try {
+      filterOptions.find(selectedItem); 
+    }
+    catch (error) {
+      setSelectedFilterItem("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [originalHistory]);
 
   const clearDropdowns = () => {
     setSortField("");

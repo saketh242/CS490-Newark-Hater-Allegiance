@@ -32,8 +32,7 @@ const useAuth = () => {
         try {
         
           const dbUserDetails = await nhaService.getUser(firebaseUser);
-          const history = await nhaService.getAllHistory(userData, dbUserDetails);
-          console.log(history);
+          const history = await nhaService.getAllHistory(firebaseUser, dbUserDetails);
           // setting data in redux
           dispatch(setUser(userData)); 
           dispatch(setDbUser(dbUserDetails)); 
