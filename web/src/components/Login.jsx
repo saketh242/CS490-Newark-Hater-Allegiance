@@ -13,6 +13,7 @@ import { auth } from "../firebase";
 import { toast } from 'react-toastify';
 
 import { isValidEmail, isValidPassword } from '../utils/fieldValidations';
+import { isValidSixDigitCode } from '../utils/fieldValidations';
 
 import nhaService from '../services/nhaService';
 import VerificationInput from "react-verification-input";
@@ -24,6 +25,7 @@ const Login = () => {
     if (!recaptchaVerifierRef.current) {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible',
+        callback: (response) => console.log('captcha solved!', response),
         'expired-callback': function() {
           recaptchaVerifierRef.current.reset();
         }
@@ -90,6 +92,15 @@ const Login = () => {
   };
 
   const handle2FALogin = async () => {
+    if (verificationCode === ""){
+      setError("Enter verification code!")
+      return
+    }
+
+    if (!isValidSixDigitCode(verificationCode)){
+      setError("Enter a valid code!")
+      return
+  }
     try {
       const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
       const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
@@ -97,8 +108,9 @@ const Login = () => {
       toast("Success!")
       navigate("/")
     } catch (e) {
-      if (window.recaptchaVerifier) window.recaptchaVerifier.reset();
-
+      if (window.recaptchaVerifier){
+        setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
+    } 
       if (e.code === "auth/invalid-verification-code") {
         setError("Invalid Code! Try entering it again.");
       } else if (e.code === "auth/code-expired") {

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { isValidPassword } from '../utils/fieldValidations'
+import { isValidPassword, isValidSixDigitCode } from '../utils/fieldValidations'
 
 import {
     reauthenticateWithCredential,
@@ -26,8 +26,9 @@ const ChangePassword = () => {
         if (!recaptchaVerifierRef.current) {
             recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
                 'size': 'invisible',
+                callback: (response) => console.log('captcha solved!', response),
                 'expired-callback': function () {
-                    recaptchaVerifierRef.current.reset();
+                    setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
                 }
             }, auth);
             recaptchaVerifierRef.current.render().then(function (widgetId) {
@@ -113,7 +114,7 @@ const ChangePassword = () => {
     const handleAuthErrors = async (err) => {
         switch (err.code) {
             case "auth/invalid-login-credentials":
-                setError("Invalid Credentials");
+                setError("Incorrect Password, try again!");
                 break;
             case "auth/multi-factor-auth-required":
                 handleMultiFactorAuth(err);
@@ -144,6 +145,16 @@ const ChangePassword = () => {
     };
 
     const handle2FALogin = async () => {
+        if (verificationCode == ""){
+            setError("Enter verification code!")
+            return
+        }
+
+        if (!isValidSixDigitCode(verificationCode)){
+            setError("Enter a valid code!")
+            return
+        }
+
         try {
             const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
             const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
@@ -169,7 +180,9 @@ const ChangePassword = () => {
 
 
         } catch (e) {
-            if (window.recaptchaVerifier) window.recaptchaVerifier.reset();
+            if (window.recaptchaVerifier){
+                setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
+            } 
 
             if (e.code === "auth/invalid-verification-code") {
                 setError("Invalid Code! Try entering it again.");

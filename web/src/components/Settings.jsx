@@ -24,6 +24,8 @@ import { useDispatch } from 'react-redux';
 import { setDbUser } from '../features/user/userSlice';
 import { useSelector } from 'react-redux';
 import { isValidEmail, isValidName } from '../utils/fieldValidations';
+import VerificationInput from 'react-verification-input';
+
 
 const Settings = () => {
 
@@ -34,7 +36,7 @@ const Settings = () => {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible',
         'expired-callback': function () {
-          recaptchaVerifierRef.current.reset();
+          setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
         }
       }, auth);
       recaptchaVerifierRef.current.render().then(function (widgetId) {
@@ -230,8 +232,10 @@ const Settings = () => {
 
 
     } catch (e) {
-        if (window.recaptchaVerifier) window.recaptchaVerifier.reset();
+        if (window.recaptchaVerifier){
+          setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
 
+        }
         if (e.code === "auth/invalid-verification-code") {
             setError("Invalid Code! Try entering it again.");
         } else if (e.code === "auth/code-expired") {
@@ -245,18 +249,19 @@ const Settings = () => {
 }
 
   return (
-    <div className='settings-div'>
+    <div className='settings-div' style={mfaCase ? {alignItems:'center'}: {}}>
       <div id="recaptcha-container-id"></div>
+      <div className='settings-head-div' style={ mfaCase ? {paddingBottom:"2rem"} : {}}>
+        <FontAwesomeIcon size='4x' icon={faGear} className='settings-icon' />
+        <p className='settings-head-p'>Settings</p>
+      </div>
       
 
       {
         !mfaCase ?
           (
             <>
-            <div className='settings-head-div'>
-        <FontAwesomeIcon size='4x' icon={faGear} className='settings-icon' />
-        <p className='settings-head-p'>Settings</p>
-      </div>
+           
 
               <form className='settings-form'>
                 <div className='name-changes-div'>
@@ -366,20 +371,21 @@ const Settings = () => {
           ) :
           (
             <>
-              <h2 className='heading-2fa-login'>Enter verification Code</h2>
-                            <input
-                                className='email-input'
-                                type="text"
-                                value={verificationCode}
-                                onChange={(e) => {
-                                    setVerificationCode(e.target.value);
-                                    setError(null);
-                                }}
-                                placeholder="123456"
-                                autoComplete='off'
-                                style={{ borderColor: error ? 'red' : '#0ac6c0', transition: 'border-color 0.3s ease' }}
-                            />
-                            <button className="login-btn" onClick={handle2FALogin}>Submit Code</button>
+              <div className="popupContent" id="loginVerify">
+                                <div id="verificationHeader">
+                                    <h1 id="tfa-header">Two-Factor authentication</h1>
+                                    <p>Enter the code that was sent to your phone number.</p>
+                                </div>
+                                <VerificationInput validChars='0-9' onChange={(code) => setVerificationCode(code)}
+                                    classNames={{
+                                        container: "otp-container",
+                                        character: "character",
+                                        characterInactive: "character--inactive",
+                                        characterSelected: "character--selected",
+                                        characterFilled: "character--filled",
+                                    }} />
+                                <button className="default-button login-btn" onClick={handle2FALogin}>Submit Code</button>
+                            </div>
             </>
           )
       }
