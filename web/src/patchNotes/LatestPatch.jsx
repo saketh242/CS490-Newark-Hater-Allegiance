@@ -4,15 +4,16 @@ const LatestPatch = () => {
   return (
     <div>
         {/* COPY PASTE NEW PATCH HERE WITHOUT CLICKABLE FUNCTIONALITY (the following line should be h1, not span) */}
-        <h1 className='help-header bold'>v0.4.1</h1>
+        <h1 className='help-header bold'>v1.0.0</h1>
         <p>Added:</p>
         <ul className='instructions'>
-            <li>2FA functionality to accounts</li>
+            <li>App deployment now online!</li>
         </ul>
         <br/>
         <p>Updated:</p>
         <ul className='instructions'>
-            <li>Patch notes are now toggable to reduce clutter on the screen</li>
+            <li>2FA popups tweaked</li>
+            <li>Help page tweaks</li>
         </ul>
     </div>
   )

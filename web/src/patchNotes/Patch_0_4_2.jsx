@@ -10,13 +10,14 @@ const Patch_0_4_2 = () => {
   }
 
   return (
-    <div>
+    <div id='patch-note'>
       <FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={open ? faCaretDown : faCaretRight} />
       <span className='help-header bold hover' onClick={handleOpen}>v0.4.2</span>
       {open ? <div>
         <p>Added:</p>
         <ul className='instructions'>
             <li>2FA functionality to accounts</li>
+            <li>ReCaptcha functionality added</li>
         </ul>
         <br/>
         <p>Updated:</p>
