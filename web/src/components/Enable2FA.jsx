@@ -26,22 +26,22 @@ const Enable2FA = () => {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible',
         'callback': () => console.log('reCAPTCHA solved!'),
-        'expired-callback': function() {
+        'expired-callback': function () {
           console.log('reCAPTCHA token expired')
-          recaptchaVerifierRef.current.render().then(function(widgetId) {
+          recaptchaVerifierRef.current.render().then(function (widgetId) {
             window.recaptchaWidgetId = widgetId
           })
         },
-        'timeout': 60000 
+        'timeout': 60000
       }, auth)
-      
-      recaptchaVerifierRef.current.render().then(function(widgetId) {
+
+      recaptchaVerifierRef.current.render().then(function (widgetId) {
         window.recaptchaWidgetId = widgetId
-      }).catch(function(error) {
+      }).catch(function (error) {
         console.error('Error rendering reCAPTCHA:', error)
       })
     }
-    return () => {}
+    return () => { }
   }, [])
 
   const [verificationCode, setVerificationCode] = useState("")
@@ -186,19 +186,29 @@ const Enable2FA = () => {
 
       // now handling the 2fa
       // generating the multifactorSession
-      const multiFactorSession = await multiFactor(user).getSession()
-      const phoneInfoOptions = {
-        phoneNumber: phoneNumber,
-        session: multiFactorSession
+      try {
+        const multiFactorSession = await multiFactor(user).getSession()
+        const phoneInfoOptions = {
+          phoneNumber: phoneNumber,
+          session: multiFactorSession
+        }
+
+        const phoneAuthProvider = new PhoneAuthProvider(auth);
+        const verificationIDVar = await phoneAuthProvider.verifyPhoneNumber(phoneInfoOptions, recaptchaVerifierRef.current)
+        setVerificationId(verificationIDVar)
+        setCodeSent(true)
+      } catch (e) {
+        setError("Error verifying 2FA handle2FA")
+        return
       }
 
-      const phoneAuthProvider = new PhoneAuthProvider(auth)
-      const verificationIDVar = await phoneAuthProvider.verifyPhoneNumber(phoneInfoOptions, recaptchaVerifierRef.current)
-      setVerificationId(verificationIDVar)
-      setCodeSent(true)
     } catch (e) {
-      setError("Error in handle2FA")
-      return
+      if (e.code == "auth/invalid-login-credentials") {
+        setError("Incorrect password!")
+        return
+      } else {
+        setError("Error reauthenticating, try again!")
+      }
     }
   }
 
@@ -263,7 +273,6 @@ const Enable2FA = () => {
                       />
 
                       <button onClick={handleDisable2FA} className="login-btn disable-2fa-btn">Disable 2FA</button>
-                      {error && <p className="error-msg">{error}</p>}
                     </div>
                   </>
                 ) : (
@@ -286,7 +295,6 @@ const Enable2FA = () => {
                   </>
                 )}
             </div>
-            {error && <p className="error-msg" style={{ textAlign: "center" }}>{error}</p>}
           </div>
           :
           <div className="enable-2fa-user">
@@ -342,9 +350,9 @@ const Enable2FA = () => {
                   <button className="default-button login-btn" onClick={handleVerifyCode}>Submit Code</button>
                 </div>
               </>}
-            {error && <p className="error-msg">{error}</p>}
           </div>
       }
+      {error && <p className="error-msg" style={{ textAlign: "center" }}>{error}</p>}
     </div>
   )
 }

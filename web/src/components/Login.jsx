@@ -24,20 +24,20 @@ const Login = () => {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible',
         'callback': () => console.log('reCAPTCHA solved!'),
-        'expired-callback': function() {
+        'expired-callback': function () {
           console.log('reCAPTCHA token expired')
-          recaptchaVerifierRef.current.render().then(function(widgetId) {
+          recaptchaVerifierRef.current.render().then(function (widgetId) {
             window.recaptchaWidgetId = widgetId
           })
         },
-        'timeout': 60000 
+        'timeout': 60000
       }, auth)
-      
-      recaptchaVerifierRef.current.render().then(function(widgetId) {
+
+      recaptchaVerifierRef.current.render().then(function (widgetId) {
         window.recaptchaWidgetId = widgetId
-      }).catch(function(error) {})
+      }).catch(function (error) { })
     }
-    return () => {}
+    return () => { }
   }, [])
 
   const [verificationCode, setVerificationCode] = useState("")
@@ -102,7 +102,8 @@ const Login = () => {
       const cred = PhoneAuthProvider.credential(verificationId, verificationCode)
       const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred)
       await resolver.resolveSignIn(multiFactorAssertion)
-      toast("Success!")
+      const user = auth.currentUser
+      toast(`Welcome ${user.displayName}`)
       navigate("/")
     } catch (e) {
       if (window.recaptchaVerifier) setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
@@ -111,8 +112,9 @@ const Login = () => {
         setError("Invalid Code! Try entering it again.")
       } else if (e.code === "auth/code-expired") {
         setError("Code Expired. Please request a new code or reload the page.")
-      } else { setError("Error validating code! Try Again!") }
-      setError("Error during 2FA", e)
+      } else {
+        setError("Error validating code! Try Again!");
+      }
     }
   }
 

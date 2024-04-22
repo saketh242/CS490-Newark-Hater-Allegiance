@@ -1336,7 +1336,28 @@ input[type="checkbox"]{
   --_p: 75%;
 }
 
+<<<<<<< HEAD
 #question-list{margin-top:1rem;}
+=======
+#guide-video-div {
+  padding-top: 2rem;
+}
+
+#guide-video {
+  border-radius: 10px;
+  aspect-ratio: 16/9;
+  width: 75%;
+  max-width: 720px;
+}
+
+#player {
+  border-radius: 10px;
+}
+
+#question-list{
+  margin-top:1rem;
+}
+>>>>>>> main
 
 #question-list li {
   padding-bottom: 2rem;
@@ -1391,6 +1412,10 @@ input[type="checkbox"]{
 }
 
 #getting-started-div{padding-bottom:0;}
+
+#patch-note {
+  margin-bottom: 0.8rem;
+}
 
 @media (width < 1280px) {
   #help-bar {font-size: 0.75rem;}

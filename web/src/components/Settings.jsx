@@ -25,21 +25,27 @@ import { isValidEmail, isValidName } from '../utils/fieldValidations'
 import VerificationInput from 'react-verification-input'
 
 const Settings = () => {
-  const recaptchaVerifierRef = useRef(null)
-  useEffect(() => {
-    // Initialize the RecaptchaVerifier instance
-    if (!recaptchaVerifierRef.current) {
-      recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
-        'size': 'invisible',
-        'expired-callback': function () {
-          setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
+
+  const recaptchaVerifierRef = useRef(null);
+    useEffect(() => {
+        if (!recaptchaVerifierRef.current) {
+          recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
+            'size': 'invisible',
+            'callback': () => console.log('reCAPTCHA solved!'),
+            'expired-callback': function() {
+              recaptchaVerifierRef.current.render().then(function(widgetId) {
+                window.recaptchaWidgetId = widgetId
+              });
+            },
+            'timeout': 60000 
+          }, auth)
+          
+          recaptchaVerifierRef.current.render().then(function(widgetId) {
+            window.recaptchaWidgetId = widgetId
+          }).catch(function(error) {})
         }
-      }, auth)
-      recaptchaVerifierRef.current.render().then(function (widgetId) {
-        window.recaptchaWidgetId = widgetId
-      })
-    }
-  }, [])
+        return () => {}
+      }, [])
 
   const user = useSelector((state) => state.user.user)
   const dbUser = useSelector((state) => state.user.dbUser)
@@ -57,8 +63,7 @@ const Settings = () => {
   const [email, setEmail] = useState(user ? user.email : "")
   const [password, setPassword] = useState("")
   const [error, setError] = useState(null)
-  // this is a placeholder for knowing the current state of data
-  const [userData, setUserData] = useState(dbUser || {})
+  const [userData, setUserData] = useState(dbUser || {})  // this is a placeholder for knowing the current state of data
 
   const firebaseUser = auth.currentUser
   const enrolledFactors = multiFactor(firebaseUser).enrolledFactors
@@ -120,7 +125,7 @@ const Settings = () => {
   const handleAuthErrors = async (err) => {
     switch (err.code) {
       case "auth/invalid-login-credentials":
-        setError("Invalid Credentials")
+        setError("Incorrect Password")
         break
       case "auth/multi-factor-auth-required":
         handleMultiFactorAuth(err)
@@ -214,9 +219,9 @@ const Settings = () => {
   }
 
   return (
-    <div className='settings-div' style={mfaCase ? { alignItems: 'center' } : {}}>
+    <div className='settings-div' style={mfaCase ? {alignItems:'center'}: {}}>
       <div id="recaptcha-container-id"></div>
-      <div className='settings-head-div' style={mfaCase ? { paddingBottom: "2rem" } : {}}>
+      <div className='settings-head-div' style={ mfaCase ? {paddingBottom:"2rem"} : {}}>
         <FontAwesomeIcon size='4x' icon={faGear} className='settings-icon' />
         <p className='settings-head-p'>Settings</p>
       </div>

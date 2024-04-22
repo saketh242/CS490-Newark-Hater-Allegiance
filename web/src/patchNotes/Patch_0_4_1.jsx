@@ -10,7 +10,7 @@ const Patch_0_4_1 = () => {
   }
 
   return (
-    <div>
+    <div id='patch-note'>
       <FontAwesomeIcon id='auto-icon' className='help-icon' size='1x' icon={open ? faCaretDown : faCaretRight} />
       <span className='help-header' id='faq-header' onClick={handleOpen}>v0.4.1</span>
       {open ? <div>
