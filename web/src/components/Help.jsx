@@ -154,8 +154,8 @@ const Help = () => {
                 <li>Shortly after, you should recieve a verification email to finish the sign up process</li>
                 <li>Refresh the page and you should be let into the translator!</li>
               </ul>
-              <div className='signup'>
-                <img className='signup-image guide-img' src={sample} alt="signup" />
+              <div className='signup' id='guide-video-div'>
+                <iframe id='guide-video' src="https://www.youtube.com/embed/MJzBeJ2lXxQ?si=361J2E9ivQZXyJf3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
               </div>
             </div>
           </div> : null}
@@ -319,9 +319,9 @@ const Help = () => {
         <div id='help-patch-notes' className={showBox === 4 ? 'unhide' : 'hide'}>
           {/*DO NOT USE LATESTPATCH*/}
           <h1 className='help-header2 fiery-red'>Latest Patch</h1>
-          <Patches.Patch_0_4_2 />
-          <br />
+          <Patches.Patch_1_0_0 />
           <h1 className='help-header2'>Older Patches</h1>
+          <Patches.Patch_0_4_2 />
           <Patches.Patch_0_4_1 />
         </div>
 
