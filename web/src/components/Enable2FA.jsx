@@ -213,19 +213,29 @@ const Enable2FA = () => {
       // now handling the 2fa
 
       // generating the multifactorSession
-      const multiFactorSession = await multiFactor(user).getSession();
-      const phoneInfoOptions = {
-        phoneNumber: phoneNumber,
-        session: multiFactorSession
-      };
+      try {
+        const multiFactorSession = await multiFactor(user).getSession();
+        const phoneInfoOptions = {
+          phoneNumber: phoneNumber,
+          session: multiFactorSession
+        };
 
-      const phoneAuthProvider = new PhoneAuthProvider(auth);
-      const verificationIDVar = await phoneAuthProvider.verifyPhoneNumber(phoneInfoOptions, recaptchaVerifierRef.current)
-      setVerificationId(verificationIDVar)
-      setCodeSent(true);
+        const phoneAuthProvider = new PhoneAuthProvider(auth);
+        const verificationIDVar = await phoneAuthProvider.verifyPhoneNumber(phoneInfoOptions, recaptchaVerifierRef.current)
+        setVerificationId(verificationIDVar)
+        setCodeSent(true);
+      } catch (e){
+        setError("Error verifying 2FA handle2FA");
+        return;
+      }
+     
     } catch (e) {
-      setError("Error in handle2FA");
-      return;
+      if (e.code == "auth/invalid-login-credentials"){
+        setError("Incorrect password!")
+        return
+      } else {
+        setError("Error reauthenticating, try again!")
+      }
     }
 
   }
@@ -299,7 +309,6 @@ const Enable2FA = () => {
                       />
 
                       <button onClick={handleDisable2FA} className="login-btn disable-2fa-btn">Disable 2FA</button>
-                      {error && <p className="error-msg">{error}</p>}
                     </div>
 
                   </>
@@ -332,7 +341,6 @@ const Enable2FA = () => {
 
 
             </div>
-            {error && <p className="error-msg" style={{textAlign:"center"}}>{error}</p>}
 
 
 
@@ -377,24 +385,7 @@ const Enable2FA = () => {
 
                 <button className="login-btn" onClick={handle2FA}>Send Code</button>
               </> :
-
               <>
-
-                {/* <input
-                  data-testid="code-id"
-                  className='code-input'
-                  type="text"
-                  placeholder="123456"
-                  value={code}
-                  onChange={(e) => {
-                    setCode(e.target.value)
-                    setError(null)
-                  }}
-                  style={{
-                    borderColor: error ? 'red' : '#0ac6c0',
-                    transition: 'border-color 0.3s ease',
-                  }}
-                /> */}
                 <div className="popupContent" id="loginVerify">
                   <div id="verificationHeader">
                     <h1 id="tfa-header">Two-Factor authentication</h1>
@@ -412,10 +403,11 @@ const Enable2FA = () => {
                 </div>
               </>}
 
-            {error && <p className="error-msg">{error}</p>}
 
           </div>
       }
+          {error && <p className="error-msg" style={{textAlign:"center"}}>{error}</p>}
+
     </div>
   )
 }

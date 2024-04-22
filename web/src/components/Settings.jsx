@@ -30,20 +30,30 @@ import VerificationInput from 'react-verification-input';
 const Settings = () => {
 
   const recaptchaVerifierRef = useRef(null);
-  useEffect(() => {
-    // Initialize the RecaptchaVerifier instance
-    if (!recaptchaVerifierRef.current) {
-      recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
-        'size': 'invisible',
-        'expired-callback': function () {
-          setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
+    useEffect(() => {
+        if (!recaptchaVerifierRef.current) {
+          recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
+            'size': 'invisible',
+            'callback': (response) => console.log('reCAPTCHA solved!', response),
+            'expired-callback': function() {
+              console.log('reCAPTCHA token expired');
+              recaptchaVerifierRef.current.render().then(function(widgetId) {
+                window.recaptchaWidgetId = widgetId;
+              });
+            },
+            'timeout': 60000 
+          }, auth);
+          
+          recaptchaVerifierRef.current.render().then(function(widgetId) {
+            window.recaptchaWidgetId = widgetId;
+          }).catch(function(error) {
+            console.error('Error rendering reCAPTCHA:', error);
+          });
         }
-      }, auth);
-      recaptchaVerifierRef.current.render().then(function (widgetId) {
-        window.recaptchaWidgetId = widgetId;
-      });
-    }
-  }, []);
+    
+        return () => {
+        };
+      }, []);
 
   const user = useSelector((state) => state.user.user);
   const dbUser = useSelector((state) => state.user.dbUser);
@@ -145,7 +155,7 @@ const Settings = () => {
   const handleAuthErrors = async (err) => {
     switch (err.code) {
       case "auth/invalid-login-credentials":
-        setError("Invalid Credentials");
+        setError("Incorrect Password");
         break;
       case "auth/multi-factor-auth-required":
         handleMultiFactorAuth(err);
@@ -250,7 +260,8 @@ const Settings = () => {
 
   return (
     <div className='settings-div' style={mfaCase ? {alignItems:'center'}: {}}>
-      <div id="recaptcha-container-id"></div>
+            <div id="recaptcha-container-id"></div>
+
       <div className='settings-head-div' style={ mfaCase ? {paddingBottom:"2rem"} : {}}>
         <FontAwesomeIcon size='4x' icon={faGear} className='settings-icon' />
         <p className='settings-head-p'>Settings</p>

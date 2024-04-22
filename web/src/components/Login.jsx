@@ -115,7 +115,8 @@ const Login = () => {
       const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
       const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
       await resolver.resolveSignIn(multiFactorAssertion);
-      toast("Success!")
+      const user = auth.currentUser;
+      toast(`Welcome ${user.displayName}`)
       navigate("/")
     } catch (e) {
       if (window.recaptchaVerifier){
@@ -129,7 +130,7 @@ const Login = () => {
       } else {
         setError("Error validating code! Try Again!");
       }
-      setError("Error during 2FA, please contact us for help.");
+      //setError("Error during 2FA, please contact us for help.");
     }
   }
 
@@ -203,21 +204,7 @@ const Login = () => {
             </form>
           </>
         ) : (
-          <>
-            {/* <h2 className='heading-2fa-login'>Enter verification Code</h2>
-            <input
-              className='email-input'
-              type="text"
-              value={verificationCode}
-              onChange={(e) => {
-                setVerificationCode(e.target.value);
-                setError(null);
-              }}
-              placeholder="123456"
-              autoComplete='off'
-              style={{ borderColor: error ? 'red' : '#0ac6c0', transition: 'border-color 0.3s ease' }}
-            /> */}
-            <div className="popupContent" id="loginVerify">
+          <>            <div className="popupContent" id="loginVerify">
               <div id="verificationHeader">
                 <h1 id="tfa-header">Two-Factor authentication</h1>
                 <p>Enter the code that was sent to your phone number.</p>
