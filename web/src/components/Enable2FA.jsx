@@ -225,7 +225,7 @@ const Enable2FA = () => {
         setVerificationId(verificationIDVar)
         setCodeSent(true);
       } catch (e){
-        setError("Error in handle2FA");
+        setError("Error verifying 2FA handle2FA");
         return;
       }
      
