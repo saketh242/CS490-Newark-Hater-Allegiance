@@ -143,7 +143,7 @@ const Help = () => {
                 <li>Refresh the page and you should be let into the translator!</li>
               </ul>
               <div className='signup' id='guide-video-div'>
-                <iframe id='guide-video' src="https://www.youtube.com/embed/MJzBeJ2lXxQ?si=361J2E9ivQZXyJf3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe id='guide-video' src="https://www.youtube.com/embed/zqyxSMqNJ3g?si=WcETTssDNa9tuQJE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
               </div>
             </div>
           </div> : null}
