@@ -19,7 +19,7 @@ backend/.env
 web/src/firebase.js
 
 # Ignore serviceAccount.js in backend
-backend/config/serviceAccount.js
+#backend/config/serviceAccount.js
 
 # Ignore notifyDevs.js in backend
-backend/logs/notifyDevs.js
+#backend/logs/notifyDevs.js
