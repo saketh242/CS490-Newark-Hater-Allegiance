@@ -1,5 +1,5 @@
-import { useState, useEffect, useSyncExternalStore, useRef } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   signInWithEmailAndPassword,
   setPersistence,
@@ -8,158 +8,137 @@ import {
   PhoneAuthProvider,
   PhoneMultiFactorGenerator,
   RecaptchaVerifier
-} from 'firebase/auth';
-import { auth } from "../firebase";
-import { toast } from 'react-toastify';
+} from 'firebase/auth'
+import { auth } from "../firebase"
+import { toast } from 'react-toastify'
 
-import { isValidEmail, isValidPassword } from '../utils/fieldValidations';
-import { isValidSixDigitCode } from '../utils/fieldValidations';
+import { isValidEmail } from '../utils/fieldValidations'
+import { isValidSixDigitCode } from '../utils/fieldValidations'
 
-import nhaService from '../services/nhaService';
-import VerificationInput from "react-verification-input";
+import VerificationInput from "react-verification-input"
 
 const Login = () => {
   const recaptchaVerifierRef = useRef(null);
 
-  const [verificationCode, setVerificationCode] = useState("");
-  const [mfaCase, setMfaCase] = useState(false);
-  const [verificationId, setVerificationId] = useState(null);
-  const [resolver, setResolver] = useState(null);
+  const [verificationCode, setVerificationCode] = useState("")
+  const [mfaCase, setMfaCase] = useState(false)
+  const [verificationId, setVerificationId] = useState(null)
+  const [resolver, setResolver] = useState(null)
 
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState(null)
+  const [isChecked, setIsChecked] = useState(false)
 
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  }
-
-  const handleForgot = () => {
-    navigate("/forgotPassword");
-  }
+  const handleCheckboxChange = () => { setIsChecked(!isChecked) }
+  const handleForgot = () => { navigate("/forgotPassword") }
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!email || !password) {
-      setError("Please fill all the fields");
-      return;
+      setError("Please fill all the fields")
+      return
     }
     if (!isValidEmail(email)) {
-      setError("Please enter a valid email!");
-      return;
+      setError("Please enter a valid email!")
+      return
     }
 
     try {
       if (!isChecked) {
-        await setPersistence(auth, browserSessionPersistence);
+        await setPersistence(auth, browserSessionPersistence)
       }
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      navigate("/");
-    } catch (err) {
-      handleAuthErrors(err);
-    }
-  };
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      navigate("/")
+    } catch (err) { handleAuthErrors(err) }
+  }
 
   const handleAuthErrors = async (err) => {
     switch (err.code) {
       case "auth/invalid-login-credentials":
-        setError("Invalid Credentials");
+        setError("Invalid Credentials")
         break;
       case "auth/multi-factor-auth-required":
-        handleMultiFactorAuth(err);
-        break;
+        handleMultiFactorAuth(err)
+        break
       default:
-        setError("Login failed. Try again");
+        setError("Login failed. Try again")
     }
   };
 
   const handle2FALogin = async () => {
-    if (verificationCode === ""){
+    if (verificationCode === "") {
       setError("Enter verification code!")
       return
     }
 
-    if (!isValidSixDigitCode(verificationCode)){
+    if (!isValidSixDigitCode(verificationCode)) {
       setError("Enter a valid code!")
       return
-  }
+    }
     try {
-      const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
-      const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
-      await resolver.resolveSignIn(multiFactorAssertion);
-      const user = auth.currentUser;
+      const cred = PhoneAuthProvider.credential(verificationId, verificationCode)
+      const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred)
+      await resolver.resolveSignIn(multiFactorAssertion)
+      const user = auth.currentUser
       toast(`Welcome ${user.displayName}`)
       navigate("/")
     } catch (e) {
-      if (window.recaptchaVerifier){
-        setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
-    } 
-      if (e.code === "auth/invalid-verification-code") {
-        setError("Invalid Code! Try entering it again.");
-      } else if (e.code === "auth/code-expired") {
-        setError("Code Expired. Please request a new code or reload the page.");
+      if (window.recaptchaVerifier) setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
 
+      if (e.code === "auth/invalid-verification-code") {
+        setError("Invalid Code! Try entering it again.")
+      } else if (e.code === "auth/code-expired") {
+        setError("Code Expired. Please request a new code or reload the page.")
       } else {
         setError("Error validating code! Try Again!");
       }
-      //setError("Error during 2FA, please contact us for help.");
     }
   }
 
-
   const handleMultiFactorAuth = async (err) => {
-
-
     try {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible',
-        'callback': (response) => console.log('reCAPTCHA solved!', response),
+        'callback': () => console.log('reCAPTCHA solved!'),
         'expired-callback': function() {
-          console.log('reCAPTCHA token expired');
           recaptchaVerifierRef.current.render().then(function(widgetId) {
-            window.recaptchaWidgetId = widgetId;
-          });
+            window.recaptchaWidgetId = widgetId
+          })
         },
         'timeout': 60000 
-      }, auth);
+      }, auth)
       
       recaptchaVerifierRef.current.render().then(function(widgetId) {
         window.recaptchaWidgetId = widgetId;
-      }).catch(function(error) {
-        console.error('Error rendering reCAPTCHA:', error);
-      });
+      }).catch(function(error) {})
     } catch(e){
-      setError("Recaptcha Error, try again or reload page");
-      return;
+      setError("Recaptcha Error, try again or reload page")
+      return
     }
 
 
     const resolverVar = getMultiFactorResolver(auth, err);
     // removing the if check because sms is the only 2fa we have right now
-    const phoneAuthProvider = new PhoneAuthProvider(auth);
+    const phoneAuthProvider = new PhoneAuthProvider(auth)
     try {
       const verificationIdVar = await phoneAuthProvider.verifyPhoneNumber({
         multiFactorHint: resolverVar.hints[0],
         session: resolverVar.session
-      }, recaptchaVerifierRef.current);
-      setResolver(resolverVar);
-      setVerificationId(verificationIdVar);
-      setMfaCase(true);
-      
+      }, recaptchaVerifierRef.current)
+      setResolver(resolverVar)
+      setVerificationId(verificationIdVar)
+      setMfaCase(true)
     } catch (error) {
       setError("Failed to complete multi-factor authentication.");
-      console.log(error)
     }
-
-  };
+  }
 
   return (
     <div className='login-content'>
       <div id="recaptcha-container-id"></div>
-
       {!mfaCase ?
         (
           <>
@@ -206,7 +185,8 @@ const Login = () => {
             </form>
           </>
         ) : (
-          <>            <div className="popupContent" id="loginVerify">
+          <>
+            <div className="popupContent" id="loginVerify">
               <div id="verificationHeader">
                 <h1 id="tfa-header">Two-Factor authentication</h1>
                 <p>Enter the code that was sent to your phone number.</p>
@@ -225,11 +205,7 @@ const Login = () => {
           </>
         )}
     </div>
-
-
-
-
   )
 }
 
-export default Login;
+export default Login

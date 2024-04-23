@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState} from 'react'
 import { Link } from 'react-router-dom'
-// import { Container } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faQuestion, faMagnifyingGlass, faBook, faMugHot, faCaretDown, faCaretRight, faCircleExclamation, faFileLines } from '@fortawesome/free-solid-svg-icons'
+import { faQuestion, faMagnifyingGlass, faBook, faMugHot, 
+  faCaretDown, faCaretRight, faCircleExclamation, faFileLines, faHistory } from '@fortawesome/free-solid-svg-icons'
 import sample from '../images/sample.png'
 import feedback from '../images/feedback.png'
 import pfpImg from '../images/gravatar.png'
@@ -12,7 +12,6 @@ import * as Patches from '../patchNotes' // REMEMBER TO UPDATE THE INDEX.JS FILE
 import nhaService from "../services/nhaService"
 import { toast } from 'react-toastify'
 
-import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
 import { isValidEmail, isValidName } from '../utils/fieldValidations'
 
 const Help = () => {
@@ -28,7 +27,7 @@ const Help = () => {
 
   const handleContactEmail = async (e) => {
     e.preventDefault()
-    setEmailError('') //reset email error
+    setEmailError('')
     if (name === '' || email === '' || message === '') {
       setEmailError("Please fill out all fields.")
       return
@@ -37,7 +36,6 @@ const Help = () => {
       setEmailError("Please enter a valid email!")
       return
     }
-
     if (!isValidName(name)){
       setEmailError("Please enter a valid name!")
       return
@@ -46,8 +44,6 @@ const Help = () => {
       try {
         const res = await nhaService.emailDev(name, email, message)
         toast(`Message sent, thank you!`)
-
-        // clear form after submission
         setName('')
         setEmail('')
         setMessage('')
@@ -55,18 +51,11 @@ const Help = () => {
         document.getElementById("contact-email").value = ""
         document.getElementById("contact-text").value = ""
       }
-      catch (error) {
-        setEmailError('Error submitting contact-us form.')
-      }
-
+      catch (error) {setEmailError('Error submitting contact-us form.')}
     }
   }
 
-  const handleBox = (e) => {
-    setShowBox(e)
-  }
-
-  // let guides = [false, false, false]
+  const handleBox = (e) => { setShowBox(e) }
 
   const handleGuide = (e) => {
     const update = [...openG]
@@ -155,7 +144,10 @@ const Help = () => {
                 <li>Refresh the page and you should be let into the translator!</li>
               </ul>
               <div className='signup' id='guide-video-div'>
-                <iframe id='guide-video' src="https://www.youtube.com/embed/zqyxSMqNJ3g?si=WcETTssDNa9tuQJE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe id='guide-video' src="https://www.youtube.com/embed/zqyxSMqNJ3g?si=WcETTssDNa9tuQJE" 
+                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+                encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
               </div>
             </div>
           </div> : null}
@@ -172,7 +164,7 @@ const Help = () => {
               </ul>
               <div className='signup'>
 
-                <img className='signup-image guide-img' src={sample} alt="signup" />
+                <img className='signup-image guide-img' src={sample} alt="signup" loading="lazy"/>
               </div>
             </div>
           </div> : null}
@@ -189,7 +181,7 @@ const Help = () => {
                 <li>We also store ratings</li>
               </ul>
               <div className='signup'>
-                <img className='signup-image guide-img' src={feedback} alt="feedback" />
+                <img className='signup-image guide-img' src={feedback} alt="feedback" loading="lazy" />
               </div>
             </div>
           </div> : null}
@@ -205,7 +197,7 @@ const Help = () => {
               </ul>
             </div>
             <div className='signup'>
-              <img className='signup-image guide-img' src={pfpImg} alt="Gravatar Profile Example" />
+              <img className='signup-image guide-img' src={pfpImg} alt="Gravatar Profile Example" loading="lazy"/>
             </div>
           </div> : null}
           {/*HISTORY GUIDE*/}
@@ -223,11 +215,10 @@ const Help = () => {
               </ul>
             </div>
             <div className='signup'>
-              <img className='signup-image guide-img' id='history-img' src={historyImg} alt="History Bar Example" />
+              <img className='signup-image guide-img' id='history-img' src={historyImg} alt="History Bar Example" loading="lazy"/>
             </div>
           </div> : null}
         </div> {/*END GUIDES DIV*/}
-
 
         {/*Box 2*/}
         <div id='help-faq' className={showBox === 2 ? 'unhide' : 'hide'}>
@@ -247,7 +238,6 @@ const Help = () => {
             </li>)}
           </ul>
         </div>
-
 
         {/*Box 3*/}
         <div id='help-contact' className={showBox === 3 ? 'unhide' : 'hide'}>
@@ -337,7 +327,6 @@ const Help = () => {
             The test will begin on the word start. On your mark, get ready, start.
           </p>
         </div>
-
       </div>
     </div>
   )

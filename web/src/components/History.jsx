@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import Drawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
-import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX, faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import emptybox from '../images/emptybox.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowUp, faArrowDown, faX, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import emptybox from '../images/emptybox.png'
 import useHistoryManagement from '../useHistoryManagement'
-import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux'
 
 const sideBarStyle = {
   backgroundColor: "#23262F",
@@ -17,10 +16,10 @@ const sideBarStyle = {
   overflowY: "scroll",
   scrollbarColor: "#076966 #1A1C23",
   scrollbarWidth: "thin",
-};
+}
 
 const formatDate = (date, includeTime = true) => {
-  const dateObject = new Date(date);
+  const dateObject = new Date(date)
   const options = {
     year: 'numeric',
     month: 'long',
@@ -28,181 +27,170 @@ const formatDate = (date, includeTime = true) => {
     hour: includeTime ? 'numeric' : undefined,
     minute: includeTime ? 'numeric' : undefined,
     timeZoneName: includeTime ? 'short' : undefined
-  };
-  return dateObject.toLocaleDateString('en-US', options);
-};
-
-const loadInputAndTranslatedCode = (setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage, inputCode, translatedCode, sourceLanguage, desiredLanguage) => {
-  setInputCode(inputCode);
-  setTranslatedCode(translatedCode);
-  setSourceLanguage(sourceLanguage); // Set the source language dropdown value
-  setDesiredLanguage(desiredLanguage); // Set the desired language dropdown value
+  }
+  return dateObject.toLocaleDateString('en-US', options)
 }
 
-const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSidebar, toggleSidebar, setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage }) => {
-  const { reduxHandleDeleteHistory, reduxHandleGetAllHistory } = useHistoryManagement();
-  const originalHistory = useSelector((state) => state.user.history);
-  const [history, setHistoryData] = useState(null);
-  const [width, setWidth] = useState(window.innerWidth);
-  const [historyError, setHistoryError] = useState('');
-  const [sortOrder, setSortOrder] = useState(-1);
-  const [sortField, setSortField] = useState("");
-  const [filterField, setFilterField] = useState("");
-  const [filterOptions, setFilterOptions] = useState([]);
-  const [selectedItem, setSelectedFilterItem] = useState("");
+const loadInputAndTranslatedCode = (setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage, inputCode, translatedCode, sourceLanguage, desiredLanguage) => {
+  setInputCode(inputCode)
+  setTranslatedCode(translatedCode)
+  setSourceLanguage(sourceLanguage)
+  setDesiredLanguage(desiredLanguage)
+}
 
-  const changeSort = (e) => {
-    setSortField(e.target.value);
-  };
+const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSidebar, 
+  toggleSidebar, setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage }) => {
+  const { reduxHandleDeleteHistory, reduxHandleGetAllHistory } = useHistoryManagement()
+  const originalHistory = useSelector((state) => state.user.history)
+  const [history, setHistoryData] = useState(null)
+  const [width, setWidth] = useState(window.innerWidth)
+  const [historyError, setHistoryError] = useState('')
+  const [sortOrder, setSortOrder] = useState(-1)
+  const [sortField, setSortField] = useState("")
+  const [filterField, setFilterField] = useState("")
+  const [filterOptions, setFilterOptions] = useState([])
+  const [selectedItem, setSelectedFilterItem] = useState("")
+
+  const changeSort = (e) => {setSortField(e.target.value)}
 
   const changeFilter = (e) => {
-    setSelectedFilterItem("");
-    setFilterField(e.target.value);
-    changeFilterOptions(e.target.value);
-  };
+    setSelectedFilterItem("")
+    setFilterField(e.target.value)
+    changeFilterOptions(e.target.value)
+  }
 
   useEffect(() => {
     const handleResize = () => {
-      setWidth(window.innerWidth);
-    };
+      setWidth(window.innerWidth)
+    }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  });
+      window.removeEventListener('resize', handleResize)
+    }
+  })
 
   useEffect(() => {
     const handleGetAllHistory = async () => {
-      setHistoryError(''); //reset history error before getting
+      setHistoryError('')
       try {
-        reduxHandleGetAllHistory(user, dbUserRedux);
-        setHistoryData(originalHistory);
-      } catch (error) {
-        setHistoryError('Unable to retrieve history at this time.');
-      }
-    };
+        reduxHandleGetAllHistory(user, dbUserRedux)
+        setHistoryData(originalHistory)
+      } catch (error) {setHistoryError('Unable to retrieve history at this time.')}
+    }
 
     if (triggerHistory) {
-      handleGetAllHistory();
-      setTriggerHistory(false);
+      handleGetAllHistory()
+      setTriggerHistory(false)
     }
-  }, [user, dbUserRedux, triggerHistory, 
-      setTriggerHistory, reduxHandleGetAllHistory, originalHistory]);
+  }, [user, dbUserRedux, triggerHistory, setTriggerHistory, reduxHandleGetAllHistory, originalHistory])
 
   useEffect(() => {
-    setSortField("");
-    setSortOrder(-1);
-    setFilterField("");
-    setSelectedFilterItem("");
-    setFilterOptions([]);
-    setHistoryData(originalHistory);
+    setSortField("")
+    setSortOrder(-1)
+    setFilterField("")
+    setSelectedFilterItem("")
+    setFilterOptions([])
+    setHistoryData(originalHistory)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showSidebar]);
+  }, [showSidebar])
 
   const changeFilterOptions = (filter) => {
-    const objects = new Set();
+    const objects = new Set()
     originalHistory.forEach((element) => {
       if (filter === "Date") {
-        objects.add(formatDate(element.createdAt, false));
+        objects.add(formatDate(element.createdAt, false))
       } else if (filter === "Source") {
-        objects.add(element.Source_language);
+        objects.add(element.Source_language)
       } else if (filter === "Destination") {
-        objects.add(element.Desired_language);
+        objects.add(element.Desired_language)
       }
-    });
+    })
     if (objects.size === 0)
-      setHistoryData(originalHistory);
-    setFilterOptions(Array.from(objects));
-  };
+      setHistoryData(originalHistory)
+    setFilterOptions(Array.from(objects))
+  }
 
   const changeSelectedFilterItem = (e) => {
-    const selectedValue = e.target.value;
-    setSortOrder(-1);
+    const selectedValue = e.target.value
+    setSortOrder(-1)
     if (selectedValue === "") {
-      setHistoryData(originalHistory);
+      setHistoryData(originalHistory)
     } else {
       const filteredHistory = originalHistory.filter((item) => {
         if (filterField === "Date") {
-          return formatDate(item.createdAt, false) === selectedValue;
+          return formatDate(item.createdAt, false) === selectedValue
         } else if (filterField === "Source") {
-          return item.Source_language === selectedValue;
+          return item.Source_language === selectedValue
         } else if (filterField === "Destination") {
-          return item.Desired_language === selectedValue;
+          return item.Desired_language === selectedValue
         }
-        return true;
-      });
-      setHistoryData(filteredHistory);
+        return true
+      })
+      setHistoryData(filteredHistory)
     }
-
-    setSelectedFilterItem(selectedValue);
-  };
+    setSelectedFilterItem(selectedValue)
+  }
 
   useEffect(() => {
     const sortByDate = (a, b) => {
-      return sortOrder === 1 ? a.createdAt.localeCompare(b.createdAt) : b.createdAt.localeCompare(a.createdAt);
-    };
+      return sortOrder === 1 ? a.createdAt.localeCompare(b.createdAt) : b.createdAt.localeCompare(a.createdAt)
+    }
 
     const sortBySource = (a, b) => {
-      return sortOrder === 1 ? a.Source_language.localeCompare(b.Source_language) : b.Source_language.localeCompare(a.Source_language);
-    };
+      return sortOrder === 1 ? a.Source_language.localeCompare(b.Source_language) : b.Source_language.localeCompare(a.Source_language)
+    }
 
     const sortByDestination = (a, b) => {
-      return sortOrder === 1 ? a.Desired_language.localeCompare(b.Desired_language) : b.Desired_language.localeCompare(a.Desired_language);
-    };
+      return sortOrder === 1 ? a.Desired_language.localeCompare(b.Desired_language) : b.Desired_language.localeCompare(a.Desired_language)
+    }
 
     if (history !== null && sortOrder !== 0) {
-      let sortedHistory = [...history];
+      let sortedHistory = [...history]
 
       if (sortField === "Date" || sortField === "") {
-        sortedHistory.sort(sortByDate);
+        sortedHistory.sort(sortByDate)
       } else if (sortField === "Source") {
-        sortedHistory.sort(sortBySource);
+        sortedHistory.sort(sortBySource)
       } else if (sortField === "Destination") {
-        sortedHistory.sort(sortByDestination);
+        sortedHistory.sort(sortByDestination)
       }
 
-      setHistoryData(sortedHistory);
+      setHistoryData(sortedHistory)
     }
     // the line below is because react wants history to be in the dependency array, but that causes infinite re-renders as we set history data above
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortOrder, sortField]);
+  }, [sortOrder, sortField])
 
   const deleteFromHistory = async (i = null) => {
     if (i === null) {
-      reduxHandleDeleteHistory(user, dbUserRedux);
-      setHistoryData([]);
-      return;
+      reduxHandleDeleteHistory(user, dbUserRedux)
+      setHistoryData([])
+      return
     }
-
-      const deleteId = history[i]._id;
-      reduxHandleDeleteHistory(user, dbUserRedux, deleteId);
-      setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}));
+      const deleteId = history[i]._id
+      reduxHandleDeleteHistory(user, dbUserRedux, deleteId)
+      setHistoryData(history.filter((yeet) => {return yeet._id !==  deleteId}))
   }
 
   useEffect(() => {
-    changeFilterOptions(filterField);
-    try {
-      filterOptions.find(selectedItem); 
-    }
-    catch (error) {
-      setSelectedFilterItem("");
-    }
+    changeFilterOptions(filterField)
+    try {filterOptions.find(selectedItem)}
+    catch (error) {setSelectedFilterItem("")}
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [originalHistory]);
+  }, [originalHistory])
 
   const clearDropdowns = () => {
-    setSortField("");
-    setFilterField("");
-    setSortOrder(-1);
-    setSelectedFilterItem("");
-    setHistoryData(originalHistory);
-    setFilterOptions([]);
+    setSortField("")
+    setFilterField("")
+    setSortOrder(-1)
+    setSelectedFilterItem("")
+    setHistoryData(originalHistory)
+    setFilterOptions([])
   }
 
-  if (showSidebar === false) return (<></>);
-
+  if (showSidebar === false) return (<></>)
   return (
     <>
       <Drawer
@@ -214,9 +202,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
       >
         <div className="historyTop">
           <h1 className="translationTitle"> Translation History </h1>
-          <button id="closeHistory" onClick={toggleSidebar}>
-            <FontAwesomeIcon icon={faX} size="2x" id="xIcon" />
-          </button>
+          <button id="closeHistory" onClick={toggleSidebar}><FontAwesomeIcon icon={faX} size="2x" id="xIcon" /></button>
         </div>
 
         {historyError !== '' || history == null ? (
@@ -227,7 +213,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
           <>
             {history.length === 0 && originalHistory.length === 0 ? (
               <div className="emptyHistory">
-                <img id="emptyPicture" src={emptybox} alt="History empty" style={{ width: '70%', height: '70%' }} />
+                <img id="emptyPicture" src={emptybox} alt="History empty" style={{ width: '70%', height: '70%' }} loading="lazy" />
                 <a href="https://www.freepik.com/icons/empty" target="_blank" rel="noopener noreferrer" className="link" id="emptyCredit">Icon by Ghozi Muhtarom</a>
                 <h1 id="emptyText">No past translations</h1>
               </div>
@@ -255,7 +241,6 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
                       <option value="Source"> Source Language </option>
                       <option value="Destination"> Destination Language </option>
                     </select>
-                    {/* </div> */}
 
                     {/* filter options */}
                     <select id="filterOptions" onChange={changeSelectedFilterItem} value={selectedItem}>
@@ -276,33 +261,21 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
                 <div>
                   {history.map((historyLabel, i) => (
                     <div className="translationHistory" key={i}>
-                      <h4>
-                        {formatDate(history[i].createdAt, true)}
-                      </h4>
+                      <h4>{formatDate(history[i].createdAt, true)}</h4>
 
                       <div className="codeHistory">
-
                         <div className="entrySource">
-                          <h5>
-                            Source Code ({history[i].Source_language})
-                          </h5>
-                          <p>
-                            {history[i].original_code}
-                          </p>
+                          <h5>Source Code ({history[i].Source_language})</h5>
+                          <p>{history[i].original_code}</p>
                         </div>
 
                         <div className="entryDest">
-                          <h5>
-                            Converted Code ({history[i].Desired_language})
-                          </h5>
-                          <p>
-                            {history[i].converted_code}
-                          </p>
+                          <h5>Converted Code ({history[i].Desired_language})</h5>
+                          <p>{history[i].converted_code}</p>
                         </div>
                       </div>
 
                       <div className="historyEntryOptions">
-                        {/* <button id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, history[i].original_code, history[i].converted_code)}> Translate again </button> */}
                         <button data-testid="translateAgain" id="translateAgain" onClick={() => loadInputAndTranslatedCode(setInputCode, setTranslatedCode, setSourceLanguage, setDesiredLanguage, history[i].original_code, history[i].converted_code, history[i].Source_language, history[i].Desired_language)}> Translate again </button>
                         <button id="removeEntry" title="Remove translation">
                           <FontAwesomeIcon id="trashIcon" icon={faTrashCan} size="2x" onClick={() => deleteFromHistory(i)} />
@@ -317,7 +290,7 @@ const History = ({ setTriggerHistory, triggerHistory, user, dbUserRedux, showSid
         )}
       </Drawer>
     </>
-  );
+  )
 }
 
-export default History;
+export default History

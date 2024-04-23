@@ -1,35 +1,28 @@
-import React, { useState } from "react";
-import { isValidEmail } from "../utils/fieldValidations";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import { toast } from 'react-toastify';
+import React, { useState } from "react"
+import { isValidEmail } from "../utils/fieldValidations"
+import { getAuth, sendPasswordResetEmail } from "firebase/auth"
+import { toast } from 'react-toastify'
 
 const ForgotPassword = () => {
-    const auth = getAuth();
-    const [email, setEmail] = useState("");
-    const [error, setError] = useState("");
+    const auth = getAuth()
+    const [email, setEmail] = useState("")
+    const [error, setError] = useState("")
 
     const handleSendReset = () => {
         if (email === "") {
-            setError("Enter email! ヽ（≧□≦）ノ");
-            return;
+            setError("Enter email! ヽ（≧□≦）ノ")
+            return
         }
 
         if (!isValidEmail(email)) {
-            setError("Enter a valid email!");
-            return;
+            setError("Enter a valid email!")
+            return
         }
 
         sendPasswordResetEmail(auth, email)
-            .then((res) => {
-                console.log("Password reset email sent");
-                toast.success('Reset email sent :)');
-                console.log(res)
-            })
-            .catch((error) => {
-                console.error(error);
-                setError(error.message);
-            });
-    };
+            .then((res) => {toast.success('Reset email sent :)')})
+            .catch((error) => {setError(error.message)})
+    }
 
     return (
         <div className="forgot-div">
@@ -52,7 +45,7 @@ const ForgotPassword = () => {
             <button className="login-btn" onClick={handleSendReset}>Send password reset email</button>
             {error && <p className="error-msg">{error}</p>}
         </div>
-    );
-};
+    )
+}
 
-export default ForgotPassword;
+export default ForgotPassword

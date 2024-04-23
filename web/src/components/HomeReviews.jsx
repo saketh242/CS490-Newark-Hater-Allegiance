@@ -1,19 +1,20 @@
-import React from 'react';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from 'react-responsive-carousel';
+import React, { lazy, Suspense } from 'react'
+import "react-responsive-carousel/lib/styles/carousel.min.css"
+import { Carousel } from 'react-responsive-carousel'
 import Gravatar from 'react-gravatar'
-import { useSelector } from 'react-redux';
-import StarRating from './StarRating'
+import { useSelector } from 'react-redux'
 import { selectTotalFeedbackAverage, selectAverageTranslationRating, selectAverageUXRating, selectFetchingRatings, selectCount } from '../features/ratings/ratingsSlice'
 
-const HomeReviews = () => {
-  const { reviews, fetchingReviews } = useSelector((state) => state.reviews);
+const StarRating = lazy(() => import('./StarRating'))
 
-  const totalFeedbackAverage = useSelector(selectTotalFeedbackAverage);
-  const averageTranslationRating = useSelector(selectAverageTranslationRating);
-  const averageUXRating = useSelector(selectAverageUXRating);
-  const fetchingRatings = useSelector(selectFetchingRatings);
-  const count = useSelector(selectCount);
+const HomeReviews = () => {
+  const { reviews, fetchingReviews } = useSelector((state) => state.reviews)
+
+  const totalFeedbackAverage = useSelector(selectTotalFeedbackAverage)
+  const averageTranslationRating = useSelector(selectAverageTranslationRating)
+  const averageUXRating = useSelector(selectAverageUXRating)
+  const fetchingRatings = useSelector(selectFetchingRatings)
+  const count = useSelector(selectCount)
 
   return (
     <div>
@@ -22,23 +23,34 @@ const HomeReviews = () => {
           <>
             <div id="overallAverageRating">
               <p id="totalRatingText" data-testid="totalRating">Total Rating: {totalFeedbackAverage} / 5</p>
-              <StarRating averageRating={totalFeedbackAverage} size={"4x"} className={"rainbow"} data-testid="overallStars"></StarRating>
+              <Suspense>
+                <StarRating averageRating={totalFeedbackAverage} size={"4x"} className={"rainbow"} data-testid="overallStars"></StarRating>
+              </Suspense>
               <p id="totalReviews">based off of {count} reviews</p>
             </div>
             <div id="lesserRatings">
               <div id="translationAverageRating">
                 <p className="specificRatingCategory" data-testid="translationQuality">Translation Quality: {averageTranslationRating} / 5</p>
-                <StarRating averageRating={averageTranslationRating} size={"2x"} className={"ratingStarStandard"} data-testid="translationStars"></StarRating>
+                <Suspense>
+                  <StarRating averageRating={averageTranslationRating} size={"2x"} className={"ratingStarStandard"} data-testid="translationStars"></StarRating>
+                </Suspense>
               </div>
               <div id="uxAverageRating">
                 <p className="specificRatingCategory" data-testid="userExperience">User Experience: {averageUXRating} / 5</p>
-                <StarRating averageRating={averageUXRating} size={"2x"} className={"ratingStarStandard"} data-testid="uxStars"></StarRating>
+                <Suspense>
+                  <StarRating averageRating={averageUXRating} size={"2x"} className={"ratingStarStandard"} data-testid="uxStars"></StarRating>
+                </Suspense>
               </div>
             </div>
           </>
         ) : (
           <>
-            <p>Fetching ratings</p>
+            <p className="loadingText" style={{ textAlign: 'center', margin: '2rem', fontSize:'3rem'}}>
+              Fetching ratings
+              <span className="dot1">.</span>
+              <span className="dot2">.</span>
+              <span className="dot3">.</span>
+            </p>
           </>
         )}
       </div>
@@ -46,17 +58,15 @@ const HomeReviews = () => {
       <div className='box reviews' id="reviewContainer">
         <p id="reviewHeader" className="sectionHeader">Some of our reviews</p>
         <div className="reviews-flexbox">
-          {(reviews.length !== 0  && !fetchingReviews) ? (
+          {(reviews.length !== 0 && !fetchingReviews) ? (
             <Carousel className="homeCarousel" infiniteLoop showStatus={false} showThumbs={false}>
               {reviews.map((review, index) => (
                 <div className="review" key={index}>
                   <p>{`⭐⭐⭐⭐⭐`}</p>
                   <p>{`${review.textMessage}`}</p>
                   <div id="reviewUserDetails">
-
                     <Gravatar id="homereviewerIcon" alt="Gravatar for reviewer" size={500} default="mp" email={review.user.email} />
                     <p>{`${review.user.firstName} ${review.user.lastName}`}</p>
-
                   </div>
                 </div>
               ))}
@@ -72,7 +82,7 @@ const HomeReviews = () => {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default HomeReviews;
+export default HomeReviews

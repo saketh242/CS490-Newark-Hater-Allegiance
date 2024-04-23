@@ -1,118 +1,100 @@
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 import {
-
     reauthenticateWithCredential,
     EmailAuthProvider,
-    updatePassword,
     signOut,
     deleteUser,
     PhoneAuthProvider,
     RecaptchaVerifier,
     getMultiFactorResolver,
     PhoneMultiFactorGenerator,
-} from 'firebase/auth';
-
-import { auth } from '../firebase';
-import { toast } from 'react-toastify';
-import nhaService from '../services/nhaService';
-import VerificationInput from 'react-verification-input';
-import { isValidSixDigitCode } from '../utils/fieldValidations';
+} from 'firebase/auth'
+import { auth } from '../firebase'
+import { toast } from 'react-toastify'
+import nhaService from '../services/nhaService'
+import VerificationInput from 'react-verification-input'
+import { isValidSixDigitCode } from '../utils/fieldValidations'
 
 const DeleteAccount = () => {
+    
+    const recaptchaVerifierRef = useRef(null)
 
-    const recaptchaVerifierRef = useRef(null);
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
-    const [verificationCode, setVerificationCode] = useState("");
+    const [verificationCode, setVerificationCode] = useState("")
 
+    const [mfaCase, setMfaCase] = useState(false)
+    const [verificationId, setVerificationId] = useState(null)
+    const [resolver, setResolver] = useState(null)
 
-    const [mfaCase, setMfaCase] = useState(false);
-    const [verificationId, setVerificationId] = useState(null);
-    const [resolver, setResolver] = useState(null);
-
-    const user = auth.currentUser;
+    const user = auth.currentUser
     const navigate = useNavigate()
-    const [deleted, setDeleted] = useState(false);
+    const [deleted, setDeleted] = useState(false)
 
     const handleDelete = async (e) => {
         e.preventDefault()
         if (password === "") {
-            setError("Please enter your password");
+            setError("Please enter your password")
             return
         }
 
         try {
-            const credential = EmailAuthProvider.credential(user.email, password);
+            const credential = EmailAuthProvider.credential(user.email, password)
             await reauthenticateWithCredential(user, credential)
             try {
-                
                 await nhaService.deleteUser(user) //delete user from db
                 await deleteUser(user) //delete user from firebase
                 await signOut(auth);
                 navigate("/login")
-                const msg = () => toast(`Account deleted successfully!`);
+                const msg = () => toast(`Account deleted successfully!`)
                 msg()
-            
             } catch (e) {
-                setError("Error deleting account, try again");
+                setError("Error deleting account, try again")
                 return
             }
-        } catch (err) {
-            handleAuthErrors(err);
-        }
+        } catch (err) { handleAuthErrors(err) }
     }
 
     const handle2FALogin = async () => {
-        if (verificationCode == ""){
+        if (verificationCode == "") {
             setError("Enter verification code!");
             return
         }
 
-        if (!isValidSixDigitCode(verificationCode)){
+        if (!isValidSixDigitCode(verificationCode)) {
             setError("Enter a valid code!")
             return
         }
         try {
-            const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
-            const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
-            await resolver.resolveSignIn(multiFactorAssertion);
+            const cred = PhoneAuthProvider.credential(verificationId, verificationCode)
+            const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred)
+            await resolver.resolveSignIn(multiFactorAssertion)
             // now we can delete the account
-            await nhaService.deleteUser(user);
+            await nhaService.deleteUser(user)
             await deleteUser(user);
 
             await signOut(auth);
             navigate("/login")
-            const msg = () => toast(`Account deleted successfully!`);
+            const msg = () => toast(`Account deleted successfully!`)
             msg()
 
         } catch (e) {
-            if (window.recaptchaVerifier){
-                setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
-            } 
-            if (e.code === "auth/invalid-verification-code") {
-                setError("Invalid Code! Try entering it again.");
-            } else if (e.code === "auth/code-expired") {
-                setError("Code Expired. Please request a new code or reload the page.");
-
-            } else {
-                setError("Error validating code! Try Again!");
-            }
-            //setError("Error during 2FA, please contact us for help.");
+            if (window.recaptchaVerifier) setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
+            else setError("Error validating code! Try Again!")
         }
     }
-
 
     const handleAuthErrors = async (err) => {
         switch (err.code) {
             case "auth/invalid-login-credentials":
-                setError("Incorrect Password, try again!");
-                break;
+                setError("Incorrect Password, try again!")
+                break
             case "auth/multi-factor-auth-required":
-                handleMultiFactorAuth(err);
-                break;
+                handleMultiFactorAuth(err)
+                break
             default:
-                setError("Reauthentication failed. Try again");
+                setError("Reauthentication failed. Try again")
         }
     }
 
@@ -121,21 +103,18 @@ const DeleteAccount = () => {
         try {
             recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
               'size': 'invisible',
-              'callback': (response) => console.log('reCAPTCHA solved!', response),
+              'callback': () => console.log('reCAPTCHA solved!'),
               'expired-callback': function() {
-                console.log('reCAPTCHA token expired');
                 recaptchaVerifierRef.current.render().then(function(widgetId) {
-                  window.recaptchaWidgetId = widgetId;
+                  window.recaptchaWidgetId = widgetId
                 });
               },
               'timeout': 60000 
-            }, auth);
+            }, auth)
             
             recaptchaVerifierRef.current.render().then(function(widgetId) {
               window.recaptchaWidgetId = widgetId;
-            }).catch(function(error) {
-              console.error('Error rendering reCAPTCHA:', error);
-            });
+            }).catch(function(error) {})
           } catch(e){
             setError("Recaptcha Error, try again or reload page");
             return;
@@ -143,92 +122,75 @@ const DeleteAccount = () => {
 
         const resolverVar = getMultiFactorResolver(auth, err);
         // removing the if check because sms is the only 2fa we have right now
-        const phoneAuthProvider = new PhoneAuthProvider(auth);
+        const phoneAuthProvider = new PhoneAuthProvider(auth)
         try {
             const verificationIdVar = await phoneAuthProvider.verifyPhoneNumber({
                 multiFactorHint: resolverVar.hints[0],
                 session: resolverVar.session
-            }, recaptchaVerifierRef.current);
-            setResolver(resolverVar);
-            setVerificationId(verificationIdVar);
-            setMfaCase(true);
-            
+            }, recaptchaVerifierRef.current)
+            setResolver(resolverVar)
+            setVerificationId(verificationIdVar)
+            setMfaCase(true)
 
-        } catch (error) {
-            setError("Failed to complete multi-factor authentication.");
-        }
-
-    };
-
-
-
-
-
-
-
+        } catch (error) { setError("Failed to complete multi-factor authentication.") }
+    }
 
     return (
-
         <div className="delete-account-div">
-        <h2 className="delete-heading warning-flash">Deleted accounts cannot be recovered again!</h2>
-
+            <h2 className="delete-heading warning-flash">Deleted accounts cannot be recovered again!</h2>
             <div id="recaptcha-container-id"></div>
 
+            {!mfaCase ?
+                (<>
+                    <form className="delete-form">
+                        <input
+                            data-testid="password-id"
+                            type="password"
+                            className='password-change'
+                            value={password}
+                            onChange={(e) => {
+                                setPassword(e.target.value)
+                                setError(null)
+                            }}
+                            placeholder='Enter password'
+                            autoComplete='off'
+                            required
+                            style={{
+                                borderColor: error ? 'red' : '#0ac6c0',
+                                transition: 'border-color 0.3s ease',
+                            }}
+                        />
 
-        {!mfaCase ? 
-        (<>
-
-            <form className="delete-form">
-                <input
-                    data-testid="password-id"
-                    type="password"
-                    className='password-change'
-                    value={password}
-                    onChange={(e) => {
-                        setPassword(e.target.value)
-                        setError(null)
-                    }}
-                    placeholder='Enter password'
-                    autoComplete='off'
-                    required
-                    style={{
-                        borderColor: error ? 'red' : '#0ac6c0',
-                        transition: 'border-color 0.3s ease',
-                    }}
-                />
-
-                <button
-                    disabled={deleted}
-                    type="submit"
-                    onClick={handleDelete}
-                    className="login-btn"
-                    id='delete-acc-btn'
-                >Delete Account</button>
-            </form>
-            
-        </>): (
-            <>
-            
-            <div className="popupContent" id="loginVerify">
-              <div id="verificationHeader">
-                <h1 id="tfa-header">Two-Factor authentication</h1>
-                <p>Must authenticate to delete account.</p>
-                <p>Enter the code that was sent to your phone number.</p>
-              </div>
-              <VerificationInput validChars='0-9' onChange={(code) => setVerificationCode(code)}
-                classNames={{
-                  container: "otp-container",
-                  character: "character",
-                  characterInactive: "character--inactive",
-                  characterSelected: "character--selected",
-                  characterFilled: "character--filled",
-                }} />
-              <button className="default-button login-btn" onClick={handle2FALogin}>Submit Code</button>
-            </div>
-            </>
-        )}
-            
-        {error && <p className="error-msg">{error}</p>}
+                        <button
+                            disabled={deleted}
+                            type="submit"
+                            onClick={handleDelete}
+                            className="login-btn"
+                            id='delete-acc-btn'
+                        >Delete Account</button>
+                    </form>
+                </>
+                ) : (
+                    <>
+                        <div className="popupContent" id="loginVerify">
+                            <div id="verificationHeader">
+                                <h1 id="tfa-header">Two-Factor authentication</h1>
+                                <p>Must authenticate to delete account.</p>
+                                <p>Enter the code that was sent to your phone number.</p>
+                            </div>
+                            <VerificationInput validChars='0-9' onChange={(code) => setVerificationCode(code)}
+                                classNames={{
+                                    container: "otp-container",
+                                    character: "character",
+                                    characterInactive: "character--inactive",
+                                    characterSelected: "character--selected",
+                                    characterFilled: "character--filled",
+                                }} />
+                            <button className="default-button login-btn" onClick={handle2FALogin}>Submit Code</button>
+                        </div>
+                    </>
+                )}
+            {error && <p className="error-msg">{error}</p>}
         </div>
     )
 }

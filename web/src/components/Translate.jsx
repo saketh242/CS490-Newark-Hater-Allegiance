@@ -1,211 +1,184 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { auth } from '../firebase';
-import Feedback from './Feedback';
-import CodeOutput from './CodeOutput';
-import History from './History';
-import { sanitizeCode } from '../utils/codeUtils';
-import nhaService from '../services/nhaService';
+import React, { useEffect, useState, useRef, lazy, Suspense } from 'react'
+import { auth } from '../firebase'
+import { sanitizeCode } from '../utils/codeUtils'
+import nhaService from '../services/nhaService'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightLong, faBroom } from '@fortawesome/free-solid-svg-icons'
-import { faCheckCircle, faTimesCircle, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-import { faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
-import hljs from 'highlight.js'; // Import Highlight.js
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRightLong, faBroom, faCheckCircle, faTimesCircle, faCircleExclamation, faDownload, faCopy, faFileImport, faHistory } from '@fortawesome/free-solid-svg-icons'
+import hljs from 'highlight.js'
 import { ThreeDots } from 'react-loader-spinner'
 
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { useSelector } from 'react-redux'
+
+const Feedback = lazy( () => import('./Feedback'))
+const CodeOutput = lazy( () => import('./CodeOutput'))
+const History = lazy( () => import('./History'))
 
 const Translate = () => {
 
-  const dbUserFromRedux = useSelector((state) => state.user.dbUser);
-  // getting the dbUser from redux
+  const dbUserFromRedux = useSelector((state) => state.user.dbUser)
+  const user = auth.currentUser
 
-  //const { user } = useAuth();
-  const user = auth.currentUser;
+  const [showSidebar, setShowSidebar] = useState(false)
+  const toggleSidebar = () => {setShowSidebar(!showSidebar)}
 
-  const [showSidebar, setShowSidebar] = useState(false);
-  const toggleSidebar = () => {
-    setShowSidebar(!showSidebar);
-  };
+  const [translationDone, setTranslationDone] = useState(false) // State variable to track translation status to display feedback
 
-  const [translationDone, setTranslationDone] = useState(false); // State variable to track translation status to display feedback
+  const [error, setError] = useState('')
 
-  //const navigate = useNavigate();
-  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false)
+  const [userTriggeredChange, setUserTriggeredChange] = useState(false)
+  const [postId, setPostId] = useState("")
 
-  const [loading, setLoading] = useState(false);
-  const [userTriggeredChange, setUserTriggeredChange] = useState(false);
-  const [postId, setPostId] = useState("");
+  const [inputCode, setInputCode] = useState('')
+  const [translatedCode, setTranslatedCode] = useState('')
 
-  //input code and output code states
-  const [inputCode, setInputCode] = useState('');
-  const [translatedCode, setTranslatedCode] = useState('');
+  const [sourceLanguage, setSourceLanguage] = useState('')
+  const [desiredLanguage, setDesiredLanguage] = useState('')
 
-  //source and destination language dropdown states
-  const [sourceLanguage, setSourceLanguage] = useState('');
-  const [desiredLanguage, setDesiredLanguage] = useState('');
-
-  const [apiReady, setApiReady] = useState(false);
-  const [loadingAPI, setLoadingAPI] = useState(true); // Loading state for API status
-  const [errorAPI, setErrorAPI] = useState('');
+  const [apiReady, setApiReady] = useState(false)
+  const [loadingAPI, setLoadingAPI] = useState(true)
+  const [errorAPI, setErrorAPI] = useState('')
 
   useEffect(() => {
     const fetchAPIStatus = async () => {
       try {
-        const response = await nhaService.getOpenAIStatus();
-        if (!response) throw error;
-        setApiReady(response);
-      } catch (error) {
-        setErrorAPI('Error fetching API status');
-      } finally {
-        setLoadingAPI(false);
-      }
-    };
+        const response = await nhaService.getOpenAIStatus()
+        if (!response) throw error
+        setApiReady(response)
+      } catch (error) {setErrorAPI('Error fetching API status')} 
+        finally {setLoadingAPI(false)}
+    }
+    fetchAPIStatus()
+  }, [])
 
-    fetchAPIStatus();
-  }, []);
-
-  const handleSourceLanguageChange = (e) => {
-    setSourceLanguage(e.target.value);
-  };
-
-  const handleDesiredLanguageChange = (e) => {
-    setDesiredLanguage(e.target.value);
-  };
-
-  const [translationError, setTranslationError] = useState('');
+  useEffect(() => {setTriggerHistory(true)}, [])
+  const handleSourceLanguageChange = (e) => {setSourceLanguage(e.target.value)}
+  const handleDesiredLanguageChange = (e) => {setDesiredLanguage(e.target.value)}
+  const [translationError, setTranslationError] = useState('')
 
   const translateCode = async () => {
-
     if (sourceLanguage === "" && desiredLanguage === "") {
-      setTranslationError("Please select the source and desired languages");
+      setTranslationError("Please select the source and desired languages")
       return
-    }
-
-    else if (sourceLanguage === "") {
+    } else if (sourceLanguage === "") {
       setTranslationError("Please select a source language")
       return
-    }
-
-    else if (desiredLanguage === "") {
+    } else if (desiredLanguage === "") {
       setTranslationError("Please select a desired language")
       return
     }
 
     if (!inputCode.trim()) {
-      setError('Input code cannot be empty');
-      return;
+      setError('Input code cannot be empty')
+      return
     }
 
-    setError(''); // Reset error message
-    setTranslationError('') //Reset translationerror message
-    setTranslatedCode(''); //reset output
-    setTranslationDone(false);
-    setLoading(true); // Set loading state to true before API call
+    setError('')
+    setTranslationError('')
+    setTranslatedCode('')
+    setTranslationDone(false)
+    setLoading(true)
 
-    const sanitized = sanitizeCode(inputCode);
-    const response = await nhaService.postPrompt(user, sourceLanguage, desiredLanguage, JSON.stringify(sanitized));
+    const sanitized = sanitizeCode(inputCode)
+    const response = await nhaService.postPrompt(user, sourceLanguage, desiredLanguage, JSON.stringify(sanitized))
 
     if (!response.success) {
-      setLoading(false);
-      setTranslationError(response.message);
-      return;
+      setLoading(false)
+      setTranslationError(response.message)
+      return
     }
 
-    const translatedCodeResponse = response.message;
-    setTranslatedCode(translatedCodeResponse); // Update translated code
-    setLoading(false); // Set loading state to false after receiving response
-    setTranslationDone(true);
-    toast(`Thanks for translating! Rate this translation below!`);
-    setUserTriggeredChange(true);
-  };
+    const translatedCodeResponse = response.message
+    setTranslatedCode(translatedCodeResponse) // Update translated code
+    setLoading(false) // Set loading state to false after receiving response
+    setTranslationDone(true)
+    toast(`Thanks for translating! Rate this translation below!`)
+    setUserTriggeredChange(true)
+  }
 
-  const [triggerHistory, setTriggerHistory] = useState(false);
+  const [triggerHistory, setTriggerHistory] = useState(false)
   
   useEffect(() => {
     const handlePostHistory = async () => {
       try {
         if (translatedCode !== '') {
-          // throw new Error('simulated error: Unable to save translation to history');
-          const post = await nhaService.postHistory(user, dbUserFromRedux, inputCode, translatedCode, sourceLanguage, desiredLanguage);
-          setPostId(post);
-          setTriggerHistory(true);
-          setUserTriggeredChange(false);
+          const post = await nhaService.postHistory(user, dbUserFromRedux, inputCode, translatedCode, sourceLanguage, desiredLanguage)
+          setPostId(post)
+          setTriggerHistory(true)
+          setUserTriggeredChange(false)
         }
       } catch (error) {
-          setTranslationError("Unable to save translation to history.");
+          setTranslationError("Unable to save translation to history.")
       }
-    };
-
-    if(userTriggeredChange) {
-      handlePostHistory();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userTriggeredChange]);
 
-  //function to generate file for download
+    if(userTriggeredChange) handlePostHistory()
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userTriggeredChange])
+
   const downloadFile = () => {
-    let blob;
-    let fileType;
+    let blob
+    let fileType
 
     switch (desiredLanguage) {
       case 'python':
-        blob = new Blob([translatedCode], { type: 'text/x-python-script' });
-        fileType = '.py';
-        break;
+        blob = new Blob([translatedCode], { type: 'text/x-python-script' })
+        fileType = '.py'
+        break
       case 'javascript':
-        blob = new Blob([translatedCode], { type: 'text/javascript' });
-        fileType = '.js';
-        break;
+        blob = new Blob([translatedCode], { type: 'text/javascript' })
+        fileType = '.js'
+        break
       case 'java':
-        blob = new Blob([translatedCode], { type: 'text/java' });
-        fileType = '.java';
-        break;
+        blob = new Blob([translatedCode], { type: 'text/java' })
+        fileType = '.java'
+        break
       case 'c':
-        blob = new Blob([translatedCode], { type: 'text/x-csrc' });
-        fileType = '.c';
-        break;
+        blob = new Blob([translatedCode], { type: 'text/x-csrc' })
+        fileType = '.c'
+        break
       case 'csharp':
-        blob = new Blob([translatedCode], { type: 'text/x-csharp' });
-        fileType = '.cs';
-        break;
+        blob = new Blob([translatedCode], { type: 'text/x-csharp' })
+        fileType = '.cs'
+        break
       case 'cplusplus':
-        blob = new Blob([translatedCode], { type: 'text/x-c++src' });
-        fileType = '.cpp';
-        break;
+        blob = new Blob([translatedCode], { type: 'text/x-c++src' })
+        fileType = '.cpp'
+        break
       case 'php':
-        blob = new Blob([translatedCode], { type: 'text/x-php' });
-        fileType = '.php';
-        break;
+        blob = new Blob([translatedCode], { type: 'text/x-php' })
+        fileType = '.php'
+        break
       case 'go':
-        blob = new Blob([translatedCode], { type: 'text/x-go' });
-        fileType = '.go';
-        break;
+        blob = new Blob([translatedCode], { type: 'text/x-go' })
+        fileType = '.go'
+        break
       case 'ruby':
-        blob = new Blob([translatedCode], { type: 'text/x-ruby' });
-        fileType = '.rb';
-        break;
+        blob = new Blob([translatedCode], { type: 'text/x-ruby' })
+        fileType = '.rb'
+        break
       case 'typescript':
-        blob = new Blob([translatedCode], { type: 'text/typescript' });
-        fileType = '.ts';
-        break;
-      default:
-        blob = new Blob([translatedCode], { type: 'text/plain' }); // Default to plain text
-        fileType = '.txt';
+        blob = new Blob([translatedCode], { type: 'text/typescript' })
+        fileType = '.ts'
+        break
+      default: //plain text file
+        blob = new Blob([translatedCode], { type: 'text/plain' })
+        fileType = '.txt'
     }
 
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `translated_code${fileType}`);
-    document.body.appendChild(link);
-    link.click();
-    URL.revokeObjectURL(url);
-  };
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `translated_code${fileType}`)
+    document.body.appendChild(link)
+    link.click()
+    URL.revokeObjectURL(url)
+  }
 
-  //array of programming languages the app will support
   const languages = [
     { value: 'python', label: 'Python' },
     { value: 'javascript', label: 'JavaScript' },
@@ -217,49 +190,44 @@ const Translate = () => {
     { value: 'go', label: 'Go' },
     { value: 'ruby', label: 'Ruby' },
     { value: 'typescript', label: 'TypeScript' }
-  ];
+  ]
 
-  //function to handle file upload
-  const fileInputRef = useRef(null); // Ref for file input element
+  const fileInputRef = useRef(null)
   const handleFileUpload = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]
     if (file) {
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onload = (event) => {
-        setInputCode(event.target.result);
-        setTranslatedCode('');
-      };
-      reader.readAsText(file);
+        setInputCode(event.target.result)
+        setTranslatedCode('')
+      }
+      reader.readAsText(file)
     }
-  };
+  }
 
   const detectLanguage = () => {
-    const textarea = document.querySelector('.inputArea');
+    const textarea = document.querySelector('.inputArea')
     if (textarea) {
-      const detected = hljs.highlightAuto(textarea.textContent, ["python", "javascript", "java", "c", "csharp", "cplusplus", "php", "go", "ruby", "typescript"]);
-      setSourceLanguage(detected.language || '');
+      const detected = hljs.highlightAuto(textarea.textContent, ["python", "javascript", "java", "c", "csharp", "cplusplus", "php", "go", "ruby", "typescript"])
+      setSourceLanguage(detected.language || '')
     }
-  };
+  }
 
-  useEffect(() => {
-    detectLanguage();
-  }, [inputCode]);
+  useEffect(() => {detectLanguage()}, [inputCode])
 
+  //allow tabs on code input area
   const handleKeyPress = (e) => {
     if (e.key === 'Tab') {
-      e.preventDefault();
-      const { selectionStart, selectionEnd } = e.target;
-      const newValue =
-        inputCode.substring(0, selectionStart) +
-        '\t' +
-        inputCode.substring(selectionEnd);
-      setInputCode(newValue);
+      e.preventDefault()
+      const { selectionStart, selectionEnd } = e.target
+      const newValue = inputCode.substring(0, selectionStart) + '\t' + inputCode.substring(selectionEnd)
+      setInputCode(newValue)
     }
-  };
+  }
 
   return (
     <div className="translateBody">
-
+      <Suspense>
       <History
         setTriggerHistory={setTriggerHistory}
         triggerHistory={triggerHistory}
@@ -272,6 +240,7 @@ const Translate = () => {
         setSourceLanguage={setSourceLanguage}
         setDesiredLanguage={setDesiredLanguage}
       />
+      </Suspense>
 
       <div className="apiStatusMessage">
         <h1 className="apiStatus">
@@ -299,14 +268,7 @@ const Translate = () => {
           </select>
         </div>
 
-        {/* <div className="conversionArrow"> */}
-        {/* <button id="translationButton" className="translationButton" onClick={translateCode} disabled={loading || !apiReady}>
-            <FontAwesomeIcon id="icon" icon={faArrowRightLong} size="7x" />
-          </button>
-          <p>Convert</p>
-        </div> */}
-
-        {/* Arrow icon button */}
+        {/* CONVERSION ARROW & LOADING ANIM*/}
         <div className="conversionArrow" data-testid="Convert">
           {loading || !apiReady ? (
             <ThreeDots
@@ -375,8 +337,8 @@ const Translate = () => {
               {/* Icon button for clearing text input */}
               <button className="clearButton" title="Clear text"
                 onClick={() => {
-                  setInputCode('');
-                  setTranslatedCode('');
+                  setInputCode('')
+                  setTranslatedCode('')
                 }}>
                 <FontAwesomeIcon id="icon" size="2x" icon={faBroom} />
               </button>
@@ -386,7 +348,7 @@ const Translate = () => {
           <textarea className="inputArea"
             value={inputCode}
             onChange={(e) => setInputCode(e.target.value)}
-            onKeyDown={handleKeyPress} // Handle key press events
+            onKeyDown={handleKeyPress}
             placeholder={error || "Enter code to translate"}
             style={{
               borderColor: error ? 'red' : '#0ac6c0',
@@ -402,7 +364,7 @@ const Translate = () => {
               {/* Icon button for copying the output */}
               <button className="copyButton" title="Copy code" onClick={() => {
                 navigator.clipboard.writeText(translatedCode)
-                toast(`Copied to clipboard!`);
+                toast(`Copied to clipboard!`)
               }}>
                 <FontAwesomeIcon id="icon" size="2x" icon={faCopy} />
               </button>
@@ -417,17 +379,17 @@ const Translate = () => {
               <span className="dot1">.</span>
               <span className="dot2">.</span>
               <span className="dot3">.</span>
-            </p>} {/*loading text*/}
-            <CodeOutput code={translatedCode} language={desiredLanguage} />
+            </p>}
+            <Suspense><CodeOutput code={translatedCode} language={desiredLanguage} /></Suspense>
           </div>
         </div>
       </div>
 
       <div className="feedback">
-        {translationDone && <Feedback postId={postId} />}
+        {translationDone && <Suspense><Feedback postId={postId} /></Suspense>}
       </div>
     </div>
   )
 }
 
-export default Translate;
+export default Translate

@@ -1,12 +1,10 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear, faPenToSquare, faShieldHalved } from '@fortawesome/free-solid-svg-icons'
-import { useState, useEffect, useRef } from 'react'
-
-import { useNavigate } from 'react-router-dom';
+import { useState, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
-import { auth } from "../firebase";
-import { toast } from 'react-toastify';
+import { auth } from "../firebase"
+import { toast } from 'react-toastify'
 import {
   multiFactor,
   EmailAuthProvider,
@@ -17,71 +15,50 @@ import {
   RecaptchaVerifier,
   getMultiFactorResolver,
   PhoneMultiFactorGenerator,
-} from "firebase/auth";
+} from "firebase/auth"
 
-import nhaService from '../services/nhaService';
-import { useDispatch } from 'react-redux';
-import { setDbUser } from '../features/user/userSlice';
-import { useSelector } from 'react-redux';
-import { isValidEmail, isValidName, isValidSixDigitCode } from '../utils/fieldValidations';
-import VerificationInput from 'react-verification-input';
-
+import nhaService from '../services/nhaService'
+import { useDispatch } from 'react-redux'
+import { setDbUser } from '../features/user/userSlice'
+import { useSelector } from 'react-redux'
+import { isValidEmail, isValidName, isValidSixDigitCode } from '../utils/fieldValidations'
+import VerificationInput from 'react-verification-input'
 
 const Settings = () => {
 
-  const recaptchaVerifierRef = useRef(null);
-    
+  const recaptchaVerifierRef = useRef(null)
 
-  const user = useSelector((state) => state.user.user);
-  const dbUser = useSelector((state) => state.user.dbUser);
-  // const isLoading = useSelector((state) => state.user.isLoading);
+  const user = useSelector((state) => state.user.user)
+  const dbUser = useSelector((state) => state.user.dbUser)
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
+  const [mfaCase, setMfaCase] = useState(false)
+  const [verificationCode, setVerificationCode] = useState("")
+  const [verificationId, setVerificationId] = useState(null)
+  const [resolver, setResolver] = useState(null)
 
-  // getting currenlty signed in user
-  // const user = auth.currentUser;
+  const [firstName, setFirstName] = useState(dbUser ? dbUser.firstName : "")
+  const [lastName, setLastName] = useState(dbUser ? dbUser.lastName : "")
+  const [email, setEmail] = useState(user ? user.email : "")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState(null)
+  const [userData, setUserData] = useState(dbUser || {})  // this is a placeholder for knowing the current state of data
 
-  const [mfaCase, setMfaCase] = useState(false);
-  const [verificationCode, setVerificationCode] = useState("");
-  const [verificationId, setVerificationId] = useState(null);
-  const [resolver, setResolver] = useState(null);
+  const firebaseUser = auth.currentUser
+  const enrolledFactors = multiFactor(firebaseUser).enrolledFactors
+  let has2FA
+  if (enrolledFactors) has2FA = enrolledFactors.length > 0
 
-  const [firstName, setFirstName] = useState(dbUser ? dbUser.firstName : "");
-  const [lastName, setLastName] = useState(dbUser ? dbUser.lastName : "");
-  const [email, setEmail] = useState(user ? user.email : "");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  // this is a placeholder for knowing the current state of data
-  const [userData, setUserData] = useState(dbUser || {});
-
-  const firebaseUser = auth.currentUser;
-  const enrolledFactors = multiFactor(firebaseUser).enrolledFactors;
-  let has2FA;
-  if (enrolledFactors) {
-    has2FA = enrolledFactors.length > 0;
-  }
   // const [receivedData, setReceivedData] = useState(false);
   // const [triggerEffect, setTriggerEffect] = useState(true);
 
-  const handleChangePassword = () => {
-    navigate("/changePassword");
-    return
-  }
-
-  const handleDeleteAccount = () => {
-    navigate("/deleteAccount")
-    return
-  }
-
-  const handle2FA = () => {
-    navigate("/enable2FA")
-    return
-  }
+  const handleChangePassword = () => { navigate("/changePassword") }
+  const handleDeleteAccount = () => { navigate("/deleteAccount") }
+  const handle2FA = () => { navigate("/enable2FA") }
 
   const handleChangeEmail = async (e) => {
-
     e.preventDefault()
 
     if (email === "") {
@@ -99,46 +76,43 @@ const Settings = () => {
       return
     }
 
-    const emailCheck = email === user.email ? false : true;
+    const emailCheck = email === user.email ? false : true
     if (!emailCheck) {
-      setError("Edit email to update!");
+      setError("Edit email to update!")
       return
     }
 
     // now reauthenticating the user and changing email :)
     try {
       const firebaseUser = auth.currentUser;
-      const credential = EmailAuthProvider.credential(user.email, password);
+      const credential = EmailAuthProvider.credential(user.email, password)
       await reauthenticateWithCredential(firebaseUser, credential)
 
       // reauthentication done now changing emails
       try {
-        await nhaService.updateUser(firebaseUser, email, firstName, lastName, true, false, false);
+        await nhaService.updateUser(firebaseUser, email, firstName, lastName, true, false, false)
         await verifyBeforeUpdateEmail(firebaseUser, email)
         await signOut(auth)
         navigate("/login")
-        const msg = () => toast(`Email change initiated, check your inbox and profile updated :)`);
+        const msg = () => toast(`Email change initiated, check your inbox and profile updated :)`)
         msg()
       } catch (err) {
-        setError("An error occured when changing the email, try again");
+        setError("An error occured when changing the email, try again")
         return
-
       }
-    } catch (e) {
-      handleAuthErrors(e)
-    }
+    } catch (e) { handleAuthErrors(e) }
   }
 
   const handleAuthErrors = async (err) => {
     switch (err.code) {
       case "auth/invalid-login-credentials":
-        setError("Incorrect Password");
-        break;
+        setError("Incorrect Password")
+        break
       case "auth/multi-factor-auth-required":
-        handleMultiFactorAuth(err);
-        break;
+        handleMultiFactorAuth(err)
+        break
       default:
-        setError("Reauthentication failed. Try again");
+        setError("Reauthentication failed. Try again")
     }
   }
 
@@ -147,49 +121,42 @@ const Settings = () => {
     try {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible',
-        'callback': (response) => console.log('reCAPTCHA solved!', response),
-        'expired-callback': function() {
-          console.log('reCAPTCHA token expired');
-          recaptchaVerifierRef.current.render().then(function(widgetId) {
-            window.recaptchaWidgetId = widgetId;
+        'callback': () => console.log('reCAPTCHA solved!'),
+        'expired-callback': function () {
+          recaptchaVerifierRef.current.render().then(function (widgetId) {
+            window.recaptchaWidgetId = widgetId
           });
         },
-        'timeout': 60000 
-      }, auth);
-      
-      recaptchaVerifierRef.current.render().then(function(widgetId) {
-        window.recaptchaWidgetId = widgetId;
-      }).catch(function(error) {
-        console.error('Error rendering reCAPTCHA:', error);
-      });
-    } catch(e){
-      setError("Recaptcha Error, try again or reload page");
-      return;
+        'timeout': 60000
+      }, auth)
+
+      recaptchaVerifierRef.current.render().then(function (widgetId) {
+        window.recaptchaWidgetId = widgetId
+      }).catch(function (error) { })
+    } catch (e) {
+      setError("Recaptcha Error, try again or reload page")
+      return
     }
 
-    
-    const resolverVar = getMultiFactorResolver(auth, err);
+    const resolverVar = getMultiFactorResolver(auth, err)
     // removing the if check because sms is the only 2fa we have right now
-    const phoneAuthProvider = new PhoneAuthProvider(auth);
+    const phoneAuthProvider = new PhoneAuthProvider(auth)
     try {
       const verificationIdVar = await phoneAuthProvider.verifyPhoneNumber({
         multiFactorHint: resolverVar.hints[0],
         session: resolverVar.session
-      }, recaptchaVerifierRef.current);
-      setResolver(resolverVar);
-      setVerificationId(verificationIdVar);
-      setMfaCase(true);
-      
+      }, recaptchaVerifierRef.current)
+      setResolver(resolverVar)
+      setVerificationId(verificationIdVar)
+      setMfaCase(true)
 
     } catch (error) {
-      console.error("2FA error:", error);
-      setError("Failed to complete multi-factor authentication.");
+      setError("Failed to complete multi-factor authentication.")
     }
-
-  };
+  }
 
   const handleChangeName = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       if (firstName === "" || lastName === "") {
         setError("Fields cannot be empty (¬_¬ )")
@@ -197,7 +164,7 @@ const Settings = () => {
       }
 
       if (!isValidName(firstName) || !isValidName(lastName)) {
-        setError("Enter a valid name!");
+        setError("Enter a valid name!")
         return
       }
 
@@ -205,96 +172,80 @@ const Settings = () => {
       const lNameCheck = lastName === userData.lastName ? false : true
 
       if (!fNameCheck && !lNameCheck) {
-        setError("Edit name to update!");
+        setError("Edit name to update!")
         return
       }
 
       // updating name in redux
-      const obj = { firstName: firstName, lastName: lastName, email: email, _id: dbUser._id };
+      const obj = { firstName: firstName, lastName: lastName, email: email, _id: dbUser._id }
       dispatch(setDbUser(obj))
       setUserData(obj)
 
-      await nhaService.updateUser(firebaseUser, email, firstName, lastName, false, true, true);
-      const msg = () => toast(`Name updated :)`);
+      await nhaService.updateUser(firebaseUser, email, firstName, lastName, false, true, true)
+      const msg = () => toast(`Name updated :)`)
       msg()
     } catch (e) {
-      setError("Error updating name, try again :(");
+      setError("Error updating name, try again :(")
       return
     }
   }
-
 
   const handle2FALogin = async () => {
 
-    if (verificationCode == ""){
+    if (verificationCode == "") {
       setError("Enter verification code!");
       return
-  }
+    }
 
-  if (!isValidSixDigitCode(verificationCode)){
+    if (!isValidSixDigitCode(verificationCode)) {
       setError("Enter a valid code!")
       return
-  }
-
-        
+    }
 
     try {
-        const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
-        const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
-        await resolver.resolveSignIn(multiFactorAssertion);
-        // now we can change the email
-        try {
-          await nhaService.updateUser(firebaseUser, email, firstName, lastName, true, false, false);
-          await verifyBeforeUpdateEmail(firebaseUser, email)
-          await signOut(auth)
-          navigate("/login")
-          const msg = () => toast(`Email change initiated, check your inbox and profile updated :)`);
-          msg()
+      const cred = PhoneAuthProvider.credential(verificationId, verificationCode)
+      const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred)
+      await resolver.resolveSignIn(multiFactorAssertion)
+      // now we can change the email
+      try {
+        await nhaService.updateUser(firebaseUser, email, firstName, lastName, true, false, false)
+        await verifyBeforeUpdateEmail(firebaseUser, email)
+        await signOut(auth)
+        navigate("/login")
+        const msg = () => toast(`Email change initiated, check your inbox and profile updated :)`)
+        msg()
       } catch (err) {
-          setError("An error occured when changing the email, try again");
-          return
-
+        setError("An error occured when changing the email, try again")
+        return
       }
 
-
     } catch (e) {
-        if (window.recaptchaVerifier){
-          setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
+      if (window.recaptchaVerifier) setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
 
-        }
-        if (e.code === "auth/invalid-verification-code") {
-            setError("Invalid Code! Try entering it again.");
-        } else if (e.code === "auth/code-expired") {
-            setError("Code Expired. Please request a new code or reload the page.");
-
-        } else {
-            setError("Error validating code! Try Again!");
-        }
-        console.error("Error during 2FA:", e);
+      if (e.code === "auth/invalid-verification-code") {
+        setError("Invalid Code! Try entering it again.")
+      } else if (e.code === "auth/code-expired") {
+        setError("Code Expired. Please request a new code or reload the page.")
+      } else {
+        setError("Error validating code! Try Again!")
+      }
     }
-}
+  }
 
   return (
-    <div className='settings-div' style={mfaCase ? {alignItems:'center'}: {}}>
-            <div id="recaptcha-container-id"></div>
-
-      <div className='settings-head-div' style={ mfaCase ? {paddingBottom:"2rem"} : {}}>
+    <div className='settings-div' style={mfaCase ? { alignItems: 'center' } : {}}>
+      <div id="recaptcha-container-id"></div>
+      <div className='settings-head-div' style={mfaCase ? { paddingBottom: "2rem" } : {}}>
         <FontAwesomeIcon size='4x' icon={faGear} className='settings-icon' />
         <p className='settings-head-p'>Settings</p>
       </div>
-      
-
       {
         !mfaCase ?
           (
             <>
-           
-
               <form className='settings-form'>
                 <div className='name-changes-div'>
-
                   <p className='edit-profile'>Change Name:</p>
-
                   <input
                     className="settings-email-input"
                     type="text"
@@ -329,10 +280,7 @@ const Settings = () => {
                   <div className='button-div-settings'>
                     <button className='login-btn' onClick={handleChangeName}>Update Name</button>
                   </div>
-
                 </div>
-
-
 
                 {user && (
                   <div>
@@ -369,13 +317,8 @@ const Settings = () => {
                     <div className='button-div-settings'>
                       <button type="submit" data-testid="update-btn" className='login-btn' onClick={handleChangeEmail}>Update Email</button>
                     </div>
-
                   </div>)}
-
-                
-
-
-              </form>
+              </form >
 
               <div className="options-div">
                 <div className='option-div hover-div' onClick={handleChangePassword}>
@@ -391,40 +334,30 @@ const Settings = () => {
                     <FontAwesomeIcon icon={faShieldHalved} />
                     <p>{has2FA ? "Disable" : "Enable"} 2FA</p>
                   </div>}
-
               </div>
-
             </>
-          ) :
-          (
+          ) : (
             <>
               <div className="popupContent" id="loginVerify">
-                                <div id="verificationHeader">
-                                    <h1 id="tfa-header">Two-Factor authentication</h1>
-                                    <p>Enter the code that was sent to your phone number.</p>
-                                </div>
-                                <VerificationInput validChars='0-9' onChange={(code) => setVerificationCode(code)}
-                                    classNames={{
-                                        container: "otp-container",
-                                        character: "character",
-                                        characterInactive: "character--inactive",
-                                        characterSelected: "character--selected",
-                                        characterFilled: "character--filled",
-                                    }} />
-                                <button className="default-button login-btn" onClick={handle2FALogin}>Submit Code</button>
-                            </div>
+                <div id="verificationHeader">
+                  <h1 id="tfa-header">Two-Factor authentication</h1>
+                  <p>Enter the code that was sent to your phone number.</p>
+                </div>
+                <VerificationInput validChars='0-9' onChange={(code) => setVerificationCode(code)}
+                  classNames={{
+                    container: "otp-container",
+                    character: "character",
+                    characterInactive: "character--inactive",
+                    characterSelected: "character--selected",
+                    characterFilled: "character--filled",
+                  }} />
+                <button className="default-button login-btn" onClick={handle2FALogin}>Submit Code</button>
+              </div>
             </>
           )
-          
       }
       {error && <p className='error-msg error-settings'>{error}</p>}
-
-
-
-
-
-
-    </div>
+    </div >
   )
 }
 

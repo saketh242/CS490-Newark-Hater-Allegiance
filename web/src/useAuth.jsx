@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch } from 'react-redux';
-import { onAuthStateChanged,  multiFactor } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase'; 
 import nhaService from "./services/nhaService"; 
 import { setUser, setDbUser, setIsLoading, setHistory } from './features/user/userSlice'; 
 
 const useAuth = () => {
-  let authFlag = true;
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -1,19 +1,19 @@
-import React, { useState, useMemo } from 'react';
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
-import VerificationInput from "react-verification-input";
-import { toast } from 'react-toastify';
+import React, { useState, useMemo } from 'react'
+import Popup from 'reactjs-popup'
+import 'reactjs-popup/dist/index.css'
+import VerificationInput from "react-verification-input"
+import { toast } from 'react-toastify'
 
 const ControlledCodePopup = () => {
-  const [open, setOpen] = useState(false);
-  const [code, setCode] = useState('');
+  const [open, setOpen] = useState(false)
+  const [code, setCode] = useState('')
 
   const handleSubmit = () => {
     toast("Success!")
     closeModal()
   }
 
-  const closeModal = () => setOpen(false);
+  const closeModal = () => setOpen(false)
   return (
     <div>
       <button type="button" className="button" onClick={() => setOpen(o => !o)}>
@@ -43,7 +43,7 @@ const ControlledCodePopup = () => {
         </div>
       </Popup>
     </div>
-  );
-};
+  )
+}
 
-export default ControlledCodePopup;
+export default ControlledCodePopup
