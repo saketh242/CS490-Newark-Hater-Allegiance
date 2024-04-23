@@ -171,7 +171,6 @@ const ChangePassword = () => {
             } else {
                 setError("Error validating code! Try Again!")
             }
-            setError("Error during 2FA:", e)
         }
     }
 
