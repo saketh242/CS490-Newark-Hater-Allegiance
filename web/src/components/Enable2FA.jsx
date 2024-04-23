@@ -38,6 +38,11 @@ const Enable2FA = () => {
   if (enrolledFactors) has2FA = enrolledFactors.length > 0
 
   const handleVerifyCode = async () => {
+    if (code === ""){
+      setError("Please enter the code!")
+      return
+    }
+    
     if (!isValidSixDigitCode(code)) {
       setError("Enter a valid code!")
       return
