@@ -22,32 +22,6 @@ import { isValidSixDigitCode } from '../utils/fieldValidations';
 const DeleteAccount = () => {
 
     const recaptchaVerifierRef = useRef(null);
-    useEffect(() => {
-        if (!recaptchaVerifierRef.current) {
-          recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
-            'size': 'invisible',
-            'callback': (response) => console.log('reCAPTCHA solved!', response),
-            'expired-callback': function() {
-              console.log('reCAPTCHA token expired');
-              recaptchaVerifierRef.current.render().then(function(widgetId) {
-                window.recaptchaWidgetId = widgetId;
-              });
-            },
-            'timeout': 60000 
-          }, auth);
-          
-          recaptchaVerifierRef.current.render().then(function(widgetId) {
-            window.recaptchaWidgetId = widgetId;
-          }).catch(function(error) {
-            console.error('Error rendering reCAPTCHA:', error);
-          });
-        }
-    
-        
-        return () => {
-        };
-      }, []);
-
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
     const [verificationCode, setVerificationCode] = useState("");
@@ -124,7 +98,7 @@ const DeleteAccount = () => {
             } else {
                 setError("Error validating code! Try Again!");
             }
-            setError("Error during 2FA, please contact us for help.");
+            //setError("Error during 2FA, please contact us for help.");
         }
     }
 
@@ -143,6 +117,30 @@ const DeleteAccount = () => {
     }
 
     const handleMultiFactorAuth = async (err) => {
+
+        try {
+            recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
+              'size': 'invisible',
+              'callback': (response) => console.log('reCAPTCHA solved!', response),
+              'expired-callback': function() {
+                console.log('reCAPTCHA token expired');
+                recaptchaVerifierRef.current.render().then(function(widgetId) {
+                  window.recaptchaWidgetId = widgetId;
+                });
+              },
+              'timeout': 60000 
+            }, auth);
+            
+            recaptchaVerifierRef.current.render().then(function(widgetId) {
+              window.recaptchaWidgetId = widgetId;
+            }).catch(function(error) {
+              console.error('Error rendering reCAPTCHA:', error);
+            });
+          } catch(e){
+            setError("Recaptcha Error, try again or reload page");
+            return;
+          }
+
         const resolverVar = getMultiFactorResolver(auth, err);
         // removing the if check because sms is the only 2fa we have right now
         const phoneAuthProvider = new PhoneAuthProvider(auth);
@@ -154,6 +152,7 @@ const DeleteAccount = () => {
             setResolver(resolverVar);
             setVerificationId(verificationIdVar);
             setMfaCase(true);
+            
 
         } catch (error) {
             setError("Failed to complete multi-factor authentication.");

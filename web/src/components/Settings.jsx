@@ -23,37 +23,14 @@ import nhaService from '../services/nhaService';
 import { useDispatch } from 'react-redux';
 import { setDbUser } from '../features/user/userSlice';
 import { useSelector } from 'react-redux';
-import { isValidEmail, isValidName } from '../utils/fieldValidations';
+import { isValidEmail, isValidName, isValidSixDigitCode } from '../utils/fieldValidations';
 import VerificationInput from 'react-verification-input';
 
 
 const Settings = () => {
 
   const recaptchaVerifierRef = useRef(null);
-    useEffect(() => {
-        if (!recaptchaVerifierRef.current) {
-          recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
-            'size': 'invisible',
-            'callback': (response) => console.log('reCAPTCHA solved!', response),
-            'expired-callback': function() {
-              console.log('reCAPTCHA token expired');
-              recaptchaVerifierRef.current.render().then(function(widgetId) {
-                window.recaptchaWidgetId = widgetId;
-              });
-            },
-            'timeout': 60000 
-          }, auth);
-          
-          recaptchaVerifierRef.current.render().then(function(widgetId) {
-            window.recaptchaWidgetId = widgetId;
-          }).catch(function(error) {
-            console.error('Error rendering reCAPTCHA:', error);
-          });
-        }
     
-        return () => {
-        };
-      }, []);
 
   const user = useSelector((state) => state.user.user);
   const dbUser = useSelector((state) => state.user.dbUser);
@@ -166,6 +143,31 @@ const Settings = () => {
   }
 
   const handleMultiFactorAuth = async (err) => {
+
+    try {
+      recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
+        'size': 'invisible',
+        'callback': (response) => console.log('reCAPTCHA solved!', response),
+        'expired-callback': function() {
+          console.log('reCAPTCHA token expired');
+          recaptchaVerifierRef.current.render().then(function(widgetId) {
+            window.recaptchaWidgetId = widgetId;
+          });
+        },
+        'timeout': 60000 
+      }, auth);
+      
+      recaptchaVerifierRef.current.render().then(function(widgetId) {
+        window.recaptchaWidgetId = widgetId;
+      }).catch(function(error) {
+        console.error('Error rendering reCAPTCHA:', error);
+      });
+    } catch(e){
+      setError("Recaptcha Error, try again or reload page");
+      return;
+    }
+
+    
     const resolverVar = getMultiFactorResolver(auth, err);
     // removing the if check because sms is the only 2fa we have right now
     const phoneAuthProvider = new PhoneAuthProvider(auth);
@@ -177,6 +179,7 @@ const Settings = () => {
       setResolver(resolverVar);
       setVerificationId(verificationIdVar);
       setMfaCase(true);
+      
 
     } catch (error) {
       console.error("2FA error:", error);
@@ -222,6 +225,19 @@ const Settings = () => {
 
 
   const handle2FALogin = async () => {
+
+    if (verificationCode == ""){
+      setError("Enter verification code!");
+      return
+  }
+
+  if (!isValidSixDigitCode(verificationCode)){
+      setError("Enter a valid code!")
+      return
+  }
+
+        
+
     try {
         const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
         const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
@@ -356,7 +372,7 @@ const Settings = () => {
 
                   </div>)}
 
-                {error && <p className='error-msg error-settings'>{error}</p>}
+                
 
 
               </form>
@@ -399,7 +415,9 @@ const Settings = () => {
                             </div>
             </>
           )
+          
       }
+      {error && <p className='error-msg error-settings'>{error}</p>}
 
 
 
