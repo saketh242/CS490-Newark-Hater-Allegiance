@@ -89,6 +89,8 @@ const Enable2FA = () => {
 
   const handleMultiFactorAuth = async (err) => {
 
+     
+
     try {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible',
@@ -209,6 +211,8 @@ const Enable2FA = () => {
     try {
       const credential = EmailAuthProvider.credential(user.email, password);
       await reauthenticateWithCredential(user, credential)
+
+    
 
       try {
         recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {

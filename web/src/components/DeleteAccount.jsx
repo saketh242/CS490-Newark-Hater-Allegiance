@@ -98,7 +98,7 @@ const DeleteAccount = () => {
             } else {
                 setError("Error validating code! Try Again!");
             }
-            setError("Error during 2FA, please contact us for help.");
+            //setError("Error during 2FA, please contact us for help.");
         }
     }
 

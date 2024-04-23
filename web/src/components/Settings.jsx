@@ -23,7 +23,7 @@ import nhaService from '../services/nhaService';
 import { useDispatch } from 'react-redux';
 import { setDbUser } from '../features/user/userSlice';
 import { useSelector } from 'react-redux';
-import { isValidEmail, isValidName } from '../utils/fieldValidations';
+import { isValidEmail, isValidName, isValidSixDigitCode } from '../utils/fieldValidations';
 import VerificationInput from 'react-verification-input';
 
 
@@ -225,6 +225,19 @@ const Settings = () => {
 
 
   const handle2FALogin = async () => {
+
+    if (verificationCode == ""){
+      setError("Enter verification code!");
+      return
+  }
+
+  if (!isValidSixDigitCode(verificationCode)){
+      setError("Enter a valid code!")
+      return
+  }
+
+        
+
     try {
         const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
         const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
@@ -359,7 +372,7 @@ const Settings = () => {
 
                   </div>)}
 
-                {error && <p className='error-msg error-settings'>{error}</p>}
+                
 
 
               </form>
@@ -402,7 +415,9 @@ const Settings = () => {
                             </div>
             </>
           )
+          
       }
+      {error && <p className='error-msg error-settings'>{error}</p>}
 
 
 

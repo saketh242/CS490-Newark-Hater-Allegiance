@@ -29,6 +29,8 @@ const ChangePassword = () => {
     const [newPassword2, setNewPassword2] = useState("");
     const [error, setError] = useState(null);
 
+    //const [needs2FA, setNeeds2FA] = useState(false);
+
     const [mfaCase, setMfaCase] = useState(false);
     const [verificationCode, setVerificationCode] = useState("");
     const [verificationId, setVerificationId] = useState(null);
@@ -101,6 +103,7 @@ const ChangePassword = () => {
                 setError("Incorrect Password, try again!");
                 break;
             case "auth/multi-factor-auth-required":
+                //setNeeds2FA(true);
                 handleMultiFactorAuth(err);
                 break;
             default:
@@ -109,6 +112,7 @@ const ChangePassword = () => {
     }
 
     const handleMultiFactorAuth = async (err) => {
+
 
         try {
             recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
@@ -132,6 +136,7 @@ const ChangePassword = () => {
             setError("Recaptcha Error, try again or reload page");
             return;
           }
+
 
         const resolverVar = getMultiFactorResolver(auth, err);
         // removing the if check because sms is the only 2fa we have right now

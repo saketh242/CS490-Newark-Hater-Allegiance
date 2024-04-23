@@ -112,6 +112,7 @@ const Login = () => {
 
   const handleMultiFactorAuth = async (err) => {
 
+
     try {
       recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
         'size': 'invisible',
