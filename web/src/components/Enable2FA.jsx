@@ -23,31 +23,6 @@ import VerificationInput from "react-verification-input";
 const Enable2FA = () => {
   const navigate = useNavigate();
   const recaptchaVerifierRef = useRef(null);
-  useEffect(() => {
-    if (!recaptchaVerifierRef.current) {
-      recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
-        'size': 'invisible',
-        'callback': (response) => console.log('reCAPTCHA solved!', response),
-        'expired-callback': function() {
-          console.log('reCAPTCHA token expired');
-          recaptchaVerifierRef.current.render().then(function(widgetId) {
-            window.recaptchaWidgetId = widgetId;
-          });
-        },
-        'timeout': 60000 
-      }, auth);
-      
-      recaptchaVerifierRef.current.render().then(function(widgetId) {
-        window.recaptchaWidgetId = widgetId;
-      }).catch(function(error) {
-        console.error('Error rendering reCAPTCHA:', error);
-      });
-    }
-
-    
-    return () => {
-    };
-  }, []);
 
   const [verificationCode, setVerificationCode] = useState("");
   const [verificationId, setVerificationId] = useState(null);
@@ -113,6 +88,30 @@ const Enable2FA = () => {
 
 
   const handleMultiFactorAuth = async (err) => {
+
+    try {
+      recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
+        'size': 'invisible',
+        'callback': (response) => console.log('reCAPTCHA solved!', response),
+        'expired-callback': function() {
+          console.log('reCAPTCHA token expired');
+          recaptchaVerifierRef.current.render().then(function(widgetId) {
+            window.recaptchaWidgetId = widgetId;
+          });
+        },
+        'timeout': 60000 
+      }, auth);
+      
+      recaptchaVerifierRef.current.render().then(function(widgetId) {
+        window.recaptchaWidgetId = widgetId;
+      }).catch(function(error) {
+        console.error('Error rendering reCAPTCHA:', error);
+      });
+    } catch(e){
+      setError("Recaptcha Error, try again or reload page");
+      return;
+    }
+
     const resolverVar = getMultiFactorResolver(auth, err);
     // removing the if check because sms is the only 2fa we have right now
     const phoneAuthProvider = new PhoneAuthProvider(auth);
@@ -124,6 +123,7 @@ const Enable2FA = () => {
       setResolver(resolverVar);
       setVerificationId(verificationIdVar);
       setMfaCase(true);
+      
 
     } catch (error) {
       console.error("2FA error:", error);
