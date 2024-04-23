@@ -210,6 +210,29 @@ const Enable2FA = () => {
       const credential = EmailAuthProvider.credential(user.email, password);
       await reauthenticateWithCredential(user, credential)
 
+      try {
+        recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
+          'size': 'invisible',
+          'callback': (response) => console.log('reCAPTCHA solved!', response),
+          'expired-callback': function() {
+            console.log('reCAPTCHA token expired');
+            recaptchaVerifierRef.current.render().then(function(widgetId) {
+              window.recaptchaWidgetId = widgetId;
+            });
+          },
+          'timeout': 60000 
+        }, auth);
+        
+        recaptchaVerifierRef.current.render().then(function(widgetId) {
+          window.recaptchaWidgetId = widgetId;
+        }).catch(function(error) {
+          console.error('Error rendering reCAPTCHA:', error);
+        });
+      } catch(e){
+        setError("Recaptcha Error, try again or reload page");
+        return;
+      }
+
       // now handling the 2fa
 
       // generating the multifactorSession
