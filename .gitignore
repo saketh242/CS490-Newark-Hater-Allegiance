@@ -16,7 +16,7 @@ web/.env
 backend/.env
 
 # Ignore firebase.js in frontend
-web/src/firebase.js
+#web/src/firebase.js
 
 # Ignore serviceAccount.js in backend
 #backend/config/serviceAccount.js
