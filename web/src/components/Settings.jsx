@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear, faPenToSquare, faShieldHalved } from '@fortawesome/free-solid-svg-icons'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { auth } from "../firebase"
@@ -21,31 +21,12 @@ import nhaService from '../services/nhaService'
 import { useDispatch } from 'react-redux'
 import { setDbUser } from '../features/user/userSlice'
 import { useSelector } from 'react-redux'
-import { isValidEmail, isValidName } from '../utils/fieldValidations'
+import { isValidEmail, isValidName, isValidSixDigitCode } from '../utils/fieldValidations'
 import VerificationInput from 'react-verification-input'
 
 const Settings = () => {
 
-  const recaptchaVerifierRef = useRef(null);
-    useEffect(() => {
-        if (!recaptchaVerifierRef.current) {
-          recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
-            'size': 'invisible',
-            'callback': () => console.log('reCAPTCHA solved!'),
-            'expired-callback': function() {
-              recaptchaVerifierRef.current.render().then(function(widgetId) {
-                window.recaptchaWidgetId = widgetId
-              });
-            },
-            'timeout': 60000 
-          }, auth)
-          
-          recaptchaVerifierRef.current.render().then(function(widgetId) {
-            window.recaptchaWidgetId = widgetId
-          }).catch(function(error) {})
-        }
-        return () => {}
-      }, [])
+  const recaptchaVerifierRef = useRef(null)
 
   const user = useSelector((state) => state.user.user)
   const dbUser = useSelector((state) => state.user.dbUser)
@@ -136,7 +117,28 @@ const Settings = () => {
   }
 
   const handleMultiFactorAuth = async (err) => {
-    const resolverVar = getMultiFactorResolver(auth, err);
+
+    try {
+      recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
+        'size': 'invisible',
+        'callback': () => console.log('reCAPTCHA solved!'),
+        'expired-callback': function () {
+          recaptchaVerifierRef.current.render().then(function (widgetId) {
+            window.recaptchaWidgetId = widgetId
+          });
+        },
+        'timeout': 60000
+      }, auth)
+
+      recaptchaVerifierRef.current.render().then(function (widgetId) {
+        window.recaptchaWidgetId = widgetId
+      }).catch(function (error) { })
+    } catch (e) {
+      setError("Recaptcha Error, try again or reload page")
+      return
+    }
+
+    const resolverVar = getMultiFactorResolver(auth, err)
     // removing the if check because sms is the only 2fa we have right now
     const phoneAuthProvider = new PhoneAuthProvider(auth)
     try {
@@ -147,6 +149,7 @@ const Settings = () => {
       setResolver(resolverVar)
       setVerificationId(verificationIdVar)
       setMfaCase(true)
+
     } catch (error) {
       setError("Failed to complete multi-factor authentication.")
     }
@@ -188,6 +191,17 @@ const Settings = () => {
   }
 
   const handle2FALogin = async () => {
+
+    if (verificationCode == "") {
+      setError("Enter verification code!");
+      return
+    }
+
+    if (!isValidSixDigitCode(verificationCode)) {
+      setError("Enter a valid code!")
+      return
+    }
+
     try {
       const cred = PhoneAuthProvider.credential(verificationId, verificationCode)
       const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred)
@@ -219,9 +233,9 @@ const Settings = () => {
   }
 
   return (
-    <div className='settings-div' style={mfaCase ? {alignItems:'center'}: {}}>
+    <div className='settings-div' style={mfaCase ? { alignItems: 'center' } : {}}>
       <div id="recaptcha-container-id"></div>
-      <div className='settings-head-div' style={ mfaCase ? {paddingBottom:"2rem"} : {}}>
+      <div className='settings-head-div' style={mfaCase ? { paddingBottom: "2rem" } : {}}>
         <FontAwesomeIcon size='4x' icon={faGear} className='settings-icon' />
         <p className='settings-head-p'>Settings</p>
       </div>
@@ -304,8 +318,7 @@ const Settings = () => {
                       <button type="submit" data-testid="update-btn" className='login-btn' onClick={handleChangeEmail}>Update Email</button>
                     </div>
                   </div>)}
-                {error && <p className='error-msg error-settings'>{error}</p>}
-              </form>
+              </form >
 
               <div className="options-div">
                 <div className='option-div hover-div' onClick={handleChangePassword}>
@@ -343,7 +356,8 @@ const Settings = () => {
             </>
           )
       }
-    </div>
+      {error && <p className='error-msg error-settings'>{error}</p>}
+    </div >
   )
 }
 

@@ -18,29 +18,7 @@ import VerificationInput from "react-verification-input"
 
 const Enable2FA = () => {
   const navigate = useNavigate();
-  const recaptchaVerifierRef = useRef(null);
-  useEffect(() => {
-    if (!recaptchaVerifierRef.current) {
-      recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
-        'size': 'invisible',
-        'callback': () => console.log('reCAPTCHA solved!'),
-        'expired-callback': function () {
-          console.log('reCAPTCHA token expired')
-          recaptchaVerifierRef.current.render().then(function (widgetId) {
-            window.recaptchaWidgetId = widgetId
-          })
-        },
-        'timeout': 60000
-      }, auth)
-
-      recaptchaVerifierRef.current.render().then(function (widgetId) {
-        window.recaptchaWidgetId = widgetId
-      }).catch(function (error) {
-        console.error('Error rendering reCAPTCHA:', error)
-      })
-    }
-    return () => { }
-  }, [])
+  const recaptchaVerifierRef = useRef(null)
 
   const [verificationCode, setVerificationCode] = useState("")
   const [verificationId, setVerificationId] = useState(null)
@@ -49,7 +27,7 @@ const Enable2FA = () => {
 
   const [phoneNumber, setPhoneNumber] = useState("")
   const [code, setCode] = useState("")
-  // const [recaptchaSolved, setRecaptchaSolved] = useState(false);
+  const [recaptchaSolved, setRecaptchaSolved] = useState(false)
   const [error, setError] = useState(null)
   const [password, setPassword] = useState("")
   const [codeSent, setCodeSent] = useState(false)
@@ -101,6 +79,29 @@ const Enable2FA = () => {
   }
 
   const handleMultiFactorAuth = async (err) => {
+
+     
+
+    try {
+      recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
+        'size': 'invisible',
+        'callback': () => console.log('reCAPTCHA solved!'),
+        'expired-callback': function() {
+          recaptchaVerifierRef.current.render().then(function(widgetId) {
+            window.recaptchaWidgetId = widgetId
+          })
+        },
+        'timeout': 60000 
+      }, auth)
+      
+      recaptchaVerifierRef.current.render().then(function(widgetId) {
+        window.recaptchaWidgetId = widgetId;
+      }).catch(function(error) {})
+    } catch(e){
+      setError("Recaptcha Error, try again or reload page")
+      return
+    }
+
     const resolverVar = getMultiFactorResolver(auth, err);
     // removing the if check because sms is the only 2fa we have right now
     const phoneAuthProvider = new PhoneAuthProvider(auth)
@@ -112,7 +113,11 @@ const Enable2FA = () => {
       setResolver(resolverVar)
       setVerificationId(verificationIdVar)
       setMfaCase(true)
-    } catch (error) {setError("Failed to complete multi-factor authentication.")}
+      
+    } catch (error) {
+      setError("Failed to complete multi-factor authentication.")
+    }
+
   }
 
   const handle2FALogin = async () => {
@@ -177,6 +182,28 @@ const Enable2FA = () => {
     try {
       const credential = EmailAuthProvider.credential(user.email, password)
       await reauthenticateWithCredential(user, credential)
+
+    
+
+      try {
+        recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
+          'size': 'invisible',
+          'callback': () => console.log('reCAPTCHA solved!'),
+          'expired-callback': function() {
+            recaptchaVerifierRef.current.render().then(function(widgetId) {
+              window.recaptchaWidgetId = widgetId;
+            });
+          },
+          'timeout': 60000 
+        }, auth);
+        
+        recaptchaVerifierRef.current.render().then(function(widgetId) {
+          window.recaptchaWidgetId = widgetId
+        }).catch(function(error) {})
+      } catch(e){
+        setError("Recaptcha Error, try again or reload page")
+        return
+      }
 
       // now handling the 2fa
       // generating the multifactorSession

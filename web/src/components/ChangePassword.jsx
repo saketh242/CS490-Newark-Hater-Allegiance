@@ -20,32 +20,14 @@ import VerificationInput from 'react-verification-input'
 const ChangePassword = () => {
 
     const recaptchaVerifierRef = useRef(null)
-    useEffect(() => {
-        if (!recaptchaVerifierRef.current) {
-          recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
-            'size': 'invisible',
-            'callback': () => console.log('reCAPTCHA solved!'),
-            'expired-callback': function() {
-              recaptchaVerifierRef.current.render().then(function(widgetId) {
-                window.recaptchaWidgetId = widgetId
-              })
-            },
-            'timeout': 60000 
-          }, auth)
-          
-          recaptchaVerifierRef.current.render().then(function(widgetId) {
-            window.recaptchaWidgetId = widgetId
-          }).catch(function(error) {})
-        }
-        return () => {}
-      }, [])
-
     const navigate = useNavigate()
+
     const [currentPassword, setCurrentPassword] = useState("")
     const [newPassword, setNewPassword] = useState("")
     const [newPassword2, setNewPassword2] = useState("")
     const [error, setError] = useState(null)
 
+    //const [needs2FA, setNeeds2FA] = useState(false)
     const [mfaCase, setMfaCase] = useState(false)
     const [verificationCode, setVerificationCode] = useState("")
     const [verificationId, setVerificationId] = useState(null)
@@ -106,6 +88,7 @@ const ChangePassword = () => {
                 setError("Incorrect Password, try again!")
                 break
             case "auth/multi-factor-auth-required":
+                //setNeeds2FA(true)
                 handleMultiFactorAuth(err)
                 break
             default:
@@ -114,6 +97,26 @@ const ChangePassword = () => {
     }
 
     const handleMultiFactorAuth = async (err) => {
+        try {
+            recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
+              'size': 'invisible',
+              'callback': () => console.log('reCAPTCHA solved!'),
+              'expired-callback': function() {
+                recaptchaVerifierRef.current.render().then(function(widgetId) {
+                  window.recaptchaWidgetId = widgetId
+                })
+              },
+              'timeout': 60000 
+            }, auth)
+            
+            recaptchaVerifierRef.current.render().then(function(widgetId) {
+              window.recaptchaWidgetId = widgetId
+            }).catch(function(error) {})
+          } catch(e){
+            setError("Recaptcha Error, try again or reload page")
+            return
+          }
+
         const resolverVar = getMultiFactorResolver(auth, err)
         // removing the if check because sms is the only 2fa we have right now
         const phoneAuthProvider = new PhoneAuthProvider(auth)

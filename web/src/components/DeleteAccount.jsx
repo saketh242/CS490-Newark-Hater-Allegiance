@@ -17,34 +17,14 @@ import VerificationInput from 'react-verification-input'
 import { isValidSixDigitCode } from '../utils/fieldValidations'
 
 const DeleteAccount = () => {
-    const recaptchaVerifierRef = useRef(null)
-    useEffect(() => {
-        if (!recaptchaVerifierRef.current) {
-          recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
-            'size': 'invisible',
-            'callback': () => console.log('reCAPTCHA solved!'),
-            'expired-callback': function() {
-              console.log('reCAPTCHA token expired')
-              recaptchaVerifierRef.current.render().then(function(widgetId) {
-                window.recaptchaWidgetId = widgetId
-              });
-            },
-            'timeout': 60000 
-          }, auth)
-          
-          recaptchaVerifierRef.current.render().then(function(widgetId) {
-            window.recaptchaWidgetId = widgetId
-          }).catch(function(error) {})
-        }
     
-        return () => {}
-      }, [])
+    const recaptchaVerifierRef = useRef(null)
 
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
     const [verificationCode, setVerificationCode] = useState("")
 
-    const [mfaCase, setMfaCase] = useState(false);
+    const [mfaCase, setMfaCase] = useState(false)
     const [verificationId, setVerificationId] = useState(null)
     const [resolver, setResolver] = useState(null)
 
@@ -101,13 +81,7 @@ const DeleteAccount = () => {
 
         } catch (e) {
             if (window.recaptchaVerifier) setTimeout(() => recaptchaVerifierRef.current.reset(), 500)
-
-            if (e.code === "auth/invalid-verification-code") {
-                setError("Invalid Code! Try entering it again.")
-            } else if (e.code === "auth/code-expired") {
-                setError("Code Expired. Please request a new code or reload the page.")
-            } else { setError("Error validating code! Try Again!") }
-            setError("Error during 2FA, please contact us for help.")
+            else setError("Error validating code! Try Again!")
         }
     }
 
@@ -125,6 +99,27 @@ const DeleteAccount = () => {
     }
 
     const handleMultiFactorAuth = async (err) => {
+
+        try {
+            recaptchaVerifierRef.current = new RecaptchaVerifier('recaptcha-container-id', {
+              'size': 'invisible',
+              'callback': () => console.log('reCAPTCHA solved!'),
+              'expired-callback': function() {
+                recaptchaVerifierRef.current.render().then(function(widgetId) {
+                  window.recaptchaWidgetId = widgetId
+                });
+              },
+              'timeout': 60000 
+            }, auth)
+            
+            recaptchaVerifierRef.current.render().then(function(widgetId) {
+              window.recaptchaWidgetId = widgetId;
+            }).catch(function(error) {})
+          } catch(e){
+            setError("Recaptcha Error, try again or reload page");
+            return;
+          }
+
         const resolverVar = getMultiFactorResolver(auth, err);
         // removing the if check because sms is the only 2fa we have right now
         const phoneAuthProvider = new PhoneAuthProvider(auth)
@@ -174,7 +169,8 @@ const DeleteAccount = () => {
                             id='delete-acc-btn'
                         >Delete Account</button>
                     </form>
-                </>) : (
+                </>
+                ) : (
                     <>
                         <div className="popupContent" id="loginVerify">
                             <div id="verificationHeader">
